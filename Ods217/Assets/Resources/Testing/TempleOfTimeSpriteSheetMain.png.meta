@@ -1,0 +1,1700 @@
+fileFormatVersion: 2
+guid: c5bbf00e2ef66d240887c593482be09e
+timeCreated: 1470797014
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: TempleOfTimeSpriteSheetMain_0
+    21300002: TempleOfTimeSpriteSheetMain_1
+    21300004: TempleOfTimeSpriteSheetMain_2
+    21300006: TempleOfTimeSpriteSheetMain_3
+    21300008: TempleOfTimeSpriteSheetMain_4
+    21300010: TempleOfTimeSpriteSheetMain_5
+    21300012: TempleOfTimeSpriteSheetMain_6
+    21300014: TempleOfTimeSpriteSheetMain_7
+    21300016: TempleOfTimeSpriteSheetMain_8
+    21300018: TempleOfTimeSpriteSheetMain_9
+    21300020: TempleOfTimeSpriteSheetMain_10
+    21300022: TempleOfTimeSpriteSheetMain_11
+    21300024: TempleOfTimeSpriteSheetMain_12
+    21300026: TempleOfTimeSpriteSheetMain_13
+    21300028: TempleOfTimeSpriteSheetMain_14
+    21300030: TempleOfTimeSpriteSheetMain_15
+    21300032: TempleOfTimeSpriteSheetMain_16
+    21300034: TempleOfTimeSpriteSheetMain_17
+    21300036: TempleOfTimeSpriteSheetMain_18
+    21300038: TempleOfTimeSpriteSheetMain_19
+    21300040: TempleOfTimeSpriteSheetMain_20
+    21300042: TempleOfTimeSpriteSheetMain_21
+    21300044: TempleOfTimeSpriteSheetMain_22
+    21300046: TempleOfTimeSpriteSheetMain_23
+    21300048: TempleOfTimeSpriteSheetMain_24
+    21300050: TempleOfTimeSpriteSheetMain_25
+    21300052: TempleOfTimeSpriteSheetMain_26
+    21300054: TempleOfTimeSpriteSheetMain_27
+    21300056: TempleOfTimeSpriteSheetMain_28
+    21300058: TempleOfTimeSpriteSheetMain_29
+    21300060: TempleOfTimeSpriteSheetMain_30
+    21300062: TempleOfTimeSpriteSheetMain_31
+    21300064: TempleOfTimeSpriteSheetMain_32
+    21300066: TempleOfTimeSpriteSheetMain_33
+    21300068: TempleOfTimeSpriteSheetMain_34
+    21300070: TempleOfTimeSpriteSheetMain_35
+    21300072: TempleOfTimeSpriteSheetMain_36
+    21300074: TempleOfTimeSpriteSheetMain_37
+    21300076: TempleOfTimeSpriteSheetMain_38
+    21300078: TempleOfTimeSpriteSheetMain_39
+    21300080: TempleOfTimeSpriteSheetMain_40
+    21300082: TempleOfTimeSpriteSheetMain_41
+    21300084: TempleOfTimeSpriteSheetMain_42
+    21300086: TempleOfTimeSpriteSheetMain_43
+    21300088: TempleOfTimeSpriteSheetMain_44
+    21300090: TempleOfTimeSpriteSheetMain_45
+    21300092: TempleOfTimeSpriteSheetMain_46
+    21300094: TempleOfTimeSpriteSheetMain_47
+    21300096: TempleOfTimeSpriteSheetMain_48
+    21300098: TempleOfTimeSpriteSheetMain_49
+    21300100: TempleOfTimeSpriteSheetMain_50
+    21300102: TempleOfTimeSpriteSheetMain_51
+    21300104: TempleOfTimeSpriteSheetMain_52
+    21300106: TempleOfTimeSpriteSheetMain_53
+    21300108: TempleOfTimeSpriteSheetMain_54
+    21300110: TempleOfTimeSpriteSheetMain_55
+    21300112: TempleOfTimeSpriteSheetMain_56
+    21300114: TempleOfTimeSpriteSheetMain_57
+    21300116: TempleOfTimeSpriteSheetMain_58
+    21300118: TempleOfTimeSpriteSheetMain_59
+    21300120: TempleOfTimeSpriteSheetMain_60
+    21300122: TempleOfTimeSpriteSheetMain_61
+    21300124: TempleOfTimeSpriteSheetMain_62
+    21300126: TempleOfTimeSpriteSheetMain_63
+    21300128: TempleOfTimeSpriteSheetMain_64
+    21300130: TempleOfTimeSpriteSheetMain_65
+    21300132: TempleOfTimeSpriteSheetMain_66
+    21300134: TempleOfTimeSpriteSheetMain_67
+    21300136: TempleOfTimeSpriteSheetMain_68
+    21300138: TempleOfTimeSpriteSheetMain_69
+    21300140: TempleOfTimeSpriteSheetMain_70
+    21300142: TempleOfTimeSpriteSheetMain_71
+    21300144: TempleOfTimeSpriteSheetMain_72
+    21300146: TempleOfTimeSpriteSheetMain_73
+    21300148: TempleOfTimeSpriteSheetMain_74
+    21300150: TempleOfTimeSpriteSheetMain_75
+    21300152: TempleOfTimeSpriteSheetMain_76
+    21300154: TempleOfTimeSpriteSheetMain_77
+    21300156: TempleOfTimeSpriteSheetMain_78
+    21300158: TempleOfTimeSpriteSheetMain_79
+    21300160: TempleOfTimeSpriteSheetMain_80
+    21300162: TempleOfTimeSpriteSheetMain_81
+    21300164: TempleOfTimeSpriteSheetMain_82
+    21300166: TempleOfTimeSpriteSheetMain_83
+    21300168: TempleOfTimeSpriteSheetMain_84
+    21300170: TempleOfTimeSpriteSheetMain_85
+    21300172: TempleOfTimeSpriteSheetMain_86
+    21300174: TempleOfTimeSpriteSheetMain_87
+    21300176: TempleOfTimeSpriteSheetMain_88
+    21300178: TempleOfTimeSpriteSheetMain_89
+    21300180: TempleOfTimeSpriteSheetMain_90
+    21300182: TempleOfTimeSpriteSheetMain_91
+    21300184: TempleOfTimeSpriteSheetMain_92
+    21300186: TempleOfTimeSpriteSheetMain_93
+    21300188: TempleOfTimeSpriteSheetMain_94
+    21300190: TempleOfTimeSpriteSheetMain_95
+    21300192: TempleOfTimeSpriteSheetMain_96
+    21300194: TempleOfTimeSpriteSheetMain_97
+    21300196: TempleOfTimeSpriteSheetMain_98
+    21300198: TempleOfTimeSpriteSheetMain_99
+    21300200: TempleOfTimeSpriteSheetMain_100
+    21300202: TempleOfTimeSpriteSheetMain_101
+    21300204: TempleOfTimeSpriteSheetMain_102
+    21300206: TempleOfTimeSpriteSheetMain_103
+    21300208: TempleOfTimeSpriteSheetMain_104
+    21300210: TempleOfTimeSpriteSheetMain_105
+    21300212: TempleOfTimeSpriteSheetMain_106
+    21300214: TempleOfTimeSpriteSheetMain_107
+    21300216: TempleOfTimeSpriteSheetMain_108
+    21300218: TempleOfTimeSpriteSheetMain_109
+    21300220: TempleOfTimeSpriteSheetMain_110
+    21300222: TempleOfTimeSpriteSheetMain_111
+    21300224: TempleOfTimeSpriteSheetMain_112
+    21300226: TempleOfTimeSpriteSheetMain_113
+    21300228: TempleOfTimeSpriteSheetMain_114
+    21300230: TempleOfTimeSpriteSheetMain_115
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 16
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_1
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_2
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_3
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_4
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_5
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_6
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_7
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_8
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_9
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_10
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 645
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_11
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_12
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_13
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_14
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_15
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_16
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_17
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_18
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_19
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_20
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_21
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_22
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_23
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_24
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_25
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_26
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_27
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_28
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_29
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_30
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_31
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_32
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_33
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_34
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 579
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_35
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_36
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_37
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_38
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_39
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_40
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_41
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_42
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_43
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_44
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_45
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_46
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_47
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_48
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_49
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_50
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_51
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_52
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_53
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_54
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_55
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_56
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_57
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_58
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 513
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_59
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_60
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_61
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_62
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_63
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_64
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_65
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_66
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_67
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_68
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_69
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_70
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_71
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_72
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_73
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_74
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_75
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_76
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_77
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_78
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_79
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_80
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_81
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_82
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 447
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_83
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_84
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_85
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_86
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_87
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_88
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_89
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_90
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_91
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_92
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_93
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_94
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_95
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_96
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_97
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_98
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_99
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_100
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_101
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_102
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_103
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_104
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_105
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_106
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 381
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_107
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 315
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_108
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 315
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_109
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 315
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_110
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 315
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_111
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 315
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_112
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 315
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_113
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 315
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_114
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 249
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TempleOfTimeSpriteSheetMain_115
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 249
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
