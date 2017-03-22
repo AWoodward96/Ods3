@@ -210,6 +210,7 @@ public class PlayerScript : MonoBehaviour, IUnit
     public void EnteredNewZone()
     {
         myWeapon.CurrentSecondaryClip = 0;
+        
     }
 
     public void OnHit(Weapon _FromWhatWeapon)

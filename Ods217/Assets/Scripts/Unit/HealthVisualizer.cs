@@ -108,15 +108,23 @@ public class HealthVisualizer : MonoBehaviour
                 current = 0;
                 for (int i = 0; i < availablebullets; i++)
                 {
-                    // Need to enable some bars here
+                    // enable every bar for each bullet in the clip
                     SBBars[i].enabled = true;
                     current++;
                 }
 
-                // need to mess with this one as well
+                // disable every bar for each bullet not in the clip
                 for (int i = current; i < SBBars.Length; i++)
                 {
                     // Need to disable some bars here
+                    SBBars[i].enabled = false;
+                }
+            }else
+            {
+                // disable all the bars
+                for (int i = 0; i < SBBars.Length; i++)
+                {
+                     
                     SBBars[i].enabled = false;
                 }
             }
