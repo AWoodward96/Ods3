@@ -79,12 +79,14 @@
     <Compile Include="Assets\Scripts\CamScript.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\Effects\Alarm.cs" />
+    <Compile Include="Assets\Scripts\Effects\RandomBlink.cs" />
     <Compile Include="Assets\Scripts\Items\BlankMelee.cs" />
     <Compile Include="Assets\Scripts\Items\BulEMP.cs" />
     <Compile Include="Assets\Scripts\Items\BulPulse.cs" />
     <Compile Include="Assets\Scripts\Items\IBullet.cs" />
     <Compile Include="Assets\Scripts\Items\PlayerWeapon.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
+    <Compile Include="Assets\Scripts\NonUnit\BrokenDoorScript.cs" />
     <Compile Include="Assets\Scripts\NonUnit\ClosedDoorScript.cs" />
     <Compile Include="Assets\Scripts\NonUnit\EnergyProviders.cs" />
     <Compile Include="Assets\Scripts\NonUnit\EnergyStationScript.cs" />
