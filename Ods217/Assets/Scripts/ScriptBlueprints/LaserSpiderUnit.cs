@@ -235,6 +235,7 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
         // Take damage why did I add a smiley you know what it doesn't matter
         if (myUnit.CurrentHealth > 0)
         {
+            myVisualizer.ShowMenu();
             myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
             if (myUnit.CurrentHealth <= 0)
             {
@@ -263,6 +264,14 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-       
+
     }
+    public HealthVisualizer myVisualizer
+    {
+        get
+        {
+            return GetComponentInChildren<HealthVisualizer>();
+        }
+    }
+
 }

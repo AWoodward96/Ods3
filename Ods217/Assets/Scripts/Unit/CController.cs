@@ -12,7 +12,7 @@ public class CController : MonoBehaviour
     [Header("Movement Info")]
     [Range(0, 100)]
     public float Speed;
-    [Range(0, 100)]
+    [Range(0, 1000)]
     public float MaxSpeed;
     
     public bool canMove;
@@ -25,9 +25,8 @@ public class CController : MonoBehaviour
     [HideInInspector]
     public bool SprintingPrev;
 
-    [HideInInspector]
-    public Vector3 Acceleration;
-    [HideInInspector]
+   
+    public Vector3 Acceleration; 
     public Vector3 Velocity;
 
     public Vector3 ProjectedPosition;
@@ -49,8 +48,8 @@ public class CController : MonoBehaviour
 
         // Make sure that you're on the ground and not floating in mid air
         RaycastHit hit;
-        Ray r = new Ray(transform.position, Vector3.down);
-        if (!Physics.Raycast(r, out hit, .2f + myCtrl.height, LayerMask.GetMask("Ground")))
+        Ray r = new Ray(transform.position + myCtrl.center, Vector3.down);
+        if (!Physics.Raycast(r, out hit, .2f + myCtrl.height - myCtrl.center.y, LayerMask.GetMask("Ground")))
         {
             ApplyForce(Vector3.down * GlobalConstants.Gravity);
             Airborne = true; 
@@ -74,6 +73,7 @@ public class CController : MonoBehaviour
         myCtrl.Move(Velocity * Time.deltaTime);
 
         Velocity *= (Airborne)? GlobalConstants.AirFriction : GlobalConstants.Friction ;
+       
         Acceleration = Vector3.zero;
     }
 }

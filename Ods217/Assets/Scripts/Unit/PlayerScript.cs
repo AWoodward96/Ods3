@@ -217,6 +217,7 @@ public class PlayerScript : MonoBehaviour, IUnit
     {
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
+        myVisualizer.ShowMenu();
         myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
     }
     public UnitStruct MyUnit()
@@ -227,5 +228,20 @@ public class PlayerScript : MonoBehaviour, IUnit
     public Weapon MyWeapon()
     {
         return myWeapon;
+    }
+
+    public HealthVisualizer myVisualizer
+    {
+        get
+        {
+            return GetComponentInChildren<HealthVisualizer>();
+        }
+    }
+
+
+    void OnParticleCollision(GameObject other)
+    {
+        // I aactually have no idea how this shit works
+        Destroy(other.gameObject);
     }
 }

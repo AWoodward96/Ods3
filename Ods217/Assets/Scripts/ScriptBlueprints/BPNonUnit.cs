@@ -38,10 +38,19 @@ public class BPNonUnit: MonoBehaviour,IUnit {
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
         myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+        myVisualizer.ShowMenu();
     }
 
     public Weapon MyWeapon()
     {
         return null;
+    }
+
+    public HealthVisualizer myVisualizer
+    {
+        get
+        {
+            return GetComponentInChildren<HealthVisualizer>();
+        }
     }
 }

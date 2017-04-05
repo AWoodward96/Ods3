@@ -8,4 +8,9 @@ public interface IUnit  {
     void OnHit(Weapon _FromWhatWeapon);
     UnitStruct MyUnit();
     Weapon MyWeapon();
+
+    HealthVisualizer myVisualizer
+    {
+        get;
+    }
 }

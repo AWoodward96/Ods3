@@ -44,7 +44,6 @@ public class ClosedDoorScript : MonoBehaviour, INonUnit {
     public bool Powered
     {
         get {
-            bool p;
             
             // Go through the entire PowerSystems list and check to see if anything isn't powered. If there is one that isn't powered, return false
             foreach(GameObject o in PowerSystems)

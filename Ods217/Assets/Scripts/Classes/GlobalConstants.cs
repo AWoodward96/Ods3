@@ -26,7 +26,7 @@ public class GlobalConstants {
     float timeToJumpApex = 1f;
     public static float Gravity = (2 * 3) / Mathf.Pow(((1 > 0) ? 1 : 1), 2);
     public static float Friction = .9f;
-    public static float AirFriction = .93f;
+    public static float AirFriction = .95f;
 
 
 }

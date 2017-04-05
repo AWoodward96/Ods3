@@ -10,6 +10,9 @@ public class EnergyProviders : MonoBehaviour, INonUnit {
     public int TimeWhenPowered;
     float timeSince;
 
+    GameObject Timer;
+    GameObject PowerBall;
+    ParticleSystem myEmitter;
     Animator myAnimator;
 
     public bool Powered
@@ -27,6 +30,7 @@ public class EnergyProviders : MonoBehaviour, INonUnit {
 
     public void OnEMP()
     {
+
         timeSince = 0;
         isPowered = true;
     }
@@ -38,8 +42,12 @@ public class EnergyProviders : MonoBehaviour, INonUnit {
 
     // Use this for initialization
     void Start () {
-        myAnimator = GetComponent<Animator>();
-	}
+       
+        Timer = transform.FindChild("Timer").gameObject;
+        myAnimator = Timer.GetComponent<Animator>();
+        myEmitter = GetComponentInChildren<ParticleSystem>();
+        PowerBall = transform.FindChild("energyOrb").gameObject;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -58,6 +66,14 @@ public class EnergyProviders : MonoBehaviour, INonUnit {
                 isPowered = false;
             }
         }
+
+        PowerBall.gameObject.SetActive(isPowered);
+        myEmitter.enableEmission = isPowered;
+
+        if (LockOn && isPowered)
+            myAnimator.SetBool("LockedOn", true);
+        else
+            myAnimator.SetBool("LockedOn", false);
 
 	}
 }

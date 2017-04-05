@@ -11,8 +11,7 @@ public class HealthVisualizer : MonoBehaviour
     float BBMaxWidth;
     Image BulletBar;
     Image BulletBarBG;
-    Image HPBar;
-    Image HPBarBG;
+    Image HPBar; 
 
     Image[] BBars = new Image[5];
     Image[] SBBars = new Image[0]; // Secondary Bars
@@ -27,6 +26,8 @@ public class HealthVisualizer : MonoBehaviour
 
     public bool HideAmmo;
     bool hasWeapon;
+
+    float timeSinceModified;
 
     // Use this for initialization
     void Start()
@@ -62,7 +63,7 @@ public class HealthVisualizer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(unit != null)
         {
@@ -131,6 +132,12 @@ public class HealthVisualizer : MonoBehaviour
 
         }
 
+
+        // If nothings been changed in 3 seconds then hide the visualizer
+        if (timeSinceModified < 3)
+            timeSinceModified += Time.deltaTime;
+        else
+            GetComponent<Canvas>().enabled = false;
     }
 
     void GetVisualizerComponents()
@@ -139,11 +146,6 @@ public class HealthVisualizer : MonoBehaviour
 
         foreach (Image i in allImages)
         {
-            if (i.name == "HealthBG")
-            {
-                HPBarBG = i; continue;
-            }
-
             if (i.name == "HealthFG")
             {
                 HPBar = i; continue;
@@ -234,6 +236,13 @@ public class HealthVisualizer : MonoBehaviour
     public void UpdateValues(float _Max, float _Current)
     {
         maxVal = _Max;
-        currentVal = _Current; 
+        currentVal = _Current;
+        ShowMenu();
+    }
+
+    public void ShowMenu()
+    {
+        GetComponent<Canvas>().enabled = true;
+        timeSinceModified = 0;
     }
 }

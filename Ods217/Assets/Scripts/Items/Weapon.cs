@@ -117,9 +117,13 @@ public class Weapon : MonoBehaviour {
                 currentCd = 0;
                 CurrentClip--;
 
+                
+
                 // Play the sound
                 myAudioSource.clip = ShootClip;
                 myAudioSource.Play();
+
+                Owner.myVisualizer.ShowMenu();
                 return;
             }
         }
@@ -150,6 +154,8 @@ public class Weapon : MonoBehaviour {
                     // Play the sound
                     myAudioSource.clip = ShootClip;
                     myAudioSource.Play();
+
+                    Owner.myVisualizer.ShowMenu();
                     return;
                 }
             }
@@ -183,7 +189,9 @@ public class Weapon : MonoBehaviour {
             }
 
             // Alright at this point you should have all the bullets you need
-        } 
+        }
+
+        Owner.myVisualizer.ShowMenu();
     }
 
     public void ForceReload()

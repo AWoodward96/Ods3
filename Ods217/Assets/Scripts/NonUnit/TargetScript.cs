@@ -12,6 +12,7 @@ public class TargetScript: MonoBehaviour,IUnit {
     Animator myAnimator;
     AudioSource mySource;
 
+
     // Use this for initialization
     void Awake() {
         myAnimator = GetComponent<Animator>();
@@ -43,10 +44,20 @@ public class TargetScript: MonoBehaviour,IUnit {
         myAnimator.SetTrigger("TakeHit");
         mySource.clip = HitClip;
         mySource.Play();
+        myVisualizer.ShowMenu();
     }
 
     public Weapon MyWeapon()
     {
         return null;
+    }
+
+
+    public HealthVisualizer myVisualizer
+    {
+        get
+        {
+            return GetComponentInChildren<HealthVisualizer>();
+        }
     }
 }

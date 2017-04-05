@@ -20,7 +20,7 @@ public class CamScript : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         if (Target == null)
-            Target = Instantiate(new GameObject()).transform;
+            Target = new GameObject().transform;
 
         CursorToWorld();
 
