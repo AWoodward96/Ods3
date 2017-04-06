@@ -111,7 +111,7 @@ public class SpiderUnit1 : MonoBehaviour,IUnit {
 
 
         // Check to see if a target is near you and if so attack them
-        chaseTaggedAlliedObjects = Physics.OverlapSphere(transform.position, 8);
+        chaseTaggedAlliedObjects = Physics.OverlapSphere(transform.position, 12);
         foreach(Collider c in chaseTaggedAlliedObjects)
         { 
             if(c.gameObject.layer == LayerMask.NameToLayer("Units")) // Any units are targets for spiders

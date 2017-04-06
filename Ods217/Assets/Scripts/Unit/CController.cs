@@ -63,7 +63,8 @@ public class CController : MonoBehaviour
 
     public void ApplyForce(Vector3 _spd)
     {
-        Acceleration += (_spd);
+        if(canMove)
+            Acceleration += (_spd);
     }
 
     void CalculateMove()

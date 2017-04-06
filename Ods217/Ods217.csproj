@@ -52,9 +52,6 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -70,9 +67,6 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
     </Reference>
@@ -86,6 +80,8 @@
     <Compile Include="Assets\Scripts\CannonBallTesting.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\DestroyAfterXSeconds.cs" />
+    <Compile Include="Assets\Scripts\Dialog\OnCollisionStartDialog.cs" />
+    <Compile Include="Assets\Scripts\DialogManager.cs" />
     <Compile Include="Assets\Scripts\Effects\Alarm.cs" />
     <Compile Include="Assets\Scripts\Effects\RandomBlink.cs" />
     <Compile Include="Assets\Scripts\Effects\sinFloat.cs" />
@@ -108,14 +104,15 @@
     <Compile Include="Assets\Scripts\NonUnit\TargetScript.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPNonUnit.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPUnit.cs" />
-    <Compile Include="Assets\Scripts\ScriptBlueprints\LaserSpiderUnit.cs" />
-    <Compile Include="Assets\Scripts\ScriptBlueprints\SpiderUnit1.cs" />
     <Compile Include="Assets\Scripts\ShadowsPlease.cs" />
     <Compile Include="Assets\Scripts\Unit\CController.cs" />
+    <Compile Include="Assets\Scripts\Unit\DeactivatedSpider.cs" />
     <Compile Include="Assets\Scripts\Unit\DropShadowScript.cs" />
     <Compile Include="Assets\Scripts\Unit\HealthVisualizer.cs" />
     <Compile Include="Assets\Scripts\Unit\IUnit.cs" />
+    <Compile Include="Assets\Scripts\Unit\LaserSpiderUnit.cs" />
     <Compile Include="Assets\Scripts\Unit\PlayerScript.cs" />
+    <Compile Include="Assets\Scripts\Unit\SpiderUnit1.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitStruct.cs" />
     <Compile Include="Assets\Scripts\UsableIndicator.cs" />
     <Compile Include="Assets\Scripts\ZoneScript.cs" />

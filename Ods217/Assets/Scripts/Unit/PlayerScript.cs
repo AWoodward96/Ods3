@@ -54,7 +54,7 @@ public class PlayerScript : MonoBehaviour, IUnit
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         myInput();
         GunObject();
