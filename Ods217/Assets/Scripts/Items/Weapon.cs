@@ -198,6 +198,7 @@ public class Weapon : MonoBehaviour {
     {
         CurrentClip = 0;
         tryReload = true;
+        Owner.myVisualizer.ShowMenu();
         StopAllCoroutines();
         StartCoroutine(Reload());
     }
@@ -206,6 +207,7 @@ public class Weapon : MonoBehaviour {
     {
         yield return new WaitForSeconds(ReloadSpeed);
         CurrentClip = MaxClip;
+        Owner.myVisualizer.ShowMenu();
         tryReload = false;
     }
 }

@@ -33,7 +33,8 @@ public class SpiderUnit1 : MonoBehaviour,IUnit {
     Vector3 wanderRootPosition; // The point that the spider will rotate around 
     Collider[] chaseTaggedAlliedObjects; // Not so important
     List<GameObject> chaseObjectHit = new List<GameObject>();
-    GameObject chaseTarget; // The gameobject we'll be juping at
+    [HideInInspector]
+    public GameObject chaseTarget; // The gameobject we'll be juping at
 
     Animator myAnimator;
 
@@ -70,7 +71,7 @@ public class SpiderUnit1 : MonoBehaviour,IUnit {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         myAnimator.SetBool("Moving", GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f);
         myAnimator.SetBool("Jumping", chaseJumping && GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 2f);
 
@@ -248,6 +249,39 @@ public class SpiderUnit1 : MonoBehaviour,IUnit {
             {
                 OnDeath();
             }
+
+            if (AiState == AISTATE.Wander)
+            {
+                // Raycast to the player and see if you can see him if so aggro on him
+                GameObject Target = _FromWhatWeapon.Owner.gameObject;
+                Vector3 distVector = Target.transform.position - transform.position;
+                Ray r = new Ray(transform.position, distVector);
+                if (!Physics.Raycast(r, distVector.magnitude, LayerMask.GetMask("Ground"))) // If we didn't hit a wall on our raycast
+                {
+                    // Well lets attack him!
+                    chaseTarget = Target;
+                    AiState = AISTATE.Chase;
+
+
+                    // Aggro the rest of the spiders in the zone
+                    
+                    foreach(GameObject enemy in ZoneScript.ActiveZone.Enemies)
+                    {
+                        SpiderUnit1 thisscript = enemy.GetComponent<SpiderUnit1>();
+                        if(thisscript != null)
+                        {
+                            thisscript.chaseTarget = Target;
+                            thisscript.AiState = AISTATE.Chase;
+                        }
+                    }
+                    
+                    //float rand = UnityEngine.Random.value;
+                    //Debug.Log(rand);
+                    //if (rand > .5)
+                    //    Jump();
+                }
+            }
+
         }
     }
 
@@ -258,13 +292,17 @@ public class SpiderUnit1 : MonoBehaviour,IUnit {
   
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if(chaseJumping && myUnit.CurrentHealth > 0)
+        if(chaseJumping && myUnit.CurrentHealth > 0) // If we're jumping and alive
         {
-            if(!chaseObjectHit.Contains(hit.gameObject) && hit.gameObject.GetComponent<IUnit>() != null)
+            if(!chaseObjectHit.Contains(hit.gameObject) && hit.gameObject.GetComponent<IUnit>() != null) // If the list of things we've hit during this jump doesn't include what we just hit and it has an IUnit
             {
-                IUnit u = hit.gameObject.GetComponent<IUnit>();
-                chaseObjectHit.Add(hit.gameObject); 
-                u.OnHit(myWeapon);
+                // Well check to make sure it aint a spider
+                if(!hit.gameObject.name.Contains("Spider")) // Rudimentary but it works
+                {
+                    IUnit u = hit.gameObject.GetComponent<IUnit>();
+                    chaseObjectHit.Add(hit.gameObject);
+                    u.OnHit(myWeapon);
+                }
             }
         }
     }

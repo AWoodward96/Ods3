@@ -7,14 +7,17 @@ public class DialogManager : MonoBehaviour {
 
     Canvas MyCanvas;
     Text TextArea;
-    //Button DecisionButtonL;
-    //Button DecisionButtonR;
+    CustomButtonUI buttonLeft;
+    CustomButtonUI buttonRight;
 
+    INonUnit buttonEffector;
 
     public static DialogManager instance;
     public static bool InDialog;
     [TextArea(1, 100)]
     public string Dialog;
+
+    bool makingADecision;
 
     // For texting purposes
     string currentString;
@@ -23,6 +26,7 @@ public class DialogManager : MonoBehaviour {
 
     CController playerCC; // Because I don't want to find this mother fucker twice
     bool playerHalted; // This will be true if we've found a character to hault and we've prevented him from moving
+
 
     // Use this for initialization 
     void Start() { 
@@ -44,7 +48,20 @@ public class DialogManager : MonoBehaviour {
         {
             if (t.name == "TextArea")
                 TextArea = t;
-        }   
+        }
+
+        CustomButtonUI[] buttons = GetComponentsInChildren<CustomButtonUI>();
+        foreach(CustomButtonUI b in buttons)
+        {
+            if (b.name == "DecisionL")
+                buttonLeft = b;
+            if (b.name == "DecisionR")
+                buttonRight = b;
+        }
+
+        buttonRight.gameObject.SetActive(false);
+        buttonLeft.gameObject.SetActive(false);
+        makingADecision = false;
 
         DontDestroyOnLoad(this);
     }
@@ -52,7 +69,38 @@ public class DialogManager : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         MyCanvas.enabled = InDialog;
+        buttonLeft.gameObject.SetActive(makingADecision);
+        buttonRight.gameObject.SetActive(makingADecision);  
 	}
+
+    void Update()
+    {
+        // Handle button nav because we have custom buttons
+        if (makingADecision)
+        {
+            
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                if (CustomButtonUI.Selected.NavRight != null)
+                    CustomButtonUI.Selected = CustomButtonUI.Selected.NavRight;
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                if (CustomButtonUI.Selected.NavLeft != null)
+                    CustomButtonUI.Selected = CustomButtonUI.Selected.NavLeft;
+            }
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                if (CustomButtonUI.Selected == buttonLeft)
+                    buttonEffector.Powered = !buttonEffector.Powered;
+
+                makingADecision = false;
+            }
+          
+        }
+    }
 
     // This is a method that can be called from anywhere to show dialog
     public void ShowDialog(string _dialogString)
@@ -70,7 +118,6 @@ public class DialogManager : MonoBehaviour {
             playerCC = player.GetComponent<CController>();
             if(playerCC != null)
             {
-                Debug.Log("Hm");
                 playerCC.canMove = false;
                 playerHalted = true;
             }
@@ -119,6 +166,39 @@ public class DialogManager : MonoBehaviour {
             StartCoroutine(PrintLine(fullLine.Substring(3)));
         }
 
+        if(fullLine.Contains("Power:"))
+        {
+            // We have a decision to make
+
+            string name = fullLine.Substring(7); 
+            GameObject obj = GlobalConstants.FindGameObject(name); 
+            buttonEffector = obj.GetComponent<INonUnit>();
+
+            // Set up the buttons
+            buttonLeft.GetComponentInChildren<Text>().text = "Yes";
+            buttonRight.GetComponentInChildren<Text>().text = "No";
+            CustomButtonUI.Selected = buttonLeft;
+
+
+            // Set up the string concatination
+            makingADecision = true;
+            string currently = buttonEffector.Powered ? "on" : "off";
+            string notcurrently = !buttonEffector.Powered ? "on" : "off";
+            StartCoroutine(PrintLine("The " + name + " is currently " + currently + ". Turn it " + notcurrently + "?"));
+        }
+
+    }
+
+    void PowerObject()
+    {
+        buttonEffector.Powered = true;
+    }
+
+    void DePowerObject()
+    {
+        buttonEffector.Powered = false;
+
+        
     }
 
     // Returns the next valid string in the dialog

@@ -13,4 +13,9 @@ public interface IUnit  {
     {
         get;
     }
+
+    GameObject gameObject
+    {
+        get;
+    }
 }

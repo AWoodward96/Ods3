@@ -29,4 +29,17 @@ public class GlobalConstants {
     public static float AirFriction = .95f;
 
 
+    public static GameObject FindGameObject(string Name)
+    {
+        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+
+        foreach(GameObject obj in allObjects)
+        {
+            if (obj.name == Name)
+                return obj;
+        }
+
+        return null;
+    }
+
 }

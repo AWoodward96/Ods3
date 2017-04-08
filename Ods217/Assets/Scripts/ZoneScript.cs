@@ -23,6 +23,11 @@ public class ZoneScript : MonoBehaviour {
 
     public float CameraSize;
 
+    public List<GameObject> Enemies;
+
+    Vector3 topLeft;
+    Vector3 bottomRight;
+
     public ZoneScript()
     {
         CameraSize = 9;
@@ -38,7 +43,24 @@ public class ZoneScript : MonoBehaviour {
             Camera.main.orthographicSize = CameraSize;
             ActiveZone = this;
         }
-	}
+
+        topLeft = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2);
+        bottomRight = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2);
+
+        GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
+        foreach(GameObject g in gos)
+        {
+            IUnit unit = g.GetComponent<IUnit>();
+            if(unit != null)
+            {
+                Vector3 zerodPos = GlobalConstants.ZeroYComponent( g.transform.position);
+                if(g.name.Contains("Spider") && (zerodPos.x > topLeft.x && zerodPos.x < bottomRight.x && zerodPos.z < topLeft.z && zerodPos.z > bottomRight.z))
+                {
+                    Enemies.Add(g);
+                }
+            }
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -64,15 +86,15 @@ public class ZoneScript : MonoBehaviour {
         // See if the player entered this zone
         if(ActiveZone != this)
         {
+           
             // Check for the player
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if(player) // Can't do anything if he doesn't exist
             {
+                // Calculate the zones extents
                 Vector3 playerPos = GlobalConstants.ZeroYComponent(player.transform.position);
-                Vector3 topLeft = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2);
-                Vector3 bottomRight = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2);
                 
-                
+                // If the player is in the zone
                 if (playerPos.x > topLeft.x && playerPos.x < bottomRight.x && playerPos.z < topLeft.z && playerPos.z > bottomRight.z)
                 {
                     // We've entered!

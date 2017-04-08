@@ -158,6 +158,7 @@ public class PlayerScript : MonoBehaviour, IUnit
 
     void myInput()
     {
+        // Basic Movement
         if (Input.GetKey(KeyCode.A))
         {
             myCtrl.ApplyForce(Vector3.left * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
@@ -178,18 +179,24 @@ public class PlayerScript : MonoBehaviour, IUnit
             myCtrl.ApplyForce(Vector3.forward * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
         }
 
+        // Set the springing bool equal to if we have the left shift key held down or not
         myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift));
 
-
-        if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
+        // No shooting if the menu is open
+        if(!MenuManager.MenuOpen)
         {
-            myWeapon.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
+            // Also no shooting if we're sprinting
+            if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
+            {
+                myWeapon.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
+            }
+            // That goes for secondary fire as well
+            if (Input.GetMouseButton(1) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
+            {
+                myWeapon.FireSecondary(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
+            }
         }
 
-        if (Input.GetMouseButton(1) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
-        {
-            myWeapon.FireSecondary(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
-        }
 
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
