@@ -28,12 +28,16 @@ public class CamScript : MonoBehaviour {
         {
             Vector3 Additive = Target.position + FollowBack;
 
-            Vector3 toCursor = CursorLocation - transform.position;
-            toCursor = GlobalConstants.ZeroYComponent(toCursor);
-            if (toCursor.magnitude > 2)
-                toCursor = toCursor.normalized * 2;
+            if(!DialogManager.InDialog)
+            {
+                Vector3 toCursor = CursorLocation - transform.position;
+                toCursor = GlobalConstants.ZeroYComponent(toCursor);
+                if (toCursor.magnitude > 2)
+                    toCursor = toCursor.normalized * 2;
 
-            Additive += toCursor;
+                Additive += toCursor;
+            }
+
 
 
             Additive.y = Target.position.y + FollowBack.y;

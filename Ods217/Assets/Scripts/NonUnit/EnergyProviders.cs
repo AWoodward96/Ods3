@@ -76,4 +76,14 @@ public class EnergyProviders : MonoBehaviour, INonUnit {
             myAnimator.SetBool("LockedOn", false);
 
 	}
+
+    public bool Triggered
+    {
+        get
+        { return false; }
+
+        set
+        {  // nothing 
+        }
+    }
 }

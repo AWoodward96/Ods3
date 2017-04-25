@@ -159,31 +159,40 @@ public class PlayerScript : MonoBehaviour, IUnit
     void myInput()
     {
         // Basic Movement
-        if (Input.GetKey(KeyCode.A))
+        if(!myCtrl.Airborne)
         {
-            myCtrl.ApplyForce(Vector3.left * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+            if (Input.GetKey(KeyCode.A))
+            {
+                myCtrl.ApplyForce(Vector3.left * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+            }
+
+            if (Input.GetKey(KeyCode.S))
+            {
+                myCtrl.ApplyForce(Vector3.back * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+            }
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                myCtrl.ApplyForce(Vector3.right * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+            }
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                myCtrl.ApplyForce(Vector3.forward * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+            }
+
+            if(Input.GetKeyDown(KeyCode.P))
+            {
+                SPFXManager.showSPFX(SPFXManager.SPFX.Exclamation, transform.position, new Vector3(0, 500, 0));
+            }
         }
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            myCtrl.ApplyForce(Vector3.back * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            myCtrl.ApplyForce(Vector3.right * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            myCtrl.ApplyForce(Vector3.forward * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
-        }
 
         // Set the springing bool equal to if we have the left shift key held down or not
         myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift));
 
         // No shooting if the menu is open
-        if(!MenuManager.MenuOpen)
+        if(!MenuManager.MenuOpen && !DialogManager.InDialog)
         {
             // Also no shooting if we're sprinting
             if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))

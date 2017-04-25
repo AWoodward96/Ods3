@@ -11,7 +11,8 @@ public class HealthVisualizer : MonoBehaviour
     float BBMaxWidth;
     Image BulletBar;
     Image BulletBarBG;
-    Image HPBar; 
+    Image HPBar;
+    Image Reload;
 
     Image[] BBars = new Image[5];
     Image[] SBBars = new Image[0]; // Secondary Bars
@@ -130,6 +131,15 @@ public class HealthVisualizer : MonoBehaviour
                 }
             }
 
+
+
+
+            // If the unit is reloading then display the reload icon
+            if (Reload)
+            {
+                Reload.enabled = u.MyWeapon().isReloading;
+            }
+
         }
 
 
@@ -159,6 +169,11 @@ public class HealthVisualizer : MonoBehaviour
             if(i.name == "AmmoBG")
             {
                 BulletBarBG = i; continue;
+            }
+
+            if(i.name == "Reload")
+            {
+                Reload = i; continue;
             }
         } 
     }

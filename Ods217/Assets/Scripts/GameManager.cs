@@ -9,9 +9,7 @@ public class GameManager : MonoBehaviour {
     public static int ScrapCount;
 
     public static List<Item> Inventory;
-
-    public Item AddMe;
-    public Item AddMe2;
+ 
     public int scrapcount;
 
     // Use this for initialization
@@ -25,8 +23,8 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(this.gameObject);
 
         Inventory = new List<Item>();
-        Inventory.Add(AddMe);
-        Inventory.Add(AddMe2);
+        // Make sure that the communicator item is in the inventory
+        Inventory.Add((Resources.Load("Prefabs/Items/Communicator") as GameObject).GetComponent<Item>());
 
 	}
 	

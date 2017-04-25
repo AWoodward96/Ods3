@@ -7,7 +7,9 @@ public class Scrap : MonoBehaviour {
     public int Value;
     public int myForce; 
 
-    AudioSource mySource;
+    AudioSource myPickup;
+    AudioSource myBlip;
+    public AudioClip[] blips;
     Rigidbody myRigidbody;
 
     public SphereCollider myNotTriggerCollider;
@@ -16,7 +18,17 @@ public class Scrap : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         myRigidbody = GetComponent<Rigidbody>();
-        mySource = GetComponent<AudioSource>();
+        AudioSource[] mySources = GetComponents<AudioSource>();
+
+        
+        foreach(AudioSource a in mySources)
+        {
+            if (a.clip.name == "blip")
+                myBlip = a;
+            else
+                myPickup = a;
+        }
+
 
         SphereCollider[] mycolliders = GetComponents<SphereCollider>();
         for(int i = 0; i < mycolliders.Length;i++)
@@ -27,7 +39,7 @@ public class Scrap : MonoBehaviour {
 
         // Send this object flying in a random direction
         Vector2 direc = Random.insideUnitCircle * myForce;
-        theForce = new Vector3(direc.x, 50, direc.y);
+        theForce = new Vector3(direc.x, 5, direc.y);
       
 
 	}
@@ -52,7 +64,9 @@ public class Scrap : MonoBehaviour {
         if (other.tag == "Player")
         { 
             GameManager.ScrapCount += Value;
-            mySource.Play();
+            MenuManager.instance.ShowScrap();
+            myPickup.Play();
+
 
          
             GetComponent<SpriteRenderer>().enabled = false;
@@ -68,12 +82,21 @@ public class Scrap : MonoBehaviour {
 
     public void Force()
     {
-        myRigidbody.AddForce(theForce);
+        myRigidbody.velocity = theForce;
+       // myRigidbody.velocity(theForce);
     }
  
     IEnumerator death()
     {
         yield return new WaitForSeconds(1);
         Destroy(this.gameObject);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        int newRnd = Random.Range(0, blips.Length);
+        myBlip.clip = blips[newRnd];
+
+        myBlip.Play();
     }
 }

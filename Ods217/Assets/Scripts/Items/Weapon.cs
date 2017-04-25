@@ -210,5 +210,10 @@ public class Weapon : MonoBehaviour {
         Owner.myVisualizer.ShowMenu();
         tryReload = false;
     }
+
+    public bool isReloading
+    {
+        get { return tryReload; }    
+    }
 }
  

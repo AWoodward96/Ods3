@@ -56,6 +56,14 @@ public class ZoneScript : MonoBehaviour {
                 Vector3 zerodPos = GlobalConstants.ZeroYComponent( g.transform.position);
                 if(g.name.Contains("Spider") && (zerodPos.x > topLeft.x && zerodPos.x < bottomRight.x && zerodPos.z < topLeft.z && zerodPos.z > bottomRight.z))
                 {
+                    JumpingSpider j = g.GetComponent<JumpingSpider>();
+                    if (j != null)
+                        j.MyZone = this;
+
+                    DeactivatedSpider d = g.GetComponent<DeactivatedSpider>();
+                    if (d != null)
+                        d.MyZone = this;
+
                     Enemies.Add(g);
                 }
             }

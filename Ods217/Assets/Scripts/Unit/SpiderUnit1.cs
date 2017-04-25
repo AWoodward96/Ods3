@@ -19,6 +19,7 @@ public class SpiderUnit1 : MonoBehaviour,IUnit {
     CController myCtrl;
     NavMeshAgent myAgent;
 
+    public bool aggressive;
 
     enum AISTATE { Wander, Chase };
     [SerializeField]
@@ -111,18 +112,22 @@ public class SpiderUnit1 : MonoBehaviour,IUnit {
         }
 
 
-        // Check to see if a target is near you and if so attack them
-        chaseTaggedAlliedObjects = Physics.OverlapSphere(transform.position, 12);
-        foreach(Collider c in chaseTaggedAlliedObjects)
-        { 
-            if(c.gameObject.layer == LayerMask.NameToLayer("Units")) // Any units are targets for spiders
-            { 
-                // You also have to have vision of the target because if you don't then... well we don't want them to aggro through walls  
-                chaseTarget = c.gameObject; 
-                AiState = AISTATE.Chase; 
-                return;
+        if(aggressive)
+        {
+            // Check to see if a target is near you and if so attack them
+            chaseTaggedAlliedObjects = Physics.OverlapSphere(transform.position, 12);
+            foreach (Collider c in chaseTaggedAlliedObjects)
+            {
+                if (c.gameObject.layer == LayerMask.NameToLayer("Units")) // Any units are targets for spiders
+                {
+                    // You also have to have vision of the target because if you don't then... well we don't want them to aggro through walls  
+                    chaseTarget = c.gameObject;
+                    AiState = AISTATE.Chase;
+                    return;
+                }
             }
         }
+
     }
 
     void Chase()
@@ -274,11 +279,7 @@ public class SpiderUnit1 : MonoBehaviour,IUnit {
                             thisscript.AiState = AISTATE.Chase;
                         }
                     }
-                    
-                    //float rand = UnityEngine.Random.value;
-                    //Debug.Log(rand);
-                    //if (rand > .5)
-                    //    Jump();
+ 
                 }
             }
 

@@ -39,4 +39,14 @@ public class RubbleScript : MonoBehaviour, INonUnit {
         Health--;
     }
 
+    public bool Triggered
+    {
+        get
+        { return false; }
+
+        set
+        {  // nothing 
+        }
+    }
+
 }

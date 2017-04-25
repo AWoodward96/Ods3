@@ -5,7 +5,7 @@ using UnityEngine;
 public class GlobalConstants {
 
     
-    public static Vector3 DEFAULTFOLLOWBACK = new Vector3(0,10,-8);
+    public static Vector3 DEFAULTFOLLOWBACK = new Vector3(0,12.5f,-10);
 
 
     public static Vector3 ZeroYComponent(Vector3 _vec)
@@ -26,7 +26,7 @@ public class GlobalConstants {
     float timeToJumpApex = 1f;
     public static float Gravity = (2 * 3) / Mathf.Pow(((1 > 0) ? 1 : 1), 2);
     public static float Friction = .9f;
-    public static float AirFriction = .95f;
+    public static float AirFriction = 1f;
 
 
     public static GameObject FindGameObject(string Name)

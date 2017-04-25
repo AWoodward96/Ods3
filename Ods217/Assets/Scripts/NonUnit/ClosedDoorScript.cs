@@ -65,4 +65,14 @@ public class ClosedDoorScript : MonoBehaviour, INonUnit {
             // We want to only open when conditions are met. This will never be used in another script.
         }
     }
+
+    public bool Triggered
+    {
+        get
+        { return false; }
+
+        set
+        {  // nothing 
+        }
+    }
 }

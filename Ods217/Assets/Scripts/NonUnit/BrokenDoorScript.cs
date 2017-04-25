@@ -12,6 +12,7 @@ public class BrokenDoorScript : MonoBehaviour, INonUnit {
     Animator topAnimator;
     BoxCollider myCollider;
 
+
     // Use this for initialization
     void Start()
     {
@@ -39,6 +40,16 @@ public class BrokenDoorScript : MonoBehaviour, INonUnit {
         { return false; }
 
         set { }
+    }
+
+    public bool Triggered
+    {
+        get
+        { return false;  }
+
+        set
+        {  // nothing 
+        }
     }
 
     public void OnEMP()

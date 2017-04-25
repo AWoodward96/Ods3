@@ -73,14 +73,14 @@ public class InventoryMenu : MonoBehaviour {
         for(int i = 0; i < theItems.Count; i++)
         {
             Item current = theItems[i];
+            theImages[i].color = Color.white;
             theImages[i].sprite = current.InventoryIcon;
         }
     }
 
 
     public void HoveredItemSlot(int _slotnumber)
-    {
-         
+    { 
         if (_slotnumber < theItems.Count)
         {
             descriptionAnimator.SetBool("Open", true);

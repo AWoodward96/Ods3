@@ -1,15 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuManager: MonoBehaviour {
     
     public static MenuManager instance;
     public static bool MenuOpen;
+    public static bool ScrapOpen;
     public GameObject MenuHolderObject;
+    public GameObject ScrapHolderObject;
     Canvas myCanvas;
+    Canvas myUI;
 
     Animator MenuAnimator;
+    Animator ScrapAnimator;
+    Text scrapText;
+
+    float deltaTScrap;
 	// Use this for initialization
 	void Start () {
         // Ensure there's only one
@@ -20,11 +28,24 @@ public class MenuManager: MonoBehaviour {
 
         MenuOpen = false;
 
+        DontDestroyOnLoad(this.gameObject);
 
         // Set up the animator 
         MenuAnimator = MenuHolderObject.GetComponent<Animator>();
+        ScrapAnimator = ScrapHolderObject.GetComponent<Animator>();
 
-        myCanvas = GetComponentInChildren<Canvas>();
+        scrapText = ScrapHolderObject.GetComponentInChildren<Text>();
+
+       Canvas[] myCanvassi = GetComponentsInChildren<Canvas>();
+       foreach(Canvas c in myCanvassi)
+       {
+            Debug.Log(c.name);
+            if (c.name == "MenuCanvas")
+                myCanvas = c;
+
+            if (c.name == "UICanvas")
+                myUI = c;
+       }
         myCanvas.gameObject.SetActive(MenuOpen);
     }
 	
@@ -57,12 +78,30 @@ public class MenuManager: MonoBehaviour {
 
             }
         }
-            
-	}
+
+
+        ScrapAnimator.SetBool("Open", ScrapOpen);
+        if(ScrapOpen)
+        {
+            deltaTScrap += Time.deltaTime;
+            if(deltaTScrap > 2)
+            {
+                ScrapOpen = false;
+            }
+
+            scrapText.text = GameManager.ScrapCount.ToString();
+        }
+    }
 
     IEnumerator closeMenu()
     {
         yield return new WaitForSeconds(.17f);//  How long it takes for the closing animation to take place 
         myCanvas.gameObject.SetActive(false);
+    }
+
+    public void ShowScrap()
+    {
+        ScrapOpen = true;
+        deltaTScrap = 0;
     }
 }

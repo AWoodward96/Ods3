@@ -68,12 +68,22 @@ public class ScrapCapsule : MonoBehaviour,INonUnit {
     // The method we want to call for 99% of the interactions
     void BreakCapsule()
     {
-        ManIHateUnitysAudioSystem.PlayAudioOneShot(GetComponent<AudioSource>(), transform.position);
+        myAudioSystem.PlayAudioOneShot(GetComponent<AudioSource>(), transform.position);
         for(int i = 0; i <ScrapList.Count; i++)
         {
             ScrapList[i].gameObject.SetActive(true);
             ScrapList[i].Force();
         }
         Destroy(this.gameObject);
+    }
+
+    public bool Triggered
+    {
+        get
+        { return false; }
+
+        set
+        {  // nothing 
+        }
     }
 }

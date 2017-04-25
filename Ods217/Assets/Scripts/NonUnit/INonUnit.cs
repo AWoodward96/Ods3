@@ -20,4 +20,10 @@ public interface INonUnit  {
         set;
         }
 	 
+
+    bool Triggered
+    {
+        get;
+        set;
+    }
 }
