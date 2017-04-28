@@ -24,6 +24,7 @@ public class ZoneScript : MonoBehaviour {
     public float CameraSize;
 
     public List<GameObject> Enemies;
+    public List<Light> LightObjects;
 
     Vector3 topLeft;
     Vector3 bottomRight;
@@ -67,6 +68,18 @@ public class ZoneScript : MonoBehaviour {
                     Enemies.Add(g);
                 }
             }
+
+            Light l = g.GetComponent<Light>();
+            if (l != null)
+            {
+                Vector3 zerodPos = GlobalConstants.ZeroYComponent(l.transform.position);
+
+                if (zerodPos.x > topLeft.x && zerodPos.x < bottomRight.x && zerodPos.z < topLeft.z && zerodPos.z > bottomRight.z)
+                {
+                    LightObjects.Add(l);
+                }
+            }
+
         }
     }
 	
@@ -111,12 +124,25 @@ public class ZoneScript : MonoBehaviour {
                     c.ExtentsTL = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2 + 4);
                     Camera.main.orthographicSize = CameraSize;
                     ZoneScript.ActiveZone = this;
-                    player.GetComponent<PlayerScript>().EnteredNewZone();
+                    player.GetComponent<PlayerScript>().EnteredNewZone(); 
+                   
                 } 
             }
+
+            SetLights(false);
+        } else
+        {
+            SetLights(true);
         }
     }
 
+    void SetLights(bool _val)
+    {
+        foreach(Light l in LightObjects)
+        {
+            l.enabled = _val;
+        }
+    }
  
 
     void DrawZone()

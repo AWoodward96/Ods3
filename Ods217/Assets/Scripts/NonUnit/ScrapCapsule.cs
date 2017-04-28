@@ -74,6 +74,7 @@ public class ScrapCapsule : MonoBehaviour,INonUnit {
             ScrapList[i].gameObject.SetActive(true);
             ScrapList[i].Force();
         }
+        Instantiate(Resources.Load("Prefabs/Particles/ScrapContainerDeath"), transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 
