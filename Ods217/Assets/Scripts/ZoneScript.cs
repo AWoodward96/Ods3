@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class ZoneScript : MonoBehaviour {
     public float YPosition;
     public Vector2 ZoneSize;
     public static ZoneScript ActiveZone;
+    ZoneScript PrevZone;
 
     Vector3 actualPosition;
 
@@ -28,6 +30,7 @@ public class ZoneScript : MonoBehaviour {
 
     Vector3 topLeft;
     Vector3 bottomRight;
+
 
     public ZoneScript()
     {
@@ -86,7 +89,16 @@ public class ZoneScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         checkZone();
-	}
+    
+
+        if(PrevZone != ActiveZone)
+        { 
+            SetLights((ActiveZone == this));
+        }
+
+
+        PrevZone = ActiveZone;
+    }
 
 
     private void OnDrawGizmos()
@@ -128,17 +140,16 @@ public class ZoneScript : MonoBehaviour {
                    
                 } 
             }
-
-            SetLights(false);
-        } else
-        {
-            SetLights(true);
-        }
+     
+        } 
     }
 
     void SetLights(bool _val)
     {
-        foreach(Light l in LightObjects)
+
+        LightObjects = LightObjects.Where(item => item != null).ToList(); // get rid of any values that are invalid
+
+        foreach (Light l in LightObjects)
         {
             l.enabled = _val;
         }

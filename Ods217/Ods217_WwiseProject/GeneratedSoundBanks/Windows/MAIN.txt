@@ -1,0 +1,7 @@
+Event	ID	Name			Wwise Object Path	Notes
+	256586121	EnterLevel			\Default Work Unit\Music\EnterLevel	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	409716168	Ods3GamblingTech	C:\Users\Mystic\Desktop\Repositories\Ods3\Ods217\Ods217_WwiseProject\.cache\Windows\SFX\Ods3GamblingTech_4B8CC0C5.wem		\Actor-Mixer Hierarchy\Default Work Unit\Music\Ods3GamblingTech		1992348
+	542057985	Ods3GamblingBGFloor	C:\Users\Mystic\Desktop\Repositories\Ods3\Ods217\Ods217_WwiseProject\.cache\Windows\SFX\Ods3GamblingBGFloor_4B8CC0C5.wem		\Actor-Mixer Hierarchy\Default Work Unit\Music\Ods3GamblingBGFloor		11953760
+

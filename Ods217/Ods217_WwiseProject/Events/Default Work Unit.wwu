@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{F6DE692B-A9E5-49F7-BB42-3D395BE4CB21}" SchemaVersion="75">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{F6DE692B-A9E5-49F7-BB42-3D395BE4CB21}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{F6DE692B-A9E5-49F7-BB42-3D395BE4CB21}" PersistMode="Standalone">
+			<ChildrenList>
+				<Folder Name="Music" ID="{824AF29D-8B4B-420D-8B5E-10B8B7125F1E}" ShortID="378617209">
+					<ChildrenList>
+						<Event Name="EnterLevel" ID="{B75F225B-F29B-4744-985F-1430F3DAACBE}">
+							<ChildrenList>
+								<Action Name="Play" ID="{17DA1066-EC7A-44AE-B0D6-BF6B265C010C}" ShortID="750911330" Type="Play" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{394DAECE-E68B-44AC-957A-77755DC08816}" Global="false">
+											<ObjectRef Name="Ods3GamblingBGFloor" ID="{AF4562FD-EAC6-4545-AEB0-4A5521C602A2}" WorkUnitID="{93B1DDA1-1D30-48AA-9B2B-55A74399D8AE}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Play" ID="{1D408729-AE01-4356-BF38-83021060C082}" ShortID="766893765" Type="Play" Scope="One" Global="false">
+									<PropertyList>
+										<Property Name="Inclusion" Type="bool">
+											<ValueList>
+												<Value>False</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ElementList>
+										<Element ID="{8E6CD9D0-6AB9-49EB-813A-5DD897087752}" Global="false">
+											<ObjectRef Name="Ods3GamblingBGPerc" ID="{1BD1E228-D6DE-44BB-A373-62CB69453068}" WorkUnitID="{93B1DDA1-1D30-48AA-9B2B-55A74399D8AE}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Play" ID="{0C3D1784-4E89-4912-AF8D-A08DF533AC20}" ShortID="968665155" Type="Play" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{EE07000B-71C9-44C7-A25B-6AB84140D278}" Global="false">
+											<ObjectRef Name="Ods3GamblingTech" ID="{BE793BB3-FA70-420E-AB0C-7173C5D553AD}" WorkUnitID="{93B1DDA1-1D30-48AA-9B2B-55A74399D8AE}"/>
+										</Element>
+									</ElementList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Release_Envelope" ID="{249D5CEF-9FD3-4DCA-9D5C-84812D1443C6}">
+							<ChildrenList>
+								<Action Name="Release Envelope" ID="{C27B1E13-8B86-4E99-96A5-91C659C57942}" ShortID="78269092" Type="Release" Scope="One" Global="false"/>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="SoundFX" ID="{B3BE61B1-7DDE-45ED-893B-A0184476C984}" ShortID="781799061">
+					<ChildrenList>
+						<Event Name="Shot" ID="{4BEA897C-A2E4-4CD1-849F-450459873E5F}">
+							<ChildrenList>
+								<Action Name="Play" ID="{70393FDC-AC0C-4694-96FF-D25DFE157B0C}" ShortID="405478697" Type="Play" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{9507A641-51EE-40A1-9F04-B0D48DE621D0}" Global="false">
+											<ObjectRef Name="ShootSound1" ID="{2266EE91-6ED2-4D44-9B38-E5239F5D82FE}" WorkUnitID="{93B1DDA1-1D30-48AA-9B2B-55A74399D8AE}"/>
+										</Element>
+									</ElementList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+			</ChildrenList>
+		</WorkUnit>
 	</Events>
 </WwiseDocument>

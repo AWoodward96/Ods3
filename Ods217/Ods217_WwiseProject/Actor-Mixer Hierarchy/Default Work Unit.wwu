@@ -1,6 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{93B1DDA1-1D30-48AA-9B2B-55A74399D8AE}" SchemaVersion="75">
 	<AudioObjects>
-		<WorkUnit Name="Default Work Unit" ID="{93B1DDA1-1D30-48AA-9B2B-55A74399D8AE}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{93B1DDA1-1D30-48AA-9B2B-55A74399D8AE}" PersistMode="Standalone">
+			<ChildrenList>
+				<ActorMixer Name="Music" ID="{319C1B64-26C9-4890-A674-9690805B5489}" ShortID="65002529">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>-10</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{23B77B86-D48E-4F34-882E-64947E301AF6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{9AB6C088-09E1-4D49-8997-F47279E16922}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Sound Name="Ods3GamblingBGFloor" ID="{AF4562FD-EAC6-4545-AEB0-4A5521C602A2}" ShortID="570496877" Type="SoundFX">
+							<PropertyList>
+								<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-5</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{23B77B86-D48E-4F34-882E-64947E301AF6}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{9AB6C088-09E1-4D49-8997-F47279E16922}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Ods3GamblingBGFloor" ID="{487CECB0-275D-45B9-ACA5-BAB7F63E15B6}" ShortID="542057985">
+									<Language>SFX</Language>
+									<AudioFile>Ods3GamblingBGFloor.wav</AudioFile>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Ods3GamblingBGFloor" ID="{487CECB0-275D-45B9-ACA5-BAB7F63E15B6}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Ods3GamblingBGPerc" ID="{1BD1E228-D6DE-44BB-A373-62CB69453068}" ShortID="145407621" Type="SoundFX">
+							<PropertyList>
+								<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{23B77B86-D48E-4F34-882E-64947E301AF6}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{9AB6C088-09E1-4D49-8997-F47279E16922}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Ods3GamblingBGPerc" ID="{923714D6-21DC-4C2A-BF24-B8E59164A1F3}" ShortID="254712849">
+									<Language>SFX</Language>
+									<AudioFile>Ods3GamblingBGPerc.wav</AudioFile>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Ods3GamblingBGPerc" ID="{923714D6-21DC-4C2A-BF24-B8E59164A1F3}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Ods3GamblingCasino" ID="{985508F5-E740-454A-A478-3F396EEB3C51}" ShortID="411383752" Type="SoundFX">
+							<PropertyList>
+								<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{23B77B86-D48E-4F34-882E-64947E301AF6}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{9AB6C088-09E1-4D49-8997-F47279E16922}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Ods3GamblingCasino" ID="{55551385-563A-4486-8265-7EA763285699}" ShortID="919194232">
+									<Language>SFX</Language>
+									<AudioFile>Ods3GamblingCasino.wav</AudioFile>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Ods3GamblingCasino" ID="{55551385-563A-4486-8265-7EA763285699}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Ods3GamblingTech" ID="{BE793BB3-FA70-420E-AB0C-7173C5D553AD}" ShortID="323336510" Type="SoundFX">
+							<PropertyList>
+								<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{23B77B86-D48E-4F34-882E-64947E301AF6}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{9AB6C088-09E1-4D49-8997-F47279E16922}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Ods3GamblingTech" ID="{25D2CAC9-448A-4604-B93C-555C370DC844}" ShortID="409716168">
+									<Language>SFX</Language>
+									<AudioFile>Ods3GamblingTech.wav</AudioFile>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Ods3GamblingTech" ID="{25D2CAC9-448A-4604-B93C-555C370DC844}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+					</ChildrenList>
+				</ActorMixer>
+				<Folder Name="SFX" ID="{77883F0C-0ABE-412C-8224-6E3ED7605FB2}" ShortID="508497342">
+					<ChildrenList>
+						<RandomSequenceContainer Name="Bounce" ID="{6FE3F038-24C9-4F68-AC9B-27038C59CCDB}" ShortID="716181976">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{23B77B86-D48E-4F34-882E-64947E301AF6}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{9AB6C088-09E1-4D49-8997-F47279E16922}"/>
+								</Reference>
+							</ReferenceList>
+						</RandomSequenceContainer>
+						<Sound Name="ShootSound1" ID="{2266EE91-6ED2-4D44-9B38-E5239F5D82FE}" ShortID="819559994" Type="SoundFX">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-5</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{23B77B86-D48E-4F34-882E-64947E301AF6}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{9AB6C088-09E1-4D49-8997-F47279E16922}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="ShootSound1" ID="{F3172DB9-7C1C-4CBB-92A2-7D8FF6E193B7}" ShortID="663651372">
+									<Language>SFX</Language>
+									<AudioFile>ShootSound1.wav</AudioFile>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="ShootSound1" ID="{F3172DB9-7C1C-4CBB-92A2-7D8FF6E193B7}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+					</ChildrenList>
+				</Folder>
+			</ChildrenList>
+		</WorkUnit>
 	</AudioObjects>
 </WwiseDocument>

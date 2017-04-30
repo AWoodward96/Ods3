@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Mac" BasePlatform="Mac" SchemaVersion="11" SoundbankVersion="120">
+	<RootPaths>
+		<ProjectRoot>C:\Users\Mystic\Desktop\Repositories\Ods3\Ods217\Ods217_WwiseProject\</ProjectRoot>
+		<SourceFilesRoot>C:\Users\Mystic\Desktop\Repositories\Ods3\Ods217\Ods217_WwiseProject\.cache\Mac\</SourceFilesRoot>
+		<SoundBanksRoot>C:\Users\Mystic\Desktop\Repositories\Ods3\Ods217\Ods217_WwiseProject\GeneratedSoundBanks\Mac\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>C:\Users\Mystic\Desktop\Repositories\Ods3\Ods217\Ods217_WwiseProject\GeneratedSoundBanks\Mac\</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="1355168291" Language="SFX">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="3161908922" Language="SFX">
+			<ObjectPath>\SoundBanks\Default Work Unit\MAIN</ObjectPath>
+			<ShortName>MAIN</ShortName>
+			<Path>MAIN.bnk</Path>
+			<IncludedEvents>
+				<Event Id="256586121" Name="EnterLevel" ObjectPath="\Events\Default Work Unit\Music\EnterLevel"/>
+			</IncludedEvents>
+			<IncludedMemoryFiles>
+				<File Id="409716168" Language="SFX">
+					<ShortName>Ods3GamblingTech.wav</ShortName>
+					<Path>SFX\Ods3GamblingTech_4B8CC0C5.wem</Path>
+				</File>
+				<File Id="542057985" Language="SFX">
+					<ShortName>Ods3GamblingBGFloor.wav</ShortName>
+					<Path>SFX\Ods3GamblingBGFloor_4B8CC0C5.wem</Path>
+				</File>
+			</IncludedMemoryFiles>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>
