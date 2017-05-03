@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-
  
 public class ZoneScript : MonoBehaviour {
 
     // Use this for initialization
+    public enum AudioZoneType { Additive, Inverse, Enable };
     public enum ViewType { Wire, Solid };
     [Header("Zone Info")]
     public ViewType type;
@@ -15,9 +15,10 @@ public class ZoneScript : MonoBehaviour {
     public static ZoneScript ActiveZone;
     ZoneScript PrevZone;
 
-    Vector3 actualPosition;
+    MusicManager myMusicManager;
 
-    public List<TransitionZones> TransZones;
+    Vector3 actualPosition;
+     
 
     [Header("Meta")]
     public bool PrimaryZone;
@@ -39,59 +40,70 @@ public class ZoneScript : MonoBehaviour {
     }
 
 	void Awake () {
-        if(PrimaryZone)
+        if(Application.isPlaying)
         {
-            CamScript c = Camera.main.GetComponent<CamScript>();
-            c.ExtentsBR = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2 + 2);
-            c.ExtentsTL = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2 + 4);
-            Camera.main.orthographicSize = CameraSize;
-            ActiveZone = this;
-        }
-
-        topLeft = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2);
-        bottomRight = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2);
-
-        GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
-        foreach(GameObject g in gos)
-        {
-            IUnit unit = g.GetComponent<IUnit>();
-            if(unit != null)
+            if (PrimaryZone)
             {
-                Vector3 zerodPos = GlobalConstants.ZeroYComponent( g.transform.position);
-                if(g.name.Contains("Spider") && (zerodPos.x > topLeft.x && zerodPos.x < bottomRight.x && zerodPos.z < topLeft.z && zerodPos.z > bottomRight.z))
-                {
-                    JumpingSpider j = g.GetComponent<JumpingSpider>();
-                    if (j != null)
-                        j.MyZone = this;
-
-                    DeactivatedSpider d = g.GetComponent<DeactivatedSpider>();
-                    if (d != null)
-                        d.MyZone = this;
-
-                    Enemies.Add(g);
-                }
+                CamScript c = Camera.main.GetComponent<CamScript>();
+                c.ExtentsBR = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2 + 2);
+                c.ExtentsTL = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2 + 4);
+                Camera.main.orthographicSize = CameraSize;
+                ActiveZone = this;
             }
 
-            Light l = g.GetComponent<Light>();
-            if (l != null)
-            {
-                Vector3 zerodPos = GlobalConstants.ZeroYComponent(l.transform.position);
+            topLeft = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2);
+            bottomRight = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2);
 
-                if (zerodPos.x > topLeft.x && zerodPos.x < bottomRight.x && zerodPos.z < topLeft.z && zerodPos.z > bottomRight.z)
+            GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
+            foreach (GameObject g in gos)
+            {
+                IUnit unit = g.GetComponent<IUnit>();
+                if (unit != null)
                 {
-                    LightObjects.Add(l);
+                    Vector3 zerodPos = GlobalConstants.ZeroYComponent(g.transform.position);
+                    if (g.name.Contains("Spider") && (zerodPos.x > topLeft.x && zerodPos.x < bottomRight.x && zerodPos.z < topLeft.z && zerodPos.z > bottomRight.z))
+                    {
+                        JumpingSpider j = g.GetComponent<JumpingSpider>();
+                        if (j != null)
+                            j.MyZone = this;
+
+                        DeactivatedSpider d = g.GetComponent<DeactivatedSpider>();
+                        if (d != null)
+                            d.MyZone = this;
+
+                        Enemies.Add(g);
+                    }
                 }
+
+                Light l = g.GetComponent<Light>();
+                if (l != null)
+                {
+                    Vector3 zerodPos = GlobalConstants.ZeroYComponent(l.transform.position);
+
+                    if (zerodPos.x > topLeft.x && zerodPos.x < bottomRight.x && zerodPos.z < topLeft.z && zerodPos.z > bottomRight.z)
+                    {
+                        LightObjects.Add(l);
+                    }
+                }
+
             }
 
         }
+
     }
 	
 	// Update is called once per frame
-	void Update () {
-        checkZone();
-    
+	void Update ()
+    {
+   
+        if (myMusicManager == null)
+            myMusicManager = MusicManager.instance;
 
-        if(PrevZone != ActiveZone)
+
+        checkZone(); 
+
+
+        if (PrevZone != ActiveZone)
         { 
             SetLights((ActiveZone == this));
         }
@@ -108,10 +120,27 @@ public class ZoneScript : MonoBehaviour {
     }
     private void OnDrawGizmosSelected()
     {
+        // Set up the zone color
+        Color c = Color.blue;
+        c.a = .3f;
+        Gizmos.color = c;
 
-        DrawZone();
+        Vector3 zoneSize = new Vector3(ZoneSize.x, .5f, ZoneSize.y);
 
-        DrawTransitions();
+        // Draw a cube to represent the area of the zone
+        Vector3 pos = transform.position;
+        pos.y = YPosition;
+        actualPosition = pos;
+        if (type == ViewType.Wire)
+            Gizmos.DrawWireCube(pos, zoneSize);
+
+        if (type == ViewType.Solid)
+            Gizmos.DrawCube(pos, zoneSize);
+
+
+        Gizmos.DrawIcon(transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2), "TopLeftBracket");
+        Gizmos.DrawIcon(transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2), "BottomRightBracket");
+        Gizmos.DrawIcon(pos, "ZoneIcon");
     }
 
     void checkZone()
@@ -143,6 +172,7 @@ public class ZoneScript : MonoBehaviour {
      
         } 
     }
+ 
 
     void SetLights(bool _val)
     {
@@ -154,73 +184,9 @@ public class ZoneScript : MonoBehaviour {
             l.enabled = _val;
         }
     }
+  
  
-
-    void DrawZone()
-    {
-        // Set up the zone color
-        Color c = Color.blue;
-        c.a = .3f;
-        Gizmos.color = c;
-
-        Vector3 zoneSize = new Vector3(ZoneSize.x, .5f, ZoneSize.y);
-
-        // Draw a cube to represent the area of the zone
-        Vector3 pos = transform.position;
-        pos.y = YPosition;
-        actualPosition = pos;
-        if (type == ViewType.Wire)
-            Gizmos.DrawWireCube(pos, zoneSize);
-
-        if (type == ViewType.Solid)
-            Gizmos.DrawCube(pos, zoneSize);
-
-
-        Gizmos.DrawIcon(transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2), "TopLeftBracket");
-        Gizmos.DrawIcon(transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2), "BottomRightBracket");
-        Gizmos.DrawIcon(pos, "ZoneIcon");
-    }
-
-    void DrawTransitions()
-    {
-        for(int i = 0; i < TransZones.Count;i++)
-        {
-            TransitionZones t = TransZones[i]; // Get the zone
-            // Set up the positions and associated positions
-            Vector3 tpos = new Vector3(t.Position.x + actualPosition.x, YPosition, t.Position.y + actualPosition.z);
-            Vector3 tarr = new Vector3(t.ArrivalPosition.x + actualPosition.x, YPosition, t.ArrivalPosition.y + actualPosition.z);
-            Gizmos.color = t.AssociatedColor;
-
-            Vector3 transSize = new Vector3(t.Size.x, 1, t.Size.y);
-
-            if(type == ViewType.Wire)
-            {
-                Gizmos.DrawWireCube(tpos, transSize);
-                Gizmos.DrawWireCube(tarr, transSize);
-
-                
-            }
-
-            if(type == ViewType.Solid)
-            {
-                Gizmos.DrawCube(tpos, transSize);
-                Gizmos.DrawCube(tarr, transSize);
-            }
-
-            Gizmos.DrawLine(tpos, tarr);
-            Gizmos.DrawIcon(tpos + Vector3.up, "TransZoneIcon");
-        }
-    }
 }
 
-[System.Serializable]
-public struct TransitionZones
-{
-    public Vector2 Size;
-    public Vector2 Position;
-    public Vector2 ArrivalPosition;
-    public Color AssociatedColor;
-}
-
-
+ 
 

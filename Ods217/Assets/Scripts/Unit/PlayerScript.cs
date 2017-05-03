@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour, IUnit
     CController myCtrl;
     Animator myAnimator;
     SpriteRenderer myRenderer;
+    FootStepScript myFootStep;
     GlobalConstants.Alligience myAlligience = GlobalConstants.Alligience.Ally;
     public Weapon myWeapon;
     public UnitStruct myUnit;
@@ -49,7 +50,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         myAnimator = GetComponent<Animator>();
         myRenderer = GetComponent<SpriteRenderer>();
         myAudioSource = GetComponent<AudioSource>();
-
+        myFootStep = GetComponent<FootStepScript>();
  
     }
 
@@ -60,7 +61,8 @@ public class PlayerScript : MonoBehaviour, IUnit
         GunObject();
         Animations();
 
- 
+        if (myUnit.CurrentHealth < 0)
+            OnDeath();
     }
 
     void GunObject()
@@ -93,10 +95,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         }
         else // If you're sprinting then loc the guns rotation at 20 degrees depending on which direction you're facing
         {
-            if(myCtrl.Sprinting != myCtrl.SprintingPrev)
-            {
-                
-            }
+        
             //// Flip the gun if you're moving left
             GunObj.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
 
@@ -152,7 +151,10 @@ public class PlayerScript : MonoBehaviour, IUnit
         myAnimator.SetBool("Moving", (myCtrl.Velocity.magnitude > 1f));
         myAnimator.SetBool("Running", myCtrl.Sprinting);
 
+        if (myCtrl.Sprinting != myCtrl.SprintingPrev)
+            myFootStep.stepCooldown = 0;
 
+        myFootStep.Speed = (myCtrl.Sprinting) ? .4f : .45f; 
 
     }
 
@@ -161,29 +163,37 @@ public class PlayerScript : MonoBehaviour, IUnit
         // Basic Movement
         if(!myCtrl.Airborne)
         {
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) // Left 
             {
                 myCtrl.ApplyForce(Vector3.left * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
             }
-
-            if (Input.GetKey(KeyCode.S))
+            else if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) // Down
             {
                 myCtrl.ApplyForce(Vector3.back * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
             }
-
-            if (Input.GetKey(KeyCode.D))
+            else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) // Right
             {
                 myCtrl.ApplyForce(Vector3.right * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
             }
-
-            if (Input.GetKey(KeyCode.W))
+            else if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) // Up
             {
                 myCtrl.ApplyForce(Vector3.forward * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
             }
-
-            if(Input.GetKeyDown(KeyCode.P))
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) // Down Left
             {
-                SPFXManager.showSPFX(SPFXManager.SPFX.Exclamation, transform.position, new Vector3(0, 500, 0));
+                myCtrl.ApplyForce(new Vector3(-.707f,0,-.707f) * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+            }
+            else if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) // Down Right
+            {
+                myCtrl.ApplyForce(new Vector3(.707f, 0, -.707f) * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+            }
+            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) // Up Left
+            {
+                myCtrl.ApplyForce(new Vector3(-.707f, 0, .707f) * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+            }
+            else if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) // Up Right
+            {
+                myCtrl.ApplyForce(new Vector3(.707f, 0, .707f) * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
             }
         }
 
@@ -220,7 +230,7 @@ public class PlayerScript : MonoBehaviour, IUnit
 
     public void OnDeath()
     {
-
+        GameManager.instance.LoadLastSaveFile();
     }
 
     public void EnteredNewZone()

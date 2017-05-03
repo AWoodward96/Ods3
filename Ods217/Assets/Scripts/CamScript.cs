@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CamScript : MonoBehaviour {
 
@@ -9,13 +10,17 @@ public class CamScript : MonoBehaviour {
     public Transform Target;
     public Vector3 ExtentsTL;
     public Vector3 ExtentsBR;
-    public static Vector3 CursorLocation; 
+    public static Vector3 CursorLocation;
+
+    bool Loaded;
+    float loadedPoint = 0;
 
 	// Use this for initialization
 	void Awake () {
         instance = this;
         FollowBack = GlobalConstants.DEFAULTFOLLOWBACK;
-	}
+        SceneManager.sceneLoaded += LevelLoad;
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -28,7 +33,7 @@ public class CamScript : MonoBehaviour {
         {
             Vector3 Additive = Target.position + FollowBack;
 
-            if(!DialogManager.InDialog)
+            if (!DialogManager.InDialog)
             {
                 Vector3 toCursor = CursorLocation - transform.position;
                 toCursor = GlobalConstants.ZeroYComponent(toCursor);
@@ -38,17 +43,33 @@ public class CamScript : MonoBehaviour {
                 Additive += toCursor;
             }
 
-
-
             Additive.y = Target.position.y + FollowBack.y;
-            transform.position = Vector3.Lerp(transform.position, Additive, 6f * Time.deltaTime);
+ 
+            if(Loaded)
+                transform.position = Vector3.Lerp(transform.position, Additive, 6f * Time.deltaTime); 
+            else 
+                transform.position = Additive;
 
             HandleExtents();
 
         }
 
-
+        if(loadedPoint < 1)
+        {
+            loadedPoint += Time.deltaTime;
+            if(loadedPoint > 1)
+            {
+                Loaded = true;
+            }
+        }
 	}
+
+    void LevelLoad(Scene level, LoadSceneMode _mode)
+    {
+        Loaded = false;
+        loadedPoint = 0;
+    }
+ 
 
     void HandleExtents()
     {

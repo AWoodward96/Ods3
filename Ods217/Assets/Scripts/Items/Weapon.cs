@@ -122,7 +122,6 @@ public class Weapon : MonoBehaviour {
                 // Play the sound
                 myAudioSource.clip = ShootClip;
                 myAudioSource.Play();
-                Debug.Log("Playing");
 
                 Owner.myVisualizer.ShowMenu();
                 return;

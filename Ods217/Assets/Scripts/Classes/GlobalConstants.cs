@@ -42,4 +42,17 @@ public class GlobalConstants {
         return null;
     }
 
+    public static Vector3 StringToVector3(string _VectorString)
+    {
+        // Toss the parentheses
+        if (_VectorString.StartsWith("(") && _VectorString.EndsWith(")")) 
+            _VectorString = _VectorString.Substring(1, _VectorString.Length - 2); 
+
+        // split the data
+        string[] sArray = _VectorString.Split(',');
+
+        // return it
+        return new Vector3(float.Parse(sArray[0]), float.Parse(sArray[1]), float.Parse(sArray[2])); 
+    }
+
 }

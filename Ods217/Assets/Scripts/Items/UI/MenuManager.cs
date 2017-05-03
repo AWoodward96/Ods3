@@ -39,7 +39,6 @@ public class MenuManager: MonoBehaviour {
        Canvas[] myCanvassi = GetComponentsInChildren<Canvas>();
        foreach(Canvas c in myCanvassi)
        {
-            Debug.Log(c.name);
             if (c.name == "MenuCanvas")
                 myCanvas = c;
 
