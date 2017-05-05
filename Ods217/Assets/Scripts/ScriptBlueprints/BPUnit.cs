@@ -65,14 +65,14 @@ public class BPUnit : MonoBehaviour,IUnit {
         GunObj.transform.rotation = Quaternion.Euler(90, 0, GlobalConstants.angleBetweenVec(LookingVector));
     }
 
-    public UnitStruct MyUnit()
+    public UnitStruct MyUnit
     {
-        return myUnit;
+        get { return myUnit; }
     }
 
-    public Weapon MyWeapon()
+    public Weapon MyWeapon
     {
-        return myWeapon;
+       get{ return myWeapon; }
     }
 
     public void OnDeath()

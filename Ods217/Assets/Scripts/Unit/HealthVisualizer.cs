@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+/// <summary>
+/// A script for a canvas that is used for a units healthbar
+/// </summary>
 public class HealthVisualizer : MonoBehaviour
 {
 
@@ -41,12 +43,12 @@ public class HealthVisualizer : MonoBehaviour
         if(myUnit != null)
         {
             unit = myUnit.GetComponent<IUnit>();
-            maxVal = unit.MyUnit().MaxHealth;
-            currentVal = unit.MyUnit().CurrentHealth;
+            maxVal = unit.MyUnit.MaxHealth;
+            currentVal = unit.MyUnit.CurrentHealth;
 
             unitCC = myUnit.GetComponent<CController>();
 
-            hasWeapon = (unit.MyWeapon() != null);
+            hasWeapon = (unit.MyWeapon != null);
             if (hasWeapon)
                 GetBBars();
             else
@@ -68,8 +70,8 @@ public class HealthVisualizer : MonoBehaviour
     {
         if(unit != null)
         {
-            currentVal = unit.MyUnit().CurrentHealth;
-            maxVal = unit.MyUnit().MaxHealth;
+            currentVal = unit.MyUnit.CurrentHealth;
+            maxVal = unit.MyUnit.MaxHealth;
         }
 
         float percentage = currentVal / maxVal;
@@ -87,7 +89,7 @@ public class HealthVisualizer : MonoBehaviour
         {
             // Primary
             IUnit u = myUnit.GetComponent<IUnit>();
-            int availablebullets = u.MyWeapon().CurrentClip;
+            int availablebullets = u.MyWeapon.CurrentClip;
             int current = 0;
 
             for(int i = 0; i < availablebullets; i++)
@@ -102,11 +104,11 @@ public class HealthVisualizer : MonoBehaviour
             }
 
             // Secondary
-            if(u.MyWeapon().SecondaryType != Weapon.SecondaryTypes.None)
+            if(u.MyWeapon.SecondaryType != Weapon.SecondaryTypes.None)
             {
                 SecondaryBBars();
 
-                availablebullets = u.MyWeapon().CurrentSecondaryClip;
+                availablebullets = u.MyWeapon.CurrentSecondaryClip;
                 current = 0;
                 for (int i = 0; i < availablebullets; i++)
                 {
@@ -137,7 +139,7 @@ public class HealthVisualizer : MonoBehaviour
             // If the unit is reloading then display the reload icon
             if (Reload)
             {
-                Reload.enabled = u.MyWeapon().isReloading;
+                Reload.enabled = u.MyWeapon.isReloading;
             }
 
         }
@@ -150,6 +152,7 @@ public class HealthVisualizer : MonoBehaviour
             GetComponent<Canvas>().enabled = false;
     }
 
+    // Set up all the parameters by getting all of the actual gameobjects
     void GetVisualizerComponents()
     {
         Image[] allImages = GetComponentsInChildren<Image>();
@@ -183,9 +186,9 @@ public class HealthVisualizer : MonoBehaviour
         // First initialize the IUnit
         IUnit u = myUnit.GetComponent<IUnit>();
         // Initialize the arrays   
-        BBars = new Image[u.MyWeapon().MaxClip];
+        BBars = new Image[u.MyWeapon.MaxClip];
         // Get the size of the bars
-        float temp = BBMaxWidth / u.MyWeapon().MaxClip;
+        float temp = BBMaxWidth / u.MyWeapon.MaxClip;
         bulBarSize = temp - 5;
 
         // Dump the first Bar into the array
@@ -211,7 +214,7 @@ public class HealthVisualizer : MonoBehaviour
         // First initialize the IUnit
         IUnit u = myUnit.GetComponent<IUnit>();
         // If the current max secondary clip is already equal to the SBBars length then we don't need to bother reinitializing
-        if (u.MyWeapon().CurrentMaxSecondaryClip == SBBars.Length)
+        if (u.MyWeapon.CurrentMaxSecondaryClip == SBBars.Length)
             return;
  
 
@@ -222,10 +225,10 @@ public class HealthVisualizer : MonoBehaviour
         }
 
         // Make a new array
-        SBBars = new Image[u.MyWeapon().CurrentMaxSecondaryClip];
+        SBBars = new Image[u.MyWeapon.CurrentMaxSecondaryClip];
 
         // Get the size of the bars
-        float temp = BBMaxWidth / u.MyWeapon().CurrentMaxSecondaryClip;
+        float temp = BBMaxWidth / u.MyWeapon.CurrentMaxSecondaryClip;
         bulBarSize = temp - 5;
 
         // Gotta initialize a starter variable

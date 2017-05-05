@@ -22,12 +22,6 @@ public class BPNonUnit: MonoBehaviour,IUnit {
 	void Update () {
 	}
 
-    public UnitStruct MyUnit()
-    {
-        return myUnit;
-    }
-
-
     public void OnDeath()
     {
         throw new NotImplementedException();
@@ -41,10 +35,17 @@ public class BPNonUnit: MonoBehaviour,IUnit {
         myVisualizer.ShowMenu();
     }
 
-    public Weapon MyWeapon()
-    {
-        return null;
+    public Weapon MyWeapon
+    { 
+        get { return null; }
     }
+
+    public UnitStruct MyUnit
+    {
+        get { return myUnit; }
+    }
+
+
 
     public HealthVisualizer myVisualizer
     {

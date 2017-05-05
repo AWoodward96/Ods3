@@ -17,7 +17,6 @@ public class ZoneScript : MonoBehaviour {
 
     MusicManager myMusicManager;
 
-    Vector3 actualPosition;
      
 
     [Header("Meta")]
@@ -129,8 +128,7 @@ public class ZoneScript : MonoBehaviour {
 
         // Draw a cube to represent the area of the zone
         Vector3 pos = transform.position;
-        pos.y = YPosition;
-        actualPosition = pos;
+        pos.y = YPosition; 
         if (type == ViewType.Wire)
             Gizmos.DrawWireCube(pos, zoneSize);
 

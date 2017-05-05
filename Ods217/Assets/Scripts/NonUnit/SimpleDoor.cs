@@ -3,11 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleDoor : MonoBehaviour, INonUnit{
+/// <summary>
+/// A NonUnit Script
+/// A nice little door that rotates open once triggered
+/// </summary>
+public class SimpleDoor : MonoBehaviour, INonUnit
+{
 
-    public GameObject ChildToRotate;
-    [Range(-359,359)]
-    public float RotateDegrees;
+    public GameObject ChildToRotate; // The object that we'll rotate once triggered
+    [Range(-359, 359)]
+    public float RotateDegrees; // How far we'll rotate once triggered
     public bool _Triggered;
 
     float origionalRotation;
@@ -18,6 +23,7 @@ public class SimpleDoor : MonoBehaviour, INonUnit{
     // Use this for initialization
     void Start()
     {
+        // We have origional rotation so it can rotate back when not triggered
         origionalRotation = ChildToRotate.transform.rotation.y;
         currentRotation = origionalRotation;
     }
@@ -25,14 +31,13 @@ public class SimpleDoor : MonoBehaviour, INonUnit{
     // Update is called once per frame
     void Update()
     {
-        currentRotation = ChildToRotate.transform.rotation.y; 
+        // Rotate the object based on if this script has been triggered or not
+        currentRotation = ChildToRotate.transform.rotation.y;
         Vector3 to = new Vector3(ChildToRotate.transform.rotation.x, (_Triggered) ? RotateDegrees : origionalRotation, ChildToRotate.transform.rotation.z);
         ChildToRotate.transform.rotation = Quaternion.Lerp(ChildToRotate.transform.rotation, Quaternion.Euler(to), .9f * Time.deltaTime);
- 
-
     }
 
-
+    // This object cannot be powered
     public bool Powered
     {
         get
@@ -42,7 +47,7 @@ public class SimpleDoor : MonoBehaviour, INonUnit{
 
         set
         {
- 
+
         }
     }
 

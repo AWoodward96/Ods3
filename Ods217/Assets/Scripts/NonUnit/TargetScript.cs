@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// A Unit Script
+/// A target that's really just a punching bag for the player
+/// </summary>
 [RequireComponent(typeof(AudioSource))]
 public class TargetScript: MonoBehaviour,IUnit {
 
@@ -21,19 +24,16 @@ public class TargetScript: MonoBehaviour,IUnit {
         mySource.playOnAwake = false;
     }
 	
-	// Update is called once per frame
-	void Update () {
-	}
 
-    public UnitStruct MyUnit()
+    public UnitStruct MyUnit
     {
-        return myUnit;
+        get { return myUnit; }
     }
 
-
+    // Can't really die with almost infinite health
     public void OnDeath()
     {
-        throw new NotImplementedException();
+        Destroy(this.gameObject);
     }
 
     public void OnHit(Weapon _FromWhatWeapon)
@@ -47,9 +47,10 @@ public class TargetScript: MonoBehaviour,IUnit {
         myVisualizer.ShowMenu();
     }
 
-    public Weapon MyWeapon()
+    public Weapon MyWeapon
     {
-        return null;
+        // Has no weapon
+        get { return null; }
     }
 
 

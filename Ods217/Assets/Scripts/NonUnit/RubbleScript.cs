@@ -2,16 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class RubbleScript : MonoBehaviour, INonUnit {
+/// <summary>
+/// A NonUnit Script
+/// A destructable object that can take a couple of hits before destroying itself
+/// </summary>
+public class RubbleScript : MonoBehaviour, INonUnit
+{
 
     public int Health;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -20,7 +19,7 @@ public class RubbleScript : MonoBehaviour, INonUnit {
             Destroy(this.gameObject);
     }
 
-
+    // It cannot be powered
     public bool Powered
     {
         get
@@ -29,9 +28,10 @@ public class RubbleScript : MonoBehaviour, INonUnit {
         set { }
     }
 
+    // Emping it does nothing
     public void OnEMP()
     {
-        
+
     }
 
     public void OnHit()
@@ -39,6 +39,7 @@ public class RubbleScript : MonoBehaviour, INonUnit {
         Health--;
     }
 
+    // Cannot be triggered
     public bool Triggered
     {
         get

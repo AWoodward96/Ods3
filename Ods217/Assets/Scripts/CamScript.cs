@@ -3,31 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CamScript : MonoBehaviour {
+/// <summary>
+/// The primary camera script
+/// Uses orthographic view and follows a target at a constant distance
+/// </summary>
+public class CamScript : MonoBehaviour
+{
 
     CamScript instance;
     public Vector3 FollowBack;
     public Transform Target;
-    public Vector3 ExtentsTL;
+    public Vector3 ExtentsTL; // The restrictions of where the camera can move and where the edges are
     public Vector3 ExtentsBR;
     public static Vector3 CursorLocation;
 
     bool Loaded;
     float loadedPoint = 0;
 
-	// Use this for initialization
-	void Awake () {
+    // Use this for initialization
+    void Awake()
+    {
         instance = this;
         FollowBack = GlobalConstants.DEFAULTFOLLOWBACK;
         SceneManager.sceneLoaded += LevelLoad;
     }
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
         if (Target == null)
             Target = new GameObject().transform;
 
         CursorToWorld();
+
 
         if (Target.GetComponent<CController>() != null)
         {
@@ -44,32 +52,33 @@ public class CamScript : MonoBehaviour {
             }
 
             Additive.y = Target.position.y + FollowBack.y;
- 
-            if(Loaded)
-                transform.position = Vector3.Lerp(transform.position, Additive, 6f * Time.deltaTime); 
-            else 
+
+            // If we just loaded a new scene then snap onto the location that the player is at
+            if (Loaded)
+                transform.position = Vector3.Lerp(transform.position, Additive, 6f * Time.deltaTime);
+            else
                 transform.position = Additive;
 
             HandleExtents();
-
         }
 
-        if(loadedPoint < 1)
+        // 
+        if (loadedPoint < 1)
         {
             loadedPoint += Time.deltaTime;
-            if(loadedPoint > 1)
+            if (loadedPoint > 1)
             {
                 Loaded = true;
             }
         }
-	}
+    }
 
     void LevelLoad(Scene level, LoadSceneMode _mode)
     {
         Loaded = false;
         loadedPoint = 0;
     }
- 
+
 
     void HandleExtents()
     {
@@ -108,16 +117,16 @@ public class CamScript : MonoBehaviour {
 
     void CursorToWorld()
     {
-        //Ray r = Camera.main.ScreenToWorldPoint()
-        Plane p = new Plane(Vector3.up, Target.transform.position); 
+        // Find in world space where the cursor is pointing
+        Plane p = new Plane(Vector3.up, Target.transform.position);
         Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         Ray ray = Camera.main.ScreenPointToRay(mousePosition); // This takes the mouse position, and starts a ray at the world position (based on where the mouse is on screen) shooting where the camera is pointer
         float dist;
-        if(p.Raycast(ray,out dist))
+        if (p.Raycast(ray, out dist))
         {
- 
+
             CursorLocation = ray.GetPoint(dist);
-        } 
+        }
     }
 
     private void OnDrawGizmosSelected()

@@ -6,12 +6,13 @@ using UnityEngine.AI;
 
 
 /// <summary>
-/// This Script is for units that are like the player. They have weapons and will try to use them against you or on allies.
-/// This is also a BluePrint, meaning that they should be duplicated then modified to save you time
+/// This is a Unit Script
+/// This is the script for the second type of enemy you'll encounter - a Laser Spider
 /// </summary>
 [RequireComponent(typeof(CController))]
 [RequireComponent(typeof(NavMeshAgent))]
-public class LaserSpiderUnit : MonoBehaviour,IUnit {
+public class LaserSpiderUnit : MonoBehaviour, IUnit
+{
 
     [Header("Unit Data")]
     public UnitStruct myUnit;
@@ -31,7 +32,7 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
     AISTATE AiState;
 
     bool wanderMoving;
-    bool wanderCoroutine; 
+    bool wanderCoroutine;
     Vector3 wanderRandomDirection; // Where the spider will move when wandering
     Vector3 wanderRootPosition; // The point that the spider will rotate around
     GameObject attackTarget;
@@ -40,11 +41,12 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
     Animator topAnimator;
 
 
- 
-    
+
+
 
     // Use this for initialization
-    void Awake() {
+    void Awake()
+    {
 
         // Get the gun object in the child of this object
         Transform[] objs = GetComponentsInChildren<Transform>();
@@ -67,10 +69,11 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
         LookingVector = Vector2.right;
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if(myUnit.CurrentHealth > 0)
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (myUnit.CurrentHealth > 0)
         {
             topAnimator.SetFloat("lookX", LookingVector.x);
             topAnimator.SetFloat("lookY", LookingVector.y);
@@ -90,8 +93,8 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
 
             doTopAnimations();
         }
-   
-	}
+
+    }
 
     /// <summary>
     /// Alright so here we take the looking vector, and rotate it the amount of degrees it needs to be rotated
@@ -101,21 +104,21 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
     {
         // So lets rotate the looking vector by the current rotation
         //LookingVector = Quaternion.AngleAxis(currentRotation, Vector3.up) * LookingVector;
-        LookingVector = Quaternion.Euler(0, 0, currentRotation) * Vector3.right; 
+        LookingVector = Quaternion.Euler(0, 0, currentRotation) * Vector3.right;
         // And lerp the current rotation
         currentRotation = Mathf.Lerp(currentRotation, LookVectorRotation, 5 * Time.deltaTime);
 
-        switch(AiState)
+        switch (AiState)
         {
             case AISTATE.Wander:
                 LookVectorRotation = GlobalConstants.angleBetweenVec(wanderRandomDirection);
                 break;
 
             case AISTATE.Attack:
-                LookVectorRotation = GlobalConstants.angleBetweenVec(attackTarget.transform.position - transform.position); 
+                LookVectorRotation = GlobalConstants.angleBetweenVec(attackTarget.transform.position - transform.position);
                 break;
         }
- 
+
     }
 
     /// <summary>
@@ -124,8 +127,8 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
     /// </summary>
     void Wander()
     {
-        if(wanderMoving)  // If we want to move
-            myCtrl.ApplyForce(wanderRandomDirection * myAgent.speed/10); // Then move
+        if (wanderMoving)  // If we want to move
+            myCtrl.ApplyForce(wanderRandomDirection * myAgent.speed / 10); // Then move
 
         // Toggle back and forth between moving and not moving
         if (!wanderCoroutine)
@@ -136,14 +139,14 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
 
         // Check to see if a target is near you and if so attack them
         Collider[] chaseTaggedAlliedObjects = Physics.OverlapSphere(transform.position, 5);
-        foreach(Collider c in chaseTaggedAlliedObjects)
-        { 
-            if(c.gameObject.layer == LayerMask.NameToLayer("Units")) // Any units are targets for spiders
-            { 
+        foreach (Collider c in chaseTaggedAlliedObjects)
+        {
+            if (c.gameObject.layer == LayerMask.NameToLayer("Units")) // Any units are targets for spiders
+            {
                 // You also have to have vision of the target because if you don't then... well we don't want them to aggro through walls
-                
-                attackTarget = c.gameObject; 
-                AiState = AISTATE.Attack; 
+
+                attackTarget = c.gameObject;
+                AiState = AISTATE.Attack;
                 return;
             }
         }
@@ -156,19 +159,20 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
     /// </summary>
     void Attack()
     {
-        if(attackTarget != null)
+        if (attackTarget != null)
         {
             Vector3 distVector = attackTarget.transform.position - transform.position;
             distVector = GlobalConstants.ZeroYComponent(distVector);
 
             // If in range
-            if(distVector.magnitude < attackRange)
+            if (distVector.magnitude < attackRange)
             {
                 // Shootem 
                 myAgent.Stop();
-                
+
                 myWeapon.FireWeapon(distVector);
-            }else
+            }
+            else
             {
                 // otherwise move towards the target 
                 myAgent.Resume();
@@ -195,22 +199,22 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
             if (Vector3.Distance(GlobalConstants.ZeroYComponent(transform.position), wanderRootPosition) > 10)
                 wanderRandomDirection = (wanderRootPosition - GlobalConstants.ZeroYComponent(transform.position)).normalized;
         }
-         
+
 
         // Lets us do this
         wanderCoroutine = false;
     }
- 
 
-    public UnitStruct MyUnit()
+    public UnitStruct MyUnit
     {
-        return myUnit;
+        get { return myUnit; }
     }
 
-    public Weapon MyWeapon()
+    public Weapon MyWeapon
     {
-        return myWeapon;
+        get { return myWeapon; }
     }
+
 
     public void OnDeath()
     {
@@ -225,7 +229,7 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
     IEnumerator DeathCoroutine()
     {
         yield return new WaitForSeconds(2);
-        Instantiate(Resources.Load("Prefabs/Particles/SimpleDeath"), transform.position, Quaternion.identity); 
+        Instantiate(Resources.Load("Prefabs/Particles/SimpleDeath"), transform.position, Quaternion.identity);
         this.gameObject.SetActive(false);
     }
 
@@ -247,7 +251,7 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawIcon(wanderRootPosition, "SpiderRoot");
-        if(AiState == AISTATE.Attack)
+        if (AiState == AISTATE.Attack)
         {
             Vector3 distVector = attackTarget.transform.position - transform.position;
             distVector = GlobalConstants.ZeroYComponent(distVector);
@@ -260,12 +264,7 @@ public class LaserSpiderUnit : MonoBehaviour,IUnit {
             Gizmos.DrawLine(transform.position, attackTarget.transform.position);
         }
     }
- 
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-
-    }
     public HealthVisualizer myVisualizer
     {
         get

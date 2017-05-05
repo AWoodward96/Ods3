@@ -80,11 +80,12 @@
     <Compile Include="Assets\Scripts\CannonBallTesting.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\CreateBasicScene.cs" />
-    <Compile Include="Assets\Scripts\DestroyAfterXSeconds.cs" />
     <Compile Include="Assets\Scripts\Dialog\CustomButtonUI.cs" />
+    <Compile Include="Assets\Scripts\Dialog\InteractToStartDialog.cs" />
     <Compile Include="Assets\Scripts\Dialog\OnCollisionStartDialog.cs" />
     <Compile Include="Assets\Scripts\DialogManager.cs" />
     <Compile Include="Assets\Scripts\Effects\Alarm.cs" />
+    <Compile Include="Assets\Scripts\Effects\DestroyAfterXSeconds.cs" />
     <Compile Include="Assets\Scripts\Effects\FadeIfInZone.cs" />
     <Compile Include="Assets\Scripts\Effects\RandomBlink.cs" />
     <Compile Include="Assets\Scripts\Effects\SPFXObject.cs" />
@@ -95,10 +96,7 @@
     <Compile Include="Assets\Scripts\Items\BulEMP.cs" />
     <Compile Include="Assets\Scripts\Items\BulPulse.cs" />
     <Compile Include="Assets\Scripts\Items\IBullet.cs" />
-    <Compile Include="Assets\Scripts\Items\InteractToStartDialog.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
-    <Compile Include="Assets\Scripts\Items\UI\InventoryMenu.cs" />
-    <Compile Include="Assets\Scripts\Items\UI\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
     <Compile Include="Assets\Scripts\MusicManager.cs" />
     <Compile Include="Assets\Scripts\NewMusicManager.cs" />
@@ -117,6 +115,8 @@
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPNonUnit.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPUnit.cs" />
     <Compile Include="Assets\Scripts\ShadowsPlease.cs" />
+    <Compile Include="Assets\Scripts\UI\InventoryMenu.cs" />
+    <Compile Include="Assets\Scripts\UI\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Unit\CController.cs" />
     <Compile Include="Assets\Scripts\Unit\DeactivatedSpider.cs" />
     <Compile Include="Assets\Scripts\Unit\DropShadowScript.cs" />
@@ -125,7 +125,6 @@
     <Compile Include="Assets\Scripts\Unit\JumpingSpider.cs" />
     <Compile Include="Assets\Scripts\Unit\LaserSpiderUnit.cs" />
     <Compile Include="Assets\Scripts\Unit\PlayerScript.cs" />
-    <Compile Include="Assets\Scripts\Unit\SpiderUnit1.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitStruct.cs" />
     <Compile Include="Assets\Scripts\UsableIndicator.cs" />
     <Compile Include="Assets\Scripts\ZoneScript.cs" />

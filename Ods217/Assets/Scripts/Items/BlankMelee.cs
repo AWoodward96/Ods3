@@ -4,30 +4,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// A blank melee script. Literally exists to do nothing
+/// A Bullet Script
+/// A blank melee script. Literally exists to do nothing and will disable itself if initialized
+/// Used on spiders who make you take damage when you're hit by their jump meaning they have no projectile to hurt you with
 /// </summary>
 [RequireComponent(typeof(BoxCollider))]
-public class BlankMelee : MonoBehaviour, IBullet {
+public class BlankMelee : MonoBehaviour, IBullet
+{
 
 
     // Use this for initialization
-    void Awake () {
+    void Awake()
+    {
         gameObject.SetActive(false);
     }
-	
-	// Update is called once per frame
-	void Update () {
- 
-	}
 
-    public bool CanShoot()
+    // Update is called once per frame
+    void Update()
     {
-        return true;
+
+    }
+
+    public bool CanShoot
+    {
+        get { return true; }
     }
 
     public void Shoot(Vector3 _dir)
     {
- 
+
     }
 
     public void OnHit(IUnit _unitObj)
@@ -37,6 +42,6 @@ public class BlankMelee : MonoBehaviour, IBullet {
 
     public void setOwner(IUnit _Owner)
     {
-      
+
     }
 }

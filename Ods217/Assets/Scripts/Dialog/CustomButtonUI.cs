@@ -5,18 +5,17 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Because Unity Buttons are lame
-/// You can't select them from a script! So if you want to highlight an initial decision from a script you're just fucked! : )
+/// Trying to select the first option in a script using the eventsystem is a chore especially with alternating sprites. If you select an option, then select another option it will leave the initial option in a selected sprite state.
 /// So, here's a custom button to work around this restriction
 /// </summary>
-[RequireComponent(typeof(Image))] 
-public class CustomButtonUI : MonoBehaviour {
+[RequireComponent(typeof(Image))]
+public class CustomButtonUI : MonoBehaviour
+{
 
     public static CustomButtonUI Selected; // There can only be one.
     public Sprite SpriteIdle;
     public Sprite SpriteHighlighted;
     public Sprite SpriteSelected;
-
-    //public delegate void OnCall();
 
     public CustomButtonUI NavLeft;
     public CustomButtonUI NavUp;
@@ -26,37 +25,39 @@ public class CustomButtonUI : MonoBehaviour {
     Image myImage;
     Text myText;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         myImage = GetComponent<Image>();
- 
-
         myText = GetComponentInChildren<Text>();
- 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if(DialogManager.InDialog) // Only handle this if we're in dialog
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (DialogManager.InDialog) // Only handle this if we're in a dialog prompt
         {
-            if(Selected == this)
+            if (Selected == this)
             {
-                myImage.sprite = SpriteHighlighted;
-            }else
+                myImage.sprite = SpriteHighlighted; // If it's selected then change the sprite 
+            }
+            else
             {
-                myImage.sprite = SpriteIdle;
+                myImage.sprite = SpriteIdle; // If it isn't the selected button then change the sprite to idle
             }
         }
-	}
+    }
 
+    // If you hover over a button with the mouse then set that button as selected
     public void HoverSelected(CustomButtonUI _ui)
     {
         Selected = _ui;
     }
 
+    // If it's clicked, let the dialog manager know that a decision was made and pass the boolian value
     public void Clicked(bool _value)
     {
-        if(DialogManager.InDialog)
+        if (DialogManager.InDialog)
         {
             DialogManager.instance.DecisionMade(_value);
         }

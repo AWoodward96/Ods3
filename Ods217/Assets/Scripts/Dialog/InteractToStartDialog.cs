@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A Dialog Script
+/// If you're close enough, display an E indicator
+/// Once interacted with, start a dialog
+/// </summary>
 [RequireComponent(typeof(UsableIndicator))]
-public class InteractToStartDialog : MonoBehaviour {
-
+public class InteractToStartDialog : MonoBehaviour
+{
 
 
     [Range(.1f, 10)]
     public float Range;
-    public bool Interactable; 
+    public bool Interactable;
 
     [TextArea(1, 100)]
     public string MyDialog;
@@ -20,12 +25,14 @@ public class InteractToStartDialog : MonoBehaviour {
     GameObject Player;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         ind_Interactable = GetComponent<UsableIndicator>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         if (Player == null) // Ensure that we have the player
             Player = GameObject.FindGameObjectWithTag("Player");
 
@@ -41,7 +48,7 @@ public class InteractToStartDialog : MonoBehaviour {
 
         // If we get input that we want to interact, and we're able to interact with it
         if (Input.GetKeyDown(KeyCode.E) && Interactable && !DialogManager.InDialog)
-        { 
+        {
             DialogManager.instance.ShowDialog(MyDialog);
             shown = true;
         }

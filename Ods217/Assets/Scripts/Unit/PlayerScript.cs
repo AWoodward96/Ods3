@@ -3,17 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A Unit Script
+/// This is the player script! It's what's used to control the player pretty much all the time
+/// </summary>
 [RequireComponent(typeof(CController))]
 public class PlayerScript : MonoBehaviour, IUnit
 {
- 
+    // References
     GameObject GunObj;
     CController myCtrl;
     Animator myAnimator;
     SpriteRenderer myRenderer;
     FootStepScript myFootStep;
-    GlobalConstants.Alligience myAlligience = GlobalConstants.Alligience.Ally;
-    public Weapon myWeapon;
+    public Weapon myWeapon; // The weapon is a seperate game object so we have to manually drop it in
     public UnitStruct myUnit;
 
     Vector3 RootPosition = new Vector3(-0.138f, -0.138f, 0);
@@ -25,7 +28,7 @@ public class PlayerScript : MonoBehaviour, IUnit
 
     // Use this for initialization
     void Awake()
-    { 
+    {
         // Get the gun object in the child of this object
         Transform[] objs = GetComponentsInChildren<Transform>();
         foreach (Transform o in objs)
@@ -34,7 +37,6 @@ public class PlayerScript : MonoBehaviour, IUnit
                 GunObj = o.gameObject;
         }
 
-        myCtrl = GetComponent<CController>();
 
 
         if (myWeapon == null)
@@ -47,14 +49,16 @@ public class PlayerScript : MonoBehaviour, IUnit
             myWeapon.Owner = this;
         }
 
+        // Set up references
+        myCtrl = GetComponent<CController>();
         myAnimator = GetComponent<Animator>();
         myRenderer = GetComponent<SpriteRenderer>();
         myAudioSource = GetComponent<AudioSource>();
         myFootStep = GetComponent<FootStepScript>();
- 
+
     }
 
-    // Update is called once per frame
+    // Have to run everything through fixed update
     void FixedUpdate()
     {
         myInput();
@@ -84,7 +88,7 @@ public class PlayerScript : MonoBehaviour, IUnit
             // Flip the gun if it's on the left side of the player
             GunObj.GetComponentInChildren<SpriteRenderer>().flipY = (CursorLoc.x < transform.position.x);
 
-            
+
             Vector3 pos = RootPosition;
             if (CursorLoc.z < transform.position.z)
                 pos.z = -.01f;
@@ -95,7 +99,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         }
         else // If you're sprinting then loc the guns rotation at 20 degrees depending on which direction you're facing
         {
-        
+
             //// Flip the gun if you're moving left
             GunObj.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
 
@@ -107,7 +111,7 @@ public class PlayerScript : MonoBehaviour, IUnit
             GunObj.transform.localPosition = pos;
         }
 
-    
+
 
 
     }
@@ -129,11 +133,11 @@ public class PlayerScript : MonoBehaviour, IUnit
         // Handle looking up and down based on velocity
         myAnimator.SetBool("FaceFront", (CursorLoc.z < transform.position.z)); // Flips a bool switch based on if the cursor is above or below the character
 
-       
+
         // If we're walking in a reverse direction we want to reverse our animation speed
         float spd = 1;
 
-        if(!myCtrl.Sprinting)
+        if (!myCtrl.Sprinting)
         {
             // Handle negative speeds
             if (((myCtrl.Velocity.x > 0 && myRenderer.flipX) || (myCtrl.Velocity.x < 0 && !myRenderer.flipX)) && Mathf.Abs(myCtrl.Velocity.x) > Mathf.Abs(myCtrl.Velocity.z))
@@ -154,14 +158,15 @@ public class PlayerScript : MonoBehaviour, IUnit
         if (myCtrl.Sprinting != myCtrl.SprintingPrev)
             myFootStep.stepCooldown = 0;
 
-        myFootStep.Speed = (myCtrl.Sprinting) ? .4f : .45f; 
+        myFootStep.Speed = (myCtrl.Sprinting) ? .4f : .45f;
 
     }
 
     void myInput()
     {
         // Basic Movement
-        if(!myCtrl.Airborne)
+        // This could look a lot nicer, but ultimately it gets the job done
+        if (!myCtrl.Airborne)
         {
             if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) // Left 
             {
@@ -181,7 +186,7 @@ public class PlayerScript : MonoBehaviour, IUnit
             }
             else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) // Down Left
             {
-                myCtrl.ApplyForce(new Vector3(-.707f,0,-.707f) * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
+                myCtrl.ApplyForce(new Vector3(-.707f, 0, -.707f) * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
             }
             else if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) // Down Right
             {
@@ -202,7 +207,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift));
 
         // No shooting if the menu is open
-        if(!MenuManager.MenuOpen && !DialogManager.InDialog)
+        if (!MenuManager.MenuOpen && !DialogManager.InDialog)
         {
             // Also no shooting if we're sprinting
             if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
@@ -217,26 +222,28 @@ public class PlayerScript : MonoBehaviour, IUnit
         }
 
 
-
+        // Handle sprinting
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             myAudioSource.clip = AudioClips[0];
             myAudioSource.Play();
         }
- 
+
+        // Handle reload
         if (Input.GetKeyDown(KeyCode.R))
             myWeapon.ForceReload();
     }
 
     public void OnDeath()
     {
+        // This needs some work
         GameManager.instance.LoadLastSaveFile();
     }
 
     public void EnteredNewZone()
     {
+        // Don't allow the player to carry secondary ammo through different zones
         myWeapon.CurrentSecondaryClip = 0;
-        
     }
 
     public void OnHit(Weapon _FromWhatWeapon)
@@ -246,15 +253,16 @@ public class PlayerScript : MonoBehaviour, IUnit
         myVisualizer.ShowMenu();
         myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
     }
-    public UnitStruct MyUnit()
+    public UnitStruct MyUnit
     {
-        return myUnit;
+        get { return myUnit; }
     }
 
-    public Weapon MyWeapon()
+    public Weapon MyWeapon
     {
-        return myWeapon;
+        get { return myWeapon; }
     }
+
 
     public HealthVisualizer myVisualizer
     {

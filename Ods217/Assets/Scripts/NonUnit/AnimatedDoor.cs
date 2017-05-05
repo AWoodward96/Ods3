@@ -2,7 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// A NonUnit Script
+/// A door that is animated via sprites not physical meshes
+/// Cannot be powered, only triggered 
+/// </summary>
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(BoxCollider))]
 public class AnimatedDoor : MonoBehaviour, INonUnit
@@ -25,6 +29,7 @@ public class AnimatedDoor : MonoBehaviour, INonUnit
         myCollider.enabled = !_Triggered;
     }
 
+    // cannot be powered
     public bool Powered
     {
         get
@@ -50,6 +55,7 @@ public class AnimatedDoor : MonoBehaviour, INonUnit
         }
     }
 
+    // These methods do nothing since this object is uneffected by anything other then being triggered
     public void OnEMP()
     {
 
@@ -57,6 +63,6 @@ public class AnimatedDoor : MonoBehaviour, INonUnit
 
     public void OnHit()
     {
- 
+
     }
 }

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// The primary physics script for any unit object
+/// </summary>
 [RequireComponent(typeof(CharacterController))]
 public class CController : MonoBehaviour
 {
-
+    // This script utilizes the Character Controller
     CharacterController myCtrl;
 
     [Header("Movement Info")]
@@ -14,22 +16,21 @@ public class CController : MonoBehaviour
     public float Speed;
     [Range(0, 1000)]
     public float MaxSpeed;
-    
-    public bool canMove;
+
+    public bool canMove; // Can this object move?
     public bool Airborne;
 
     [Header("Buffs")]
-    [Range(0,10)]
+    [Range(0, 10)]
     public float SprintSpeed;
     public bool Sprinting;
     [HideInInspector]
-    public bool SprintingPrev;
+    public bool SprintingPrev; // So we can tell when we've switched from sprinting to not sprinting
 
-   
-    public Vector3 Acceleration; 
+
+    Vector3 Acceleration;
     public Vector3 Velocity;
-
-    public Vector3 ProjectedPosition;
+    public Vector3 ProjectedPosition; // Where this object should be next frame
 
 
 
@@ -52,7 +53,7 @@ public class CController : MonoBehaviour
         if (!Physics.Raycast(r, out hit, .2f + myCtrl.height - myCtrl.center.y, LayerMask.GetMask("Ground")))
         {
             ApplyForce(Vector3.down * GlobalConstants.Gravity);
-            Airborne = true; 
+            Airborne = true;
         }
         else
             Airborne = false;
@@ -61,20 +62,22 @@ public class CController : MonoBehaviour
         SprintingPrev = Sprinting;
     }
 
+    // Called whenever we want to move this object
     public void ApplyForce(Vector3 _spd)
     {
-        if(canMove)
+        if (canMove)
             Acceleration += (_spd);
     }
 
+    // Move the actual object
     void CalculateMove()
     {
         Velocity += Acceleration;
-        Velocity = Vector3.ClampMagnitude(Velocity, MaxSpeed); 
+        Velocity = Vector3.ClampMagnitude(Velocity, MaxSpeed);
         myCtrl.Move(Velocity * Time.deltaTime);
 
-        Velocity *= (Airborne)? GlobalConstants.AirFriction : GlobalConstants.Friction ;
-       
+        Velocity *= (Airborne) ? GlobalConstants.AirFriction : GlobalConstants.Friction;
+
         Acceleration = Vector3.zero;
     }
 }

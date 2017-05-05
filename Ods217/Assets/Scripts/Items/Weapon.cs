@@ -1,9 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
 
+/// <summary>
+/// The Primary Weapon Script
+/// Handles all the information needed for weapons
+/// </summary>
 [RequireComponent(typeof(AudioSource))]
-public class Weapon : MonoBehaviour {
+public class Weapon : MonoBehaviour
+{
 
     [Header("Weapon Info")]
     public string Name;
@@ -12,12 +17,12 @@ public class Weapon : MonoBehaviour {
     public FireType GunType;
 
     [Header("Weapon Data")]
-    public int BulletDamage;
-    public GameObject BulType; 
-    public int MaxClip;
-    public int CurrentClip;
-    public float ReloadSpeed;
-    public float FireCoolDown;
+    public int BulletDamage; // How much damage the bullet will do
+    public GameObject BulType; // The actual bullet prefab
+    public int MaxClip; // The maximum clip size
+    public int CurrentClip; // How many bullets you have left in the chamber
+    public float ReloadSpeed; // How long it takes to reload
+    public float FireCoolDown; // How fast you can shoot
 
     float currentCd;
     bool tryReload;
@@ -31,8 +36,8 @@ public class Weapon : MonoBehaviour {
     public enum SecondaryTypes { EMP, None };
     [Header("Secondary Weapon Data")]
     public SecondaryTypes SecondaryType = SecondaryTypes.None;
-    public int CurrentSecondaryClip;
-    public int CurrentMaxSecondaryClip;
+    public int CurrentSecondaryClip; // How many secondary shots you have left in chamber
+    public int CurrentMaxSecondaryClip; // How many secondary shots you can have in a chamber
 
     List<GameObject> SecondaryBullets = new List<GameObject>();
 
@@ -44,17 +49,19 @@ public class Weapon : MonoBehaviour {
 
     void Update()
     {
+        // Ensure we actually have valid weapon data
         ValidateValues();
 
         currentCd += Time.deltaTime;
 
+        // If we currently have no secondary clip don't show any clips in the chamber (See the health visualizer script)
         if (CurrentSecondaryClip < 1)
         {
             SecondaryType = SecondaryTypes.None;
         }
     }
-    
-  
+
+
     void ValidateValues()
     {
         if (BulType == null)
@@ -108,7 +115,7 @@ public class Weapon : MonoBehaviour {
 
         for (int i = 0; i < primaryBullets.Count; i++)
         {
-            if (primaryBullets[i].GetComponent<IBullet>().CanShoot())
+            if (primaryBullets[i].GetComponent<IBullet>().CanShoot)
             {
                 // Do something based on the type
                 // For now we'll just shoot one bullet
@@ -117,7 +124,7 @@ public class Weapon : MonoBehaviour {
                 currentCd = 0;
                 CurrentClip--;
 
-                
+
 
                 // Play the sound
                 myAudioSource.clip = ShootClip;
@@ -132,7 +139,7 @@ public class Weapon : MonoBehaviour {
     // This is almost identical to the secondary, but secondary
     public void FireSecondary(Vector3 _dir)
     {
-        if(SecondaryType != SecondaryTypes.None)
+        if (SecondaryType != SecondaryTypes.None)
         {
             if (currentCd < FireCoolDown)
                 return;
@@ -142,7 +149,7 @@ public class Weapon : MonoBehaviour {
 
             for (int i = 0; i < SecondaryBullets.Count; i++)
             {
-                if (SecondaryBullets[i].GetComponent<IBullet>().CanShoot())
+                if (SecondaryBullets[i].GetComponent<IBullet>().CanShoot)
                 {
                     // Do something based on the type
                     // For now we'll just shoot one bullet
@@ -165,7 +172,7 @@ public class Weapon : MonoBehaviour {
     public void LoadSecondaryAmmo(SecondaryTypes _type, GameObject SecondaryBullet, int _clipSize)
     {
         // We don't want to spawn a million bullets so get rid of any of them
-        foreach(GameObject o in SecondaryBullets)
+        foreach (GameObject o in SecondaryBullets)
         {
             Destroy(o);
         }
@@ -194,6 +201,7 @@ public class Weapon : MonoBehaviour {
         Owner.myVisualizer.ShowMenu();
     }
 
+    // Called when the player presses r
     public void ForceReload()
     {
         CurrentClip = 0;
@@ -213,7 +221,7 @@ public class Weapon : MonoBehaviour {
 
     public bool isReloading
     {
-        get { return tryReload; }    
+        get { return tryReload; }
     }
 }
- 
+

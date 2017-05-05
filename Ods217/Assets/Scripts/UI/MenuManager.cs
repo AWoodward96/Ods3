@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuManager: MonoBehaviour {
-    
+/// <summary>
+/// A Menu Class
+/// Handles hiding and showing all of the menus in the game
+/// </summary>
+public class MenuManager : MonoBehaviour
+{
+
     public static MenuManager instance;
     public static bool MenuOpen;
     public static bool ScrapOpen;
@@ -18,9 +23,10 @@ public class MenuManager: MonoBehaviour {
     Text scrapText;
 
     float deltaTScrap;
-	// Use this for initialization
-	void Start () {
-        // Ensure there's only one
+    // Use this for initialization
+    void Start()
+    {
+        // Ensure there's only one instance of this script
         if (instance == null)
             instance = this;
         else if (instance != this)
@@ -36,35 +42,37 @@ public class MenuManager: MonoBehaviour {
 
         scrapText = ScrapHolderObject.GetComponentInChildren<Text>();
 
-       Canvas[] myCanvassi = GetComponentsInChildren<Canvas>();
-       foreach(Canvas c in myCanvassi)
-       {
+        Canvas[] myCanvassi = GetComponentsInChildren<Canvas>();
+        foreach (Canvas c in myCanvassi)
+        {
             if (c.name == "MenuCanvas")
                 myCanvas = c;
 
             if (c.name == "UICanvas")
                 myUI = c;
-       }
+        }
         myCanvas.gameObject.SetActive(MenuOpen);
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
 
         // Check the things that would prevent you from opening a menu
         if (DialogManager.InDialog)
             MenuOpen = false;
 
-        if(!DialogManager.InDialog) // They'll probably be more checks in this if statement later on
+        // Handle opening and closing the inventory menu
+        if (!DialogManager.InDialog) // They'll probably be more checks in this if statement later on
         {
-            if(Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
 
                 MenuOpen = !MenuOpen;
 
-                if(MenuOpen)
-                { 
-                    myCanvas.gameObject.SetActive(MenuOpen); 
+                if (MenuOpen)
+                {
+                    myCanvas.gameObject.SetActive(MenuOpen);
                     MenuAnimator.SetBool("Open", true); // hard coding true because unity animations confuse me
                     InventoryMenu.instance.UpdateInventoryMenu();
                 }
@@ -79,11 +87,13 @@ public class MenuManager: MonoBehaviour {
         }
 
 
+        // Handle opening and closing the scrap menu
         ScrapAnimator.SetBool("Open", ScrapOpen);
-        if(ScrapOpen)
+        if (ScrapOpen)
         {
+            // Close the scrap menu after 2 seconds if you haven't picked up scrap since
             deltaTScrap += Time.deltaTime;
-            if(deltaTScrap > 2)
+            if (deltaTScrap > 2)
             {
                 ScrapOpen = false;
             }
@@ -92,12 +102,14 @@ public class MenuManager: MonoBehaviour {
         }
     }
 
+    // This coroutine is to disable the menu object once it's actually closed so you can't effect it unintentionally when it's not being shown
     IEnumerator closeMenu()
     {
         yield return new WaitForSeconds(.17f);//  How long it takes for the closing animation to take place 
         myCanvas.gameObject.SetActive(false);
     }
 
+    // Called when you pick up scrap
     public void ShowScrap()
     {
         ScrapOpen = true;

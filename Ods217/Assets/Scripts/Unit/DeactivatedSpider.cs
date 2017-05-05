@@ -6,29 +6,30 @@ using UnityEngine.AI;
 
 
 /// <summary>
-/// This Script is for units that are like the player. They have weapons and will try to use them against you or on allies.
-/// This is also a BluePrint, meaning that they should be duplicated then modified to save you time
+/// This is a Unit Script
+/// This script is for a special variant of spider that appear to be deactivated until a generator is enabled
 /// </summary>
-[RequireComponent(typeof(CController))] 
-public class DeactivatedSpider : MonoBehaviour,IUnit {
+[RequireComponent(typeof(CController))]
+public class DeactivatedSpider : MonoBehaviour, IUnit
+{
 
-   
+
     // External references
     public UnitStruct myUnit;
     public JumpingSpiderAI AiStats;
     public Weapon myWeapon;
-    public GameObject ActivateWhenPowered;
-    INonUnit powerReliant;
+    public GameObject ActivateWhenPowered; // A non unit that determines when this object will turn on
+    INonUnit powerReliant; // The actual INonUnit reference
     ZoneScript myZone;
     Animator myAnimator;
     CController myCtrl;
     Light myLight;
 
-    Color redLight = new Color(209f / 255f, 0, 0,1);
-    Color greenLight = new Color(6f / 255f, 209f / 255f, 0,1);
+    Color redLight = new Color(209f / 255f, 0, 0, 1);
+    Color greenLight = new Color(6f / 255f, 209f / 255f, 0, 1);
 
     // Do we want this enemy to automatically aggro on the player
-    public bool aggressive; 
+    public bool aggressive;
 
     enum AISTATE { Idle, Aggro, Shimmy, Prep, Jump, Dead };
     [SerializeField]
@@ -43,8 +44,9 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
 
     List<GameObject> JumpObjectHit;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         myCtrl = GetComponent<CController>();
         myAnimator = GetComponent<Animator>();
         myLight = GetComponentInChildren<Light>();
@@ -52,12 +54,13 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
         JumpObjectHit = new List<GameObject>();
         powerReliant = ActivateWhenPowered.GetComponent<INonUnit>();
         AIState = AISTATE.Idle;
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+    }
 
-       
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+
+
 
         updateVisuals();
 
@@ -71,9 +74,9 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
                 AIIdle();
                 break;
             case AISTATE.Aggro: // Send up an ! mark and depending on the reaction time
-                if(!crt_Aggro)
+                if (!crt_Aggro)
                 {
-                    SPFXManager.showSPFX(SPFXManager.SPFX.Exclamation, (transform.position + Vector3.up) + (Vector3.forward * .1f), new Vector3(0, 600, 0), 1.5f); 
+                    SPFXManager.showSPFX(SPFXManager.SPFX.Exclamation, (transform.position + Vector3.up) + (Vector3.forward * .1f), new Vector3(0, 600, 0), 1.5f);
                     crt_Aggro = true;
                     StartCoroutine(Aggro());
                 }
@@ -82,14 +85,14 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
                 AIShimmy();
                 break;
             case AISTATE.Prep: // Get ready to jump
-                if(!crt_Prep)
+                if (!crt_Prep)
                 {
                     crt_Prep = true;
                     StartCoroutine(Prep());
                 }
                 break;
             case AISTATE.Jump: // Go Go Go!
-                if(!crt_Jump)
+                if (!crt_Jump)
                 {
                     JumpObjectHit = new List<GameObject>();
                     crt_Jump = true;
@@ -97,7 +100,7 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
                     StartCoroutine(JumpCRT());
                 }
                 break;
-            case AISTATE.Dead:
+            case AISTATE.Dead: // We're dead
                 StopCoroutine(JumpCRT());
                 StopCoroutine(Prep());
                 StopCoroutine(Aggro());
@@ -106,11 +109,11 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
                 crt_Aggro = true;
                 break;
         }
-	}
+    }
 
     void updateVisuals()
     {
-        if(!powerReliant.Powered)
+        if (!powerReliant.Powered)
         {
             myAnimator.SetBool("Death", true);
             myLight.transform.localPosition = new Vector3(.5f, -.8f, -.1f);
@@ -163,7 +166,7 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
     {
         if (ZoneScript.ActiveZone == myZone) // You can't aggro if the player isn't even in the zone
         {
- 
+
             Collider[] potentialTargets = Physics.OverlapSphere(transform.position, 12);
             foreach (Collider c in potentialTargets)
             {
@@ -181,10 +184,10 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
                     Vector3 distVector = c.transform.position - transform.position;
                     Ray r = new Ray(transform.position, distVector);
                     if (!Physics.Raycast(r, distVector.magnitude, LayerMask.GetMask("Ground"))) // If we didn't hit a wall on our raycast
-                    { 
+                    {
                         AiStats.Target = c.gameObject;
                         AIState = AISTATE.Aggro;
-                    } 
+                    }
                     return;
                 }
             }
@@ -209,7 +212,7 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
         if (AIState == AISTATE.Dead)
             yield break;
         float rnd = UnityEngine.Random.Range(0f, 1f);
-        if(rnd >= AiStats.PrepThreshold) 
+        if (rnd >= AiStats.PrepThreshold)
             AIState = AISTATE.Prep;
 
         crt_Shimmy = false;
@@ -234,7 +237,7 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
     }
 
     void AIShimmy()
-    { 
+    {
         // move towards the player  (slowly)
         // Also move left and right based on the shimmy shimmy
         Vector3 TargetPos = AiStats.Target.transform.position;
@@ -250,7 +253,7 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
         myCtrl.ApplyForce(ShimmyVector * AiStats.shimmyValue);
 
         // Start the coroutine to start hoppin
-        if(!crt_Shimmy)
+        if (!crt_Shimmy)
         {
             crt_Shimmy = true;
             StartCoroutine(Shimmy());
@@ -269,7 +272,7 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
         //float angle = Vector3.Angle(GlobalConstants.ZeroYComponent(targetPos - transform.position), targetPos - transform.position)  * Mathf.Deg2Rad; 
         Vector3 planarTarget = new Vector3(targetPos.x, 0, targetPos.z);
         Vector3 planarPosition = new Vector3(transform.position.x, 0, transform.position.z);
-        if((planarTarget - planarPosition).magnitude < 3)
+        if ((planarTarget - planarPosition).magnitude < 3)
             planarTarget += (planarTarget - planarPosition).normalized; // We want to move past the player
 
         float distance = Mathf.Max(Vector3.Distance(planarTarget, planarPosition), 1);
@@ -282,7 +285,7 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
         float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPosition) * (targetPos.x < transform.position.x ? -1 : 1);
         Vector3 finalVel = Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * vel;
 
-        myCtrl.ApplyForce(finalVel *7 );
+        myCtrl.ApplyForce(finalVel * 7);
         // Ok so this finally apply force isn't physics, it's making my CC script work
         // If I don't multiply the finalVel, the spider will just make a pitaful hop towards the player and barely even get off the ground
         // As long as we cap the spiders max velocity at a high enough number, this should work just fine for what we want to do
@@ -308,7 +311,7 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
 
     public void OnHit(Weapon _FromWhatWeapon)
     {
-        if(powerReliant.Powered)
+        if (powerReliant.Powered)
         {
             // Badoop badoop you were hit by a bullet :)
             // Take damage why did I add a smiley you know what it doesn't matter
@@ -343,14 +346,14 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
         }
 
     }
-    public UnitStruct MyUnit()
+    public UnitStruct MyUnit
     {
-        return myUnit;
+        get { return myUnit; }
     }
 
-    public Weapon MyWeapon()
+    public Weapon MyWeapon
     {
-        return myWeapon;
+        get { return myWeapon; }
     }
 
 
@@ -372,4 +375,4 @@ public class DeactivatedSpider : MonoBehaviour,IUnit {
     }
 }
 
- 
+

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A Special Effect
+/// Does exactly what it says. Destroy an object after some time
+/// </summary>
 public class DestroyAfterXSeconds : MonoBehaviour {
 
     public float time;
