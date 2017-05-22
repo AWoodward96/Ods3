@@ -41,13 +41,10 @@ public class JumpingSpider : MonoBehaviour, IUnit
 
     List<GameObject> JumpObjectHit;
 
-    public List<AudioClip> IdleSounds;
-    public List<AudioClip> AggroSounds;
-    public List<AudioClip> WindupSounds;
-    public List<AudioClip> DeathSounds;
-    AudioSource mySource;
-    float sfxCD;
-    float randomSFXCD;
+
+    public List<AudioClip> PrimaryClips; 
+    AudioSource myPrimarySource; 
+    float primaryCD; 
 
     // Use this for initialization
     void Start()
@@ -55,24 +52,28 @@ public class JumpingSpider : MonoBehaviour, IUnit
         myCtrl = GetComponent<CController>();
         myAnimator = GetComponent<Animator>();
         myLight = GetComponentInChildren<Light>();
-        mySource = gameObject.AddComponent<AudioSource>();
-        mySource.loop = false;
-        mySource.playOnAwake = false;
-        mySource.spatialBlend = 1;
-        mySource.volume = .8f;
+        myPrimarySource = gameObject.AddComponent<AudioSource>();
+        myPrimarySource.loop = false;
+        myPrimarySource.playOnAwake = false;
+        myPrimarySource.spatialBlend = 1f;
+        myPrimarySource.dopplerLevel = .2f;
+        myPrimarySource.minDistance = 1;
+        myPrimarySource.rolloffMode = AudioRolloffMode.Linear;
+        myPrimarySource.maxDistance = 25;
+        myPrimarySource.volume = 1f;
 
+ 
         JumpObjectHit = new List<GameObject>();
 
         AIState = AISTATE.Idle;
-
-        randomSFXCD = UnityEngine.Random.Range(0, 4);
+         
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
 
-        handleSFX();
+        handleSound();
         updateVisuals();
 
         // Do something different for each AI
@@ -86,7 +87,7 @@ public class JumpingSpider : MonoBehaviour, IUnit
                 {
                     SPFXManager.showSPFX(SPFXManager.SPFX.Exclamation, (transform.position + Vector3.up) + (Vector3.forward * .1f), new Vector3(0, 600, 0), 1.5f);
                     crt_Aggro = true;
-                    sfxCD = randomSFXCD;
+                    playSound(2);
                     StartCoroutine(Aggro());
                 }
                 break;
@@ -97,7 +98,7 @@ public class JumpingSpider : MonoBehaviour, IUnit
                 if (!crt_Prep)
                 {
                     crt_Prep = true;
-                    sfxCD = randomSFXCD;
+                    playSound(1);
                     StartCoroutine(Prep());
                 }
                 break;
@@ -260,6 +261,10 @@ public class JumpingSpider : MonoBehaviour, IUnit
 
     void Jump()
     {
+
+        // play the sound effect 
+        playSound(4);
+
         //PHYSICS PHYSICS PHYSICS PHYSICS
         float currentGravity = GlobalConstants.Gravity;
         float angle = 70 * Mathf.Deg2Rad; // To radian because Unity's sin and cos functions randomly take radians. like why?
@@ -296,6 +301,7 @@ public class JumpingSpider : MonoBehaviour, IUnit
         StartCoroutine(DeathCoroutine());
         AIState = AISTATE.Dead;
         myCtrl.enabled = false;
+        playSound(3);  
         myAnimator.SetBool("Death", true);
     }
 
@@ -303,6 +309,7 @@ public class JumpingSpider : MonoBehaviour, IUnit
     {
         yield return new WaitForSeconds(2);
         Instantiate(Resources.Load("Prefabs/Particles/SimpleDeath"), transform.position, Quaternion.identity);
+        myAudioSystem.PlayAudioOneShot(PrimaryClips[5], transform.position);
         this.gameObject.SetActive(false);
     }
 
@@ -379,46 +386,32 @@ public class JumpingSpider : MonoBehaviour, IUnit
                 }
             }
         }
+    } 
+    
+    // Handles sound on a frame to frame basis
+    void handleSound()
+    {
+
+        primaryCD += Time.deltaTime; 
+
+        if (AIState == AISTATE.Shimmy && primaryCD > .1f)
+        {
+            primaryCD = 0;
+            myPrimarySource.Stop();
+            myPrimarySource.clip = PrimaryClips[0];
+            myPrimarySource.Play(); 
+        }
+
+
     }
 
-    void handleSFX()
+    // Plays a one shot sound when certain AI events are triggered
+    void playSound(int clipIndex)
     {
-        if (AggroSounds.Count == 0 || IdleSounds.Count == 0 || WindupSounds.Count == 0 || DeathSounds.Count == 0)
-            return;
-
-
-        sfxCD += Time.deltaTime;
-        if (sfxCD > randomSFXCD)
-        {
-            sfxCD = 0;
-            randomSFXCD = UnityEngine.Random.Range(0f, 4f);
-            int random = 0;
-            mySource.Stop();
-            switch (AIState)
-            {
-                case AISTATE.Aggro:
-                    random = UnityEngine.Random.Range(0, AggroSounds.Count - 1);
-                    mySource.clip = AggroSounds[random];
-                    break;
-                case AISTATE.Idle:
-                    random = UnityEngine.Random.Range(0, IdleSounds.Count - 1);
-                    mySource.clip = IdleSounds[random];
-                    break;
-                case AISTATE.Shimmy:
-                    random = UnityEngine.Random.Range(0, IdleSounds.Count - 1);
-                    mySource.clip = IdleSounds[random];
-                    break;
-                case AISTATE.Prep:
-                    random = UnityEngine.Random.Range(0, WindupSounds.Count - 1);
-                    mySource.clip = WindupSounds[random];
-                    break;
-                case AISTATE.Dead:
-                    random = UnityEngine.Random.Range(0, DeathSounds.Count - 1);
-                    mySource.clip = DeathSounds[random];
-                    break;
-            }
-            mySource.Play();
-        }
+        myPrimarySource.Stop();
+        myPrimarySource.pitch = 1 + (UnityEngine.Random.Range(0, .2f) - .1f);
+        myPrimarySource.clip = PrimaryClips[clipIndex];
+        myPrimarySource.Play();
     }
 }
 

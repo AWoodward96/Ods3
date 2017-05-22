@@ -19,6 +19,8 @@ public class PlayerScript : MonoBehaviour, IUnit
     public Weapon myWeapon; // The weapon is a seperate game object so we have to manually drop it in
     public UnitStruct myUnit;
 
+    public static bool UsingItem;
+
     Vector3 RootPosition = new Vector3(-0.138f, -0.138f, 0);
     Vector3 HolsteredPosition = new Vector3(0, .5f, 0);
     Vector3 HolsteredRotation = new Vector3(0, 0, -88);
@@ -78,7 +80,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         // Handle Gun 'animations' 
         // Where the cursor is in world space
         Vector3 CursorLoc = CamScript.CursorLocation;
-        if (!myCtrl.Sprinting) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
+        if (!myCtrl.Sprinting && !UsingItem) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
         {
             // Now set up the rotating gun
             Vector3 toCursor = CursorLoc - transform.position; // This value will already have a 0'd y value :)
@@ -107,7 +109,24 @@ public class PlayerScript : MonoBehaviour, IUnit
             GunObj.transform.localPosition = HolsteredPosition;
 
             Vector3 pos = GunObj.transform.localPosition;
-            pos.z = .01f;
+
+            if((myCtrl.Velocity.magnitude > 1f)) // If we're moving then always put it behind the player
+            {
+                pos.z = .01f;
+            }else
+            {
+                if (UsingItem) // If we're using an item then put it behind the player
+                    pos.z = .01f;
+                else
+                {
+                    if (CursorLoc.z < transform.position.z) // Otherwise put it behind wherever the player is facing
+                        pos.z = .01f;
+                    else
+                        pos.z = -.01f;
+                }
+
+            }
+
             GunObj.transform.localPosition = pos;
         }
 
@@ -166,7 +185,7 @@ public class PlayerScript : MonoBehaviour, IUnit
     {
         // Basic Movement
         // This could look a lot nicer, but ultimately it gets the job done
-        if (!myCtrl.Airborne)
+        if (!myCtrl.Airborne && !UsingItem)
         {
             if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) // Left 
             {
@@ -204,10 +223,10 @@ public class PlayerScript : MonoBehaviour, IUnit
 
 
         // Set the springing bool equal to if we have the left shift key held down or not
-        myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift));
+        myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UsingItem);
 
         // No shooting if the menu is open
-        if (!MenuManager.MenuOpen && !DialogManager.InDialog)
+        if (!MenuManager.MenuOpen && !DialogManager.InDialog && !UsingItem)
         {
             // Also no shooting if we're sprinting
             if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
@@ -223,15 +242,25 @@ public class PlayerScript : MonoBehaviour, IUnit
 
 
         // Handle sprinting
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if(myCtrl.Sprinting != myCtrl.SprintingPrev)
         {
-            myAudioSource.clip = AudioClips[0];
+            myAudioSource.clip = (myCtrl.Sprinting) ? AudioClips[0] : AudioClips[1];
             myAudioSource.Play();
         }
 
         // Handle reload
         if (Input.GetKeyDown(KeyCode.R))
             myWeapon.ForceReload();
+
+        // Handle using a healthkit
+        if(Input.GetKeyDown(KeyCode.Q) && !UsingItem && GameManager.HealthKits > 0 && myUnit.CurrentHealth != myUnit.MaxHealth)
+        {
+            myAnimator.SetFloat("Special", 1);
+            UsingItem = true;
+            MenuManager.instance.ShowHealthkit();
+            myCtrl.Velocity = Vector3.zero;
+            StartCoroutine(UseItemCRT());
+        }
     }
 
     public void OnDeath()
@@ -277,5 +306,24 @@ public class PlayerScript : MonoBehaviour, IUnit
     {
         // I aactually have no idea how this shit works
         Destroy(other.gameObject);
+    }
+
+    IEnumerator UseItemCRT()
+    {
+        // Show the health visualizer
+        myVisualizer.ShowMenu();
+        yield return new WaitForSeconds(2);
+        GameManager.HealthKits--; // Take away a health kit
+
+        myUnit.CurrentHealth += 35; // Add the health
+        if (myUnit.CurrentHealth > myUnit.MaxHealth)
+            myUnit.CurrentHealth = myUnit.MaxHealth;
+
+        // Ensure that we can see it
+        myVisualizer.ShowMenu();
+
+        // Exit out of the animation
+        myAnimator.SetFloat("Special", 0);
+        UsingItem = false;
     }
 }

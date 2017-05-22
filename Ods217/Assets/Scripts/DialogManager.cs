@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,9 +29,13 @@ public class DialogManager : MonoBehaviour {
     public int currentLine;
     int currentCharacter;
 
+    bool waiting;
+
     CController playerCC; // Because I don't want to find this mother fucker twice
     bool playerHalted; // This will be true if we've found a character to hault and we've prevented him from moving
 
+    public AudioClip[] AudioClips;
+    AudioSource mySource;
 
     // Use this for initialization 
     void Start() { 
@@ -45,6 +50,7 @@ public class DialogManager : MonoBehaviour {
 
         InDialog = false;
         MyCanvas = GetComponentInChildren<Canvas>();
+        mySource = GetComponent<AudioSource>();
 
         // Set up the texts
         Text[] allText = GetComponentsInChildren<Text>();
@@ -68,13 +74,13 @@ public class DialogManager : MonoBehaviour {
         makingADecision = false;
 
         buttonEffector = new List<GameObject>();
-
+        waiting = false;
         DontDestroyOnLoad(this);
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        MyCanvas.enabled = InDialog;
+        MyCanvas.enabled = InDialog && !waiting;
         buttonLeft.gameObject.SetActive(makingADecision);
         buttonRight.gameObject.SetActive(makingADecision);  
 	}
@@ -138,17 +144,26 @@ public class DialogManager : MonoBehaviour {
         /// '//' - A comment, Ignored
         /// '$' - Also considered a comment, but only if nothing comes after it. Consider it a line feed for formatting
         /// '$Power?: ![ObjectName]' - States the current power of an object and asks if you want to turn it on or not
+        ///     $l: [Success Prompt] - Success prompt comes after the power query
+        /// 
         /// '$PickUp?: ![Query]' - Item name is what you'd want to pick up. Query is what is asked of the player IE 'Would you like to pick it up?' GameObjectDestroy is the in world item to be destroyed if yes
         ///     ![ItemToAdd]
         ///     ![GameObjectDestroy]
+        ///     $l: [Success Prompt]
+        /// '$Trigger: [ObjectName]' - Triggers whatever object is listed
         /// '$Face: [name]' - Changes what face is currently being shown. Will be a folder in the resources 
         /// '$HasItem:[ItemID]
         ///     ![MoveToString] - MoveTo strings are *[Identifier] and will be found via a loop. Will set the current line to the line after it
+        /// '$l: [Any text] **[MoveToString]
+        /// '$Wait:[time]' puts the dialog menu away and waits for a bit before continuing
+        /// '$SetActive:[object].[true/false]' turns an object on or off
+        /// 'End:' Ends the dialog
+
 
         // Get the line
         string[] splitString = Dialog.Split('\n');
         string fullLine = GetValidLine(splitString);
-        
+       
         // Our break out. If the current line number is greater then the amount of lines in the dialog then we're finished.
         if(currentLine >= splitString.Length)
         {
@@ -238,7 +253,7 @@ public class DialogManager : MonoBehaviour {
             string itemName = fullLine.Substring(9,1);
             int itemID;
             int.TryParse(itemName,out itemID);
-            Debug.Log(itemName);
+ 
 
             string identifier = splitString[currentLine];
             identifier = identifier.Trim();
@@ -254,6 +269,63 @@ public class DialogManager : MonoBehaviour {
                     return;
                 }
             }
+        }
+
+        if(fullLine.ToUpper().Contains("TRIGGER:"))
+        {
+            string objectName = fullLine.Substring(9);
+
+            GameObject obj = GlobalConstants.FindGameObject(objectName.Trim());
+            INonUnit activateMe = obj.GetComponent<INonUnit>();
+            if(activateMe != null)
+            {
+                activateMe.Triggered = !activateMe.Triggered;
+            }else
+            {
+                Debug.Log("Dialog manager could not find object: " + objectName);
+            }
+
+            ParseLine();
+            return;
+        }
+
+        if(fullLine.ToUpper().Contains("SETACTIVE:"))
+        {
+            // Find a game object and turn it off/on
+            // SYNTAX: SetActive:[Name].[True/False];
+            string lineTrimmed = fullLine.Substring(11);
+            string[] commands = lineTrimmed.Split('.');
+            GameObject obj = GlobalConstants.FindGameObject(commands[0]);
+
+            if(obj != null)
+            {
+                string toUp = commands[1].ToUpper();
+                if(toUp == "TRUE" || toUp == "FALSE")
+                {
+                    obj.SetActive((toUp == "TRUE") ? true : false); 
+                }
+                else
+                {
+                    Debug.Log(":DIALOG: Error at line: " + currentLine + " in dialog. Setting an objects active boolean to " + commands[1]);
+                }
+            }else
+            {
+                Debug.Log("DIALOG: Could not find object: " + commands[0]);
+            }
+
+            ParseLine();
+            return;
+        }
+
+        if(fullLine.ToUpper().Contains("WAIT:"))
+        {
+            string[] lineSplit = fullLine.Split(':');
+            int value = 0;
+            int.TryParse(lineSplit[1], out value); 
+            waiting = true;
+            StartCoroutine(waitCRT(value));
+            return;
+
         }
 
         if (fullLine.ToUpper().Contains("END:"))
@@ -312,6 +384,9 @@ public class DialogManager : MonoBehaviour {
         currentCharacter = 0;
         currentString = "";
 
+        // Set the dialog clip to the talking clip
+        mySource.clip = AudioClips[0];
+
         bool readingText = true; // Lets start an infinite loop
         while(readingText) // WEEEEEEEE
         {
@@ -321,6 +396,7 @@ public class DialogManager : MonoBehaviour {
                 // This will write the text out all scrolly n shit
                 currentString = fullLine.Substring(0, currentCharacter);
                 currentCharacter++;
+                mySource.Play();
                 TextArea.text = currentString;
 
                 // If we press space, before the line is complete, just complete the line. Because yeah.
@@ -384,7 +460,12 @@ public class DialogManager : MonoBehaviour {
             case DecisionType.Power:
                 INonUnit nonUnit = buttonEffector[0].GetComponent<INonUnit>();
                 if (_decision)
+                {
+                    mySource.clip = AudioClips[1];
+                    mySource.Play();
                     nonUnit.Powered = !nonUnit.Powered;
+                    Dialog = modifyString(currentLine + 1, Dialog, "$l: You turned the " + buttonEffector[0].name + ((nonUnit.Powered) ? ": On" : ": Off"));
+                }  
 
                 break;
             case DecisionType.Pickup:
@@ -392,13 +473,54 @@ public class DialogManager : MonoBehaviour {
                 {
                     // 0th index is the item to load
                     // 1st index is the object to destroy
-                    GameManager.Inventory.Add(buttonEffector[0].GetComponent<Item>());
-                    DestroyImmediate(buttonEffector[1]);
+                    Item i = buttonEffector[0].GetComponent<Item>();
+                    GameManager.Inventory.Add(i);
+                    DestroyImmediate(buttonEffector[1]); 
+                }else
+                {
+                    currentLine++;
                 }
                 break;
         } 
 
        
         breakOutDecision = true; 
+    }
+
+ 
+    string InsertString(int _lineNumber, string _fullString, string _insertedLine)
+    {
+        // add the inserted line into the fullstring at linenumber and return it
+        List<string> splitString = _fullString.Split('\n').ToList();
+        splitString.Insert(_lineNumber, _insertedLine);
+        string returnedString = "";
+        for(int i = 0; i < splitString.Count; i++)
+        {
+            returnedString += splitString[i];
+        }
+
+        return returnedString;
+        
+    }
+
+    IEnumerator waitCRT(float _time)
+    {
+        yield return new WaitForSeconds(_time);
+        waiting = false;
+        ParseLine();
+    }
+
+    string modifyString(int _lineNumber, string _fullString, string _newLine)
+    {
+        List<string> splitString = _fullString.Split('\n').ToList();
+        splitString[_lineNumber] = _newLine;
+        string returnedString = "";
+        for (int i = 0; i < splitString.Count; i++)
+        {
+            returnedString += splitString[i];
+            returnedString += "\n";
+        }
+
+        return returnedString;
     }
 }

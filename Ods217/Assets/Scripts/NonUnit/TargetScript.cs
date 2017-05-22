@@ -12,6 +12,7 @@ public class TargetScript: MonoBehaviour,IUnit {
 
     public UnitStruct myUnit;
     public AudioClip HitClip;
+    public AudioClip DeathClip;
     Animator myAnimator;
     AudioSource mySource;
 
@@ -33,6 +34,8 @@ public class TargetScript: MonoBehaviour,IUnit {
     // Can't really die with almost infinite health
     public void OnDeath()
     {
+        Instantiate(Resources.Load("Prefabs/Particles/SimpleDeath"), transform.position, Quaternion.identity);
+        myAudioSystem.PlayAudioOneShot(DeathClip, transform.position);
         Destroy(this.gameObject);
     }
 
@@ -45,6 +48,9 @@ public class TargetScript: MonoBehaviour,IUnit {
         mySource.clip = HitClip;
         mySource.Play();
         myVisualizer.ShowMenu();
+
+        if (myUnit.CurrentHealth <= 0)
+            OnDeath();
     }
 
     public Weapon MyWeapon

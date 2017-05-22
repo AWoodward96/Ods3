@@ -54,7 +54,7 @@ public class FootStepScript : MonoBehaviour {
         {
             case FootStepStyle.SingleTrack:
                 // alright depending on the speec
-                if(GlobalConstants.ZeroYComponent(myCC.Velocity).magnitude > .1f && !myCC.Airborne)
+                if(GlobalConstants.ZeroYComponent(myCC.Velocity).magnitude > 1f && !myCC.Airborne)
                 {
                     float rnd = Random.Range(0f, .2f) - .1f;
                     stepCooldown += Time.deltaTime;

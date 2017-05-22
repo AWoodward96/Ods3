@@ -15,10 +15,6 @@ public class ZoneScript : MonoBehaviour {
     public static ZoneScript ActiveZone;
     ZoneScript PrevZone;
 
-    MusicManager myMusicManager;
-
-     
-
     [Header("Meta")]
     public bool PrimaryZone;
     public bool AlwaysShowGizmos;
@@ -94,11 +90,7 @@ public class ZoneScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-   
-        if (myMusicManager == null)
-            myMusicManager = MusicManager.instance;
-
-
+  
         checkZone(); 
 
 

@@ -75,6 +75,7 @@ public class EnergyProviders : MonoBehaviour, INonUnit
             }
         }
 
+        
         // Enable the visual effect(s) if the object is powered
         PowerBall.gameObject.SetActive(isPowered);
         myEmitter.enableEmission = isPowered; // I'd like to stop using this but the recommended replacement doesn't work

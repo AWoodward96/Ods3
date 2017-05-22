@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,16 +14,25 @@ public class MenuManager : MonoBehaviour
     public static MenuManager instance;
     public static bool MenuOpen;
     public static bool ScrapOpen;
+    public static bool HealthkitOpen;
     public GameObject MenuHolderObject;
     public GameObject ScrapHolderObject;
+    public GameObject HealthkitHolderObject;
     Canvas myCanvas;
     Canvas myUI;
 
     Animator MenuAnimator;
     Animator ScrapAnimator;
+    Animator HealthkitAnimator;
+
+
+    List<Image> HealthKits;
+    public Sprite[] HealthKitImages;
     Text scrapText;
 
     float deltaTScrap;
+    float deltatTHealthkit;
+
     // Use this for initialization
     void Start()
     {
@@ -39,9 +49,11 @@ public class MenuManager : MonoBehaviour
         // Set up the animator 
         MenuAnimator = MenuHolderObject.GetComponent<Animator>();
         ScrapAnimator = ScrapHolderObject.GetComponent<Animator>();
+        HealthkitAnimator = HealthkitHolderObject.GetComponent<Animator>();
 
         scrapText = ScrapHolderObject.GetComponentInChildren<Text>();
 
+        // Set up the canvas'
         Canvas[] myCanvassi = GetComponentsInChildren<Canvas>();
         foreach (Canvas c in myCanvassi)
         {
@@ -52,6 +64,20 @@ public class MenuManager : MonoBehaviour
                 myUI = c;
         }
         myCanvas.gameObject.SetActive(MenuOpen);
+
+
+        // Set up the health kit images
+        Image[] allHealthKits = HealthkitHolderObject.GetComponentsInChildren<Image>();
+        HealthKits = new List<Image>();
+        foreach(Image i in allHealthKits)
+        {
+            if(i.name.Contains("Kit"))
+            {
+                HealthKits.Add(i);
+            }
+        }
+
+        HealthKits = HealthKits.OrderBy(obj => obj.name).ToList();
     }
 
     // Update is called once per frame
@@ -100,6 +126,23 @@ public class MenuManager : MonoBehaviour
 
             scrapText.text = GameManager.ScrapCount.ToString();
         }
+
+        HealthkitAnimator.SetBool("Open", HealthkitOpen);
+        if(HealthkitOpen)
+        {
+            for(int i = 0; i < HealthKits.Count; i++)
+            {
+                HealthKits[i].sprite = (GameManager.HealthKits > i) ? HealthKitImages[0] : HealthKitImages[1];
+            }
+
+            deltatTHealthkit += Time.deltaTime;
+            if(deltatTHealthkit > 4)
+            {
+                HealthkitOpen = false;
+            }
+        }
+
+        
     }
 
     // This coroutine is to disable the menu object once it's actually closed so you can't effect it unintentionally when it's not being shown
@@ -114,5 +157,11 @@ public class MenuManager : MonoBehaviour
     {
         ScrapOpen = true;
         deltaTScrap = 0;
+    }
+
+    public void ShowHealthkit()
+    {
+        HealthkitOpen = true;
+        deltatTHealthkit = 0;
     }
 }

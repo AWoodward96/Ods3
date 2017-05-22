@@ -10,8 +10,6 @@ using UnityEngine;
 [RequireComponent(typeof(UsableIndicator))]
 public class InteractToStartDialog : MonoBehaviour
 {
-
-
     [Range(.1f, 10)]
     public float Range;
     public bool Interactable;

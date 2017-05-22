@@ -45,8 +45,8 @@ public class CamScript : MonoBehaviour
             {
                 Vector3 toCursor = CursorLocation - transform.position;
                 toCursor = GlobalConstants.ZeroYComponent(toCursor);
-                if (toCursor.magnitude > 2)
-                    toCursor = toCursor.normalized * 2;
+                if (toCursor.magnitude > 6)
+                    toCursor = toCursor.normalized * 6;
 
                 Additive += toCursor;
             }
@@ -123,8 +123,7 @@ public class CamScript : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(mousePosition); // This takes the mouse position, and starts a ray at the world position (based on where the mouse is on screen) shooting where the camera is pointer
         float dist;
         if (p.Raycast(ray, out dist))
-        {
-
+        { 
             CursorLocation = ray.GetPoint(dist);
         }
     }

@@ -42,9 +42,9 @@ public class GlobalConstants {
     // Really slow. Don't use in an update method
     public static GameObject FindGameObject(string Name)
     {
-        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
 
-        foreach(GameObject obj in allObjects)
+        foreach (GameObject obj in allObjects)
         {
             if (obj.name == Name)
                 return obj;

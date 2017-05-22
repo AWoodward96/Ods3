@@ -44,6 +44,11 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
 
     List<GameObject> JumpObjectHit;
 
+
+    public List<AudioClip> PrimaryClips;
+    AudioSource myPrimarySource;
+    float primaryCD;
+
     // Use this for initialization
     void Start()
     {
@@ -54,6 +59,17 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
         JumpObjectHit = new List<GameObject>();
         powerReliant = ActivateWhenPowered.GetComponent<INonUnit>();
         AIState = AISTATE.Idle;
+
+        myPrimarySource = gameObject.AddComponent<AudioSource>();
+        myPrimarySource.loop = false;
+        myPrimarySource.playOnAwake = false;
+        myPrimarySource.spatialBlend = 1f;
+        myPrimarySource.dopplerLevel = .2f;
+        myPrimarySource.minDistance = 1;
+        myPrimarySource.rolloffMode = AudioRolloffMode.Linear;
+        myPrimarySource.maxDistance = 25;
+        myPrimarySource.volume = 1f;
+
     }
 
     // Update is called once per frame
@@ -62,10 +78,11 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
 
 
 
+        handleSound();
         updateVisuals();
 
         if (!powerReliant.Powered)
-            return;
+            return; 
 
         // Do something different for each AI
         switch (AIState)
@@ -78,6 +95,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
                 {
                     SPFXManager.showSPFX(SPFXManager.SPFX.Exclamation, (transform.position + Vector3.up) + (Vector3.forward * .1f), new Vector3(0, 600, 0), 1.5f);
                     crt_Aggro = true;
+                    playSound(2);
                     StartCoroutine(Aggro());
                 }
                 break;
@@ -88,6 +106,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
                 if (!crt_Prep)
                 {
                     crt_Prep = true;
+                    playSound(1);
                     StartCoroutine(Prep());
                 }
                 break;
@@ -100,7 +119,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
                     StartCoroutine(JumpCRT());
                 }
                 break;
-            case AISTATE.Dead: // We're dead
+            case AISTATE.Dead:
                 StopCoroutine(JumpCRT());
                 StopCoroutine(Prep());
                 StopCoroutine(Aggro());
@@ -263,6 +282,10 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
 
     void Jump()
     {
+        
+        // play the sound effect 
+        playSound(4);
+
         //PHYSICS PHYSICS PHYSICS PHYSICS
         float currentGravity = GlobalConstants.Gravity;
         float angle = 70 * Mathf.Deg2Rad; // To radian because Unity's sin and cos functions randomly take radians. like why?
@@ -298,6 +321,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
         StopCoroutine(DeathCoroutine());
         StartCoroutine(DeathCoroutine());
         AIState = AISTATE.Dead;
+        playSound(3);
         myCtrl.enabled = false;
         myAnimator.SetBool("Death", true);
     }
@@ -306,6 +330,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
     {
         yield return new WaitForSeconds(2);
         Instantiate(Resources.Load("Prefabs/Particles/SimpleDeath"), transform.position, Quaternion.identity);
+        myAudioSystem.PlayAudioOneShot(PrimaryClips[5], transform.position);
         this.gameObject.SetActive(false);
     }
 
@@ -372,6 +397,31 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
                 }
             }
         }
+    }
+
+
+    void handleSound()
+    {
+
+        primaryCD += Time.deltaTime;
+
+        if (AIState == AISTATE.Shimmy && primaryCD > .1f)
+        {
+            primaryCD = 0;
+            myPrimarySource.Stop();
+            myPrimarySource.clip = PrimaryClips[0];
+            myPrimarySource.Play();
+        }
+
+
+    }
+
+    void playSound(int clipIndex)
+    {
+        myPrimarySource.Stop();
+        myPrimarySource.pitch = 1 + (UnityEngine.Random.Range(0, .2f) - .1f);
+        myPrimarySource.clip = PrimaryClips[clipIndex];
+        myPrimarySource.Play();
     }
 }
 

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
     public static int ScrapCount;
 
     public static List<Item> Inventory;
+    public static int HealthKits;
  
     public int scrapcount;
 
@@ -35,13 +36,17 @@ public class GameManager : MonoBehaviour {
         if (GameData.FileName == null)
         {
             MetaData newData = new MetaData();
-            newData.FileName = "Saves/BetaTest.ods";
+            newData.FileName = "BetaTest2.ods";
             newData.Username = "Author";
             GameData = newData;
             WriteSaveFile(newData.FileName);
         }
 
         SceneManager.sceneLoaded += LevelLoaded;
+
+        HealthKits = 3;
+
+        Cursor.SetCursor(Resources.Load("Objects/UI/CursorTexture") as Texture2D, new Vector2(8, 8), CursorMode.Auto);
 
 	}
 	
@@ -61,10 +66,11 @@ public class GameManager : MonoBehaviour {
 
     void WriteSaveFile(string _filePath)
     {
-        if (File.Exists(_filePath))
-            File.Delete(_filePath);
+        string actualPath = Application.dataPath + '\\' + _filePath;
+        if (File.Exists(actualPath))
+            File.Delete(actualPath);
 
-        using(StreamWriter writer = new StreamWriter(_filePath))
+        using(StreamWriter writer = new StreamWriter(actualPath))
         {
             // First line should be the name of the user
             writer.WriteLine(GameData.Username);
@@ -78,11 +84,11 @@ public class GameManager : MonoBehaviour {
 
     void LoadSaveFile(string _filePath)
     {
-
-        if (!File.Exists(_filePath))
+        string actualPath = Application.dataPath + '\\' + _filePath;
+        if (!File.Exists(actualPath))
             return;
  
-        using (StreamReader reader = new StreamReader(_filePath))
+        using (StreamReader reader = new StreamReader(actualPath))
         {
             string val;
             int linenum = 0;
@@ -98,7 +104,6 @@ public class GameManager : MonoBehaviour {
                         break;
                     case 3:
                         int.TryParse(val, out GameData.scrapCount);
-                        Debug.Log(val);
                         ScrapCount = GameData.scrapCount;
                         break;
                     case 4:
