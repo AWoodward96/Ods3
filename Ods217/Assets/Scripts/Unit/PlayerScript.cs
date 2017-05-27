@@ -17,7 +17,7 @@ public class PlayerScript : MonoBehaviour, IUnit
     SpriteRenderer myRenderer;
     FootStepScript myFootStep;
     public Weapon myWeapon; // The weapon is a seperate game object so we have to manually drop it in
-    public UnitStruct myUnit;
+    public UnitStruct myUnit; 
 
     public static bool UsingItem;
 
@@ -56,7 +56,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         myAnimator = GetComponent<Animator>();
         myRenderer = GetComponent<SpriteRenderer>();
         myAudioSource = GetComponent<AudioSource>();
-        myFootStep = GetComponent<FootStepScript>();
+        myFootStep = GetComponent<FootStepScript>(); 
 
     }
 
@@ -98,6 +98,11 @@ public class PlayerScript : MonoBehaviour, IUnit
                 pos.z = .01f;
             GunObj.transform.localPosition = pos;
 
+           
+            Light gunShootFlare = GunObj.GetComponentInChildren<Light>();
+            if(gunShootFlare != null)
+                gunShootFlare.transform.localPosition = new Vector3(gunShootFlare.transform.localPosition.x, (CursorLoc.x < transform.position.x) ? -.2f : .2f, gunShootFlare.transform.localPosition.z);
+
         }
         else // If you're sprinting then loc the guns rotation at 20 degrees depending on which direction you're facing
         {
@@ -129,9 +134,7 @@ public class PlayerScript : MonoBehaviour, IUnit
 
             GunObj.transform.localPosition = pos;
         }
-
-
-
+         
 
     }
 
@@ -177,7 +180,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         if (myCtrl.Sprinting != myCtrl.SprintingPrev)
             myFootStep.stepCooldown = 0;
 
-        myFootStep.Speed = (myCtrl.Sprinting) ? .4f : .45f;
+        myFootStep.Speed = (myCtrl.Sprinting) ? .3f : .45f;
 
     }
 
@@ -253,14 +256,14 @@ public class PlayerScript : MonoBehaviour, IUnit
             myWeapon.ForceReload();
 
         // Handle using a healthkit
-        if(Input.GetKeyDown(KeyCode.Q) && !UsingItem && GameManager.HealthKits > 0 && myUnit.CurrentHealth != myUnit.MaxHealth)
-        {
-            myAnimator.SetFloat("Special", 1);
-            UsingItem = true;
-            MenuManager.instance.ShowHealthkit();
-            myCtrl.Velocity = Vector3.zero;
-            StartCoroutine(UseItemCRT());
-        }
+        //if(Input.GetKeyDown(KeyCode.Q) && !UsingItem && GameManager.HealthKits > 0 && myUnit.CurrentHealth != myUnit.MaxHealth)
+        //{
+        //    myAnimator.SetFloat("Special", 1);
+        //    UsingItem = true;
+        //    MenuManager.instance.ShowHealthkit();
+        //    myCtrl.Velocity = Vector3.zero;
+        //    StartCoroutine(UseItemCRT());
+        //}
     }
 
     public void OnDeath()

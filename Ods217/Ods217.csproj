@@ -105,6 +105,8 @@
     <Compile Include="Assets\Scripts\Items\IBullet.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
+    <Compile Include="Assets\Scripts\MinigameScripts\trainingMinigame.cs" />
+    <Compile Include="Assets\Scripts\MinigameScripts\traningMinigameTile.cs" />
     <Compile Include="Assets\Scripts\NewMusicManager.cs" />
     <Compile Include="Assets\Scripts\NonUnit\AnimatedDoor.cs" />
     <Compile Include="Assets\Scripts\NonUnit\BrokenDoorScript.cs" />

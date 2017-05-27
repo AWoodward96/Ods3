@@ -11,7 +11,8 @@ public class moveToOnTrigger : MonoBehaviour, INonUnit{
     public Vector3 StatePositionFalse; // This position this object should be at when State is false
     public float Speed;
     bool statePrev; // To check to see if we should move
-    bool triggered; // If true, we're moving atm
+    [HideInInspector]
+    public bool triggered; // If true, we're moving atm
 
     // Use this for initialization
     void Start () {

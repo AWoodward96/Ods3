@@ -10,28 +10,43 @@ using UnityEngine.UI;
 /// </summary>
 public class MenuManager : MonoBehaviour
 {
-
+    [Header("Extentions")]
     public static MenuManager instance;
     public static bool MenuOpen;
     public static bool ScrapOpen;
     public static bool HealthkitOpen;
+    public static bool ShowingDirectionalIndicator;
     public GameObject MenuHolderObject;
     public GameObject ScrapHolderObject;
     public GameObject HealthkitHolderObject;
+    public GameObject DirectionalHolderObject;
     Canvas myCanvas;
     Canvas myUI;
 
+    // Animating things
     Animator MenuAnimator;
     Animator ScrapAnimator;
     Animator HealthkitAnimator;
 
-
-    List<Image> HealthKits;
+    // Health kit info    
+    [Space(30)]
+    [Header("Health Kit Info")]
     public Sprite[] HealthKitImages;
-    Text scrapText;
-
+    List<Image> HealthKits;
     float deltaTScrap;
     float deltatTHealthkit;
+
+    // Scrap info
+    Text scrapText;
+
+    // Directional info
+    public enum Direction { Right, Up, Left, Down };
+    [Space(30)]
+    [Header("Directional Info")]
+    public Direction ShowingDirection; // Which direction arrow is being shown
+    public Image[] DirectionalImageArray; // The array that holds the actual images
+    float directionalShowCount; // how many times this arrow has blinked 
+ 
 
     // Use this for initialization
     void Start()
@@ -78,6 +93,12 @@ public class MenuManager : MonoBehaviour
         }
 
         HealthKits = HealthKits.OrderBy(obj => obj.name).ToList();
+
+        // Set up the directional images
+        DirectionalImageArray = DirectionalHolderObject.GetComponentsInChildren<Image>();
+        foreach (Image i in DirectionalImageArray)
+            i.enabled = false;
+        //DirectionalImageArray = allDirectionalImages.OrderBy(obj => obj.name).ToArray();
     }
 
     // Update is called once per frame
@@ -142,6 +163,19 @@ public class MenuManager : MonoBehaviour
             }
         }
 
+        if(ShowingDirectionalIndicator)
+        {
+            // Turn off every other directional image besides the one that we're working on
+            for(int i = 0; i < 4; i ++)
+            {
+                if ((int)ShowingDirection == i)
+                    continue;
+
+                DirectionalImageArray[i].enabled = false;
+            }
+        }
+
+ 
         
     }
 
@@ -163,5 +197,36 @@ public class MenuManager : MonoBehaviour
     {
         HealthkitOpen = true;
         deltatTHealthkit = 0;
+    }
+
+    public void ShowDirectional(Direction _dir)
+    {
+        ShowingDirectionalIndicator = true;
+        ShowingDirection = _dir;
+        directionalShowCount = 0;
+        DirectionalImageArray[(int)ShowingDirection].enabled = true; // Turn on the direction
+        StopCoroutine(blinkingDirectionCRT());
+        StartCoroutine(blinkingDirectionCRT());
+    }
+
+    IEnumerator blinkingDirectionCRT()
+    {
+        while(directionalShowCount < 7)
+        {
+            yield return new WaitForSeconds(1);
+            directionalShowCount++;
+            DirectionalImageArray[(int)ShowingDirection].enabled = !DirectionalImageArray[(int)ShowingDirection].enabled;
+        }
+        DirectionalImageArray[(int)ShowingDirection].enabled = false; // Ensure that the thing is turned off
+        ShowingDirectionalIndicator = false;
+    }
+
+    public void StopDirectional()
+    {
+        StopCoroutine(blinkingDirectionCRT());
+        
+        ShowingDirectionalIndicator = false;
+        foreach (Image i in DirectionalImageArray)
+            i.enabled = false;
     }
 }

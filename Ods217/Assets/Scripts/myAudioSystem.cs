@@ -24,6 +24,21 @@ public class myAudioSystem : MonoBehaviour {
         source.Play();
     }
 
+    public static void PlayAudioOneShot(AudioClip _clip, Vector3 _AtLocation,float _Volume)
+    {
+        GameObject obj = new GameObject("One Shot: " + _clip.name);
+        obj.transform.position = _AtLocation;
+        AudioSource source = obj.AddComponent<AudioSource>();
+        source.volume = _Volume;
+        source.playOnAwake = false;
+        source.loop = false;
+
+        source.clip = _clip;
+        DestroyAfterXSeconds dest = obj.AddComponent<DestroyAfterXSeconds>();
+        dest.time = _clip.length + .1f;
+        source.Play();
+    }
+
 
     public static void PlayAudioOneShot(AudioSource _SourceParams, Vector3 _AtLocation)
     {

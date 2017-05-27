@@ -23,8 +23,14 @@ public class TargetScript: MonoBehaviour,IUnit {
         mySource = GetComponent<AudioSource>();
         mySource.loop = false;
         mySource.playOnAwake = false;
+        myAnimator.SetFloat("Health", myUnit.CurrentHealth);
     }
-	
+
+      void Update()
+    {
+
+        myAnimator.SetFloat("Health", myUnit.CurrentHealth);
+    }
 
     public UnitStruct MyUnit
     {
@@ -35,8 +41,8 @@ public class TargetScript: MonoBehaviour,IUnit {
     public void OnDeath()
     {
         Instantiate(Resources.Load("Prefabs/Particles/SimpleDeath"), transform.position, Quaternion.identity);
-        myAudioSystem.PlayAudioOneShot(DeathClip, transform.position);
-        Destroy(this.gameObject);
+        //myAudioSystem.PlayAudioOneShot(DeathClip, transform.position);
+        gameObject.SetActive(false);
     }
 
     public void OnHit(Weapon _FromWhatWeapon)
@@ -45,9 +51,37 @@ public class TargetScript: MonoBehaviour,IUnit {
         // Take damage why did I add a smiley you know what it doesn't matter
         myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage; 
         myAnimator.SetTrigger("TakeHit");
-        mySource.clip = HitClip;
-        mySource.Play();
+        //mySource.clip = HitClip;
+        //mySource.Play();
         myVisualizer.ShowMenu();
+
+        myAnimator.SetFloat("Health", myUnit.CurrentHealth);
+
+        if(myUnit.CurrentHealth <= 50)
+        {
+            AudioClip myClip;
+
+            switch(myUnit.CurrentHealth)
+            {
+                case 30:
+                    myClip = Resources.Load("Audio/SoundEffects/Target SFX/hit4") as AudioClip;
+                    break;
+                case 20:
+                    myClip = Resources.Load("Audio/SoundEffects/Target SFX/hit3") as AudioClip;
+
+                    break;
+                case 10:
+                    myClip = Resources.Load("Audio/SoundEffects/Target SFX/hit2") as AudioClip;
+
+                    break;
+                default:
+                    myClip = Resources.Load("Audio/SoundEffects/Target SFX/hit1") as AudioClip; 
+                    break;
+            }
+
+            myAudioSystem.PlayAudioOneShot(myClip, transform.position,1.5f);
+        }
+
 
         if (myUnit.CurrentHealth <= 0)
             OnDeath();

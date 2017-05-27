@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// A struct for keeping data on a Unit
+/// A class for keeping data on a Unit
 /// </summary>
 [System.Serializable]
-public struct UnitStruct
+public class UnitStruct
 {
 
     [Header("Meta Data")]

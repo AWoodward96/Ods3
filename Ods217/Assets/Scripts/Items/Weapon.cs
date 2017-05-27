@@ -41,10 +41,14 @@ public class Weapon : MonoBehaviour
 
     List<GameObject> SecondaryBullets = new List<GameObject>();
 
+    [Header("Effects")]
+    public Animator myAnimator; 
+    public Light ShootFlare;
+
     // First check
     void Start()
     {
-        myAudioSource = GetComponent<AudioSource>();
+        myAudioSource = GetComponent<AudioSource>(); 
     }
 
     void Update()
@@ -58,6 +62,11 @@ public class Weapon : MonoBehaviour
         if (CurrentSecondaryClip < 1)
         {
             SecondaryType = SecondaryTypes.None;
+        }
+
+        if(currentCd > .1 && ShootFlare != null)
+        {
+            ShootFlare.enabled = false;
         }
     }
 
@@ -124,7 +133,15 @@ public class Weapon : MonoBehaviour
                 currentCd = 0;
                 CurrentClip--;
 
+                if(ShootFlare != null)
+                { 
+                    ShootFlare.enabled = true;
+                }
 
+                if (myAnimator != null)
+                {
+                    myAnimator.SetTrigger("Fire");
+                }
 
                 // Play the sound
                 myAudioSource.clip = ShootClip;
@@ -157,6 +174,7 @@ public class Weapon : MonoBehaviour
                     SecondaryBullets[i].GetComponent<IBullet>().Shoot(_dir);
                     currentCd = 0;
                     CurrentSecondaryClip--;
+
 
                     // Play the sound
                     myAudioSource.clip = ShootClip;
