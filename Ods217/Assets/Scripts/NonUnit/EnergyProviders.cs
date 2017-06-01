@@ -50,10 +50,10 @@ public class EnergyProviders : MonoBehaviour, INonUnit
     void Start()
     {
 
-        Timer = transform.FindChild("Timer").gameObject;
+        Timer = transform.Find("Timer").gameObject;
         myAnimator = Timer.GetComponent<Animator>();
         myEmitter = GetComponentInChildren<ParticleSystem>();
-        PowerBall = transform.FindChild("energyOrb").gameObject; // a visual effect
+        PowerBall = transform.Find("energyOrb").gameObject; // a visual effect
     }
 
     // Update is called once per frame

@@ -110,7 +110,7 @@ public class PlayerScript : MonoBehaviour, IUnit
             //// Flip the gun if you're moving left
             GunObj.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
 
-            GunObj.transform.rotation = Quaternion.Euler(0, 0, -88);
+            GunObj.transform.rotation = Quaternion.Euler(HolsteredRotation);
             GunObj.transform.localPosition = HolsteredPosition;
 
             Vector3 pos = GunObj.transform.localPosition;
@@ -118,6 +118,12 @@ public class PlayerScript : MonoBehaviour, IUnit
             if((myCtrl.Velocity.magnitude > 1f)) // If we're moving then always put it behind the player
             {
                 pos.z = .01f;
+                // If we're running primarily up then put it in front of the player sprite (behind the player, but towards the camera because we're running up)
+                float zval = myCtrl.Velocity.z;
+                float xval = myCtrl.Velocity.x;
+                if (zval > 0 && Math.Abs(xval) < zval)
+                    pos.z = -.01f;
+
             }else
             {
                 if (UsingItem) // If we're using an item then put it behind the player
@@ -147,7 +153,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         // Handle looking left vs right via where the cursor is
         bool flip;
         if (myCtrl.Sprinting)
-            flip = (myCtrl.Velocity.x < 0);
+            flip = false;
         else
             flip = (CursorLoc.x < transform.position.x);
         myRenderer.flipX = flip;
@@ -158,6 +164,8 @@ public class PlayerScript : MonoBehaviour, IUnit
 
         // If we're walking in a reverse direction we want to reverse our animation speed
         float spd = 1;
+
+     
 
         if (!myCtrl.Sprinting)
         {
@@ -172,7 +180,10 @@ public class PlayerScript : MonoBehaviour, IUnit
 
 
 
+
         // Handle walking and running bools
+        myAnimator.SetFloat("SpeedX", myCtrl.Velocity.x);
+        myAnimator.SetFloat("SpeedY", myCtrl.Velocity.z);
         myAnimator.SetFloat("Speed", spd);
         myAnimator.SetBool("Moving", (myCtrl.Velocity.magnitude > 1f));
         myAnimator.SetBool("Running", myCtrl.Sprinting);
@@ -180,7 +191,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         if (myCtrl.Sprinting != myCtrl.SprintingPrev)
             myFootStep.stepCooldown = 0;
 
-        myFootStep.Speed = (myCtrl.Sprinting) ? .3f : .45f;
+        myFootStep.Speed = (myCtrl.Sprinting) ? .2f : .45f;
 
     }
 
