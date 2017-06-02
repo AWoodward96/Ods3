@@ -79,29 +79,29 @@ public class CamScript : MonoBehaviour
         loadedPoint = 0;
     }
 
-
+    // Extents are the points where the camera is restricted from moving further
     void HandleExtents()
     {
-
+        // Restrict the camera from moving outside the designated area
         Camera main = Camera.main;
         float size = main.orthographicSize;
         float verticleSize = size * 2;
         float horezontalSize = size * Screen.width / Screen.height;
 
+        // Get the position on the ground that is right in the center of the screen
         Plane horezPlane = new Plane(Vector3.up, ExtentsTL);
         Ray CameraProjectionRay = main.ScreenPointToRay(new Vector2(0, Screen.height / 2));
         float dist;
         horezPlane.Raycast(CameraProjectionRay, out dist);
         Vector3 posOnGround = CameraProjectionRay.GetPoint(dist);
-
-
-
+     
+        // Get the bounds
         verticleSize = verticleSize / (2 * Mathf.Cos(Mathf.Deg2Rad * 30));
         float tiltDistance = (Mathf.Abs(posOnGround.z - transform.position.z));
         float topBounds = verticleSize + tiltDistance;
         float bottomBounds = tiltDistance - verticleSize;
 
-
+        // Restrict the camera
         if (transform.position.x < (ExtentsTL.x + horezontalSize))
             transform.position = new Vector3(ExtentsTL.x + horezontalSize, transform.position.y, transform.position.z);
 

@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// An Effects Script
+/// Instantiate an object that quickly destroys itself used for only effects
+/// This does create game objects on the fly so don't use it too much
+/// </summary>
 public class SPFXManager : MonoBehaviour {
 
     public enum SPFX { Exclamation, Awkward };

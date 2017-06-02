@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A Special Effect
+/// Move any object between two positions based on the scripts state boolean
+/// </summary>
 public class moveToOnTrigger : MonoBehaviour, INonUnit{
 
     public bool State;
@@ -21,10 +25,8 @@ public class moveToOnTrigger : MonoBehaviour, INonUnit{
             Speed = 4;
 	}
 	
-	// Update is called once per frame
+	// We used FixedUpdate because it pertains to moving objects
 	void FixedUpdate () {
-
-
         if(statePrev != State) 
             triggered = true;
 
@@ -42,7 +44,7 @@ public class moveToOnTrigger : MonoBehaviour, INonUnit{
         statePrev = State;
 	}
 
-
+    // Required dead Methods for interfaces
     bool INonUnit.Powered
     {
         get

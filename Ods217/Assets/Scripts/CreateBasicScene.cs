@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
+
 /// <summary>
 /// The objective of this script is to just completely nuke a scene and then build a basic one from the ground up
 /// A starter scene if you will
@@ -42,8 +43,6 @@ public class CreateBasicScene : MonoBehaviour {
 
         // Once all that is done,
         DestroyImmediate(this.gameObject); // Kill this object
-
-
 
     }
 }

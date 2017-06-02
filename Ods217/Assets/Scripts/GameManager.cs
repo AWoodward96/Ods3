@@ -4,14 +4,18 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// A script that is always present in the scene
+/// Used to move players around, handle the inventory, loading and saving player data, the works
+/// </summary>
 public class GameManager : MonoBehaviour {
 
 
-    public static GameManager instance; 
-    public static int ScrapCount;
+    public static GameManager instance; // So there's only one
+    public static int ScrapCount; // How much money the player has
 
-    public static List<Item> Inventory;
-    public static int HealthKits;
+    public static List<Item> Inventory; // What's in you're inventory
+    public static int HealthKits; // How many health kits you have [Deprecated]
  
     public int scrapcount;
 
@@ -46,7 +50,7 @@ public class GameManager : MonoBehaviour {
 
         HealthKits = 3;
 
-        Cursor.SetCursor(Resources.Load("Objects/UI/CursorTexture") as Texture2D, new Vector2(8, 8), CursorMode.Auto);
+        Cursor.SetCursor(Resources.Load("Sprites/UI/CursorTexture") as Texture2D, new Vector2(8, 8), CursorMode.Auto);
 
 	}
 	
@@ -54,7 +58,7 @@ public class GameManager : MonoBehaviour {
 	void Update () {
         scrapcount = ScrapCount;
 
-
+        // Some keystrokes to work with saving and loading files
         if (Input.GetKeyDown(KeyCode.Alpha8))
             WriteSaveFile("Beta");
 
@@ -63,7 +67,9 @@ public class GameManager : MonoBehaviour {
        
     }
 
-
+    /// <notice>
+    /// A sample save file can be found in the scripts folder
+    /// </notice>
     void WriteSaveFile(string _filePath)
     {
         string actualPath = Application.dataPath + '\\' + _filePath;
@@ -128,7 +134,6 @@ public class GameManager : MonoBehaviour {
         GameObject Player = GameObject.FindGameObjectWithTag("Player");
         Player.transform.position = GameData.SavedPlayerPosition;
     }
- 
 
     public void LoadLastSaveFile()
     {
@@ -136,6 +141,7 @@ public class GameManager : MonoBehaviour {
     }
 }
 
+// A struct to hold relavent information to save to a text file
 [System.Serializable]
 public struct MetaData
 {

@@ -1,34 +1,34 @@
 fileFormatVersion: 2
-guid: a48ddf86d01f40447b2e185e18444694
-timeCreated: 1487699029
+guid: edfba456188d076418d78e626b71b3d1
+timeCreated: 1496348350
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: GenericTarget_0
-    21300002: GenericTarget_1
-    21300004: GenericTarget_2
-    21300006: GenericTarget_3
-    21300008: GenericTarget_4
-    21300010: GenericTarget_5
-    21300012: GenericTarget_6
-    21300014: GenericTarget_7
-    21300016: GenericTarget_8
-    21300018: GenericTarget_9
-    21300020: GenericTarget_10
-    21300022: GenericTarget_11
-    21300024: GenericTarget_12
-    21300026: GenericTarget_13
-    21300028: GenericTarget_14
-    21300030: GenericTarget_15
-    21300032: GenericTarget_16
-    21300034: GenericTarget_17
-    21300036: GenericTarget_18
-    21300038: GenericTarget_19
-    21300040: GenericTarget_20
-    21300042: GenericTarget_21
-    21300044: GenericTarget_22
-    21300046: GenericTarget_23
-    21300048: GenericTarget_24
+    21300000: Door1_0
+    21300002: Door1_1
+    21300004: Door1_2
+    21300006: Door1_3
+    21300008: Door1_4
+    21300010: Door1_5
+    21300012: Door1_6
+    21300014: Door1_7
+    21300016: Door1_8
+    21300018: Door1_9
+    21300020: Door1_10
+    21300022: Door1_11
+    21300024: Door1_12
+    21300026: Door1_13
+    21300028: Door1_14
+    21300030: Door1_15
+    21300032: Door1_16
+    21300034: Door1_17
+    21300036: Door1_18
+    21300038: Door1_19
+    21300040: Door1_20
+    21300042: Door1_21
+    21300044: Door1_22
+    21300046: Door1_23
+    21300048: Door1_24
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -65,7 +65,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 12
+  spritePixelsToUnits: 16
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -95,327 +95,249 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GenericTarget_0
+      name: Door1_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 240
-        width: 60
-        height: 59
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_1
+      name: Door1_1
       rect:
         serializedVersion: 2
-        x: 60
-        y: 240
-        width: 60
-        height: 59
+        x: 64
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_2
+      name: Door1_2
       rect:
         serializedVersion: 2
-        x: 120
-        y: 240
-        width: 60
-        height: 59
+        x: 128
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_3
+      name: Door1_3
       rect:
         serializedVersion: 2
-        x: 180
-        y: 240
-        width: 60
-        height: 59
+        x: 192
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_4
+      name: Door1_4
       rect:
         serializedVersion: 2
-        x: 240
-        y: 240
-        width: 60
-        height: 59
+        x: 256
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_5
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 180
-        width: 60
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: GenericTarget_6
-      rect:
-        serializedVersion: 2
-        x: 60
-        y: 180
-        width: 60
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: GenericTarget_7
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 180
-        width: 60
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: GenericTarget_8
-      rect:
-        serializedVersion: 2
-        x: 180
-        y: 180
-        width: 60
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: GenericTarget_9
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 180
-        width: 60
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: GenericTarget_10
+      name: Door1_5
       rect:
         serializedVersion: 2
         x: 0
-        y: 120
-        width: 60
-        height: 59
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_11
+      name: Door1_6
       rect:
         serializedVersion: 2
-        x: 60
-        y: 120
-        width: 60
-        height: 59
+        x: 64
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_12
+      name: Door1_7
       rect:
         serializedVersion: 2
-        x: 120
-        y: 120
-        width: 60
-        height: 59
+        x: 128
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_13
+      name: Door1_8
       rect:
         serializedVersion: 2
-        x: 180
-        y: 120
-        width: 60
-        height: 59
+        x: 192
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_14
+      name: Door1_9
       rect:
         serializedVersion: 2
-        x: 240
-        y: 120
-        width: 60
-        height: 59
+        x: 256
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_15
+      name: Door1_11
       rect:
         serializedVersion: 2
-        x: 0
-        y: 60
-        width: 60
-        height: 59
+        x: 64
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_16
+      name: Door1_12
       rect:
         serializedVersion: 2
-        x: 60
-        y: 60
-        width: 60
-        height: 59
+        x: 128
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_17
+      name: Door1_13
       rect:
         serializedVersion: 2
-        x: 120
-        y: 60
-        width: 60
-        height: 59
+        x: 192
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_18
+      name: Door1_14
       rect:
         serializedVersion: 2
-        x: 180
-        y: 60
-        width: 60
-        height: 59
+        x: 256
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_19
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 60
-        width: 60
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: GenericTarget_20
+      name: Door1_15
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 60
-        height: 59
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_21
+      name: Door1_16
       rect:
         serializedVersion: 2
-        x: 60
-        y: 0
-        width: 60
-        height: 59
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_22
+      name: Door1_17
       rect:
         serializedVersion: 2
-        x: 120
-        y: 0
-        width: 60
-        height: 59
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_23
+      name: Door1_18
       rect:
         serializedVersion: 2
-        x: 180
-        y: 0
-        width: 60
-        height: 59
+        x: 192
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: GenericTarget_24
+      name: Door1_19
       rect:
         serializedVersion: 2
-        x: 240
-        y: 0
-        width: 60
-        height: 59
+        x: 256
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

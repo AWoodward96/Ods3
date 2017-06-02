@@ -3,26 +3,29 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
  
+/// <summary>
+/// A script that handles camera placement and sceudo levels
+/// Runs in edit mode so we can see how each zone is layed out
+/// </summary>
 public class ZoneScript : MonoBehaviour {
 
-    // Use this for initialization
-    public enum AudioZoneType { Additive, Inverse, Enable };
+    
     public enum ViewType { Wire, Solid };
     [Header("Zone Info")]
     public ViewType type;
-    public float YPosition;
-    public Vector2 ZoneSize;
-    public static ZoneScript ActiveZone;
+    public float YPosition; // Ideally 0, but this only effects inspector view and has no effect on the rest of the game
+    public Vector2 ZoneSize; // The width and height of the zone
+    public static ZoneScript ActiveZone; // Whichever zone is currently being occupied by the player
     ZoneScript PrevZone;
 
     [Header("Meta")]
-    public bool PrimaryZone;
-    public bool AlwaysShowGizmos;
+    public bool PrimaryZone; // The Primary Zone is the first zone in the scene
+    public bool AlwaysShowGizmos; // a helper boolean. Will show gizmos even if this game object isn't selected if true.
 
-    public float CameraSize;
+    public float CameraSize; // Change the camera size to this when you're in this zone
 
-    public List<GameObject> Enemies;
-    public List<Light> LightObjects;
+    public List<GameObject> Enemies; // A list of the enemies in this zone
+    public List<Light> LightObjects; // A list of lights in this zone
 
     Vector3 topLeft;
     Vector3 bottomRight;
@@ -35,8 +38,9 @@ public class ZoneScript : MonoBehaviour {
     }
 
 	void Awake () {
-        if(Application.isPlaying)
+        if(Application.isPlaying) // If we're not in the editor
         {
+            // Set up the primary zone
             if (PrimaryZone)
             {
                 CamScript c = Camera.main.GetComponent<CamScript>();
@@ -46,9 +50,11 @@ public class ZoneScript : MonoBehaviour {
                 ActiveZone = this;
             }
 
+            // Calculate the top left and bottom right variables
             topLeft = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2);
             bottomRight = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2);
 
+            // Get every enemy in the zone
             GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
             foreach (GameObject g in gos)
             {
@@ -70,6 +76,7 @@ public class ZoneScript : MonoBehaviour {
                     }
                 }
 
+                // Get every light in the zone
                 Light l = g.GetComponent<Light>();
                 if (l != null)
                 {
@@ -92,14 +99,12 @@ public class ZoneScript : MonoBehaviour {
     {
   
         checkZone(); 
-
-
+         
         if (PrevZone != ActiveZone)
         { 
             SetLights((ActiveZone == this));
         }
-
-
+         
         PrevZone = ActiveZone;
     }
 
@@ -163,7 +168,7 @@ public class ZoneScript : MonoBehaviour {
         } 
     }
  
-
+    // Turn on and off lights in the zone
     void SetLights(bool _val)
     {
 

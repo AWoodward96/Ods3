@@ -193,6 +193,7 @@ public class MenuManager : MonoBehaviour
         deltaTScrap = 0;
     }
 
+    // [Deprecated]
     public void ShowHealthkit()
     {
         HealthkitOpen = true;

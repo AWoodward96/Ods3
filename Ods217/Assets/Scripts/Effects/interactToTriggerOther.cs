@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// An Effects Script
+/// When it's interacted with by pressing [E] it will trigger another object
+/// </summary>
 [RequireComponent(typeof(UsableIndicator))]
 [RequireComponent(typeof(AudioSource))]
 public class interactToTriggerOther : MonoBehaviour {

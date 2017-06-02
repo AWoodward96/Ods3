@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This script is for running the target practice minigame
+/// The levels are hardcoded but could be turned into an algorithm if I really wanted to
+/// </summary>
 public class trainingMinigame : MonoBehaviour {
 
-    public GameObject Prison1x1;
-    public traningMinigameTile trueTile;
-    public traningMinigameTile falseTile;
-    public List<GameObject> Targets;
+    public GameObject Prison1x1; // An invisible prison we throw around to make sure that the player can't leave the active tile
+    public traningMinigameTile trueTile; // The Red X tile that really does nothing except for move around
+    public traningMinigameTile falseTile; // The Blue Square tile that when stepped on activates a new set of targets
 
-    List<moveToOnTrigger> Triggers;
-    List<IUnit> Units;
+    public List<GameObject> Targets; // A list of target objects that we throw up randomly throughout the minigame
 
-    Vector3[] Positions = { new Vector3(0, 0, 1), new Vector3(0.951f, 0, 0.3089f), new Vector3(-0.951f, 0, 0.3089f), new Vector3(0.589f, 0, -0.8078f), new Vector3(-0.589f, 0, -0.8078f) };
+    List<moveToOnTrigger> Triggers; // Each target should have a moveToOnTriggerScript. We get these during initialization so we don't have to get them again later
+    List<IUnit> Units; // Each target has a IUnit interface script on them. We get these during initialization so we don't have to get them again
 
-    int levelNum = 0;
-    int cycleNum = 0;
+    Vector3[] Positions = { new Vector3(0, 0, 1), new Vector3(0.951f, 0, 0.3089f), new Vector3(-0.951f, 0, 0.3089f), new Vector3(0.589f, 0, -0.8078f), new Vector3(-0.589f, 0, -0.8078f) }; // Hard coded unit positions. We add these values to the root tile when setting the targets position
+
+    int levelNum = 0; // 
+    int cycleNum = 0; // We run in circles using this
 
     bool levelActive;
 
@@ -43,6 +48,7 @@ public class trainingMinigame : MonoBehaviour {
 	void Update () {
         if(levelActive)
         {
+            // Check to see if the player has 'killed' all the targets
             bool isFinished = true;
             for (int i = 0; i < Targets.Count; i++)
             {
@@ -50,14 +56,16 @@ public class trainingMinigame : MonoBehaviour {
                     isFinished = false;
             }
 
+            // If they have killed all the targets
             if (isFinished)
             {
-
+                // We have no more levels after 10
                 if (levelNum > 10)
                     return;
 
                 Vector3 _newDirection = Vector3.zero;
 
+                // Figure out where the next tile will be placed
                 switch (cycleNum)
                 {
                     case 0:
@@ -82,6 +90,7 @@ public class trainingMinigame : MonoBehaviour {
                         break;
                 }
 
+                // Move the tiles and turn the barrier off so we can run to the next tile
                 falseTile.transform.position = falseTile.transform.position + (_newDirection * 30);
                 falseTile.GetComponent<SpriteRenderer>().enabled = true;
                 Prison1x1.SetActive(false);
@@ -167,7 +176,7 @@ public class trainingMinigame : MonoBehaviour {
                 PrepTarget(0, 0, 40);
                 PrepTarget(1, 1, 30);
                 PrepTarget(2, 2, 10);
-                PrepTarget(3, 4, 10);
+                PrepTarget(3, 4, 10); // o mix it up
                 PrepTarget(4, 3, 10);
                 break;
             default:
@@ -175,29 +184,36 @@ public class trainingMinigame : MonoBehaviour {
                 break;
         }
 
+        
         levelActive = true;
+
+        // The cycle is just to ensure we never run off the stage
         cycleNum += 1;
         if (cycleNum > 3)
             cycleNum = 0;
 
         levelNum++;
-
-        
-        
     }
 
-
+    // The method called when we want to set up a target
     void PrepTarget(int _targetIndex, int _targetPositionIndex,int _targetHealth)
     {
-        Vector3 rootPosition = trueTile.transform.position;
-        Targets[_targetIndex].SetActive(true);
-        Targets[_targetIndex].transform.position = rootPosition + (Positions[_targetPositionIndex] * 7) + Vector3.down * 2;
-        Triggers[_targetIndex].StatePositionFalse = Targets[0].transform.position;
+        // Set the Targets position based on the position index relative to the X tile the player is now standing on
+        Vector3 rootPosition = trueTile.transform.position; 
+        Targets[_targetIndex].SetActive(true); // Turn the target object on
+        Targets[_targetIndex].transform.position = rootPosition + (Positions[_targetPositionIndex] * 7) + Vector3.down * 2; // Move the target to the right position
+
+        // When summoned we want the Targets to start beneath the ground and move upwards. We use the moveToOntrigger script here
+        // Calculate the position we want the target to move up to
         Vector3 truePosition = Targets[_targetIndex].transform.position;
         truePosition.y = 5;
+
+        Triggers[_targetIndex].StatePositionFalse = Targets[0].transform.position; // The state position false really isn't used but just in case we set it up here
         Triggers[_targetIndex].StatePositionTrue = truePosition;
-        Triggers[_targetIndex].triggered = true;
-        Triggers[_targetIndex].State = true;
+        Triggers[_targetIndex].triggered = true; // Trigger them so they're garunteed to start moving
+        Triggers[_targetIndex].State = true; // Set their state to true as well
+
+        // Heal up the target and set it's health
         Units[_targetIndex].MyUnit.CurrentHealth = _targetHealth;
         Units[_targetIndex].MyUnit.MaxHealth = _targetHealth;
     }

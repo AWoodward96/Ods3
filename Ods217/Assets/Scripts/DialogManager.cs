@@ -4,6 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// A script to handle all forms of dialog and severl other interactions in the game
+/// </summary>
 public class DialogManager : MonoBehaviour {
 
     Canvas MyCanvas;
@@ -80,6 +84,7 @@ public class DialogManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        // enable and disable assets depending on booleans
         MyCanvas.enabled = InDialog && !waiting;
         buttonLeft.gameObject.SetActive(makingADecision);
         buttonRight.gameObject.SetActive(makingADecision);  
@@ -137,6 +142,7 @@ public class DialogManager : MonoBehaviour {
         ParseLine();
     }
 
+    // A GIANT method that goes through and determines what we're doing with each line
     void ParseLine()
     {
         /// Function List:
@@ -144,7 +150,7 @@ public class DialogManager : MonoBehaviour {
         /// '//' - A comment, Ignored
         /// '$' - Also considered a comment, but only if nothing comes after it. Consider it a line feed for formatting
         /// '$Power?: ![ObjectName]' - States the current power of an object and asks if you want to turn it on or not
-        ///     $l: [Success Prompt] - Success prompt comes after the power query
+        ///     [This function requires an empty line afterwords]
         /// 
         /// '$PickUp?: ![Query]' - Item name is what you'd want to pick up. Query is what is asked of the player IE 'Would you like to pick it up?' GameObjectDestroy is the in world item to be destroyed if yes
         ///     ![ItemToAdd]
@@ -431,7 +437,7 @@ public class DialogManager : MonoBehaviour {
 
     void GoToLine(string _Marker, string[] _splitString)
     {
-        // Bleh 
+        // Set up the dialog to start reading at another line
         for(int i = 0; i < _splitString.Length; i++)
         {
             string line = _splitString[i];
@@ -453,6 +459,8 @@ public class DialogManager : MonoBehaviour {
         }
     }
 
+    // This method is called from other scripts to let the dialog manager know a decision was made
+    // This could probably be done better
     public void DecisionMade(bool _decision)
     {
         switch (currentDecisionType)
@@ -510,6 +518,7 @@ public class DialogManager : MonoBehaviour {
         ParseLine();
     }
 
+    // Change a line in the dialog on the fly. Mostly used in automatically generated lines (EX: "x object was turned on/off")
     string modifyString(int _lineNumber, string _fullString, string _newLine)
     {
         List<string> splitString = _fullString.Split('\n').ToList();

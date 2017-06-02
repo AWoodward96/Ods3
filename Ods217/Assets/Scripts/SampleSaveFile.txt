@@ -1,0 +1,7 @@
+[Author]
+--------------Plz don't edit this. You might break the game and then you're saved file is lost.--------------
+[Scene Name]
+[Scrap count]
+[Player Position in this format: (x float,y float,z float)] 
+[Last time edited. Example: 5/11/2017 7:32:08 PM]
+This file should be saved as a .ods

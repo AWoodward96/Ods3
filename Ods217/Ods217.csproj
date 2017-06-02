@@ -79,9 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Resources\Materials\Colors\MirrorReflection.cs" />
-    <Compile Include="Assets\Resources\Objects\Testing\AutoTiletexture.cs" />
+    <Compile Include="Assets\Resources\Sprites\Testing\AutoTiletexture.cs" />
     <Compile Include="Assets\Scripts\CamScript.cs" />
-    <Compile Include="Assets\Scripts\CannonBallTesting.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\CreateBasicScene.cs" />
     <Compile Include="Assets\Scripts\Dialog\CustomButtonUI.cs" />
@@ -143,6 +142,7 @@
     <None Include="Assets\Resources\Materials\Normal-Diffuse-Stencil-Write.shader" />
     <None Include="Assets\Resources\Materials\Normal-Diffuse-XRay-Replaceable.shader" />
     <None Include="Assets\Resources\Materials\Shadows.shader" />
+    <None Include="Assets\Scripts\SampleSaveFile.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

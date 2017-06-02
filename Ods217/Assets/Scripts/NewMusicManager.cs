@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A system of audio zones that set up the verticle re-orchestration
+/// A bunch of tracks play at once that are on loop but you can only hear certain ones when you're in a zone
+/// </summary>
 [ExecuteInEditMode]
 public class NewMusicManager : MonoBehaviour {
 
@@ -15,7 +19,7 @@ public class NewMusicManager : MonoBehaviour {
 
     [Space(25)]
     [Header("Script Information")]
-    public bool Override;
+    public bool Override; // Override is where a new zone should take priority over the base layers
     public float YPosition;
     public enum AudioZoneType { Additive, Inverse, Enable };
 

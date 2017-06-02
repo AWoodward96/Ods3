@@ -2,25 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A Special Effects Script
+/// A script for footsteps controlled usually by the CController
+/// </summary>
 [RequireComponent(typeof(CController))]
 public class FootStepScript : MonoBehaviour {
 
-    public enum FootStepStyle { SingleTrack, MultiTrack};
+    public enum FootStepStyle { SingleTrack, MultiTrack}; // Single track means that there's only one clip that gets slightly pitch shifted every time
     public FootStepStyle Style;
-    public AudioClip[] Clips;
+    public AudioClip[] Clips; // The audio clip
     [Range(0,4)]
-    public int AudioSourceCount;
+    public int AudioSourceCount; // However many audio sources there are. Usually 2 is good
     [Range(0, 1)]
     public float Volume;
     public float Speed;
-    public bool WorldSpace;
+    public bool WorldSpace; // If false, the footstep sound will play at the same volume reguardless of where it is
 
-    AudioSource[] Sources;
-    int currentStepCount;
+
     [HideInInspector]
     public float stepCooldown;
-    CController myCC;
 
+    AudioSource[] Sources; // A list of all the audio sources we'll add to this object at runtime
+    CController myCC;
+    int currentStepCount;
+    
 
 	// Use this for initialization
 	void Start () {
@@ -70,9 +77,8 @@ public class FootStepScript : MonoBehaviour {
                         }
                     }
                 }
-
-
                 break;
+                // Multitrack not implemented
         }
 	}
 }

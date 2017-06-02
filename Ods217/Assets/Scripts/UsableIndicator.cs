@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A general script used for adding some input to the player when you walk up to an object
+/// Show an indicator if the player is within range of this object
+/// </summary>
 [ExecuteInEditMode]
 public class UsableIndicator : MonoBehaviour
 {
@@ -32,8 +36,7 @@ public class UsableIndicator : MonoBehaviour
     void RunUsable()
     {
         if (ind_Object == null)
-        {
-            Debug.Log("Int");
+        { 
             GameObject o = new GameObject("MyIndicator"); 
             o.transform.parent = this.gameObject.transform;
             o.transform.localScale = new Vector3(1, 1, 1);
