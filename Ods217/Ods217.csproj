@@ -118,6 +118,7 @@
     <Compile Include="Assets\Scripts\NonUnit\ScrapCapsule.cs" />
     <Compile Include="Assets\Scripts\NonUnit\SimpleDoor.cs" />
     <Compile Include="Assets\Scripts\NonUnit\TargetScript.cs" />
+    <Compile Include="Assets\Scripts\PawnScript.cs" />
     <Compile Include="Assets\Scripts\SPFXManager.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPNonUnit.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPUnit.cs" />
