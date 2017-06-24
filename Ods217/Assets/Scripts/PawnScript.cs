@@ -50,12 +50,12 @@ public class PawnScript : MonoBehaviour, IUnit{
         myCC = GetComponent<CController>();
 
         Commands = new List<PawnCommand>();
-        Commands.Add(new PawnCommand(PawnCommand.commandType.Move,0,0,false, false,"",new Vector3(0,0,0)));
-        Commands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, false, false, "", new Vector3(-1, 0, 1)));
-        Commands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, false, false, "", new Vector3(-1, 0, -1)));
-        Commands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, false, false, "", new Vector3(1, 0, -1)));
-        Commands.Add(new PawnCommand(PawnCommand.commandType.Shoot, 0, 3, false, false, "", new Vector3(0, 0, -1)));
-        Commands.Add(new PawnCommand(PawnCommand.commandType.SetFloat, 1f, 0, false, false, "Special", new Vector3(0, 0, -1)));
+        //Commands.Add(new PawnCommand(PawnCommand.commandType.Move,0,0,false  ,"",new Vector3(0,0,0)));
+        //Commands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, false  , "", new Vector3(-1, 0, 1)));
+        //Commands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, false   , "", new Vector3(-1, 0, -1)));
+        //Commands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, false, "", new Vector3(1, 0, -1)));
+        //Commands.Add(new PawnCommand(PawnCommand.commandType.Shoot, 0, 3, false, "", new Vector3(0, 0, -1)));
+        //Commands.Add(new PawnCommand(PawnCommand.commandType.SetFloat, 1f, 0, false, "Special", new Vector3(0, 0, -1)));
     }
 	
 	// Update is called once per frame
@@ -72,7 +72,7 @@ public class PawnScript : MonoBehaviour, IUnit{
             case PawnCommand.commandType.Move:
                 Vector3 movementVector = GlobalConstants.ZeroYComponent(currentCommand.VectorVal) - GlobalConstants.ZeroYComponent(transform.position); 
                 myCC.ApplyForce(movementVector.normalized * (myCC.Speed + (myCC.Sprinting ? myCC.SprintSpeed : 0)));
-                myCC.Sprinting = currentCommand.sprinting;
+                myCC.Sprinting = currentCommand.boolVal;
                 if(movementVector.magnitude < .2f)
                 {
                     myCC.Velocity = Vector3.zero;
@@ -81,7 +81,11 @@ public class PawnScript : MonoBehaviour, IUnit{
                 }
                 break;
             case PawnCommand.commandType.Aim:
-                lookingVector = Vector3.Lerp(lookingVector, currentCommand.VectorVal, 3f * Time.deltaTime);
+                if (currentCommand.boolVal)
+                    lookingVector = Vector3.Lerp(lookingVector, currentCommand.VectorVal, 3f * Time.deltaTime);
+                else
+                    lookingVector = currentCommand.VectorVal;
+
                 if((lookingVector - currentCommand.VectorVal).magnitude < .1)
                 {
                     lookingVector = currentCommand.VectorVal;
@@ -264,15 +268,14 @@ public class PawnCommand
     public bool boolVal;
     public bool sprinting;
 
-    public PawnCommand(commandType _type, float _fVal, int _iVal, bool _bVal, bool _sprinting, string _ParamVal, Vector3 _vectorVal)
+    public PawnCommand(commandType _type, float _fVal, int _iVal, bool _bVal, string _ParamVal, Vector3 _vectorVal)
     {
         cType = _type;
         VectorVal = _vectorVal;
         ParameterName = _ParamVal;
         boolVal = _bVal;
         intVal = _iVal;
-        floatVal = _fVal;
-        sprinting = _sprinting;
+        floatVal = _fVal; 
     }
 
 }

@@ -41,6 +41,8 @@ public class DialogManager : MonoBehaviour {
     public AudioClip[] AudioClips;
     AudioSource mySource;
 
+    PawnScript currentPawn;
+
     // Use this for initialization 
     void Start() { 
         if (instance == null)
@@ -156,8 +158,7 @@ public class DialogManager : MonoBehaviour {
         ///     ![ItemToAdd]
         ///     ![GameObjectDestroy]
         ///     $l: [Success Prompt]
-        /// '$Trigger: [ObjectName]' - Triggers whatever object is listed
-        /// '$Face: [name]' - Changes what face is currently being shown. Will be a folder in the resources 
+        /// '$Trigger: [ObjectName]' - Triggers whatever object is listed 
         /// '$HasItem:[ItemID]
         ///     ![MoveToString] - MoveTo strings are *[Identifier] and will be found via a loop. Will set the current line to the line after it
         /// '$l: [Any text] **[MoveToString]
@@ -189,9 +190,13 @@ public class DialogManager : MonoBehaviour {
         if (fullLine.Contains("$l:"))
         {
             // Send it to the coroutine 
-            StartCoroutine(PrintLine(fullLine.Substring(3)));
-
+            StartCoroutine(PrintLine(fullLine.Substring(3))); 
             return;
+        }
+
+        if (fullLine[0] == '.')
+        {
+            handlePawnCommands(fullLine);
         }
 
         if(fullLine.ToUpper().Contains("POWER?:"))
@@ -531,5 +536,71 @@ public class DialogManager : MonoBehaviour {
         }
 
         return returnedString;
+        
+    }
+
+    string[] parseCommand(string _Command)
+    {
+        string cutCommand = _Command.Substring(_Command.IndexOf('(') + 1);
+        cutCommand = cutCommand.TrimEnd(')');
+
+        string[] returned = cutCommand.Split(',');
+        for(int i = 0; i < returned.Length; i++)
+        {
+            returned[i] = returned[i].Trim();
+        }
+
+        return returned;
+    }
+
+    void handlePawnCommands(string _fullline)
+    {
+        // Pawn commands 
+        // Bind sets the currentPawn variable to whatever object we've found
+        if(_fullline.ToUpper().Contains(".BIND"))
+        {
+            string[] parameters = parseCommand(_fullline);
+            GameObject Object = GlobalConstants.FindGameObject(parameters[0]);
+
+            if(Object == null)
+            { 
+                Debug.Log("Could not find object: " + parameters[0]); 
+                return;
+            }
+
+            PawnScript pawn = Object.GetComponent<PawnScript>();
+            if (pawn != null)
+            {
+                currentPawn = pawn;
+            }
+            else
+                Debug.Log("Could not find pawnscript on object: " + parameters[0]);
+
+            return;
+        }
+
+        if(_fullline.ToUpper().Contains(".MOVE") || _fullline.ToUpper().Contains(".WALK") || _fullline.ToUpper().Contains(".SPRINT"))
+        {
+            string[] parameters = parseCommand(_fullline);
+
+            int val1, val2;
+            int.TryParse(parameters[0], out val1);
+            int.TryParse(parameters[1], out val2);
+            currentPawn.Commands.Add(new PawnCommand(PawnCommand.commandType.Move, 0, 0, _fullline.ToUpper().Contains(".SPRINT"), "", new Vector3(val1, 0, val2)));
+            return;
+        }
+
+        
+        if(_fullline.ToUpper().Contains(".AIM") || _fullline.ToUpper().Contains(".POINT"))
+        {
+            string[] parameters = parseCommand(_fullline);
+
+            int val1, val2;
+            int.TryParse(parameters[0], out val1);
+            int.TryParse(parameters[1], out val2);
+            currentPawn.Commands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, _fullline.ToUpper().Contains(".AIM"), "", new Vector3(val1, 0, val2)));
+            return;
+        }
+        
     }
 }
