@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class DropShadowScript : MonoBehaviour
 {
-
+    public Vector3 Center;
 
     // Update is called once per frame
     void Update()
@@ -21,6 +21,6 @@ public class DropShadowScript : MonoBehaviour
         {
             pos = Vector3.Lerp(transform.position, hit.point + Vector3.up / 5, .98f);
         }
-        transform.position = new Vector3(transform.parent.position.x, pos.y, transform.parent.position.z);
+        transform.position = new Vector3(transform.parent.position.x, pos.y, transform.parent.position.z) + Center;
     }
 }

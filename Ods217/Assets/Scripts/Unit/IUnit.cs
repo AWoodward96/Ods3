@@ -21,7 +21,7 @@ public interface IUnit
         get;
     }
 
-    HealthVisualizer myVisualizer
+    HealthBar myVisualizer
     {
         get;
     }

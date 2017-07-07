@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CController))] 
-public class PawnScript : MonoBehaviour, IUnit{
+public class PawnScript : MonoBehaviour, IUnit, IPawn{
 
     public UnitStruct myUnit;
     public Weapon myWeapon;
@@ -215,11 +215,11 @@ public class PawnScript : MonoBehaviour, IUnit{
         }
     }
 
-    public HealthVisualizer myVisualizer
+    public HealthBar myVisualizer
     {
         get
         {
-            return GetComponentInChildren<HealthVisualizer>();
+            return GetComponentInChildren<HealthBar>();
         }
     }
 
@@ -229,6 +229,16 @@ public class PawnScript : MonoBehaviour, IUnit{
         {
             return myWeapon;
         }
+    }
+
+    List<PawnCommand> IPawn.MyCommands
+    {
+        get
+        {
+            return Commands;
+        }
+
+ 
     }
 
     public void OnDeath()
@@ -246,13 +256,6 @@ public class PawnScript : MonoBehaviour, IUnit{
     {
         myUnit = _OtherUnit.MyUnit;
     }
-
-    public void setParameter(string _boolName, bool _boolValue)
-    { 
-         myAnimator.SetBool(_boolName, _boolValue); 
-    }
-
- 
 }
 
 public class PawnCommand

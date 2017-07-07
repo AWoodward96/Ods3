@@ -13,9 +13,9 @@ public class CController : MonoBehaviour
 
     [Header("Movement Info")]
     [Range(0, 100)]
-    public float Speed;
+    public float Speed = 1;
     [Range(0, 1000)]
-    public float MaxSpeed;
+    public float MaxSpeed = 500;
 
     public bool canMove; // Can this object move?
     public bool Airborne;
@@ -32,7 +32,7 @@ public class CController : MonoBehaviour
     public Vector3 Velocity;
     public Vector3 ProjectedPosition; // Where this object should be next frame
 
-
+   
 
     // Use this for initialization
     void Start()

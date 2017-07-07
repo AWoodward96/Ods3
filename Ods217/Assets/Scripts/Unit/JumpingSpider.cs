@@ -155,11 +155,11 @@ public class JumpingSpider : MonoBehaviour, IUnit
         set { myZone = value; }
     }
 
-    public HealthVisualizer myVisualizer
+    public HealthBar myVisualizer
     {
         get
         {
-            return GetComponentInChildren<HealthVisualizer>();
+            return GetComponentInChildren<HealthBar>();
         }
     }
 

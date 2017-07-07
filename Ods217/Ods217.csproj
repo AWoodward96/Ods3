@@ -97,7 +97,9 @@
     <Compile Include="Assets\Scripts\Effects\moveToOnTrigger.cs" />
     <Compile Include="Assets\Scripts\Effects\sinFloat.cs" />
     <Compile Include="Assets\Scripts\FootStepScript.cs" />
+    <Compile Include="Assets\Scripts\ForceFieldScript.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\Scripts\Items\BlankMelee.cs" />
     <Compile Include="Assets\Scripts\Items\BulEMP.cs" />
     <Compile Include="Assets\Scripts\Items\BulPulse.cs" />
@@ -122,6 +124,8 @@
     <Compile Include="Assets\Scripts\SPFXManager.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPNonUnit.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPUnit.cs" />
+    <Compile Include="Assets\Scripts\ScriptBlueprints\UnitScientist1.cs" />
+    <Compile Include="Assets\Scripts\ScriptBlueprints\UnitScientist2.cs" />
     <Compile Include="Assets\Scripts\ShadowsPlease.cs" />
     <Compile Include="Assets\Scripts\UI\InventoryMenu.cs" />
     <Compile Include="Assets\Scripts\UI\MenuManager.cs" />
@@ -129,6 +133,7 @@
     <Compile Include="Assets\Scripts\Unit\DeactivatedSpider.cs" />
     <Compile Include="Assets\Scripts\Unit\DropShadowScript.cs" />
     <Compile Include="Assets\Scripts\Unit\HealthVisualizer.cs" />
+    <Compile Include="Assets\Scripts\Unit\IPawn.cs" />
     <Compile Include="Assets\Scripts\Unit\IUnit.cs" />
     <Compile Include="Assets\Scripts\Unit\JumpingSpider.cs" />
     <Compile Include="Assets\Scripts\Unit\LaserSpiderUnit.cs" />

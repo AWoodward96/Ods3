@@ -41,7 +41,7 @@ public class DialogManager : MonoBehaviour {
     public AudioClip[] AudioClips;
     AudioSource mySource;
 
-    PawnScript currentPawn;
+    IPawn currentPawn;
 
     // Use this for initialization 
     void Start() { 
@@ -568,7 +568,7 @@ public class DialogManager : MonoBehaviour {
                 return;
             }
 
-            PawnScript pawn = Object.GetComponent<PawnScript>();
+            IPawn pawn = Object.GetComponent<IPawn>();
             if (pawn != null)
             {
                 currentPawn = pawn;
@@ -586,7 +586,7 @@ public class DialogManager : MonoBehaviour {
             int val1, val2;
             int.TryParse(parameters[0], out val1);
             int.TryParse(parameters[1], out val2);
-            currentPawn.Commands.Add(new PawnCommand(PawnCommand.commandType.Move, 0, 0, _fullline.ToUpper().Contains(".SPRINT"), "", new Vector3(val1, 0, val2)));
+            currentPawn.MyCommands.Add(new PawnCommand(PawnCommand.commandType.Move, 0, 0, _fullline.ToUpper().Contains(".SPRINT"), "", new Vector3(val1, 0, val2)));
             return;
         }
 
@@ -598,7 +598,7 @@ public class DialogManager : MonoBehaviour {
             int val1, val2;
             int.TryParse(parameters[0], out val1);
             int.TryParse(parameters[1], out val2);
-            currentPawn.Commands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, _fullline.ToUpper().Contains(".AIM"), "", new Vector3(val1, 0, val2)));
+            currentPawn.MyCommands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, _fullline.ToUpper().Contains(".AIM"), "", new Vector3(val1, 0, val2)));
             return;
         }
         

@@ -88,11 +88,11 @@ public class BPUnit : MonoBehaviour,IUnit {
         myVisualizer.ShowMenu();
     }
 
-    public HealthVisualizer myVisualizer
+    public HealthBar myVisualizer
     {
         get
         {
-            return GetComponentInChildren<HealthVisualizer>();
+            return GetComponentInChildren<HealthBar>();
         }
     }
 
