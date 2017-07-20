@@ -11,7 +11,7 @@ public class GlobalConstants {
 
     // How far back the camera should follow a target
     // Since the camera mode is orthographic the magnitude of this vector doesn't matter, only the ratios of the vector matter
-    public static Vector3 DEFAULTFOLLOWBACK = new Vector3(0,12.5f,-10);
+    public static Vector3 DEFAULTFOLLOWBACK = new Vector3(0,25f,-20);
 
 
     // Since we are in this weird 2.5d world, we often find ourself using vectors that need to not take the y axis into account
