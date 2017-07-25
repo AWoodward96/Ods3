@@ -27,15 +27,15 @@ public class BPNonUnit: MonoBehaviour,IUnit {
         throw new NotImplementedException();
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
-        myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+        myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
         myVisualizer.ShowMenu();
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     { 
         get { return null; }
     }

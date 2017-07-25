@@ -62,7 +62,7 @@ public class UnitScientist2 : MonoBehaviour,IUnit {
         get { return myUnit; }
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     {
        get{ return null; }
     }
@@ -81,7 +81,7 @@ public class UnitScientist2 : MonoBehaviour,IUnit {
         dShadowScript.Center = Vector3.Lerp(dShadowScript.Center, new Vector3(.4f,0,0),2f * Time.deltaTime);
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {  
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
@@ -91,13 +91,14 @@ public class UnitScientist2 : MonoBehaviour,IUnit {
         if(FFScript)
         {
             if(FFScript.Health > 0)
-                FFScript.RegisterHit(_FromWhatWeapon.BulletDamage);
+                FFScript.RegisterHit(_FromWhatWeapon.myWeaponInfo.bulletDamage);
             else
-                myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+                myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
         }
         else
-            myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;   
+            myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;   
     }
+
 
     public HealthBar myVisualizer
     {

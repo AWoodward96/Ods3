@@ -104,7 +104,10 @@
     <Compile Include="Assets\Scripts\Items\BulEMP.cs" />
     <Compile Include="Assets\Scripts\Items\BulPulse.cs" />
     <Compile Include="Assets\Scripts\Items\IBullet.cs" />
+    <Compile Include="Assets\Scripts\Items\IWeapon.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
+    <Compile Include="Assets\Scripts\Items\PlayerBullet.cs" />
+    <Compile Include="Assets\Scripts\Items\PlayerWeapon.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
     <Compile Include="Assets\Scripts\MinigameScripts\trainingMinigame.cs" />
     <Compile Include="Assets\Scripts\MinigameScripts\traningMinigameTile.cs" />

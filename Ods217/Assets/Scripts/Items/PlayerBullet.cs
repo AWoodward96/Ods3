@@ -8,10 +8,8 @@ using UnityEngine;
 /// The primary fire of the player
 /// </summary>
 [RequireComponent(typeof(BoxCollider))]
-public class BulPulse : MonoBehaviour, IBullet
-{
-
-
+public class PlayerBullet : MonoBehaviour, IBullet
+{ 
     [Header("Bullet Data")]
     public Vector3 Direction; // Which direction this bullet will move in
     public float BulletSpeed; // How fast the bullet will travel
@@ -22,6 +20,11 @@ public class BulPulse : MonoBehaviour, IBullet
     IUnit Owner; // Which unit fired it
     SpriteRenderer myRenderer;
     BoxCollider myCollider;
+
+    public Upgrades.bulletUpgradeType myUpgrades; // 0: Explosive; 1: Piercing; 2: Bouncy; anything else is nothing
+    List<IUnit> HitList;
+
+    ParticleSystem myExplosionSystem;
 
 
     // Use this for initialization
@@ -34,6 +37,11 @@ public class BulPulse : MonoBehaviour, IBullet
         Fired = false;
         myRenderer.enabled = Fired;
         myCollider.enabled = Fired;
+
+
+        myExplosionSystem = GetComponentInChildren<ParticleSystem>();
+
+        HitList = new List<IUnit>();
     }
 
     // Update is called once per frame
@@ -64,15 +72,50 @@ public class BulPulse : MonoBehaviour, IBullet
     // Align this object to that direction, enable it and set fired to true 
     public void Shoot(Vector3 _dir)
     {
+        HitList = new List<IUnit>();
         Direction = _dir.normalized;
         Fired = true;
         currentLife = 0;
     }
 
     // Used if we want to add hit effects, say an explosion whenever it hits something
-    public void OnHit(GameObject _unitObj)
+    public void OnHit(GameObject objHit)
     {
+        if (myUpgrades == Upgrades.bulletUpgradeType.Bouncy)
+        {
+            if (Mathf.Abs(Direction.z) > Mathf.Abs(Direction.x))
+            {
+                Direction = new Vector3(Direction.x, Direction.y, -Direction.z);
+            }
+            else
+            {
+                Direction = new Vector3(-Direction.x, Direction.y, Direction.z);
+            }
 
+            return;
+        }
+
+        if(myUpgrades == Upgrades.bulletUpgradeType.Explosive)
+        {
+            myExplosionSystem.Emit(50);
+            Collider[] collateralHit = Physics.OverlapSphere(transform.position, 1);
+            for(int i = 0; i < collateralHit.Length; i ++)
+            {
+                GameObject obj = collateralHit[i].gameObject;
+
+                if (obj == objHit)
+                    continue;
+
+                if(obj.GetComponent<IUnit>() != null)
+                {
+                    IUnit u = obj.GetComponent<IUnit>();
+                    u.OnHit(Owner.MyWeapon);
+                }
+            }
+        }
+
+
+        Fired = false;
     }
 
     // When this hits something
@@ -82,14 +125,28 @@ public class BulPulse : MonoBehaviour, IBullet
         if (other.GetComponent<IUnit>() == Owner)
             return;
 
+
         // If it's a unit
         if (other.GetComponent<IUnit>() != null)
         {
             // Trigger a hit
             IUnit u = other.GetComponent<IUnit>();
-            OnHit(other.gameObject);
-            u.OnHit(Owner.MyWeapon);
-            Fired = false;
+
+            if(myUpgrades == Upgrades.bulletUpgradeType.Piercing)
+            {
+                if (!HitList.Contains(u)) // Check if we haven't hit this yet
+                {
+                    HitList.Add(u); // If we haven't then add it to the list
+                    u.OnHit(Owner.MyWeapon); // Trigger a hit on it
+                                             // And then trigger a hit with the bullet
+                    OnHit(other.gameObject);
+                }
+            }else
+            {
+                OnHit(other.gameObject);
+                u.OnHit(Owner.MyWeapon);
+            }
+            return;
         }
 
         // If it's not a unit
@@ -98,12 +155,13 @@ public class BulPulse : MonoBehaviour, IBullet
             // Hey maybe the non unit has something that it does when it's hit by a bullet
             INonUnit u = other.GetComponent<INonUnit>();
 
-            u.OnHit();
-            Fired = false;
+            OnHit(other.gameObject);
+            u.OnHit(); 
+
+            return;
         }
 
-        // Either way set it's fired to false
-        Fired = false;
+        OnHit(other.gameObject); 
     }
 
     public void setOwner(IUnit _Owner)

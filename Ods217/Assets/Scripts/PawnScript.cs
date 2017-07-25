@@ -7,7 +7,7 @@ using UnityEngine;
 public class PawnScript : MonoBehaviour, IUnit, IPawn{
 
     public UnitStruct myUnit;
-    public Weapon myWeapon;
+    public IWeapon myWeapon;
     GameObject GunObj;
     public bool StaticWeapon;
 
@@ -31,7 +31,7 @@ public class PawnScript : MonoBehaviour, IUnit, IPawn{
         // Get the weapon for this object
         if (myWeapon == null)
         {
-            myWeapon = GetComponentInChildren<Weapon>();
+            myWeapon = GetComponentInChildren<IWeapon>();
             myWeapon.Owner = this;
         }
         else
@@ -223,7 +223,7 @@ public class PawnScript : MonoBehaviour, IUnit, IPawn{
         }
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     {
         get
         {
@@ -246,10 +246,10 @@ public class PawnScript : MonoBehaviour, IUnit, IPawn{
          
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {
         myVisualizer.ShowMenu();
-        myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+        myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
     }
 
     public void syncUnits(IUnit _OtherUnit)

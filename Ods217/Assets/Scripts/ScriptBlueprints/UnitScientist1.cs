@@ -91,7 +91,7 @@ public class UnitScientist1 : MonoBehaviour,IUnit {
         get { return myUnit; }
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     {
        get{ return null; }
     }
@@ -101,11 +101,11 @@ public class UnitScientist1 : MonoBehaviour,IUnit {
         throw new NotImplementedException();
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {  
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
-        myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+        myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
         if(myVisualizer)
             myVisualizer.ShowMenu();
     }

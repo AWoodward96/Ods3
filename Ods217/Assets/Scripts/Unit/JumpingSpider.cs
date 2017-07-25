@@ -15,7 +15,7 @@ public class JumpingSpider : MonoBehaviour, IUnit
     // External references
     public UnitStruct myUnit;
     public JumpingSpiderAI AiStats;
-    public Weapon myWeapon;
+    public IWeapon myWeapon;
     ZoneScript myZone;
     Animator myAnimator;
     CController myCtrl;
@@ -313,7 +313,7 @@ public class JumpingSpider : MonoBehaviour, IUnit
         this.gameObject.SetActive(false);
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
@@ -321,7 +321,7 @@ public class JumpingSpider : MonoBehaviour, IUnit
         if (myUnit.CurrentHealth > 0)
         {
             myVisualizer.ShowMenu();
-            myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+            myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
             if (myUnit.CurrentHealth <= 0)
             {
                 OnDeath();
@@ -366,7 +366,7 @@ public class JumpingSpider : MonoBehaviour, IUnit
         get { return myUnit; }
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     {
         get { return myWeapon; }
     }

@@ -12,7 +12,7 @@ using UnityEngine;
 public class BPUnit : MonoBehaviour,IUnit {
 
     public UnitStruct myUnit;
-    public Weapon myWeapon;
+    public IWeapon myWeapon;
     GameObject GunObj;
     CController myCtrl;
 
@@ -35,7 +35,7 @@ public class BPUnit : MonoBehaviour,IUnit {
         // Initialize the weapon just in case
         if (myWeapon == null)
         {
-            myWeapon = GetComponentInChildren<Weapon>();
+            myWeapon = GetComponentInChildren<IWeapon>();
             myWeapon.Owner = this;
         }
         else
@@ -70,7 +70,7 @@ public class BPUnit : MonoBehaviour,IUnit {
         get { return myUnit; }
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     {
        get{ return myWeapon; }
     }
@@ -80,11 +80,11 @@ public class BPUnit : MonoBehaviour,IUnit {
         throw new NotImplementedException();
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {  
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
-        myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+        myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
         myVisualizer.ShowMenu();
     }
 

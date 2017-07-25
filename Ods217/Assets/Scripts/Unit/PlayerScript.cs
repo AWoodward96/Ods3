@@ -16,7 +16,8 @@ public class PlayerScript : MonoBehaviour, IUnit
     Animator myAnimator;
     SpriteRenderer myRenderer;
     FootStepScript myFootStep;
-    public Weapon myWeapon; // The weapon is a seperate game object so we have to manually drop it in
+    //public Weapon myWeapon; // The weapon is a seperate game object so we have to manually drop it in
+    IWeapon myWeapon;
     public UnitStruct myUnit; 
 
     public static bool UsingItem;
@@ -43,7 +44,7 @@ public class PlayerScript : MonoBehaviour, IUnit
 
         if (myWeapon == null)
         {
-            myWeapon = GetComponentInChildren<Weapon>();
+            myWeapon = GetComponentInChildren<IWeapon>();
             myWeapon.Owner = this;
         }
         else
@@ -247,11 +248,11 @@ public class PlayerScript : MonoBehaviour, IUnit
             {
                 myWeapon.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
             }
-            // That goes for secondary fire as well
-            if (Input.GetMouseButton(1) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
-            {
-                myWeapon.FireSecondary(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
-            }
+            //// That goes for secondary fire as well
+            //if (Input.GetMouseButton(1) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
+            //{
+            //    myWeapon.FireSecondary(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
+            //}
         }
 
 
@@ -285,23 +286,25 @@ public class PlayerScript : MonoBehaviour, IUnit
 
     public void EnteredNewZone()
     {
-        // Don't allow the player to carry secondary ammo through different zones
-        myWeapon.CurrentSecondaryClip = 0;
+        // Nothing 
+        // This used to reset secondary ammo. We're no longer using secondary ammo, therefore
+        // No dice.
+        // Look to delete this method eventually
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
         myVisualizer.ShowMenu();
-        myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+        myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
     }
     public UnitStruct MyUnit
     {
         get { return myUnit; }
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     {
         get { return myWeapon; }
     }

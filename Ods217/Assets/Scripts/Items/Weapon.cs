@@ -13,8 +13,7 @@ public class Weapon : MonoBehaviour
     [Header("Weapon Info")]
     public string Name;
     public string Description;
-    public enum FireType { Pulse, Shotgun, Melee };
-    public FireType GunType;
+
 
     [Header("Weapon Data")]
     public int BulletDamage; // How much damage the bullet will do

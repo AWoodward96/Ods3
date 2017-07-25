@@ -35,7 +35,7 @@ public class BlankMelee : MonoBehaviour, IBullet
 
     }
 
-    public void OnHit(IUnit _unitObj)
+    public void OnHit(GameObject _unitObj)
     {
 
     }

@@ -17,7 +17,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
     // External references
     public UnitStruct myUnit;
     public JumpingSpiderAI AiStats;
-    public Weapon myWeapon;
+    public IWeapon myWeapon;
     public GameObject ActivateWhenPowered; // A non unit that determines when this object will turn on
     INonUnit powerReliant; // The actual INonUnit reference
     ZoneScript myZone;
@@ -334,7 +334,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
         this.gameObject.SetActive(false);
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {
         if (powerReliant.Powered)
         {
@@ -344,7 +344,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
             if (myUnit.CurrentHealth > 0)
             {
                 myVisualizer.ShowMenu();
-                myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage;
+                myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
                 if (myUnit.CurrentHealth <= 0)
                 {
                     OnDeath();
@@ -376,7 +376,7 @@ public class DeactivatedSpider : MonoBehaviour, IUnit
         get { return myUnit; }
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     {
         get { return myWeapon; }
     }

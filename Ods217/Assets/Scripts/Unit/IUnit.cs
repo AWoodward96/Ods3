@@ -10,13 +10,14 @@ public interface IUnit
 {
 
     void OnDeath();
-    void OnHit(Weapon _FromWhatWeapon);
+    void OnHit(IWeapon _FromWhatWeapon);
 
     UnitStruct MyUnit
     {
         get;
     }
-    Weapon MyWeapon
+
+    IWeapon MyWeapon
     {
         get;
     }

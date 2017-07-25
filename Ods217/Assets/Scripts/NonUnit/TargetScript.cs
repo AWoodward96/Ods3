@@ -45,11 +45,11 @@ public class TargetScript: MonoBehaviour,IUnit {
         gameObject.SetActive(false);
     }
 
-    public void OnHit(Weapon _FromWhatWeapon)
+    public void OnHit(IWeapon _FromWhatWeapon)
     {
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
-        myUnit.CurrentHealth -= _FromWhatWeapon.BulletDamage; 
+        myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage; 
         myAnimator.SetTrigger("TakeHit");
         //mySource.clip = HitClip;
         //mySource.Play();
@@ -87,7 +87,7 @@ public class TargetScript: MonoBehaviour,IUnit {
             OnDeath();
     }
 
-    public Weapon MyWeapon
+    public IWeapon MyWeapon
     {
         // Has no weapon
         get { return null; }

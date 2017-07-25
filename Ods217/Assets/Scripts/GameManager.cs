@@ -22,8 +22,10 @@ public class GameManager : MonoBehaviour {
 
     public static MetaData GameData;
 
+    public Upgrades UpgradeData;
+
     // Use this for initialization
-	void Start () {
+	void Awake () {
         // There can only be one
         if (instance == null)
             instance = this;
@@ -150,4 +152,16 @@ public struct MetaData
     public string LevelName;
     public int scrapCount;
     public Vector3 SavedPlayerPosition;
+}
+
+[System.Serializable]
+public class Upgrades
+{
+    [Header("Weapon")]
+    public bool[] FireRate = new bool[3];
+    public bool[] ReloadSpeed = new bool[3];
+    public bool[] ClipSize = new bool[3];
+
+    public enum bulletUpgradeType { None, Explosive, Piercing, Bouncy };
+    public bulletUpgradeType UpgradeType; 
 }

@@ -105,6 +105,8 @@ public class HealthBar : MonoBehaviour {
                 Vector2 pos = HPBartransform.anchoredPosition;
                 HPBartransform.sizeDelta = new Vector2(newRectSize, HPBartransform.sizeDelta.y);
                 HPBartransform.anchoredPosition = new Vector2(-newPosition, pos.y);
+
+                ArmorBar.enabled = false;
             }
             else
             {
@@ -132,29 +134,30 @@ public class HealthBar : MonoBehaviour {
                 ArmorBartransform.sizeDelta = new Vector2(newArmorSize, ArmorBartransform.sizeDelta.y);
                 ArmorBartransform.anchoredPosition = new Vector2(newArmorPosition, armorPos.y);
 
+                ArmorBar.enabled = true;
             }
 
 
             // Now handle the bullets
             if(hasWeapon)
             {
-                Weapon myWeapon = myUnitObject.MyWeapon;
+                IWeapon myWeapon = myUnitObject.MyWeapon;
 
                 // If we're reloading bring up the bullets
-                if(myUnitObject.MyWeapon.isReloading)
-                {
+                //if (myUnitObject.MyWeapon.isReloading)
+                //{
 
-                }else
-                {
-                    float bulPercentage = myWeapon.CurrentClip / (float)myWeapon.MaxClip; 
-                    float newBulRectSize = maxWidthBulletBar * bulPercentage;
-                    float newBulPosition = (maxWidthBulletBar - newBulRectSize) / 2;
+                //} 
+                float bulPercentage = myWeapon.myWeaponInfo.currentAmmo / (float)myWeapon.myWeaponInfo.maxAmmo; 
+                float newBulRectSize = maxWidthBulletBar * bulPercentage;
+                float newBulPosition = (maxWidthBulletBar - newBulRectSize) / 2;
 
-                    RectTransform BulBartransform = BulletBar.GetComponent<RectTransform>();
-                    Vector2 bulPos = BulBartransform.anchoredPosition;
-                    BulBartransform.sizeDelta = new Vector2(newBulRectSize, BulBartransform.sizeDelta.y);
-                    BulBartransform.anchoredPosition = new Vector2(-newBulPosition, bulPos.y);
-                }
+                RectTransform BulBartransform = BulletBar.GetComponent<RectTransform>();
+                Vector2 bulPos = BulBartransform.anchoredPosition;
+                BulBartransform.sizeDelta = new Vector2(newBulRectSize, BulBartransform.sizeDelta.y);
+                BulBartransform.anchoredPosition = new Vector2(-newBulPosition, bulPos.y);
+
+                ReloadIcon.enabled = myWeapon.isReloading;
 
             }
         }
@@ -170,7 +173,7 @@ public class HealthBar : MonoBehaviour {
     void SetUpAmmoBar()
     {
         // The total bars that we want should be equal to the maximum clip of the weapon
-        int totalBars = myUnitObject.MyWeapon.MaxClip;
+        int totalBars = myUnitObject.MyWeapon.myWeaponInfo.maxAmmo;
         totalBars--; // It should be total bars - 1 because we're calculating for divisions, not actual shots
 
         if(totalBars <= 0)
@@ -189,58 +192,14 @@ public class HealthBar : MonoBehaviour {
         // change the size of the bar
         RectTransform rectT = BulletBarCovers[0].GetComponent<RectTransform>();
         rectT.sizeDelta = new Vector2(dividedWidthBulletBar, rectT.sizeDelta.y);
-        rectT.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)1 / (float)myUnitObject.MyWeapon.MaxClip) * maxWidthBulletBar), rectT.anchoredPosition.y);
+        rectT.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)1 / (float)myUnitObject.MyWeapon.myWeaponInfo.maxAmmo) * maxWidthBulletBar), rectT.anchoredPosition.y);
 
         for(int i = 1; i < BulletBarCovers.Length+1; i++)
         {
             Image img = Instantiate(BulletBarCovers[0], rectT.parent).GetComponent<Image>();
             RectTransform rt = img.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)i / (float)myUnitObject.MyWeapon.MaxClip) * maxWidthBulletBar), rectT.anchoredPosition.y);
+            rt.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)i / (float)myUnitObject.MyWeapon.myWeaponInfo.maxAmmo) * maxWidthBulletBar), rectT.anchoredPosition.y);
         }
-
-
-
-        //BulletArray = new Image[totalBars];
-        //BulletBGArray = new Image[totalBars];
-
-        //// get the size of the bars
-        //float temp = maxWidthBulletBar / totalBars;
-        //dividedWidthBulletBar = temp - 5; // tune it down a bit so we have some space
-
-        //// Dump the first bar into the array because we're gonne duplicate it
-        //BulletArray[0] = BulletBar;
-        //BulletBGArray[0] = BulletUsedBar;
-
-        //// Change the size of the bar
-        //RectTransform rectT = BulletArray[0].GetComponent<RectTransform>();
-        //rectT.sizeDelta = new Vector2(dividedWidthBulletBar, rectT.sizeDelta.y);
-        //rectT.anchoredPosition = new Vector2(-((maxWidthBulletBar - dividedWidthBulletBar) / 2), rectT.anchoredPosition.y);
-        //// Now do the same for the background bars
-        //RectTransform bgrectT = BulletBGArray[0].GetComponent<RectTransform>();
-        //bgrectT.sizeDelta = new Vector2(dividedWidthBulletBar, bgrectT.sizeDelta.y);
-        //bgrectT.anchoredPosition = new Vector2(-((maxWidthBulletBar - dividedWidthBulletBar) / 2), bgrectT.anchoredPosition.y);
-
-
-        //for (int i = 1; i < BulletBGArray.Length; i++)
-        //{
-        //    // Do the same thing with the background bars
-        //    Image bgimg = Instantiate(BulletBGArray[0], bgrectT.parent).GetComponent<Image>();
-        //    RectTransform bgrt = bgimg.GetComponent<RectTransform>();
-        //    // Move that into place
-        //    bgrt.anchoredPosition = new Vector2(bgrectT.anchoredPosition.x + ((dividedWidthBulletBar + 5) * i), bgrectT.anchoredPosition.y);
-        //}
-
-        //// Ok now do the rest of them
-        //for (int i = 1; i < BulletArray.Length; i++) // Start at one because we've already done the first one
-        //{
-        //    // Now we're going to copy the initial bar
-        //    Image img = Instantiate(BulletArray[0], rectT.parent).GetComponent<Image>();
-        //    RectTransform rt = img.GetComponent<RectTransform>();
-        //    // Now just move it into place
-        //    rt.anchoredPosition = new Vector2(rectT.anchoredPosition.x + ((dividedWidthBulletBar + 5) * i), rectT.anchoredPosition.y);
-
-        //}
-
 
     }
 

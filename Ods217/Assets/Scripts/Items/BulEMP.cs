@@ -23,7 +23,7 @@ public class BulEMP : MonoBehaviour, IBullet
     SpriteRenderer myRenderer;
     BoxCollider myCollider;
 
-    Weapon myWeapon;
+    IWeapon myWeapon;
 
 
     // Use this for initialization
@@ -32,7 +32,7 @@ public class BulEMP : MonoBehaviour, IBullet
         myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<BoxCollider>();
         myCollider.isTrigger = true;
-        myWeapon = GetComponent<Weapon>();
+        myWeapon = GetComponent<IWeapon>();
 
         Fired = false;
         myRenderer.enabled = Fired;
@@ -73,7 +73,7 @@ public class BulEMP : MonoBehaviour, IBullet
     }
 
     // Do nothing if it hits a unit because it's an emp - it doesn't hurt
-    public void OnHit(IUnit _unitObj)
+    public void OnHit(GameObject _unitObj)
     {
 
     }
@@ -91,8 +91,7 @@ public class BulEMP : MonoBehaviour, IBullet
 
         if (other.GetComponent<IUnit>() != null)
         {
-            IUnit u = other.GetComponent<IUnit>();
-            OnHit(u);
+            IUnit u = other.GetComponent<IUnit>(); 
             u.OnHit(myWeapon);
             Fired = false;
         }
