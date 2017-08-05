@@ -108,6 +108,7 @@
     <Compile Include="Assets\Scripts\Items\Item.cs" />
     <Compile Include="Assets\Scripts\Items\PlayerBullet.cs" />
     <Compile Include="Assets\Scripts\Items\PlayerWeapon.cs" />
+    <Compile Include="Assets\Scripts\Items\PulseGun.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
     <Compile Include="Assets\Scripts\MinigameScripts\trainingMinigame.cs" />
     <Compile Include="Assets\Scripts\MinigameScripts\traningMinigameTile.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Assets\Scripts\NonUnit\ScrapCapsule.cs" />
     <Compile Include="Assets\Scripts\NonUnit\SimpleDoor.cs" />
     <Compile Include="Assets\Scripts\NonUnit\TargetScript.cs" />
+    <Compile Include="Assets\Scripts\NonUnit\UpgradeConsole.cs" />
     <Compile Include="Assets\Scripts\PawnScript.cs" />
     <Compile Include="Assets\Scripts\SPFXManager.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPNonUnit.cs" />
@@ -130,8 +132,11 @@
     <Compile Include="Assets\Scripts\ScriptBlueprints\UnitScientist1.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\UnitScientist2.cs" />
     <Compile Include="Assets\Scripts\ShadowsPlease.cs" />
+    <Compile Include="Assets\Scripts\TurretScript.cs" />
     <Compile Include="Assets\Scripts\UI\InventoryMenu.cs" />
     <Compile Include="Assets\Scripts\UI\MenuManager.cs" />
+    <Compile Include="Assets\Scripts\UI\UpgradesBox.cs" />
+    <Compile Include="Assets\Scripts\UI\UpgradesManager.cs" />
     <Compile Include="Assets\Scripts\Unit\CController.cs" />
     <Compile Include="Assets\Scripts\Unit\DeactivatedSpider.cs" />
     <Compile Include="Assets\Scripts\Unit\DropShadowScript.cs" />
@@ -151,6 +156,7 @@
     <None Include="Assets\Resources\Materials\Normal-Diffuse-Stencil-Write.shader" />
     <None Include="Assets\Resources\Materials\Normal-Diffuse-XRay-Replaceable.shader" />
     <None Include="Assets\Resources\Materials\Shadows.shader" />
+    <None Include="Assets\Resources\Materials\Shield\BurnDiffuse.shader" />
     <None Include="Assets\Scripts\SampleSaveFile.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

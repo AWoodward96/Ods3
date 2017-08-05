@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/720Scene.unity
+- path: Assets/Scenes/Outpost1.unity
   isLoaded: 1
   isActive: 1

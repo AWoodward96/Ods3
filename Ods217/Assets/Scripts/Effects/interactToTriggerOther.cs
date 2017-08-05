@@ -67,6 +67,12 @@ public class interactToTriggerOther : MonoBehaviour {
             {
                 nonunits.Triggered = !nonunits.Triggered;
             }
+
+            if(SoundToPlayWhenTriggered != null)
+            {
+                mySource.clip = SoundToPlayWhenTriggered;
+                mySource.Play();
+            }
         }
     }
 

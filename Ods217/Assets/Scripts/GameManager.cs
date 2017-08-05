@@ -163,5 +163,12 @@ public class Upgrades
     public bool[] ClipSize = new bool[3];
 
     public enum bulletUpgradeType { None, Explosive, Piercing, Bouncy };
-    public bulletUpgradeType UpgradeType; 
+    public bulletUpgradeType UpgradeType;
+
+
+
+    [Header("Shield")]
+    public bool HasShield;
+    public bool[] ShieldHealth = new bool[3];
+    public bool[] ShieldRegen = new bool[3];
 }

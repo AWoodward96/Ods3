@@ -12,8 +12,8 @@ public class Scrap : MonoBehaviour
     public int Value; // How much the scrap is worth
     public int myForce;
 
-    AudioSource myPickup;
-    AudioSource myBlip;
+    public AudioSource myPickup;
+    public AudioSource myBlip;
     public AudioClip[] blips; // An array of possible sounds that play when hitting something
     Rigidbody myRigidbody;
 
@@ -23,17 +23,7 @@ public class Scrap : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        myRigidbody = GetComponent<Rigidbody>();
-
-        // set up the audio sources
-        AudioSource[] mySources = GetComponents<AudioSource>();
-        foreach (AudioSource a in mySources)
-        {
-            if (a.clip.name == "blip")
-                myBlip = a;
-            else
-                myPickup = a;
-        }
+        myRigidbody = GetComponent<Rigidbody>(); 
 
         // set up the collider parameters
         SphereCollider[] mycolliders = GetComponents<SphereCollider>();
@@ -90,8 +80,7 @@ public class Scrap : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         int newRnd = Random.Range(0, blips.Length);
-        myBlip.clip = blips[newRnd];
-
+        myBlip.clip = blips[newRnd]; 
         myBlip.Play();
     }
 }

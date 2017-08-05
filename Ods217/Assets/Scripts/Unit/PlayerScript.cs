@@ -20,7 +20,7 @@ public class PlayerScript : MonoBehaviour, IUnit
     IWeapon myWeapon;
     public UnitStruct myUnit; 
 
-    public static bool UsingItem;
+    public bool UsingItem;
 
     Vector3 RootPosition = new Vector3(-0.138f, -0.138f, 0);
     Vector3 HolsteredPosition = new Vector3(0, .5f, 0);
@@ -28,6 +28,9 @@ public class PlayerScript : MonoBehaviour, IUnit
 
     AudioSource myAudioSource;
     public AudioClip[] AudioClips;
+
+    ForceFieldScript myForceField;
+    bool updatedForcefield;
 
     // Use this for initialization
     void Awake()
@@ -57,9 +60,12 @@ public class PlayerScript : MonoBehaviour, IUnit
         myAnimator = GetComponent<Animator>();
         myRenderer = GetComponent<SpriteRenderer>();
         myAudioSource = GetComponent<AudioSource>();
-        myFootStep = GetComponent<FootStepScript>(); 
+        myFootStep = GetComponent<FootStepScript>();
+        myForceField = GetComponentInChildren<ForceFieldScript>();
 
+        updatedForcefield = false;
     }
+
 
     // Have to run everything through fixed update
     void FixedUpdate()
@@ -70,6 +76,12 @@ public class PlayerScript : MonoBehaviour, IUnit
 
         if (myUnit.CurrentHealth < 0)
             OnDeath();
+
+        if(!updatedForcefield)
+        {
+            updatedForcefield = true;
+            UpdateForcefield();
+        }
     }
 
     void GunObject()
@@ -238,10 +250,10 @@ public class PlayerScript : MonoBehaviour, IUnit
 
 
         // Set the springing bool equal to if we have the left shift key held down or not
-        myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UsingItem);
+        myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UsingItem && !UpgradesManager.MenuOpen);
 
         // No shooting if the menu is open
-        if (!MenuManager.MenuOpen && !DialogManager.InDialog && !UsingItem)
+        if (!MenuManager.MenuOpen && !DialogManager.InDialog && !UsingItem && !UpgradesManager.MenuOpen)
         {
             // Also no shooting if we're sprinting
             if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
@@ -297,7 +309,16 @@ public class PlayerScript : MonoBehaviour, IUnit
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
         myVisualizer.ShowMenu();
-        myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
+
+        if (myForceField)
+        {
+            if (myForceField.Health > 0)
+                myForceField.RegisterHit(_FromWhatWeapon.myWeaponInfo.bulletDamage);
+            else
+                myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
+        }
+        else
+            myUnit.CurrentHealth -= _FromWhatWeapon.myWeaponInfo.bulletDamage;
     }
     public UnitStruct MyUnit
     {
@@ -342,5 +363,38 @@ public class PlayerScript : MonoBehaviour, IUnit
         // Exit out of the animation
         myAnimator.SetFloat("Special", 0);
         UsingItem = false;
+    }
+
+    public void UpdateForcefield()
+    { 
+        Upgrades myUpgrades = GameManager.instance.UpgradeData;
+
+        float ForcefieldHealth = 0;
+        float RegenSpeed = 0;
+
+        if(myUpgrades.HasShield)
+        {
+            ForcefieldHealth += 20;
+            RegenSpeed += 33;
+
+            for(int i = 0; i < myUpgrades.ShieldHealth.Length; i ++)
+            {
+                ForcefieldHealth += 10;
+            }
+
+            for(int i = 0; i < myUpgrades.ShieldRegen.Length; i++)
+            {
+                RegenSpeed += 6;
+            }
+
+            
+        }
+
+        myForceField.Health = ForcefieldHealth;
+        myForceField.MaxHealth = (int)ForcefieldHealth;
+        myForceField.RegenTime = RegenSpeed;
+
+        myVisualizer.ShowMenu();
+
     }
 }

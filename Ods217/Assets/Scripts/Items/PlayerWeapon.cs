@@ -20,7 +20,7 @@ public class PlayerWeapon : MonoBehaviour, IWeapon {
     AudioSource myAudioSource;
     bool tryReload;
 
-    WeaponInfo baseWeaponInfo;
+    WeaponInfo baseWeaponInfo; 
 
     // Use this for initialization
     void Start () {
@@ -168,6 +168,8 @@ public class PlayerWeapon : MonoBehaviour, IWeapon {
         {
             BulletList[i].GetComponent<PlayerBullet>().myUpgrades = myUpgrades.UpgradeType;
         }
+
+        
     }
 
     void MakeBullets()

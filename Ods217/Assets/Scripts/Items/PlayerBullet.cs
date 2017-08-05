@@ -8,6 +8,7 @@ using UnityEngine;
 /// The primary fire of the player
 /// </summary>
 [RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(AudioSource))]
 public class PlayerBullet : MonoBehaviour, IBullet
 { 
     [Header("Bullet Data")]
@@ -26,12 +27,16 @@ public class PlayerBullet : MonoBehaviour, IBullet
 
     ParticleSystem myExplosionSystem;
 
+    AudioSource mySource;
+    public AudioClip ExplosionClip;
+
 
     // Use this for initialization
     void Awake()
     {
         myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<BoxCollider>();
+        mySource = GetComponent<AudioSource>();
         myCollider.isTrigger = true;
 
         Fired = false;
@@ -97,6 +102,9 @@ public class PlayerBullet : MonoBehaviour, IBullet
 
         if(myUpgrades == Upgrades.bulletUpgradeType.Explosive)
         {
+            mySource.clip = ExplosionClip;
+            mySource.Play();
+
             myExplosionSystem.Emit(50);
             Collider[] collateralHit = Physics.OverlapSphere(transform.position, 1);
             for(int i = 0; i < collateralHit.Length; i ++)
@@ -139,7 +147,7 @@ public class PlayerBullet : MonoBehaviour, IBullet
                     HitList.Add(u); // If we haven't then add it to the list
                     u.OnHit(Owner.MyWeapon); // Trigger a hit on it
                                              // And then trigger a hit with the bullet
-                    OnHit(other.gameObject);
+                    //OnHit(other.gameObject);
                 }
             }else
             {

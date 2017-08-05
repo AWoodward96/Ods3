@@ -50,7 +50,7 @@ public class CController : MonoBehaviour
         // Make sure that you're on the ground and not floating in mid air
         RaycastHit hit;
         Ray r = new Ray(transform.position + myCtrl.center, Vector3.down);
-        if (!Physics.Raycast(r, out hit, .2f + myCtrl.height - myCtrl.center.y, LayerMask.GetMask("Ground")))
+        if (!Physics.Raycast(r, out hit, .5f + myCtrl.height - myCtrl.center.y, LayerMask.GetMask("Ground")))
         {
             ApplyForce(Vector3.down * GlobalConstants.Gravity);
             Airborne = true;

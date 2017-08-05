@@ -21,7 +21,7 @@ public class HealthBar : MonoBehaviour {
     Image[] BulletBGArray = new Image[5]; // For the backgrounds
 
 
-    Image[] BulletBarCovers = new Image[5];
+    public Image[] BulletBarCovers = new Image[5];
 
     // Statistics
     float maxHPVal;
@@ -65,6 +65,10 @@ public class HealthBar : MonoBehaviour {
         // Check if the unit has a shield
         myArmor = myUnitObject.gameObject.GetComponentInChildren<ForceFieldScript>();
         hasArmor = (myArmor != null);
+        if(hasArmor)
+        {
+            myArmor.myHealthBar = this;
+        }
 
         // Set up preliminary values
         myUnit = myUnitObject.MyUnit; // Because the unit struct is within the IUnit
@@ -141,13 +145,7 @@ public class HealthBar : MonoBehaviour {
             // Now handle the bullets
             if(hasWeapon)
             {
-                IWeapon myWeapon = myUnitObject.MyWeapon;
-
-                // If we're reloading bring up the bullets
-                //if (myUnitObject.MyWeapon.isReloading)
-                //{
-
-                //} 
+                IWeapon myWeapon = myUnitObject.MyWeapon; 
                 float bulPercentage = myWeapon.myWeaponInfo.currentAmmo / (float)myWeapon.myWeaponInfo.maxAmmo; 
                 float newBulRectSize = maxWidthBulletBar * bulPercentage;
                 float newBulPosition = (maxWidthBulletBar - newBulRectSize) / 2;
@@ -158,7 +156,11 @@ public class HealthBar : MonoBehaviour {
                 BulBartransform.anchoredPosition = new Vector2(-newBulPosition, bulPos.y);
 
                 ReloadIcon.enabled = myWeapon.isReloading;
-
+                 
+                if(myWeapon.myWeaponInfo.maxAmmo -1!= BulletBarCovers.Length)
+                {
+                    SetUpAmmoBar();
+                }
             }
         }
 
@@ -182,8 +184,18 @@ public class HealthBar : MonoBehaviour {
             return;
         }
 
+        
+        if(BulletBarCovers[0] != null)
+        { 
+            for(int i = 1; i < BulletBarCovers.Length; i++)
+            {
+                Destroy(BulletBarCovers[i].gameObject);
+            }
+        }
+
         BulletBarCovers = new Image[totalBars];
         BulletBarCovers[0] = BulletCover;
+ 
 
         // Get the size of these cover bars
         dividedWidthBulletBar = Mathf.Max(35 - (totalBars * 6), 1);
@@ -192,13 +204,14 @@ public class HealthBar : MonoBehaviour {
         // change the size of the bar
         RectTransform rectT = BulletBarCovers[0].GetComponent<RectTransform>();
         rectT.sizeDelta = new Vector2(dividedWidthBulletBar, rectT.sizeDelta.y);
-        rectT.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)1 / (float)myUnitObject.MyWeapon.myWeaponInfo.maxAmmo) * maxWidthBulletBar), rectT.anchoredPosition.y);
+        rectT.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)totalBars / (float)myUnitObject.MyWeapon.myWeaponInfo.maxAmmo) * maxWidthBulletBar), rectT.anchoredPosition.y);
 
-        for(int i = 1; i < BulletBarCovers.Length+1; i++)
+        for(int i = 1; i < BulletBarCovers.Length; i++)
         {
             Image img = Instantiate(BulletBarCovers[0], rectT.parent).GetComponent<Image>();
             RectTransform rt = img.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)i / (float)myUnitObject.MyWeapon.myWeaponInfo.maxAmmo) * maxWidthBulletBar), rectT.anchoredPosition.y);
+            rt.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)i / (float)myUnitObject.MyWeapon.myWeaponInfo.maxAmmo) * maxWidthBulletBar), rectT.anchoredPosition.y); 
+                BulletBarCovers[i] = img;
         }
 
     }
@@ -254,5 +267,20 @@ public class HealthBar : MonoBehaviour {
     {
         GetComponent<Canvas>().enabled = true;
         timeSinceModified = 0;
+    }
+
+    public void ReloadWeaponBar()
+    {
+        // check if the unit actually has a weapon
+        hasWeapon = (myUnitObject.MyWeapon != null);
+
+        if (hasWeapon)
+        {
+            SetUpAmmoBar();
+        }
+        else
+        {
+            BulletBarParent.SetActive(false);
+        }
     }
 }

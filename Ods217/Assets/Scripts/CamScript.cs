@@ -41,7 +41,7 @@ public class CamScript : MonoBehaviour
         {
             Vector3 Additive = Target.position + FollowBack;
 
-            if (!DialogManager.InDialog)
+            if (!DialogManager.InDialog && !UpgradesManager.MenuOpen)
             {
                 Vector3 toCursor = CursorLocation - transform.position;
                 toCursor = GlobalConstants.ZeroYComponent(toCursor);
