@@ -15,7 +15,7 @@ public class CamScript : MonoBehaviour
     public Transform Target;
     public Vector3 ExtentsTL; // The restrictions of where the camera can move and where the edges are
     public Vector3 ExtentsBR;
-    public static Vector3 CursorLocation;
+    public static Vector3 CursorLocation; 
 
     bool Loaded;
     float loadedPoint = 0;
@@ -60,9 +60,12 @@ public class CamScript : MonoBehaviour
                 transform.position = Additive;
 
             HandleExtents();
+        }else
+        { 
+            transform.position = Vector3.Lerp(transform.position, Target.position + FollowBack, 6f * Time.deltaTime);
         }
 
-        // 
+        // once a level is loaded, jump to where the camera is supposed to be instead of panning
         if (loadedPoint < 1)
         {
             loadedPoint += Time.deltaTime;

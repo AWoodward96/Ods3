@@ -78,8 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Resources\Materials\Colors\MirrorReflection.cs" />
-    <Compile Include="Assets\Resources\Sprites\Testing\AutoTiletexture.cs" />
+    <Compile Include="Assets\Materials\Colors\MirrorReflection.cs" />
     <Compile Include="Assets\Scripts\CamScript.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\CreateBasicScene.cs" />
@@ -96,6 +95,7 @@
     <Compile Include="Assets\Scripts\Effects\interactToTriggerOther.cs" />
     <Compile Include="Assets\Scripts\Effects\moveToOnTrigger.cs" />
     <Compile Include="Assets\Scripts\Effects\sinFloat.cs" />
+    <Compile Include="Assets\Scripts\ElevatorScript.cs" />
     <Compile Include="Assets\Scripts\FootStepScript.cs" />
     <Compile Include="Assets\Scripts\ForceFieldScript.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
@@ -127,6 +127,7 @@
     <Compile Include="Assets\Scripts\NonUnit\UpgradeConsole.cs" />
     <Compile Include="Assets\Scripts\PawnScript.cs" />
     <Compile Include="Assets\Scripts\SPFXManager.cs" />
+    <Compile Include="Assets\Scripts\SceneData.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPNonUnit.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\BPUnit.cs" />
     <Compile Include="Assets\Scripts\ScriptBlueprints\UnitScientist1.cs" />
@@ -150,13 +151,14 @@
     <Compile Include="Assets\Scripts\UsableIndicator.cs" />
     <Compile Include="Assets\Scripts\ZoneScript.cs" />
     <Compile Include="Assets\Scripts\myAudioSystem.cs" />
+    <Compile Include="Assets\Sprites\Testing\AutoTiletexture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Resources\Materials\Colors\Mirror.shader" />
-    <None Include="Assets\Resources\Materials\Normal-Diffuse-Stencil-Write.shader" />
-    <None Include="Assets\Resources\Materials\Normal-Diffuse-XRay-Replaceable.shader" />
-    <None Include="Assets\Resources\Materials\Shadows.shader" />
-    <None Include="Assets\Resources\Materials\Shield\BurnDiffuse.shader" />
+    <None Include="Assets\Materials\Colors\Mirror.shader" />
+    <None Include="Assets\Materials\Normal-Diffuse-Stencil-Write.shader" />
+    <None Include="Assets\Materials\Normal-Diffuse-XRay-Replaceable.shader" />
+    <None Include="Assets\Materials\Shadows.shader" />
+    <None Include="Assets\Materials\Shield\BurnDiffuse.shader" />
     <None Include="Assets\Scripts\SampleSaveFile.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

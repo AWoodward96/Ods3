@@ -17,6 +17,9 @@ public class ZoneScript : MonoBehaviour {
     public Vector2 ZoneSize; // The width and height of the zone
     public static ZoneScript ActiveZone; // Whichever zone is currently being occupied by the player
     ZoneScript PrevZone;
+    public enum AggressionType { NoCombat, SomeCombat, OnlyCombat };
+    public AggressionType ZoneAggression;
+
 
     [Header("Meta")]
     public bool PrimaryZone; // The Primary Zone is the first zone in the scene

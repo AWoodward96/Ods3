@@ -20,17 +20,22 @@ public class PlayerScript : MonoBehaviour, IUnit
     IWeapon myWeapon;
     public UnitStruct myUnit; 
 
-    public bool UsingItem;
+  
 
     Vector3 RootPosition = new Vector3(-0.138f, -0.138f, 0);
     Vector3 HolsteredPosition = new Vector3(0, .5f, 0);
     Vector3 HolsteredRotation = new Vector3(0, 0, -88);
+    public bool InCombat;
+
+    float combatCD;
 
     AudioSource myAudioSource;
     public AudioClip[] AudioClips;
 
     ForceFieldScript myForceField;
     bool updatedForcefield;
+
+    public bool AcceptInput;
 
     // Use this for initialization
     void Awake()
@@ -70,7 +75,9 @@ public class PlayerScript : MonoBehaviour, IUnit
     // Have to run everything through fixed update
     void FixedUpdate()
     {
-        myInput();
+        if(AcceptInput)
+            myInput();
+
         GunObject();
         Animations();
 
@@ -93,7 +100,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         // Handle Gun 'animations' 
         // Where the cursor is in world space
         Vector3 CursorLoc = CamScript.CursorLocation;
-        if (!myCtrl.Sprinting && !UsingItem) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
+        if (!myCtrl.Sprinting && InCombat) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
         {
             // Now set up the rotating gun
             Vector3 toCursor = CursorLoc - transform.position; // This value will already have a 0'd y value :)
@@ -128,7 +135,7 @@ public class PlayerScript : MonoBehaviour, IUnit
 
             Vector3 pos = GunObj.transform.localPosition;
 
-            if((myCtrl.Velocity.magnitude > 1f)) // If we're moving then always put it behind the player
+            if ((GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f)) // If we're moving then always put it behind the player
             {
                 pos.z = .01f;
                 // If we're running primarily up then put it in front of the player sprite (behind the player, but towards the camera because we're running up)
@@ -138,16 +145,12 @@ public class PlayerScript : MonoBehaviour, IUnit
                     pos.z = -.01f;
 
             }else
-            {
-                if (UsingItem) // If we're using an item then put it behind the player
-                    pos.z = .01f;
-                else
-                {
+            { 
+                    
                     if (CursorLoc.z < transform.position.z) // Otherwise put it behind wherever the player is facing
                         pos.z = .01f;
                     else
-                        pos.z = -.01f;
-                }
+                        pos.z = -.01f; 
 
             }
 
@@ -165,7 +168,7 @@ public class PlayerScript : MonoBehaviour, IUnit
 
         // Handle looking left vs right via where the cursor is
         bool flip;
-        if (myCtrl.Sprinting)
+        if (myCtrl.Sprinting || !InCombat)
             flip = false;
         else
             flip = (CursorLoc.x < transform.position.x);
@@ -176,9 +179,7 @@ public class PlayerScript : MonoBehaviour, IUnit
 
 
         // If we're walking in a reverse direction we want to reverse our animation speed
-        float spd = 1;
-
-     
+        float spd = 1; 
 
         if (!myCtrl.Sprinting)
         {
@@ -198,7 +199,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         myAnimator.SetFloat("SpeedX", myCtrl.Velocity.x);
         myAnimator.SetFloat("SpeedY", myCtrl.Velocity.z);
         myAnimator.SetFloat("Speed", spd);
-        myAnimator.SetBool("Moving", (myCtrl.Velocity.magnitude > 1f));
+        myAnimator.SetBool("Moving", (GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f));
         myAnimator.SetBool("Running", myCtrl.Sprinting);
 
         if (myCtrl.Sprinting != myCtrl.SprintingPrev)
@@ -206,13 +207,28 @@ public class PlayerScript : MonoBehaviour, IUnit
 
         myFootStep.Speed = (myCtrl.Sprinting) ? .2f : .45f;
 
+        // Handle in combat and out of combat
+        myAnimator.SetLayerWeight(0, Convert.ToInt32(InCombat));
+        myAnimator.SetLayerWeight(1, Convert.ToInt32(!InCombat));
+
+        combatCD += Time.deltaTime;
+        if(combatCD > 5 && InCombat)
+        {
+            if(ZoneScript.ActiveZone.ZoneAggression != ZoneScript.AggressionType.OnlyCombat)
+            {
+                InCombat = false;
+                myAudioSource.clip = AudioClips[1];
+                myAudioSource.Play();
+            }
+        }
+
     }
 
     void myInput()
     {
         // Basic Movement
         // This could look a lot nicer, but ultimately it gets the job done
-        if (!myCtrl.Airborne && !UsingItem)
+        if (!myCtrl.Airborne)
         {
             if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) // Left 
             {
@@ -250,26 +266,32 @@ public class PlayerScript : MonoBehaviour, IUnit
 
 
         // Set the springing bool equal to if we have the left shift key held down or not
-        myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UsingItem && !UpgradesManager.MenuOpen);
+        myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift)  && !UpgradesManager.MenuOpen);
 
         // No shooting if the menu is open
-        if (!MenuManager.MenuOpen && !DialogManager.InDialog && !UsingItem && !UpgradesManager.MenuOpen)
+        if (!MenuManager.MenuOpen && !DialogManager.InDialog  && !UpgradesManager.MenuOpen)
         {
-            // Also no shooting if we're sprinting
-            if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
+            // No shooting when we're in a no combat zone
+            if (ZoneScript.ActiveZone.ZoneAggression != ZoneScript.AggressionType.NoCombat)
             {
-                myWeapon.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
-            }
-            //// That goes for secondary fire as well
-            //if (Input.GetMouseButton(1) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
-            //{
-            //    myWeapon.FireSecondary(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
-            //}
+                // Also no shooting if we're sprinting
+                if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)))
+                {
+                    myWeapon.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
+                    combatCD = 0; 
+                    if (!InCombat)
+                    {
+                        myAudioSource.clip = AudioClips[0];
+                        myAudioSource.Play();
+                        InCombat = true;
+                    }
+                }
+            } 
         }
 
 
         // Handle sprinting
-        if(myCtrl.Sprinting != myCtrl.SprintingPrev)
+        if(InCombat && myCtrl.Sprinting != myCtrl.SprintingPrev)
         {
             myAudioSource.clip = (myCtrl.Sprinting) ? AudioClips[0] : AudioClips[1];
             myAudioSource.Play();
@@ -279,15 +301,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         if (Input.GetKeyDown(KeyCode.R))
             myWeapon.ForceReload();
 
-        // Handle using a healthkit
-        //if(Input.GetKeyDown(KeyCode.Q) && !UsingItem && GameManager.HealthKits > 0 && myUnit.CurrentHealth != myUnit.MaxHealth)
-        //{
-        //    myAnimator.SetFloat("Special", 1);
-        //    UsingItem = true;
-        //    MenuManager.instance.ShowHealthkit();
-        //    myCtrl.Velocity = Vector3.zero;
-        //    StartCoroutine(UseItemCRT());
-        //}
+
     }
 
     public void OnDeath()
@@ -298,10 +312,10 @@ public class PlayerScript : MonoBehaviour, IUnit
 
     public void EnteredNewZone()
     {
-        // Nothing 
-        // This used to reset secondary ammo. We're no longer using secondary ammo, therefore
-        // No dice.
-        // Look to delete this method eventually
+        if(ZoneScript.ActiveZone.ZoneAggression == ZoneScript.AggressionType.NoCombat)
+        {
+            InCombat = false;
+        }
     }
 
     public void OnHit(IWeapon _FromWhatWeapon)
@@ -309,6 +323,12 @@ public class PlayerScript : MonoBehaviour, IUnit
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
         myVisualizer.ShowMenu();
+        if(!InCombat)
+        {
+            myAudioSource.clip = AudioClips[0];
+            myAudioSource.Play();
+            InCombat = true;
+        }
 
         if (myForceField)
         {
@@ -346,24 +366,7 @@ public class PlayerScript : MonoBehaviour, IUnit
         Destroy(other.gameObject);
     }
 
-    IEnumerator UseItemCRT()
-    {
-        // Show the health visualizer
-        myVisualizer.ShowMenu();
-        yield return new WaitForSeconds(2);
-        GameManager.HealthKits--; // Take away a health kit
-
-        myUnit.CurrentHealth += 35; // Add the health
-        if (myUnit.CurrentHealth > myUnit.MaxHealth)
-            myUnit.CurrentHealth = myUnit.MaxHealth;
-
-        // Ensure that we can see it
-        myVisualizer.ShowMenu();
-
-        // Exit out of the animation
-        myAnimator.SetFloat("Special", 0);
-        UsingItem = false;
-    }
+ 
 
     public void UpdateForcefield()
     { 
@@ -397,4 +400,16 @@ public class PlayerScript : MonoBehaviour, IUnit
         myVisualizer.ShowMenu();
 
     }
+
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    Debug.Log("Checking");
+    //    if(collision.transform.tag == "Platform")
+    //    {
+    //        transform.parent = collision.transform;
+    //    }else
+    //    {
+    //        transform.parent = null;
+    //    }
+    //}
 }

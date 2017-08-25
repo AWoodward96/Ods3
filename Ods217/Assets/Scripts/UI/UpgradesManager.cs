@@ -24,6 +24,7 @@ public class UpgradesManager : MonoBehaviour {
     Canvas myCanvas;
     public Image HoverImage;
     public Image PurchaseImage;
+    public Animator HelperAnimatorController;
     Text HoverText;
     Text bottomText;
     Text purchaseText;
@@ -37,7 +38,7 @@ public class UpgradesManager : MonoBehaviour {
     public Text TextArea;
     public AudioClip[] AudioClips;
     bool tryingToPurchase;
-    UpgradesBox SelectedUpgrade;
+    public UpgradesBox SelectedUpgrade;
 
     // Use this for initialization
     void Start () {
@@ -202,7 +203,7 @@ public class UpgradesManager : MonoBehaviour {
         // Weapon set 3 is fire rate
         for (int i = 0; i < currentUpgrades.FireRate.Length; i++)
         {
-            if (currentUpgrades.ReloadSpeed[i])
+            if (currentUpgrades.FireRate[i])
             {
                 WeaponFire[i].State = UpgradesBox.UpgradeBoxState.Unlocked;
             }
@@ -242,6 +243,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 1;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 5);
                     StartCoroutine(PrintLine("The 'Reload Speed' upgrade will let you reload faster so you can get back to killing faster! ;)")); 
                 }
                 break;
@@ -252,6 +255,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 1;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 5);
                     StartCoroutine(PrintLine("The 'Reload Speed' upgrade will let you reload faster so you can get back to killing faster! ;)"));
                 }
                 break;
@@ -262,6 +267,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 1;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 5);
                     StartCoroutine(PrintLine("The 'Reload Speed' upgrade will let you reload faster so you can get back to killing faster! ;)"));
                 }
                 break;
@@ -272,6 +279,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 2;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 1);
                     StartCoroutine(PrintLine("Clip Size upgrades let you hold more bullets in the chamber, meaning more shots before you have to reload! :D"));
                 }
                 break;
@@ -282,6 +291,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 2;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 1);
                     StartCoroutine(PrintLine("Clip Size upgrades let you hold more bullets in the chamber, meaning more shots before you have to reload! :D"));
                 }
                 break;
@@ -292,6 +303,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 2;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 1);
                     StartCoroutine(PrintLine("Clip Size upgrades let you hold more bullets in the chamber, meaning more shots before you have to reload! :D"));
                 }
                 break;
@@ -302,6 +315,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 3;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 3);
                     StartCoroutine(PrintLine("It makes you shoot faster! What's not to like? ^.^"));
                 }
                 break;
@@ -312,6 +327,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 3;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 3);
                     StartCoroutine(PrintLine("It makes you shoot faster! What's not to like? ^.^"));
                 }
                 break;
@@ -322,6 +339,8 @@ public class UpgradesManager : MonoBehaviour {
                 {
                     currentSetNum = 3;
                     StopAllCoroutines();
+                    HelperAnimatorController.SetBool("Talking", true);
+                    HelperAnimatorController.SetFloat("State", 3);
                     StartCoroutine(PrintLine("It makes you shoot faster! What's not to like? ^.^"));
                 }
                 break;
@@ -409,16 +428,22 @@ public class UpgradesManager : MonoBehaviour {
                 break;
         }
 
-        if(cost > GameManager.ScrapCount)
-        {
-            StopAllCoroutines();
-            StartCoroutine(PrintLine("You don't have enough scrap for that... :(")); 
-            return;
-        }
+
 
         if (SelectedUpgrade.State == UpgradesBox.UpgradeBoxState.CanPurchase)
         {
+            if (cost > GameManager.ScrapCount)
+            {
+                StopAllCoroutines();
+                HelperAnimatorController.SetBool("Talking", true);
+                HelperAnimatorController.SetFloat("State", 2);
+                StartCoroutine(PrintLine("You don't have enough scrap for that... :("));
+                return;
+            }
+
             StopAllCoroutines();
+            HelperAnimatorController.SetBool("Talking", true);
+            HelperAnimatorController.SetFloat("State", 1);
             StartCoroutine(PrintLine("Would you like to purchase the " + SelectedUpgrade.UpgradeName + " upgrade?"));
 
             PurchaseImage.gameObject.SetActive(true);
@@ -432,9 +457,13 @@ public class UpgradesManager : MonoBehaviour {
             StopAllCoroutines();
             if (SelectedUpgrade.State == UpgradesBox.UpgradeBoxState.Unlocked)
             {
+                HelperAnimatorController.SetBool("Talking", true);
+                HelperAnimatorController.SetFloat("State", 3);
                 StartCoroutine(PrintLine("You've already unlocked this upgrade you doof! XD"));
             }else
             {
+                HelperAnimatorController.SetBool("Talking", true);
+                HelperAnimatorController.SetFloat("State", 4);
                 StartCoroutine(PrintLine("You need to unlock the previous upgrades before you can purchase this upgrade."));
             }
         } 
@@ -480,7 +509,11 @@ public class UpgradesManager : MonoBehaviour {
                 }
 
                 GameManager.ScrapCount -= cost;
-                MenuManager.instance.ShowScrap(); 
+                MenuManager.instance.ShowScrap();
+
+                StopAllCoroutines();
+                HelperAnimatorController.SetFloat("State", 3);
+                StartCoroutine(PrintLine("Thank you for your purchase! ^.^"));
             }
         }
     }
@@ -510,6 +543,9 @@ public class UpgradesManager : MonoBehaviour {
                 currentCharacter++;
                 mySource.Play();
                 TextArea.text = currentString;
+
+                if(currentCharacter == fullLine.Length)
+                    HelperAnimatorController.SetBool("Talking", false);
 
                 // If we press space, before the line is complete, just complete the line. Because yeah.
                 if (Input.GetKeyDown(KeyCode.Space))

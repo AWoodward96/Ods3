@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour {
 
     public Upgrades UpgradeData;
 
+    public SceneData currentSceneData;
+
     // Use this for initialization
 	void Awake () {
         // There can only be one
@@ -48,8 +50,8 @@ public class GameManager : MonoBehaviour {
             WriteSaveFile(newData.FileName);
         }
 
-        SceneManager.sceneLoaded += LevelLoaded;
-
+        //SceneManager.sceneLoaded += LevelLoaded;
+        ScrapCount += 200;
         HealthKits = 3;
 
         Cursor.SetCursor(Resources.Load("Sprites/UI/CursorTexture") as Texture2D, new Vector2(8, 8), CursorMode.Auto);
@@ -135,6 +137,8 @@ public class GameManager : MonoBehaviour {
     {
         GameObject Player = GameObject.FindGameObjectWithTag("Player");
         Player.transform.position = GameData.SavedPlayerPosition;
+
+        currentSceneData = FindObjectOfType<SceneData>();
     }
 
     public void LoadLastSaveFile()
