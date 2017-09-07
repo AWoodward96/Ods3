@@ -92,6 +92,7 @@
     <Compile Include="Assets\Scripts\Effects\FadeIfInZone.cs" />
     <Compile Include="Assets\Scripts\Effects\RandomBlink.cs" />
     <Compile Include="Assets\Scripts\Effects\SPFXObject.cs" />
+    <Compile Include="Assets\Scripts\Effects\infiniteMovingTexture.cs" />
     <Compile Include="Assets\Scripts\Effects\interactToTriggerOther.cs" />
     <Compile Include="Assets\Scripts\Effects\moveToOnTrigger.cs" />
     <Compile Include="Assets\Scripts\Effects\sinFloat.cs" />
