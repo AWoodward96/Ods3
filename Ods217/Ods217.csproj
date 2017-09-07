@@ -78,7 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Materials\Colors\MirrorReflection.cs" />
+    <Compile Include="Assets\Constants\Materials\Colors\MirrorReflection.cs" />
     <Compile Include="Assets\Scripts\CamScript.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\CreateBasicScene.cs" />
@@ -152,14 +152,13 @@
     <Compile Include="Assets\Scripts\UsableIndicator.cs" />
     <Compile Include="Assets\Scripts\ZoneScript.cs" />
     <Compile Include="Assets\Scripts\myAudioSystem.cs" />
-    <Compile Include="Assets\Sprites\Testing\AutoTiletexture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Materials\Colors\Mirror.shader" />
-    <None Include="Assets\Materials\Normal-Diffuse-Stencil-Write.shader" />
-    <None Include="Assets\Materials\Normal-Diffuse-XRay-Replaceable.shader" />
-    <None Include="Assets\Materials\Shadows.shader" />
-    <None Include="Assets\Materials\Shield\BurnDiffuse.shader" />
+    <None Include="Assets\Constants\Materials\Colors\Mirror.shader" />
+    <None Include="Assets\Constants\Materials\Normal-Diffuse-Stencil-Write.shader" />
+    <None Include="Assets\Constants\Materials\Normal-Diffuse-XRay-Replaceable.shader" />
+    <None Include="Assets\Constants\Materials\Shadows.shader" />
+    <None Include="Assets\Constants\Materials\Shield\BurnDiffuse.shader" />
     <None Include="Assets\Scripts\SampleSaveFile.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
