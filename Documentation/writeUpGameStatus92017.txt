@@ -1,0 +1,85 @@
+New Odyssey: an Actual Space Odyssey
+
+
+Wanted Features:
+	-A Reload Animation
+	-A Reload Sound
+	-A Dash/Roll idea
+	-Streamline Game State
+		*Menu Open
+		*In a cutscene etc
+		*For the purpose of having the player input being restricted appropriately
+	-Take a hit animation
+	-Death animation
+	-More weapons
+		-Press E on a weapon (or walk on top of it?) to pick up a dropped weapon and use it
+		-Press Q to throw away your current xtra weapon
+
+Wanted Story Theming
+
+-I like deconstructions of story types
+	-Like, Madoka Magika was a deconstruction of the 'Magical Girl' trope right?
+		-It tricked you into thinking it was going to be another happy go lucky magical girl anime
+		-Then they fucking killed Hina
+	-I'm not sure how to do this for Odyssey.
+		-It could be a deconstruction on the 'Lets go on an adventure!' trope but like how?
+		-It's something taken seriously, so do we not take it seriously? Then we just have Undertale/Earthbound right?
+
+-Problems with old story
+	-Didn't do well with the Odyssey name. It wasn't really an Odyssey right
+	-No constant theme
+	-Characters and situations were forced through the Lyser Mercenaries group, which feels a little chringy
+
+	-----------------------------------------------------------------------------------------------------------------
+	
+	In Odyssey, everything is left and no one is right
+	
+	-----------------------------------------------------------------------------------------------------------------
+	
+	Everything starts to go wrong for Slas when on a scrapping mission in an abandoned laberatory finds the last of an ancient race in a stasis chamber.
+	
+	
+	Slas is an Amtac in debt to Lindonese Lyser, a techie who has difficulty staying out of trouble.
+	
+	With the addition of the Vilo-imitator [Lynn: Too Close to Lindonese] [Sylvi] this causes tension between Slas and Lyser.
+		-Because Slas already owes Lyser, she isn't happy about yet another mouth to feed
+		-She knows she can't leave Sylvi out to the wolves, especially when Sylvi begs her to let her chip in and help
+	
+		
+	With that starts the journey of Slas, Sylvi and Lyser.
+		-Slas' first order of business after
+		
+		
+	Ideas:
+		
+		
+	Other Conflicts:
+		-Slas' first order of business is to get information from a source on one of Mahr's stations
+			-Upon getting the information he needs, he is identified by a small group of bounty hunters
+			-You beat them, obviously but this establishes that Slas isn't exactly a great father figure
+			
+		-All Sylvi wanted was to be free to explore the universe
+			-Her imprisonment and subsiquential placement in stasis robbed her of this
+			
+		-Over the course of the game Tabitha, Talem Mahr's wife, watches Slas and Sylvi's actions carefully, and eventually identifies Sylvi as her older sister
+			-Sylvi was imprissoned for a long while, however the immortal race and subsiquent stasis means she never aged
+			-This causes Tabitha to have Sylvi kidnapped and questioned
+				-It is revealed that Tabitha is in fact Sylvis younger sister and Tabitha asks that Sylvi rejoin her to bring the Vilos back to power
+				-Sylvi declines on account of her freedom still being robbed
+				-Tabitha isn't happy, but ultimately understands her sisters choice and releases her
+			-This action however causes the beginning of the climax of the story, as Slas is not informed that Sylvi is released and is sent to rescue her
+				-which eventually ends with him killing Tabitha
+				
+		-Tabitha affectionally refers to Slas as 'the friendly neighborhood troublemaker'
+		
+		
+		-Slas and Lyser are a team of Vigils
+			-Vigils are mercenaries for hire that do jobs for people for cash
+				-The catch is they don't know who they're being paid by
+				-The problem with space is that there's well, too much space and not enough helpers
+				-Vigils get paid for these jobs, reguardless of how ethical it is and the money goes back into the economy
+		
+		
+		
+		
+	

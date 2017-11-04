@@ -1,0 +1,75 @@
+Segmented Odyssey Idea:
+
+
+The game will be devided into three short stories:
+
+
+	Story 1: The discovery of Sylvi
+	
+
+	Story 2: The escalation of conflicts in Sector 6
+
+
+	Story 3: The assassination attempt of Talem Mahrs
+
+
+
+
+This keeps things within scope because I can work on each section one at a time, without going insane.
+For now I'll focus on Story 1 and keep the ideas in Stories 2 and 3 to just descriptions
+
+
+Story 1 Events:
+	[Introduction on Holy Empire Relay Station]
+		-Do the introduction with Tabitha and Tammery
+		-Slas has to get a mission from Mr. Vin at the lookout of the station
+			- He meets Mr. Vin and finds out that he'll be Slas' primary client from here on out (until he dies in Story 2 [woah spoiler])
+			- Mr. Vins first assignment is to stop a smuggling operation out of Donia and to capture their ringleader
+		-After the introductions they leave together 
+			- But are interruped by a bunch of thugs being rude n shit
+			- When they approach Mr. Vin, Slas immediately steps in [implying he's done this before] 
+			-A brief shootout where one of the goons slowly charges at Slas
+				-You can shoot to stop them or you can wait it out
+				-This is a section of the game that doesn't require full knowledge of how to play it, you just have to dodge the slow moving and slow shooting enemies
+		-If you kill them, then Mr. Vin comments on it, otherwise he thanks you for ending it w/o violence
+
+	[Tutorial Level]
+		-Slas has to go through training in order to learn how to play the game
+		-Depending on how you handled the shootout Lyser says that you have to do the training course before going on this assault mission
+		
+	[Assault Mission]
+		- Donia smuggling operation
+		- Slas has to break in to a guarded transport vessel and stop the smuggling of some substance
+		- As Slas, you do this with relative ease. These enemies should be easy, and similar to the ones you find in the tutorial level
+			- You capture the ring-leader and bring him to Mr. Vins, on the hideout
+		- The ringleader argues that they're smuggling medicine to colonies in need
+			- Mr. Vins argues that they're smuggling them for drug trade
+			- After a small confrontation Mr. Vins orders you to shoot the ringleader in the head
+			- Slas does this without hesitation [implying he's done this before (you get what i'm doing here [hi future me, get some sleep])]
+	
+	
+	[Cutscene with Lyser and Skireth]
+		- Mearly an introduction
+		
+		
+	[Sylvi mission]
+		-Needs to be fleshed out
+		
+		
+		
+		
+		
+
+		
+Story 2 Bullet Points:
+	-There is a mission where Slas and Sylvi have to escort Mr. Vin out of Sector 6
+		- This is the Skireth mission, where Mr. Vin is taken and killed
+		- Sylvi refuses to let Mr. Vin be taken without a fight and Skireth strikes her down
+			- Slas is convinced that this blow kills Sylvi, but of course she lives [She's the ancient, she can't die]
+	- Mr. Vin is dead and Lyser is out of a client
+		- She takes this up with Skireth at a bar extremely angry with her
+		- Skireth mocks Lyser calling her a coward for working for someone as despicable as Mr. Vin
+			-Lyser claims she was planning on extorting Mr. Vin the whole time
+		- Skireth comments on Sylvi, implying that she's more brave then her entire crew
+	- The next mission we find that we were hired by Skireth as a new client
+		- This is either the catastrophic RotDraht mission, or possibly another initial 

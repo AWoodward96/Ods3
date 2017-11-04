@@ -1,0 +1,26 @@
+Tutorial:
+
+	What needs to be taught?:
+		-Movement
+		-Running
+		-Shooting / Rolling
+		-Reload and manual reload
+		-Rolling
+		-Extra Weapons
+		-Shields
+		
+		
+	Based on the list above, what sections of a tutorial might be nice:
+		-Movement Section: Movement + Running
+			Basic WASD movement
+			Tiles you have to sprint over
+		-Combat Section: Shooting + Reload + Manual Reload + Picking up weapons
+			-Part 1:
+				You're put into a pin and you have to run around and dodge lasers
+			-Part 2:
+				Return the fire and destroy the turrets
+				End the section with an extra enemy spawning in front of you
+					-Inform the player of manual reload
+		-Combat++ Section
+			-Put into another pin, this time with different enemies who will drop their weapons
+			-Get to experiment picking up weapons and using them against the enemies spawned

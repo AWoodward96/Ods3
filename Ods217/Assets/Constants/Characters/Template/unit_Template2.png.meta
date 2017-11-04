@@ -1,0 +1,949 @@
+fileFormatVersion: 2
+guid: 7727c33d4b7a1ad499dff67679f41aee
+timeCreated: 1508624745
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: unit_Template2_0
+    21300002: unit_Template2_1
+    21300004: unit_Template2_2
+    21300006: unit_Template2_3
+    21300008: unit_Template2_4
+    21300010: unit_Template2_5
+    21300012: unit_Template2_6
+    21300014: unit_Template2_7
+    21300016: unit_Template2_8
+    21300018: unit_Template2_9
+    21300020: unit_Template2_10
+    21300022: unit_Template2_11
+    21300024: unit_Template2_12
+    21300026: unit_Template2_13
+    21300028: unit_Template2_14
+    21300030: unit_Template2_15
+    21300032: unit_Template2_16
+    21300034: unit_Template2_17
+    21300036: unit_Template2_18
+    21300038: unit_Template2_19
+    21300040: unit_Template2_20
+    21300042: unit_Template2_21
+    21300044: unit_Template2_22
+    21300046: unit_Template2_23
+    21300048: unit_Template2_24
+    21300050: unit_Template2_25
+    21300052: unit_Template2_26
+    21300054: unit_Template2_27
+    21300056: unit_Template2_28
+    21300058: unit_Template2_29
+    21300060: unit_Template2_30
+    21300062: unit_Template2_31
+    21300064: unit_Template2_32
+    21300066: unit_Template2_33
+    21300068: unit_Template2_34
+    21300070: unit_Template2_35
+    21300072: unit_Template2_36
+    21300074: unit_Template2_37
+    21300076: unit_Template2_38
+    21300078: unit_Template2_39
+    21300080: unit_Template2_40
+    21300082: unit_Template2_41
+    21300084: unit_Template2_42
+    21300086: unit_Template2_43
+    21300088: unit_Template2_44
+    21300090: unit_Template2_45
+    21300092: unit_Template2_46
+    21300094: unit_Template2_47
+    21300096: unit_Template2_48
+    21300098: unit_Template2_49
+    21300100: unit_Template2_50
+    21300102: unit_Template2_51
+    21300104: unit_Template2_52
+    21300106: unit_Template2_53
+    21300108: unit_Template2_54
+    21300110: unit_Template2_55
+    21300112: unit_Template2_56
+    21300114: unit_Template2_57
+    21300116: unit_Template2_58
+    21300118: unit_Template2_59
+    21300120: unit_Template2_60
+    21300122: unit_Template2_61
+    21300124: unit_Template2_62
+    21300126: unit_Template2_63
+    21300128: unit_Template2_64
+    21300130: unit_Template2_65
+    21300132: unit_Template2_66
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 12
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: unit_Template2_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 601
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_1
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 601
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 601
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_3
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 601
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_4
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 601
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 551
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_6
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 551
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_7
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 551
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_8
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 551
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_9
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 551
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_10
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_11
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_12
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_13
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_14
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_15
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_16
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_17
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_18
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_19
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_20
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_21
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_22
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_23
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_24
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_25
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_26
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_27
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_28
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_29
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_30
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_31
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_32
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_33
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_34
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_35
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_36
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_37
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_38
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_39
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_40
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_41
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_42
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_43
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_44
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_45
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_46
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_47
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_48
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_49
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_50
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_51
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_52
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_53
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_54
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_55
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_56
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_57
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_58
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_59
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_60
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Template2_61
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

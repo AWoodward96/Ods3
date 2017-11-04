@@ -1,0 +1,23 @@
+Scripts Sorting:
+
+
+Systems
+	-UI
+	-Game Managers
+	-Dialog Managers
+	-Zone Scripts
+	-Sound
+Technology
+	-Elevators
+	-Logic Scripts
+	-The minigame script folder
+Units
+	-Sorted by enemies and players
+Items
+	-Weapons
+	-Pickups
+	-Bullets
+	-Forcefield Script
+Interfaces
+Classes
+Sound

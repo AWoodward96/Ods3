@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// A class meant for utility only
@@ -42,12 +43,16 @@ public class GlobalConstants {
     // Really slow. Don't use in an update method
     public static GameObject FindGameObject(string Name)
     {
-        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+        Transform[] allObjects = Resources.FindObjectsOfTypeAll<Transform>();
+        
 
-        foreach (GameObject obj in allObjects)
+        foreach (Transform obj in allObjects)
         {
-            if (obj.name == Name)
-                return obj;
+            if (obj.gameObject.name == Name)
+            {
+ 
+                return obj.gameObject;
+            }
         }
 
         return null;
@@ -68,4 +73,61 @@ public class GlobalConstants {
         return new Vector3(float.Parse(sArray[0]), float.Parse(sArray[1]), float.Parse(sArray[2])); 
     }
 
+    /// <summary>
+    /// Takes the value with based on minVal to maxVal and sets it as a value between newMinVal and newMaxVal
+    /// </summary>
+    /// <param name="value">The value we're warping</param>
+    /// <param name="minVal">The min val associated with value</param>
+    /// <param name="maxVal">The max val associated with value</param>
+    /// <param name="newMinVal">The desired new minimum assocaited with value</param>
+    /// <param name="newMaxVal">The desired new maximum associated witth value</param>
+    /// <returns>New mapped value</returns>
+    public static float Map(float value, float minVal, float maxVal, float newMinVal, float newMaxVal)
+    {
+        float trueVal = value - minVal;
+        float ratio = trueVal / (maxVal - minVal);
+        return (ratio * (newMaxVal - newMinVal)) + newMinVal;
+    }
+
+    /// <summary>
+    /// Takes the value with based on minVal to maxVal and sets it as the inverse value between newMinVal and newMaxVal
+    /// </summary>
+    /// <param name="value">The value we're warping</param>
+    /// <param name="minVal">The min val associated with value</param>
+    /// <param name="maxVal">The max val associated with value</param>
+    /// <param name="newMinVal">The desired new minimum assocaited with value</param>
+    /// <param name="newMaxVal">The desired new maximum associated witth value</param>
+    /// <returns>New mapped value</returns>
+    public static float inverseMap(float value, float minVal, float maxVal, float newMinVal, float newMaxVal)
+    {
+        float trueVal = value - minVal;
+        float ratio =  1 - (trueVal / (maxVal - minVal));
+        return (ratio * (newMaxVal - newMinVal)) + newMinVal;
+    }
+
+    public static Vector3 getPhysicsArc(Vector3 myPos, Vector3 targetPos)
+    {
+        Vector3 p = targetPos;
+
+        float gravity = Physics.gravity.magnitude;
+
+        // Positions of this object and the target on the same plane
+        Vector3 planarTarget = new Vector3(p.x, 0, p.z);
+        Vector3 planarPostion = new Vector3(myPos.x, 0, myPos.z);
+
+        // Planar distance between objects
+        float distance = Vector3.Distance(planarTarget, planarPostion);
+        // Distance along the y axis between objects
+        float yOffset = myPos.y - p.y;
+
+        // Selected angle in radians 
+        float angle = GlobalConstants.inverseMap(distance, 1, 15, 45, 85) * Mathf.Deg2Rad;
+
+        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) + yOffset));
+
+        Vector3 velocity = new Vector3(0, initialVelocity * Mathf.Sin(angle), initialVelocity * Mathf.Cos(angle));
+        float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPostion) * (p.x > myPos.x ? 1 : -1);
+        // Rotate our velocity to match the direction between the two objects 
+        return Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
+    }
 }

@@ -26,7 +26,7 @@ public class Weapon : MonoBehaviour
     float currentCd;
     bool tryReload;
     List<GameObject> primaryBullets = new List<GameObject>();
-    public IUnit Owner;
+    public IArmed Owner;
 
     public AudioClip ShootClip;
     AudioSource myAudioSource;
@@ -104,7 +104,7 @@ public class Weapon : MonoBehaviour
             for (int i = 0; i < MaxClip; i++)
             {
                 GameObject newObj = (GameObject)Instantiate(BulType);
-                newObj.GetComponent<IBullet>().setOwner(Owner);
+                newObj.GetComponent<IBullet>().Owner = Owner;
                 primaryBullets.Add(newObj);
             }
         }
@@ -208,7 +208,7 @@ public class Weapon : MonoBehaviour
             for (int i = 0; i < howMany; i++)
             {
                 GameObject o = (GameObject)Instantiate(SecondaryBullet);
-                o.GetComponent<IBullet>().setOwner(Owner);
+                o.GetComponent<IBullet>().Owner = Owner;
                 SecondaryBullets.Add(o);
             }
 

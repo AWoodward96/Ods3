@@ -1,0 +1,48 @@
+Dialog System:
+
+	[Current Dialog System]
+		Dialog is typed into the dialog box
+			-could continue with this if you want
+		Easy to make text appear on screen
+		Hard to switch things like portraits
+		Hard to color the text
+		Hard to emphesize text style (slow, line by line etc)
+		Can't interact with the scene at all besides pawns, which are unrelyable
+		
+	[New Dialog System]
+		- Want to be able to effect scripts from just text
+		- Want to be able to color text, and draw text at whatever speed I want
+		- Change the portraits easy
+		- Want it to still be text based but easier to edit
+		- Easier Yes/No decisions
+		
+		
+		
+[Cutscene Characters]
+	- Keeps track of who is talking, their name and their portraits
+	- Has a portraits array that has an identifing string and an image associated with it
+[Cutscene Portraits]
+	- A structure for portraits
+	- Has a string and a sprite
+	
+	
+	
+Dialog Commands:
+
+Text Based:
+
+	Say(CharacterID,Text) [The bear minimum. Will use the last portrait saved]
+	Say(CharacterID,Text,PortraidID) [Will change the portrait and then say the words]
+	Continue(Text) [Rather then reset the line, the continue branch continues where we left off after we hit space]
+	Continue(Text,PortraitID)
+	WaitText() & EndWait() [WaitText starts a dialog that doesn't end until the script reaches EndWait()]
+	
+	
+Saving Objects:
+
+	LoadChar() [Loads and saves a character into a dictionary for future use]
+	LoadPerm() [Loads and saves an IPermenant object in a dictionary for future use]
+	
+Interactions:
+	Trigger() [Toggles the trigger on a saved permanent]
+	HaltPlayer() [Stops the players inputs from effecting the scene. This includes clicking]

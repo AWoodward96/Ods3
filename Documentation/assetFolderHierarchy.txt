@@ -1,0 +1,36 @@
+Restructure:
+
+Level Data:
+	Level Num:
+		Meshes
+		Materials
+		Sprites
+		Audio
+		Prefabs
+	Beta Testing:
+		Meshes
+		Materials
+		Sprites
+		Audio
+		Prefabs
+Constants:
+	Materials
+		Skybox
+	Characters
+		Audio
+		Sprites
+		Animations
+	Special Effects
+		Sprites
+		Prefabs
+	UI
+		UI Name
+Scripts
+Deprecated:
+	Meshes
+	Materials
+	Sprites
+	Scripts
+	Audio
+	Prefabs
+

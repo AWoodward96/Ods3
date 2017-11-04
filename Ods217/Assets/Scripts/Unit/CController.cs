@@ -32,7 +32,6 @@ public class CController : MonoBehaviour
     public Vector3 Velocity;
     public Vector3 ProjectedPosition; // Where this object should be next frame
 
-
     LayerMask SolidMask;
 
     // Use this for initialization
@@ -41,6 +40,8 @@ public class CController : MonoBehaviour
         myCtrl = GetComponent<CharacterController>();
         SolidMask = LayerMask.GetMask("Ground");
         SolidMask += LayerMask.GetMask("Platform");
+
+         
     }
 
     // Update is called once per frame
@@ -53,7 +54,13 @@ public class CController : MonoBehaviour
         // Make sure that you're on the ground and not floating in mid air
         RaycastHit hit;
         Ray r = new Ray(transform.position + myCtrl.center, Vector3.down);
-        if (!Physics.Raycast(r, out hit, .5f + myCtrl.height - myCtrl.center.y, SolidMask))
+        if (Physics.Raycast(r, out hit, .5f + myCtrl.height - myCtrl.center.y, SolidMask))
+        {
+            Vector3 distVec = hit.point - r.origin;
+            ApplyForce(distVec);
+        } 
+
+        if (!Physics.SphereCast(r,myCtrl.radius,out hit,.5f + myCtrl.height - myCtrl.center.y,SolidMask))
         {
             ApplyForce(Vector3.down * GlobalConstants.Gravity);
             Airborne = true;
@@ -61,9 +68,9 @@ public class CController : MonoBehaviour
         else
         {
             Airborne = false;
-            Vector3 distVec = hit.point - r.origin;
-            ApplyForce(distVec);
+
         }
+
 
         // I don't like how I have to do this but hey
         SprintingPrev = Sprinting;
