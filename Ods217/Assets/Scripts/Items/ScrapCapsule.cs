@@ -91,4 +91,12 @@ public class ScrapCapsule : MonoBehaviour, IDamageable
             myUnit = value;
         }
     }
+
+
+    ZoneScript Zone;
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

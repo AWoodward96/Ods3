@@ -72,10 +72,10 @@ public class PlayerWeapon : MonoBehaviour, IWeapon {
         if (myInfo.currentAmmo <= 0)
             return;
 
-        for (int i = 0; i < BulletList.Count; i++)
+        
+        // for (int i = 0; i < BulletList.Count; i++)
         {
-            if (BulletList[i].GetComponent<IBullet>().CanShoot)
-            {
+                int i = myInfo.currentAmmo - 1;
                 // Do something based on the type
                 // For now we'll just shoot one bullet                
                 IBullet iB = BulletList[i].GetComponent<IBullet>();
@@ -101,8 +101,7 @@ public class PlayerWeapon : MonoBehaviour, IWeapon {
                 myAudioSource.Play();
 
                 myOwner.myVisualizer.ShowMenu();
-                return;
-            }
+                return; 
         }
 
 

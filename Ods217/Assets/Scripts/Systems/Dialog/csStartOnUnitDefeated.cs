@@ -18,6 +18,8 @@ public class csStartOnUnitDefeated : MonoBehaviour, IPermanent {
     bool triggered = false;
     public GameObject[] ArmedUnits;
 
+    ZoneScript Zone;
+
     public bool Triggered
     {
         get
@@ -67,5 +69,12 @@ public class csStartOnUnitDefeated : MonoBehaviour, IPermanent {
     public void Activate()
     {
         throw new NotImplementedException();
+    }
+
+
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
     }
 }

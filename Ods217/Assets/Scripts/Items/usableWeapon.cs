@@ -10,6 +10,8 @@ public class usableWeapon : MonoBehaviour {
 
     public enum TossType { Toss, Place };
     public TossType WillToss;
+    public enum HoldType { CircleAim, Hold }
+    public HoldType holdType;
 
     [Range(.1f, 10)]
     public float Range;
@@ -114,7 +116,6 @@ public class usableWeapon : MonoBehaviour {
         transform.position = pos;
         weaponObject.transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
          
-
          
     }
 

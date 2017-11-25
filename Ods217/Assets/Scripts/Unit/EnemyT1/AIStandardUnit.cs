@@ -6,7 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(CController))]
 public class AIStandardUnit : MonoBehaviour, IMultiArmed {
 
+    [Header("AIStandardUnit")]
     public UnitStruct UnitData;
+    public StandardUnitAnim animationHandler;
 
     public enum EnemyAIState { Idle, Aggro, Vulnerable, Defeated };
     public EnemyAIState AIState;
@@ -18,14 +20,15 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
 
     public GameObject Weapon;
 
-    Vector3 LastSeen;
+    [HideInInspector]
+    public Vector3 LastSeen;
 
-    PlayerScript player;
+    [HideInInspector]
+    public PlayerScript player;
     MovementAI moveAI;  
     [HideInInspector]
     public  CController myCC;
     Animator myAnimator;
-    public StandardUnitAnim animationHandler;
     EffectSystem myEmojis;
 
     public GameObject currentWeapon;
@@ -34,13 +37,15 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
     public GameObject WeaponObject1;
     public GameObject WeaponObject2;
 
+    public ZoneScript Zone;
+
 	// Use this for initialization
 	public virtual void Start () {
         myCC = GetComponent<CController>();
         myAnimator = GetComponent<Animator>();
         myEmojis = GetComponentInChildren<EffectSystem>();
         moveAI = new MovementAI(gameObject, myCC);
-
+        
 
 
         // Get the gun object in the child of this object 
@@ -60,22 +65,19 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
                 weapons[1].PickedUp(this); 
             } 
         }
-        //myWeapon.Owner = this;
-
-        animationHandler = new StandardUnitAnim(gameObject, WeaponObject1,WeaponObject2, myAnimator);
-
-        Vector3 RootPosition = new Vector3(-0.138f, -0.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
-        Vector3 HolsteredPosition = new Vector3(0, .5f, 0);
-        Vector3 HolsteredRotation = new Vector3(0, 0, -88);
-        animationHandler.HeldPosition = RootPosition;
-        animationHandler.HolsteredPosition = HolsteredPosition;
-        animationHandler.HolsteredRotation = HolsteredRotation;
+        //myWeapon.Owner = this; 
+        animationHandler.Initialize(gameObject, WeaponObject1,WeaponObject2, myAnimator);
+         
 
 
     }
 
     // Update is called once per frame
     public virtual void Update () {
+        // Don't do anything if you're not in his zone
+        if (myZone != ZoneScript.ActiveZone)
+            return;
+
         switch (AIState)
         {
             case EnemyAIState.Idle:
@@ -99,23 +101,27 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
 
     public virtual void UpdateAnimationController()
     {
-        Vector3 looking = Vector3.zero;
 
-        if (SeePlayer())
+        if(AIState != EnemyAIState.Idle) // If we're not in idle state ...
         {
-            looking = playerRef.transform.position - transform.position;
-            LastSeen = playerRef.transform.position;
-        }
-        else
-        {
-            looking = LastSeen - transform.position;
-        }
+            Vector3 looking = Vector3.zero; // We should change the looking vector to look at the player
+            if (SeePlayer()) // If we can see the player ...
+            {
+                looking = playerRef.transform.position - transform.position; // Look at him
+                LastSeen = playerRef.transform.position;
+            }
+            else
+            {
+                // If we can't see the player then look at the last position he was at
+                looking = LastSeen - transform.position;
+            }
 
-        if (AIState != EnemyAIState.Aggro) 
-            looking.z = -.1f;
 
-        animationHandler.LookingVector = looking;
+            if (AIState != EnemyAIState.Aggro)
+                looking.z = -.1f;
 
+            animationHandler.LookingVector = looking;
+        } 
 
         animationHandler.velocity = myCC.Velocity;
 
@@ -226,9 +232,9 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         }
     }
 
-    bool SeePlayer()
+    public bool SeePlayer()
     {
-        Vector3 distVec = player.transform.position - transform.position;
+        Vector3 distVec = playerRef.transform.position - transform.position;
         return !Physics.Raycast(transform.position, distVec, distVec.magnitude, LayerMask.GetMask("Ground"));
     }
 
@@ -273,8 +279,10 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
     IEnumerator toss(Vector3 _dir)
     {
         yield return new WaitForEndOfFrame();
+
         if (WeaponObject2 == currentWeapon)
         {
+
             WeaponObject2.transform.parent = null;
             WeaponObject2.transform.position = transform.position;
             WeaponObject2.GetComponent<usableWeapon>().Toss(_dir, transform.position);
@@ -290,6 +298,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         }
         else if (WeaponObject1 == currentWeapon)
         {
+            Debug.Log("Tossing2");
             WeaponObject1.transform.parent = null;
             WeaponObject1.transform.position = transform.position;
             WeaponObject1.GetComponent<usableWeapon>().Toss(_dir, transform.position);
@@ -326,6 +335,9 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
 
     public virtual void OnHit(int _damage)
     {
+        if (myZone != ZoneScript.ActiveZone) // Don't let them take damage if you're not in their scene
+            return;
+
         UnitData.CurrentHealth -= _damage;
         myVisualizer.ShowMenu();
  
@@ -420,4 +432,21 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         currentWeapon = _newWeapon; // If you picked it up chances are you want it equiped
     }
 
+    public virtual void Reset()
+    {
+        animationHandler.HolsteredRotation = new Vector3(0, 0, -88);
+        animationHandler.HolsteredPosition = new Vector3(0, .5f, 0);
+        animationHandler.HeldPosition = new Vector3(-0.138f, -0.138f, 0);
+        AggroTime = 2;
+        ArmingTime = 1;
+        AggroRange = 15;
+        UnitData.MaxHealth = 30;
+        UnitData.CurrentHealth = 30;
+    }
+
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

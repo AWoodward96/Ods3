@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections;
+using SpriteToParticlesAsset;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
 public class LobbedObject : MonoBehaviour, IBullet {
-     
-    [Header("Bullet Data")]
-    public Vector3 Direction; // Which direction this bullet will move in   
+      
 
     bool Fired;
     IArmed Owner; // Which unit fired it
@@ -16,12 +15,12 @@ public class LobbedObject : MonoBehaviour, IBullet {
     BoxCollider myCollider;
     Rigidbody myRGB;
     WeaponInfo myWeapon;
-
-    public float DesiredAngle = 45;
-
+      
     public bool Resuable;
 
-    ParticleSystem mySystem; 
+    ParticleSystem mySystem;
+
+    EffectorExplode explode;
 
     // Use this for initialization
     void Awake()
@@ -36,6 +35,9 @@ public class LobbedObject : MonoBehaviour, IBullet {
         Fired = false;
         myRenderer.enabled = Fired;
         myCollider.enabled = Fired;
+
+        explode = GetComponent<EffectorExplode>();
+
     }
 
     // Update is called once per frame
@@ -43,6 +45,9 @@ public class LobbedObject : MonoBehaviour, IBullet {
     { 
         myRenderer.enabled = Fired;
         myCollider.enabled = Fired;
+
+        myRenderer.flipX = false;
+        myRenderer.flipY = false;
     }
 
     public bool CanShoot
@@ -72,6 +77,7 @@ public class LobbedObject : MonoBehaviour, IBullet {
         if (other.GetComponent<IArmed>() == Owner)
             return;
 
+        explode.ExplodeAt(Vector3.down, 10, 180, 90, 1f);
 
 
         // If it's able to be damaged
@@ -80,19 +86,21 @@ public class LobbedObject : MonoBehaviour, IBullet {
             // Hey maybe the non unit has something that it does when it's hit by a bullet
             IDamageable u = other.GetComponent<IDamageable>();
             mySystem.Play();
-            u.OnHit(Owner.myWeapon.myWeaponInfo.bulletDamage);
+            u.OnHit(myWeapon.bulletDamage);
+
             if (Resuable) Fired = false;
+
+
             GetComponent<AudioSource>().Play();
             return;
         }
 
-        // Break! 
-        this.gameObject.SetActive(false);
 
         GetComponent<AudioSource>().Play();
         mySystem.Play();
-        // Either way set it's fired to false
-        if (Resuable)
+ 
+
+        // Either way set it's fired to false 
             Fired = false;
     }
 
@@ -128,37 +136,6 @@ public class LobbedObject : MonoBehaviour, IBullet {
         }
     }
 
-    /// <summary>
-    /// Slightly edited version. From Zolran at https://www.youtube.com/watch?v=3B5NV4bAkoE
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator SimulateProjectile(Vector3 _target)
-    { 
-
-        // Calculate distance to target
-        float target_Distance = Vector3.Distance(transform.position, _target);
-
-        // Calculate the velocity needed to throw the object to the target at specified angle.
-        float projectile_Velocity = target_Distance / (Mathf.Sin(2 * DesiredAngle * Mathf.Deg2Rad) / GlobalConstants.Gravity);
-
-        // Extract the X  Y componenent of the velocity
-        float Vx = Mathf.Sqrt(projectile_Velocity) * Mathf.Cos(DesiredAngle * Mathf.Deg2Rad);
-        float Vy = Mathf.Sqrt(projectile_Velocity) * Mathf.Sin(DesiredAngle * Mathf.Deg2Rad);
-
-        // Calculate flight time.
-        float flightDuration = target_Distance / Vx;
-
-       
-        float elapse_time = 0;
-
-        while (elapse_time < flightDuration)
-        {
-            transform.Translate(0, (Vy - (GlobalConstants.Gravity * elapse_time)) * Time.deltaTime, Vx * Time.deltaTime);
-
-            elapse_time += Time.deltaTime;
-
-            yield return null;
-        }
-    }
+ 
 
 }

@@ -54,4 +54,11 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
     {
         throw new NotImplementedException();
     }
+
+    public ZoneScript Zone;
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

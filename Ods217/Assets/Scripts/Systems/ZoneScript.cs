@@ -27,8 +27,9 @@ public class ZoneScript : MonoBehaviour {
 
     public float CameraSize; // Change the camera size to this when you're in this zone
 
-    public List<GameObject> Enemies; // A list of the enemies in this zone
+    public List<IPermanent> Perms; // A list of the enemies in this zone
     public List<Light> LightObjects; // A list of lights in this zone
+    public List<usableWeapon> Weapons;
 
     Vector3 topLeft;
     Vector3 bottomRight;
@@ -57,11 +58,37 @@ public class ZoneScript : MonoBehaviour {
             topLeft = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2);
             bottomRight = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2);
 
-            // Get every enemy in the zone
+            // Get every important object in the zone
             GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
+            Weapons = new List<usableWeapon>();
+            Perms = new List<IPermanent>();
+            LightObjects = new List<Light>();
             foreach (GameObject g in gos)
             {
-                
+                if (g.transform.position.x < bottomRight.x && g.transform.position.x > topLeft.x && g.transform.position.z < topLeft.z && g.transform.position.z > bottomRight.z)
+                {
+                    usableWeapon isUsableWeapon = g.GetComponent<usableWeapon>();
+                    if(isUsableWeapon != null)
+                    {
+                        Weapons.Add(isUsableWeapon);
+                        continue;
+                    }
+
+                    Light l = g.GetComponent<Light>();
+                    if(l != null)
+                    {
+                        LightObjects.Add(l);
+                        continue;
+                    }
+
+                    IPermanent perminant = g.GetComponent<IPermanent>();
+                    if(perminant != null)
+                    {
+                        perminant.myZone = this;
+                        Perms.Add(perminant);
+                        continue;
+                    }
+                }
 
             }
 

@@ -33,7 +33,16 @@ public class StandardUnitAnim {
         myRend = myObject.GetComponent<SpriteRenderer>();
     }
 
-	public void Update()
+    public void Initialize(GameObject _myObj, GameObject _gunObj1, GameObject _gunObj2, Animator _anim)
+    {
+        myObject = _myObj;
+        gunObject1 = _gunObj1;
+        gunObject2 = _gunObj2;
+        Anim = _anim;
+        myRend = myObject.GetComponent<SpriteRenderer>();
+    }
+
+    public void Update()
     {  
         faceFront = LookingVector.z <= 0;
         flipSprites = LookingVector.x <= 0;
@@ -61,16 +70,27 @@ public class StandardUnitAnim {
         if (activeGunObject == null)
             return;
 
-        SpriteRenderer gunRend = activeGunObject.GetComponentInChildren<SpriteRenderer>();
-        gunRend.flipY = flipSprites;
+  
 
         Vector3 pos = (holdGun) ? HeldPosition : HolsteredPosition;
-        if(holdGun)
+        if (holdGun)
             pos.z = (faceFront) ? -.1f : .1f;
         else
             pos.z = (faceFront) ? .1f : -.1f;
 
+
         activeGunObject.transform.localPosition = pos;
+
+        if (activeGunObject.GetComponent<usableWeapon>().holdType == usableWeapon.HoldType.Hold)
+        {
+            activeGunObject.transform.rotation = Quaternion.identity;
+            return;
+        }
+
+
+        SpriteRenderer gunRend = activeGunObject.GetComponentInChildren<SpriteRenderer>();
+        gunRend.flipY = flipSprites;
+
 
         if (holdGun)
             activeGunObject.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(LookingVector.normalized));

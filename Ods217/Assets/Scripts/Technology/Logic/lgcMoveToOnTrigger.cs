@@ -17,6 +17,7 @@ public class lgcMoveToOnTrigger : MonoBehaviour, IPermanent{
     bool statePrev; // To check to see if we should move 
     public bool triggered; // If true, we're moving atm
 
+    ZoneScript Zone;
     // Use this for initialization
     void Start () {
 
@@ -62,5 +63,10 @@ public class lgcMoveToOnTrigger : MonoBehaviour, IPermanent{
         }
     }
 
- 
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
+
 }

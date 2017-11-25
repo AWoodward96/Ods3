@@ -39,6 +39,8 @@ public class AIUnitDumb : MonoBehaviour, IArmed{
     Vector3 HolsteredRotation = new Vector3(0, 0, 150);
     Vector3 RootPosition = new Vector3(-0.138f, -0.138f, 0);
 
+    public ZoneScript Zone;
+
     // Use this for initialization
     void Start()
     {
@@ -323,5 +325,9 @@ public class AIUnitDumb : MonoBehaviour, IArmed{
 
     }
 
-
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

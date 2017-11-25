@@ -130,4 +130,12 @@ public class TargetScript: MonoBehaviour, IDamageable {
             
         }
     }
+
+
+    ZoneScript Zone;
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

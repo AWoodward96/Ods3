@@ -1,0 +1,31 @@
+LoadChar(Slas,Slas)
+LoadChar(Con1,Con1)
+
+HaltPlayer()
+
+ 
+
+Say(Con1,You there!,Idle)
+Wait(1.5)
+Say(Slas,Me?)
+Say(Con1,Yeah you.)
+Continue(I haven't seen you around here before.)
+Continue(Whats your code-name?)
+Say(Slas,Oh my code-names Spiffy Turtle I'm new here what's your code-name?)
+Say(Con1,Spiffy Turtle?)
+Continue(My code-name is Dartz and I ain't ever heard of anyone named Spiffy Turtle...)
+Say(Con1, Wait a minute...)
+Continue(What's going on here...?)
+
+LoadPerm(SpecialCutsceneEnemy,e1)
+LoadPerm(mobLizard-01,e2)
+LoadPerm(mobAndroid-01,e3)
+Trigger(e1)
+Trigger(e2)
+Trigger(e3)
+
+Resume()
+
+EndSay()
+SideSay(Con1,He's not with us! Get him!)
+Wait(5)

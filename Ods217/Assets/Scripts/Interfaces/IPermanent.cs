@@ -9,6 +9,12 @@ public interface IPermanent {
 
     void Activate();
 
+    ZoneScript myZone
+    {
+        get;
+        set;
+    }
+
     GameObject gameObject
     {
         get;

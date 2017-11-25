@@ -11,6 +11,7 @@ public class FloatingTargetScript : MonoBehaviour, IArmed {
 
     public GameObject deathPart;
 
+    ZoneScript Zone;
 
     // Use this for initialization
     void Start()
@@ -66,6 +67,13 @@ public class FloatingTargetScript : MonoBehaviour, IArmed {
         {
             Activated = value;
         }
+    }
+
+
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
     }
 
     public void Activate()

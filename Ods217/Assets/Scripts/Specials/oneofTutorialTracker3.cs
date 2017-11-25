@@ -150,4 +150,12 @@ public class oneofTutorialTracker3 : MonoBehaviour, IPermanent {
             CutsceneManager.instance.StartCutscene(Dialog3);
         }
     }
+
+
+    ZoneScript Zone;
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

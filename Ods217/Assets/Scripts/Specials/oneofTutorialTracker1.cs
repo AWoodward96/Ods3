@@ -96,4 +96,11 @@ public class oneofTutorialTracker1 : MonoBehaviour, IPermanent {
             withinCollider = false;
         }
     }
+
+    ZoneScript Zone;
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

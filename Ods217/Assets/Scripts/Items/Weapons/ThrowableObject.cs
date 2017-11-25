@@ -128,7 +128,9 @@ public class ThrowableObject : MonoBehaviour, IWeapon {
 
                 if (SingleToss)
                 {
-                    GetComponent<SpriteRenderer>().color = Color.clear;
+                    SpriteRenderer[] rends = GetComponentsInChildren<SpriteRenderer>();
+                    foreach (SpriteRenderer rnd in rends)
+                        rnd.enabled = false;
                     StartCoroutine(frameToss());
                 }
 

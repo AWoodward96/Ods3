@@ -8,6 +8,8 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class mobCowardUnit : AIStandardUnit {
 
+
+
     bool vuln = false;
     float curTime;
     LineRenderer line; 
@@ -15,8 +17,9 @@ public class mobCowardUnit : AIStandardUnit {
     UsableIndicator ind_Usable;
     PlayerScript playerref;
 
-    [Space(30)]
-    public int segments;
+    [Space(20)]
+    [Header("mobCowardUnit")]
+    public int segments = 20;
     public GameObject DisarmedWeapon;
 
     AIStandardUnit.EnemyAIState prevState;
@@ -40,7 +43,7 @@ public class mobCowardUnit : AIStandardUnit {
         line.enabled = vuln;
         CheckDistance();
 
-        if (base.AIState == EnemyAIState.Vulnerable && prevState != base.AIState && audioSrc != null)
+        if (base.AIState == EnemyAIState.Vulnerable && prevState != base.AIState && audioSrc != null && Clips.Length > 0)
         {
             audioSrc.clip = Clips[0];
             audioSrc.Play();
@@ -64,7 +67,7 @@ public class mobCowardUnit : AIStandardUnit {
 
     public override void OnHit(int _damage)
     {
-        if(audioSrc != null)
+        if(audioSrc != null && Clips.Length > 0)
         { 
             audioSrc.clip = Clips[1];
             audioSrc.Play();
@@ -91,7 +94,7 @@ public class mobCowardUnit : AIStandardUnit {
         }
     }
 
-    void CheckDistance()
+    public virtual void CheckDistance()
     {
         // If we're vulnerable
         if (base.AIState == EnemyAIState.Vulnerable)

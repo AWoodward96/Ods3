@@ -162,14 +162,6 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         // Handle Gun 'animations' 
         if (!myCtrl.Sprinting && InCombat) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
         {
-            // Now set up the rotating gun
-            Vector3 toCursor = CursorLoc - transform.position; // This value will already have a 0'd y value :)
-            toCursor = toCursor.normalized;
-            // Alright now we need the angle between those two vectors and then rotate the object 
-            activeWeapon.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(toCursor));
-            // Flip the gun if it's on the left side of the player
-            activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = (CursorLoc.x < transform.position.x);
-
 
             Vector3 pos = RootPosition;
             if (CursorLoc.z < transform.position.z)
@@ -178,7 +170,27 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
                 pos.z = .01f;
             activeWeapon.transform.localPosition = pos;
 
+            usableWeapon w = activeWeapon.GetComponent<usableWeapon>(); // Early exit for weapons that don't need to be rotated
+            if (w != null)
+            {
+                if(w.holdType == usableWeapon.HoldType.Hold)
+                {
+                    activeWeapon.transform.rotation = Quaternion.identity;
+                    activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = false;
+                    return;
+                }
+            }
+             
 
+            // Now set up the rotating gun
+            Vector3 toCursor = CursorLoc - transform.position; // This value will already have a 0'd y value :)
+            toCursor = toCursor.normalized;
+            // Alright now we need the angle between those two vectors and then rotate the object 
+            activeWeapon.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(toCursor));
+            // Flip the gun if it's on the left side of the player
+            activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = (CursorLoc.x < transform.position.x);
+
+             
             Light gunShootFlare = activeWeapon.GetComponentInChildren<Light>();
             if (gunShootFlare != null)
                 gunShootFlare.transform.localPosition = new Vector3(gunShootFlare.transform.localPosition.x, (CursorLoc.x < transform.position.x) ? -.2f : .2f, gunShootFlare.transform.localPosition.z);
@@ -186,13 +198,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         }
         else // If you're sprinting then loc the guns rotation at 20 degrees depending on which direction you're facing
         {
-            //// Flip the gun if you're moving left
-            activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
-
-            activeWeapon.transform.rotation = Quaternion.Euler(HolsteredRotation);
-            activeWeapon.transform.localPosition = ((primaryGunWeapon == activeWeapon) ? HolsteredPosition : HolseredRotation2);
-
-            Vector3 pos = activeWeapon.transform.localPosition;
+            Vector3 pos = HolsteredPosition;
 
             if ((GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f)) // If we're moving then always put it behind the player
             {
@@ -214,7 +220,23 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
             }
 
-            activeWeapon.transform.localPosition = pos;
+            activeWeapon.transform.localPosition = pos; 
+             
+            usableWeapon w = activeWeapon.GetComponent<usableWeapon>(); // Early exit for weapons that don't need to be rotated
+            if (w != null)
+            {
+                if (w.holdType == usableWeapon.HoldType.Hold)
+                {
+                    activeWeapon.transform.rotation = Quaternion.identity;
+                    activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = false;
+                    return;
+                }
+            }
+             
+
+            //// Flip the gun if you're moving left
+            activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0); 
+            activeWeapon.transform.rotation = Quaternion.Euler((primaryGunWeapon == activeWeapon) ? HolsteredRotation : HolseredRotation2);
 
         }
 
@@ -691,5 +713,13 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     bool Armed
     {
         get { return (primaryWeapon != null || secondaryWeapon != null); }
+    }
+
+
+    public ZoneScript Zone;
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
     }
 }

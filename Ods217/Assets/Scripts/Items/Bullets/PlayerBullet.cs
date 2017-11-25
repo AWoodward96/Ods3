@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using SpriteToParticlesAsset;
 using UnityEngine;
 
 /// <summary>
@@ -29,8 +30,11 @@ public class PlayerBullet : MonoBehaviour, IBullet
 
     AudioSource mySource;
     public AudioClip ExplosionClip;
+    public AudioClip HitClip;
 
-    WeaponInfo myWeapon;
+    WeaponInfo myWeapon; 
+    EffectorExplode explode;
+
 
     // Use this for initialization
     void Awake()
@@ -48,6 +52,8 @@ public class PlayerBullet : MonoBehaviour, IBullet
         myExplosionSystem = GetComponentInChildren<ParticleSystem>();
 
         HitList = new List<IDamageable>();
+         
+            explode = GetComponent<EffectorExplode>();
     }
 
     // Update is called once per frame
@@ -103,7 +109,9 @@ public class PlayerBullet : MonoBehaviour, IBullet
 
     // Align this object to that direction, enable it and set fired to true 
     public void Shoot(Vector3 _dir)
-    {
+    { 
+             GetComponent<ParticleSystem>().Clear(); 
+
         HitList = new List<IDamageable>();
         Direction = _dir.normalized;
         Fired = true;
@@ -156,35 +164,46 @@ public class PlayerBullet : MonoBehaviour, IBullet
     // When this hits something
     public void OnTriggerEnter(Collider other)
     {
+
         // Don't trigger a hit if you hit yourself
         if (other.GetComponent<IArmed>() == Owner)
             return;
-         
+
+
+
         // If it's a unit
         if (other.GetComponent<IDamageable>() != null)
         {
             // Trigger a hit
             IDamageable hit = other.GetComponent<IDamageable>();
 
-            if(myUpgrades == Upgrades.bulletUpgradeType.Piercing)
+            if (myUpgrades == Upgrades.bulletUpgradeType.Piercing)
             {
                 if (!HitList.Contains(hit)) // Check if we haven't hit this yet
                 {
                     HitList.Add(hit); // If we haven't then add it to the list
                     hit.OnHit(myWeapon.bulletDamage); // Trigger a hit on it
-                                             // And then trigger a hit with the bullet
-                    //OnHit(other.gameObject);
+                                                      // And then trigger a hit with the bullet
+                                                      //OnHit(other.gameObject); 
+
                 }
-            }else
+            }
+            else
             {
                 OnHit(other.gameObject);
                 hit.OnHit(myWeapon.bulletDamage); // Trigger a hit on it
             }
+
+            explode.ExplodeAt(Vector3.right, 10, 180, 90, 1);
             return;
-        } 
+        }
 
-        OnHit(other.gameObject); 
+        mySource.clip = HitClip;
+        mySource.Play();
+        explode.ExplodeAt(Vector3.right, 10, 180, 90, 1);
+        OnHit(other.gameObject);
+
+        return;
     }
-
  
 }

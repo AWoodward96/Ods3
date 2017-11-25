@@ -93,4 +93,10 @@ public class TrainingDummy : MonoBehaviour, IArmed {
 
     }
 
+    ZoneScript Zone;
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

@@ -105,4 +105,10 @@ public class targetPractice : MonoBehaviour, IPermanent {
         }
     }
 
+    ZoneScript Zone;
+    public ZoneScript myZone
+    {
+        get { return Zone; }
+        set { Zone = value; }
+    }
 }

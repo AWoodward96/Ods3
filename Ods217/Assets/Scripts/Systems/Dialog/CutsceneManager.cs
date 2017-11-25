@@ -275,22 +275,17 @@ public class CutsceneManager : MonoBehaviour {
             case "HALTPLAYER":
                 // Stops the players inputs from effecting the scene
                 // this includes clicking 
-                GameObject player = GameObject.FindGameObjectWithTag("Player"); 
-                if (player)
-                {
-                    playerS = player.GetComponent<PlayerScript>();
-                    if (playerS != null)
-                    {
-                        playerS.AcceptInput = false;
-                        playerHalted = true;
-                    }
-                }
+                SetPlayerHalted(true);
+                actionComplete = true;
+                break;
+            case "RESUME":
+                SetPlayerHalted(false);
                 actionComplete = true;
                 break;
             case "WAITTEXT":
                 // Starts a waitText. While in a wait text, there are things going on in the scene that need to be done before you can progress to the next text.
                 // The waitText will end when the EndWait() is called
-                waitTexting = true;
+                waitTexting = true; 
                 // WaitText(CharacterID,Text)
                 // WaitText(CharacterID,Text,PortraitID)
                 Text = parameters[0].Trim().Replace(")", "");
@@ -322,8 +317,7 @@ public class CutsceneManager : MonoBehaviour {
                 // Wait(Time)
                 string s = parameters[0].Trim().Replace(")", "");
                 float waitFloat;
-                float.TryParse(s, out waitFloat);
-
+                float.TryParse(s, out waitFloat); 
                 StartCoroutine(WaitCRT(waitFloat));
                 break;
             case "SIDESAY":
@@ -372,6 +366,10 @@ public class CutsceneManager : MonoBehaviour {
                 actionComplete = true;
                 ShowSide = false;
                 StopCoroutine("Aside");
+                break;
+            case "ENDSAY": 
+                ShowMain = false;
+                actionComplete = true;
                 break;
             case "CAMERATARGET":
                 // Sets the main cameras target to whatever we want it to
@@ -434,6 +432,20 @@ public class CutsceneManager : MonoBehaviour {
         currentCutsceneCharacter = null;
         sideTextArea.text = "";
         TextArea.text = "";
+    }
+
+    void SetPlayerHalted(bool _isHalted)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player)
+        {
+            playerS = player.GetComponent<PlayerScript>();
+            if (playerS != null)
+            {
+                playerS.AcceptInput = !_isHalted;
+                playerHalted = _isHalted;
+            }
+        }
     }
 
 
@@ -513,7 +525,7 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     IEnumerator WaitCRT(float time)
-    {
+    { 
         yield return new WaitForSeconds(time);
         actionComplete = true;
     }
