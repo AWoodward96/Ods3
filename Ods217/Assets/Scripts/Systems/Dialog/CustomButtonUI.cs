@@ -23,13 +23,12 @@ public class CustomButtonUI : MonoBehaviour
     public CustomButtonUI NavDown;
 
     Image myImage;
-    Text myText;
+ 
 
     // Use this for initialization
     void Start()
     {
-        myImage = GetComponent<Image>();
-        myText = GetComponentInChildren<Text>();
+        myImage = GetComponent<Image>(); 
     }
 
     // Update is called once per frame

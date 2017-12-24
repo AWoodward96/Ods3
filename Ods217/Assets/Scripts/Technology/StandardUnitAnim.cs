@@ -17,14 +17,14 @@ public class StandardUnitAnim {
     public Vector3 HeldPosition;
 
     public Vector3 velocity;
-    public GameObject gunObject1;
-    public GameObject gunObject2;
+    public WeaponBase gunObject1;
+    public WeaponBase gunObject2; 
     public GameObject myObject;
-    public GameObject activeGunObject;
+    public WeaponBase activeGunObject;
 
     SpriteRenderer myRend;
 
-    public StandardUnitAnim(GameObject _myObj, GameObject _gunObj1, GameObject _gunObj2, Animator _anim)
+    public StandardUnitAnim(GameObject _myObj, WeaponBase _gunObj1, WeaponBase _gunObj2, Animator _anim)
     {
         myObject = _myObj;
         gunObject1 = _gunObj1; 
@@ -33,7 +33,7 @@ public class StandardUnitAnim {
         myRend = myObject.GetComponent<SpriteRenderer>();
     }
 
-    public void Initialize(GameObject _myObj, GameObject _gunObj1, GameObject _gunObj2, Animator _anim)
+    public void Initialize(GameObject _myObj, WeaponBase _gunObj1, WeaponBase _gunObj2, Animator _anim)
     {
         myObject = _myObj;
         gunObject1 = _gunObj1;
@@ -70,7 +70,7 @@ public class StandardUnitAnim {
         if (activeGunObject == null)
             return;
 
-  
+        GameObject rotateMe = activeGunObject.RotateObject;
 
         Vector3 pos = (holdGun) ? HeldPosition : HolsteredPosition;
         if (holdGun)
@@ -81,21 +81,21 @@ public class StandardUnitAnim {
 
         activeGunObject.transform.localPosition = pos;
 
-        if (activeGunObject.GetComponent<usableWeapon>().holdType == usableWeapon.HoldType.Hold)
+        if (activeGunObject.heldData.holdType == HeldWeapon.HoldType.Hold)
         {
-            activeGunObject.transform.rotation = Quaternion.identity;
+            rotateMe.transform.localRotation = Quaternion.identity;
             return;
         }
 
 
-        SpriteRenderer gunRend = activeGunObject.GetComponentInChildren<SpriteRenderer>();
+        SpriteRenderer gunRend = activeGunObject.RotateObject.GetComponentInChildren<SpriteRenderer>();
         gunRend.flipY = flipSprites;
 
 
         if (holdGun)
-            activeGunObject.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(LookingVector.normalized));
+            rotateMe.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(LookingVector.normalized)); // NOT local because if it's local then it'll be relative to the rest of this objects rotation. Set it globally
         else
-            activeGunObject.transform.rotation = Quaternion.Euler(HolsteredRotation);
+            rotateMe.transform.localRotation = Quaternion.Euler(HolsteredRotation);
 
     }
 

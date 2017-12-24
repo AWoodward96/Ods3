@@ -7,8 +7,8 @@ using UnityEngine;
 public class weaponDispenser : MonoBehaviour {
 
     [Header("Weapon Data")]
-    public GameObject WeaponPrefab;
-    public GameObject WeaponReference;
+    public WeaponBase WeaponPrefab;
+    public WeaponBase WeaponReference;
 
     [Header("Object Data")]
     [Range(1,50)]
@@ -28,17 +28,28 @@ public class weaponDispenser : MonoBehaviour {
             {
                 visualizerRenderer = sprites[i];
             }
-        }
+        } 
 
-        visualizerRenderer.sprite = WeaponPrefab.GetComponentInChildren<SpriteRenderer>().sprite;
-
+        visualizerRenderer.sprite = WeaponPrefab.RotateObject.GetComponent<SpriteRenderer>().sprite;
         ind_Indicator = GetComponentInChildren<UsableIndicator>();
+
+        // Set up the weapon reference
+        if(WeaponReference == null && Application.isPlaying)
+        { 
+            GameObject obj = Instantiate(WeaponPrefab.gameObject) as GameObject;
+            WeaponBase b = obj.GetComponent<WeaponBase>();
+
+            WeaponReference = b;
+            WeaponReference.gameObject.SetActive(false);
+        }
+  
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (Application.isPlaying)
-        { 
+        {
+            bool pickedup = isPickedUp;
 
              if (Player == null) // Ensure that we have the player
                 Player = GameObject.FindGameObjectWithTag("Player");
@@ -48,18 +59,17 @@ public class weaponDispenser : MonoBehaviour {
             if (Player != null)
             {
                 Vector3 dist = transform.position - Player.transform.position;
-                ind_Indicator.ind_Enabled = (dist.magnitude <= Range) && (WeaponReference == null); 
+                ind_Indicator.ind_Enabled = (dist.magnitude <= Range) && !pickedup;
             }
              
             // If we get input that we want to interact, and we're able to interact with it
-            if (Input.GetKeyDown(KeyCode.E) && ind_Indicator.ind_Enabled && WeaponReference == null)
+            if (Input.GetKeyDown(KeyCode.E) && ind_Indicator.ind_Enabled && !pickedup)
             {
-                GameObject obj = Instantiate(WeaponPrefab) as GameObject;
-                obj.GetComponent<usableWeapon>().PickedUp();
-                WeaponReference = obj;
+                WeaponReference.gameObject.SetActive(true);
+                WeaponReference.heldData.PickUp(Player.GetComponent<IMultiArmed>());
             }
 
-            visualizerRenderer.enabled = (WeaponReference == null);
+            visualizerRenderer.enabled = !pickedup;
         }
 	}
 
@@ -69,5 +79,20 @@ public class weaponDispenser : MonoBehaviour {
         c.a = .1f;
         Gizmos.color = c;
         Gizmos.DrawSphere(transform.position, Range);
+    }
+
+    bool isPickedUp
+    {
+        get
+        {
+            if (WeaponReference != null)
+                if (WeaponReference.gameObject.activeInHierarchy)
+                    return true;
+                else
+                    return WeaponReference.heldData.PickedUp;
+            else
+                return false; 
+        }
+
     }
 }

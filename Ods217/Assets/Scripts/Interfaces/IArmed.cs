@@ -10,10 +10,10 @@ public interface IArmed : IDamageable {
         get;
     }
 
-    IWeapon myWeapon
+    WeaponBase myWeapon
     {
         get;
     }
-     
-    
+
+    //void SetWeaponsOwner(WeaponBase w);
 }

@@ -141,8 +141,9 @@
     <None Include="Assets\Constants\Materials\NewShadows.shader" />
     <None Include="Assets\Constants\Materials\Normal-Diffuse-Stencil-Write.shader" />
     <None Include="Assets\Constants\Materials\Normal-Diffuse-XRay-Replaceable.shader" />
-    <None Include="Assets\Constants\Materials\Shadows.shader" />
+    <None Include="Assets\Constants\Materials\Shadows\Shadows.shader" />
     <None Include="Assets\Constants\Materials\Shield\BurnDiffuse.shader" />
+    <None Include="Assets\Constants\Materials\Shine.shader" />
     <None Include="Assets\Plugins\SpriteParticleEmitter\Demo\Others\Shaders\PriorityParticleAdd.shader" />
     <None Include="Assets\Plugins\SpriteParticleEmitter\Demo\Others\Shaders\PriorityParticleAddSoft.shader" />
     <None Include="Assets\Plugins\SpriteParticleEmitter\Demo\Others\Shaders\PriorityParticleAlpha.shader" />

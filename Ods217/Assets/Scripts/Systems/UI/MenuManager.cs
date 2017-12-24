@@ -21,7 +21,7 @@ public class MenuManager : MonoBehaviour
     public GameObject HealthkitHolderObject;
     public GameObject DirectionalHolderObject;
     Canvas myCanvas;
-    Canvas myUI;
+ 
 
     // Animating things
     Animator MenuAnimator;
@@ -74,9 +74,7 @@ public class MenuManager : MonoBehaviour
         {
             if (c.name == "MenuCanvas")
                 myCanvas = c;
-
-            if (c.name == "UICanvas")
-                myUI = c;
+             
         }
         myCanvas.gameObject.SetActive(MenuOpen);
 

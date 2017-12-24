@@ -7,9 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(UsableIndicator))]
 [RequireComponent(typeof(AudioSource))]
 public class mobCowardUnit : AIStandardUnit {
-
-
-
+     
     bool vuln = false;
     float curTime;
     LineRenderer line; 

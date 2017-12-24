@@ -17,6 +17,7 @@ public class lgcInteractToStartDialog : MonoBehaviour
     [TextArea(1, 100)]
     public string MyDialog;
 
+    public bool showOnce;
     bool shown;
 
     UsableIndicator ind_Interactable;
@@ -31,6 +32,9 @@ public class lgcInteractToStartDialog : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (showOnce && shown)
+            return;
+
         if (Player == null) // Ensure that we have the player
             Player = GameObject.FindGameObjectWithTag("Player");
 

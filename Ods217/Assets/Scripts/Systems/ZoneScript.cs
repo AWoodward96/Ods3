@@ -29,7 +29,7 @@ public class ZoneScript : MonoBehaviour {
 
     public List<IPermanent> Perms; // A list of the enemies in this zone
     public List<Light> LightObjects; // A list of lights in this zone
-    public List<usableWeapon> Weapons;
+    public List<WeaponBase> Weapons;
 
     Vector3 topLeft;
     Vector3 bottomRight;
@@ -60,14 +60,14 @@ public class ZoneScript : MonoBehaviour {
 
             // Get every important object in the zone
             GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
-            Weapons = new List<usableWeapon>();
+            Weapons = new List<WeaponBase>();
             Perms = new List<IPermanent>();
             LightObjects = new List<Light>();
             foreach (GameObject g in gos)
             {
                 if (g.transform.position.x < bottomRight.x && g.transform.position.x > topLeft.x && g.transform.position.z < topLeft.z && g.transform.position.z > bottomRight.z)
                 {
-                    usableWeapon isUsableWeapon = g.GetComponent<usableWeapon>();
+                    WeaponBase isUsableWeapon = g.GetComponent<WeaponBase>();
                     if(isUsableWeapon != null)
                     {
                         Weapons.Add(isUsableWeapon);

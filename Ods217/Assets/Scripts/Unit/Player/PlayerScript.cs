@@ -20,10 +20,11 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     ForceFieldScript myForceField;
     bool updatedForcefield;
 
-    Vector3 RootPosition = new Vector3(-0.138f, -0.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
+    //Vector3 RootPosition = new Vector3(-.138f, -0.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
+    //public Vector3 RootPosition = new Vector3(0, -.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
     Vector3 HolsteredPosition = new Vector3(0, .5f, 0);
     Vector3 HolsteredRotation = new Vector3(0, 0, -88);
-    Vector3 HolseredRotation2 = new Vector3(0, 0, 90);
+    Vector3 HolseredRotation2 = new Vector3(0, 0, -119);
 
 
     public bool InCombat;
@@ -40,12 +41,9 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
     public bool AcceptInput;
 
-
-    IWeapon primaryWeapon;
-    IWeapon secondaryWeapon;
-    GameObject secondaryGunWeapon;
-    GameObject primaryGunWeapon;
-    GameObject activeWeapon;
+    public WeaponBase PrimaryWeapon;
+    public WeaponBase SecondaryWeapon;
+    public WeaponBase ActiveWeapon;
 
     // Use this for initialization
     void Awake()
@@ -63,29 +61,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
     private void Start()
     {
-        // Get the gun object in the child of this object 
-        usableWeapon[] weapons = GetComponentsInChildren<usableWeapon>();
-        if (weapons.Length > 0)
-        {
-            if (weapons[0] != null)
-            {
-                weapons[0].PickedUp(); 
-            }
-        }
-
-        if (weapons.Length > 1)
-        {
-            if (weapons[1] != null)
-            {
-                weapons[1].PickedUp(); 
-            }
-
-        }
-
-        if(activeWeapon == null)
-        {
-            myVisualizer.BuildAmmoBar();
-        }
+        
     }
 
 
@@ -119,21 +95,30 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         // Where the cursor is in world space
         Vector3 CursorLoc = CamScript.CursorLocation;
 
-        if (secondaryWeapon == null)
+        if (SecondaryWeapon == null)
         {
-            activeWeapon = primaryGunWeapon;
+            ActiveWeapon = PrimaryWeapon;
         }
 
-        // Handle Primary weapon animations
-        if (activeWeapon != primaryGunWeapon)
+        GameObject rotateMe = ActiveWeapon.RotateObject;
+        WeaponBase holsterMe = null;
+        GameObject holsterObj = null;
+        if(PrimaryWeapon != null && SecondaryWeapon != null)
+        {
+            holsterMe = (ActiveWeapon == PrimaryWeapon) ? SecondaryWeapon : PrimaryWeapon;
+            holsterObj = (ActiveWeapon == PrimaryWeapon) ? SecondaryWeapon.RotateObject : PrimaryWeapon.RotateObject;
+        }
+
+        // Handle holster weapon animations
+        if (holsterMe != null)
         {
             //// Flip the gun if you're moving left
-            primaryGunWeapon.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
+            holsterObj.GetComponent<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
 
-            primaryGunWeapon.transform.rotation = Quaternion.Euler(HolsteredRotation);
-            primaryGunWeapon.transform.localPosition = HolsteredPosition;
+            holsterObj.transform.rotation = Quaternion.Euler(HolsteredRotation);
+            holsterMe.transform.localPosition = HolsteredPosition;
 
-            Vector3 pos = primaryGunWeapon.transform.localPosition;
+            Vector3 pos = holsterMe.transform.localPosition;
 
             if ((GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f)) // If we're moving then always put it behind the player
             {
@@ -155,7 +140,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
             }
 
-            primaryGunWeapon.transform.localPosition = pos;
+            holsterMe.transform.localPosition = pos;
         }
 
 
@@ -163,38 +148,28 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         if (!myCtrl.Sprinting && InCombat) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
         {
 
-            Vector3 pos = RootPosition;
+            Vector3 pos = Vector3.zero;
             if (CursorLoc.z < transform.position.z)
                 pos.z = -.01f;
             else
                 pos.z = .01f;
-            activeWeapon.transform.localPosition = pos;
-
-            usableWeapon w = activeWeapon.GetComponent<usableWeapon>(); // Early exit for weapons that don't need to be rotated
-            if (w != null)
-            {
-                if(w.holdType == usableWeapon.HoldType.Hold)
-                {
-                    activeWeapon.transform.rotation = Quaternion.identity;
-                    activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = false;
-                    return;
-                }
-            }
+            ActiveWeapon.transform.localPosition = pos;
              
+            if(ActiveWeapon.heldData.holdType == HeldWeapon.HoldType.Hold)
+            {
+                rotateMe.transform.rotation = Quaternion.identity;
+                rotateMe.GetComponent<SpriteRenderer>().flipY = false;
+                return;
+            }
+
 
             // Now set up the rotating gun
-            Vector3 toCursor = CursorLoc - transform.position; // This value will already have a 0'd y value :)
+            Vector3 toCursor = GlobalConstants.ZeroYComponent(CursorLoc - transform.position); // This value will already have a 0'd y value :)
             toCursor = toCursor.normalized;
             // Alright now we need the angle between those two vectors and then rotate the object 
-            activeWeapon.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(toCursor));
+            rotateMe.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(toCursor));
             // Flip the gun if it's on the left side of the player
-            activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = (CursorLoc.x < transform.position.x);
-
-             
-            Light gunShootFlare = activeWeapon.GetComponentInChildren<Light>();
-            if (gunShootFlare != null)
-                gunShootFlare.transform.localPosition = new Vector3(gunShootFlare.transform.localPosition.x, (CursorLoc.x < transform.position.x) ? -.2f : .2f, gunShootFlare.transform.localPosition.z);
-
+            rotateMe.GetComponent<SpriteRenderer>().flipY = (CursorLoc.x < transform.position.x);
         }
         else // If you're sprinting then loc the guns rotation at 20 degrees depending on which direction you're facing
         {
@@ -220,23 +195,19 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
             }
 
-            activeWeapon.transform.localPosition = pos; 
-             
-            usableWeapon w = activeWeapon.GetComponent<usableWeapon>(); // Early exit for weapons that don't need to be rotated
-            if (w != null)
+            ActiveWeapon.transform.localPosition = pos;
+
+            if (ActiveWeapon.heldData.holdType == HeldWeapon.HoldType.Hold)
             {
-                if (w.holdType == usableWeapon.HoldType.Hold)
-                {
-                    activeWeapon.transform.rotation = Quaternion.identity;
-                    activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = false;
-                    return;
-                }
+                rotateMe.transform.rotation = Quaternion.identity;
+                rotateMe.GetComponent<SpriteRenderer>().flipY = false;
+                return;
             }
-             
+
 
             //// Flip the gun if you're moving left
-            activeWeapon.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0); 
-            activeWeapon.transform.rotation = Quaternion.Euler((primaryGunWeapon == activeWeapon) ? HolsteredRotation : HolseredRotation2);
+            rotateMe.GetComponent<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
+            rotateMe.transform.localRotation = Quaternion.Euler((PrimaryWeapon == ActiveWeapon) ? HolsteredRotation : HolseredRotation2);
 
         }
 
@@ -364,8 +335,8 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
                 if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)) && Armed)
                 {
                     if (!Rolling)
-                    {
-                        IWeapon weaponToFire = (activeWeapon == primaryGunWeapon) ? primaryWeapon : secondaryWeapon;
+                    { 
+                        WeaponBase weaponToFire = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
                         weaponToFire.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
                         combatCD = 0;
                         if (!InCombat)
@@ -391,7 +362,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         // Handle reload
         if (Input.GetKeyDown(KeyCode.R) && Armed)
         {
-            IWeapon weaponToReload = (activeWeapon == primaryGunWeapon) ? primaryWeapon : secondaryWeapon;
+            WeaponBase weaponToReload = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
             weaponToReload.ForceReload();
         }
 
@@ -404,38 +375,24 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
     public void TossWeapon(Vector3 _dir)
     {
-        if (activeWeapon == null)
+        if (ActiveWeapon == null)
             return;
 
-        if (secondaryGunWeapon == activeWeapon)
+        ActiveWeapon.heldData.Toss(_dir, transform.position);
+        if (SecondaryWeapon == ActiveWeapon)
         {
-            secondaryGunWeapon.transform.parent = null;
-            secondaryGunWeapon.transform.position = transform.position;
-            secondaryGunWeapon.GetComponent<usableWeapon>().Toss(_dir, transform.position);
-
-            secondaryWeapon = null;
-            secondaryGunWeapon = null;
-
-           
-            if (primaryGunWeapon != null)
-                activeWeapon = primaryGunWeapon;
-
-            myVisualizer.BuildAmmoBar();
-        }
-        else if (primaryGunWeapon == activeWeapon)
+            // Call the toss method
+            ActiveWeapon = PrimaryWeapon;
+            SecondaryWeapon = null;
+        } else if(PrimaryWeapon == ActiveWeapon)
         {
-            primaryGunWeapon.transform.parent = null;
-            primaryGunWeapon.transform.position = transform.position;
-            primaryGunWeapon.GetComponent<usableWeapon>().Toss(_dir, transform.position);
-
-            primaryWeapon = null;
-            primaryGunWeapon = null;
-
-            if (secondaryGunWeapon != null)
-                activeWeapon = secondaryGunWeapon;
-
-            myVisualizer.BuildAmmoBar();
+            ActiveWeapon = SecondaryWeapon;
+            PrimaryWeapon = null;
         }
+
+        myVisualizer.BuildAmmoBar();
+
+     
     }
 
     public void OnDeath()
@@ -554,12 +511,12 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         }
     }
 
-    IWeapon IArmed.myWeapon
+    WeaponBase IArmed.myWeapon
     {
         get
         {
-            if (primaryWeapon != null || secondaryWeapon != null)
-                return (activeWeapon == primaryGunWeapon) ? primaryWeapon : secondaryWeapon;
+            if (PrimaryWeapon != null || SecondaryWeapon != null)
+                return (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
             else
                 return null;
         }
@@ -633,86 +590,93 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         // Except maybe saving location data? Hmm
     }
 
-    // This method is hell garbage, I'm very tired
-    public void PickUpWeapon(GameObject _newWeapon)
+    
+    public void PickUpWeapon(WeaponBase _newWeapon)
     {
         // First get a reference to the weapon itself
-        IWeapon newRef = _newWeapon.GetComponentInChildren<IWeapon>();
-        if (newRef == null)
+        if (_newWeapon == null)
             return;
 
         combatCD = 0;
         InCombat = true;
+        _newWeapon.myOwner = this;
 
-        if (primaryWeapon == null)
+        if (PrimaryWeapon == null)
         {
-            SetPrimary(newRef, _newWeapon);
+            PrimaryWeapon = _newWeapon; 
+            ActiveWeapon = PrimaryWeapon;
             myVisualizer.BuildAmmoBar(); // Let the visualizer 
             return;
         }
 
 
-        if (primaryWeapon != null && secondaryWeapon == null)
+        if (PrimaryWeapon != null && SecondaryWeapon == null)
         {
-            SetSecondary(newRef, _newWeapon);
+            SecondaryWeapon = _newWeapon; 
+            ActiveWeapon = SecondaryWeapon;
             myVisualizer.BuildAmmoBar(); // Let the visualizer 
             return;
         }
 
-        // If we full toss the weapon that we're currently holding and replace it
-        if (primaryWeapon != null && secondaryWeapon != null)
+        // If we're full, toss the weapon that we're currently holding and replace it
+        if (PrimaryWeapon != null && SecondaryWeapon != null)
         {
+            ActiveWeapon.myOwner = null;
+            ActiveWeapon.heldData.Toss(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position), transform.position);
             // Toss the current active weapon if you're already carrying 2 things 
-            if (activeWeapon == secondaryGunWeapon)
+            if (ActiveWeapon == PrimaryWeapon)
             {
-                secondaryGunWeapon.transform.parent = null;
-                secondaryGunWeapon.transform.position = transform.position;
-                secondaryGunWeapon.GetComponent<usableWeapon>().Toss(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position),transform.position);
-                SetSecondary(newRef, _newWeapon);
+                PrimaryWeapon = _newWeapon;
+                ActiveWeapon = PrimaryWeapon;
                 myVisualizer.BuildAmmoBar();
                 return;
             }
 
-            if (activeWeapon == secondaryGunWeapon)
-            {
-                secondaryGunWeapon.transform.parent = null;
-                secondaryGunWeapon.transform.position = transform.position;
-                secondaryGunWeapon.GetComponent<usableWeapon>().Toss(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position),transform.position);
-                SetPrimary(newRef, _newWeapon);
+            if (ActiveWeapon == SecondaryWeapon)
+            { 
+                SecondaryWeapon = _newWeapon;
+                ActiveWeapon = SecondaryWeapon;
                 myVisualizer.BuildAmmoBar();
                 return;
             }
+
         }
-
+        
     }
 
-    void SetSecondary(IWeapon newRef, GameObject _newWeapon)
+    public void SetWeaponsOwner(WeaponBase w)
     {
-        //  If we already have one weapon and can pick up another
-        secondaryGunWeapon = _newWeapon; // Set the secondary equal to the new weapon
-        secondaryGunWeapon.transform.parent = transform; // Set it's transform to the parent
-        secondaryGunWeapon.transform.position = Vector3.zero; // Set it's position to 0
-        secondaryWeapon = newRef; // Set the iweapon reference to the new iweapon
-        secondaryWeapon.Owner = this; // Set it's owner
-        _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
-        activeWeapon = _newWeapon; // If you picked it up chances are you want it equiped
+        throw new NotImplementedException();
     }
 
-    void SetPrimary(IWeapon newRef, GameObject _newWeapon)
-    {
-        //  If we already have one weapon and can pick up another
-        primaryGunWeapon = _newWeapon; // Set the secondary equal to the new weapon
-        primaryGunWeapon.transform.parent = transform; // Set it's transform to the parent
-        primaryGunWeapon.transform.position = Vector3.zero; // Set it's position to 0
-        primaryWeapon = newRef; // Set the iweapon reference to the new iweapon
-        primaryWeapon.Owner = this; // Set it's owner
-        _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
-        activeWeapon = _newWeapon; // If you picked it up chances are you want it equiped
-    }
+    //void SetSecondary(IWeapon newRef, GameObject _newWeapon)
+    //{
+    //    //  If we already have one weapon and can pick up another
+    //    secondaryGunWeapon = _newWeapon; // Set the secondary equal to the new weapon
+    //    secondaryGunWeapon.transform.parent = transform; // Set it's transform to the parent
+    //    secondaryGunWeapon.transform.position = Vector3.zero; // Set it's position to 0
+    //    secondaryWeapon = newRef; // Set the iweapon reference to the new iweapon
+    //    secondaryWeapon.Owner = this; // Set it's owner
+    //    _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
+    //    activeWeapon = _newWeapon; // If you picked it up chances are you want it equiped
+    //}
+
+    //void SetPrimary(IWeapon newRef, GameObject _newWeapon)
+    //{
+
+    //    //  If we already have one weapon and can pick up another
+    //    primaryGunWeapon = _newWeapon; // Set the secondary equal to the new weapon
+    //    primaryGunWeapon.transform.parent = transform; // Set it's transform to the parent
+    //    primaryGunWeapon.transform.position = Vector3.zero; // Set it's position to 0
+    //    primaryWeapon = newRef; // Set the iweapon reference to the new iweapon
+    //    primaryWeapon.Owner = this; // Set it's owner
+    //    _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
+    //    activeWeapon = _newWeapon; // If you picked it up chances are you want it equiped
+    //}
 
     bool Armed
     {
-        get { return (primaryWeapon != null || secondaryWeapon != null); }
+        get { return (PrimaryWeapon != null || SecondaryWeapon != null); }
     }
 
 

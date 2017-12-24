@@ -20,8 +20,9 @@ public class TrainingDummy : MonoBehaviour, IArmed {
     void Update()
     {
 
-    } 
+    }
 
+     
     public UnitStruct MyUnit
     {
         get
@@ -43,11 +44,11 @@ public class TrainingDummy : MonoBehaviour, IArmed {
         }
     }
 
-    public IWeapon myWeapon
+    public WeaponBase myWeapon
     {
         get
         {
-            return MyWeapon.GetComponent<IWeapon>();
+            return MyWeapon.GetComponent<WeaponBase>();
         }
     }
 

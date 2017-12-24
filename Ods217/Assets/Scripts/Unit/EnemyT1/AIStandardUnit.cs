@@ -31,11 +31,14 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
     Animator myAnimator;
     EffectSystem myEmojis;
 
-    public GameObject currentWeapon;
-    public IWeapon WeaponSlot1;
-    public IWeapon WeaponSlot2;
-    public GameObject WeaponObject1;
-    public GameObject WeaponObject2;
+    public WeaponBase currentWeapon;
+    public WeaponBase WeaponSlot1;
+    public WeaponBase WeaponSlot2;
+    //public GameObject currentWeapon;
+    //public IWeapon WeaponSlot1;
+    //public IWeapon WeaponSlot2;
+    //public GameObject WeaponObject1;
+    //public GameObject WeaponObject2;
 
     public ZoneScript Zone;
 
@@ -45,31 +48,9 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         myAnimator = GetComponent<Animator>();
         myEmojis = GetComponentInChildren<EffectSystem>();
         moveAI = new MovementAI(gameObject, myCC);
-        
-
-
-        // Get the gun object in the child of this object 
-        usableWeapon[] weapons = GetComponentsInChildren<usableWeapon>();
-        if (weapons.Length > 0)
-        {
-            if (weapons[0] != null)
-            {
-                weapons[0].PickedUp(this);
-            }
-        }
-
-        if (weapons.Length > 1)
-        {
-            if (weapons[1] != null)
-            {
-                weapons[1].PickedUp(this); 
-            } 
-        }
-        //myWeapon.Owner = this; 
-        animationHandler.Initialize(gameObject, WeaponObject1,WeaponObject2, myAnimator);
          
 
-
+        animationHandler.Initialize(gameObject, WeaponSlot1, WeaponSlot2, myAnimator); 
     }
 
     // Update is called once per frame
@@ -95,8 +76,8 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
  
         UpdateAnimationController();
 
-        if (WeaponObject2 == null)
-            currentWeapon = WeaponObject1;
+        if (WeaponSlot2 == null)
+            currentWeapon = WeaponSlot1;
     }
 
     public virtual void UpdateAnimationController()
@@ -130,8 +111,8 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         myAnimator.SetBool("Passive", AIState == EnemyAIState.Idle);
 
 
-        animationHandler.gunObject1 = WeaponObject1;
-        animationHandler.gunObject2 = WeaponObject2; 
+        animationHandler.gunObject1 = WeaponSlot1;
+        animationHandler.gunObject2 = WeaponSlot2; 
         animationHandler.activeGunObject = currentWeapon;
         animationHandler.Update();
     }
@@ -260,14 +241,11 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         }
     }
 
-    public IWeapon myWeapon
+    public WeaponBase myWeapon
     {
         get
         {
-            if (WeaponSlot1 != null || WeaponSlot2 != null)
-                return (currentWeapon == WeaponObject1) ? WeaponSlot1 : WeaponSlot2;
-            else
-                return null;
+            return currentWeapon; 
         }
     }
 
@@ -280,38 +258,55 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
     {
         yield return new WaitForEndOfFrame();
 
-        if (WeaponObject2 == currentWeapon)
+ 
+
+        currentWeapon.heldData.Toss(_dir, transform.position);
+        if (WeaponSlot2 == currentWeapon)
         {
-
-            WeaponObject2.transform.parent = null;
-            WeaponObject2.transform.position = transform.position;
-            WeaponObject2.GetComponent<usableWeapon>().Toss(_dir, transform.position);
-
+            // Call the toss method
+            currentWeapon = WeaponSlot1;
             WeaponSlot2 = null;
-            WeaponObject2 = null;
-            currentWeapon = null;
-
-            if (WeaponObject1 != null)
-                currentWeapon = WeaponObject1;
-
-            myVisualizer.BuildAmmoBar();
         }
-        else if (WeaponObject1 == currentWeapon)
+        else if (WeaponSlot1 == currentWeapon)
         {
-            Debug.Log("Tossing2");
-            WeaponObject1.transform.parent = null;
-            WeaponObject1.transform.position = transform.position;
-            WeaponObject1.GetComponent<usableWeapon>().Toss(_dir, transform.position);
-
+            currentWeapon = WeaponSlot2;
             WeaponSlot1 = null;
-            WeaponObject1 = null;
-            currentWeapon = null;
-
-            if (WeaponObject2 != null)
-                currentWeapon = WeaponObject2;
-
-            myVisualizer.BuildAmmoBar();
         }
+
+        myVisualizer.BuildAmmoBar();
+
+        //if (WeaponSlot1 == currentWeapon)
+        //{
+
+        //    WeaponObject2.transform.parent = null;
+        //    WeaponObject2.transform.position = transform.position;
+        //    WeaponObject2.GetComponent<usableWeapon>().Toss(_dir, transform.position);
+
+        //    WeaponSlot2 = null;
+        //    WeaponObject2 = null;
+        //    currentWeapon = null;
+
+        //    if (WeaponObject1 != null)
+        //        currentWeapon = WeaponObject1;
+
+        //    myVisualizer.BuildAmmoBar();
+        //}
+        //else if (WeaponObject1 == currentWeapon)
+        //{
+        //    Debug.Log("Tossing2");
+        //    WeaponObject1.transform.parent = null;
+        //    WeaponObject1.transform.position = transform.position;
+        //    WeaponObject1.GetComponent<usableWeapon>().Toss(_dir, transform.position);
+
+        //    WeaponSlot1 = null;
+        //    WeaponObject1 = null;
+        //    currentWeapon = null;
+
+        //    if (WeaponObject2 != null)
+        //        currentWeapon = WeaponObject2;
+
+        //    myVisualizer.BuildAmmoBar();
+        //}
     }
 
     public virtual bool Triggered
@@ -354,83 +349,86 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         {
             GameObject obj = Resources.Load("Prefabs/Particles/deathPartParent") as GameObject;
             Instantiate(obj, transform.position, obj.transform.rotation);
+
+            if(currentWeapon != null)
+                currentWeapon.ReleaseWeapon();
+             
+
             this.gameObject.SetActive(false);
         }
     }
 
   
-     public void PickUpWeapon(GameObject _newWeapon)
+     public void PickUpWeapon(WeaponBase _newWeapon)
     {
-        // First get a reference to the weapon itself
-        IWeapon newRef = _newWeapon.GetComponentInChildren<IWeapon>();
-        if (newRef == null)
+        //// First get a reference to the weapon itself
+        if (_newWeapon == null)
             return;
- 
+
+        _newWeapon.myOwner = this; // Set it's owner
         if (WeaponSlot1 == null)
         {
-            SetPrimary(newRef, _newWeapon);
-            myVisualizer.BuildAmmoBar(); // Let the visualizer 
+            WeaponSlot1 = _newWeapon; 
+            myVisualizer.BuildAmmoBar(); // Let the visualizer know
+            currentWeapon = WeaponSlot1;
             return;
         }
 
-
-        if (WeaponSlot1 != null && WeaponSlot2 == null)
+        if(WeaponSlot1 != null && WeaponSlot2 == null)
         {
-            SetSecondary(newRef, _newWeapon);
-            myVisualizer.BuildAmmoBar(); // Let the visualizer 
+            WeaponSlot2 = _newWeapon; 
+            myVisualizer.BuildAmmoBar(); // Let the visualizer know
+            currentWeapon = WeaponSlot2;
             return;
         }
 
-        // If we full toss the weapon that we're currently holding and replace it
-        if (WeaponSlot1 != null && WeaponSlot2 != null)
+        // If we're full, toss the weapon that we're currently holding and replace it
+        if(WeaponSlot1 != null && WeaponSlot2 != null)
         {
-            // Toss the current active weapon if you're already carrying 2 things 
-            if (currentWeapon == WeaponObject2)
+            // Toss the current active weapon
+            currentWeapon.myOwner = null;
+            currentWeapon.heldData.Toss(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position), transform.position);
+            if(currentWeapon == WeaponSlot2)
             {
-                WeaponObject2.transform.parent = null;
-                WeaponObject2.transform.position = transform.position;
-                WeaponObject2.GetComponent<usableWeapon>().Toss(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position), transform.position);
-                SetSecondary(newRef, _newWeapon);
+                WeaponSlot2 = _newWeapon;
+                currentWeapon = WeaponSlot2;
                 myVisualizer.BuildAmmoBar();
-                return;
             }
 
-            if (currentWeapon == WeaponObject2)
+            if (currentWeapon == WeaponSlot1)
             {
-                WeaponObject2.transform.parent = null;
-                WeaponObject2.transform.position = transform.position;
-                WeaponObject2.GetComponent<usableWeapon>().Toss(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position), transform.position);
-                SetPrimary(newRef, _newWeapon);
+                WeaponSlot1 = _newWeapon;
+                currentWeapon = WeaponSlot1;
                 myVisualizer.BuildAmmoBar();
-                return;
             }
+
         }
+       
 
     }
 
-    void SetSecondary(IWeapon newRef, GameObject _newWeapon)
-    {
-        //  If we already have one weapon and can pick up another
-        WeaponObject2 = _newWeapon; // Set the secondary equal to the new weapon
-        WeaponObject2.transform.parent = transform; // Set it's transform to the parent
-        WeaponObject2.transform.position = Vector3.zero; // Set it's position to 0
-        WeaponSlot2 = newRef; // Set the iweapon reference to the new iweapon
-        WeaponSlot2.Owner = this; // Set it's owner
-        _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
-        currentWeapon = _newWeapon; // If you picked it up chances are you want it equiped
-    }
+    //void SetSecondary(IWeapon newRef, GameObject _newWeapon)
+    //{
+    //    //  If we already have one weapon and can pick up another
+    //    WeaponObject2 = _newWeapon; // Set the secondary equal to the new weapon
+    //    WeaponObject2.transform.parent = transform; // Set it's transform to the parent
+    //    WeaponObject2.transform.position = Vector3.zero; // Set it's position to 0
+    //    WeaponSlot2 = newRef; // Set the iweapon reference to the new iweapon
+    //    _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
+    //    currentWeapon = _newWeapon; // If you picked it up chances are you want it equiped
+    //}
 
-    void SetPrimary(IWeapon newRef, GameObject _newWeapon)
-    {
-        //  If we already have one weapon and can pick up another
-        WeaponObject1 = _newWeapon; // Set the secondary equal to the new weapon
-        WeaponObject1.transform.parent = transform; // Set it's transform to the parent
-        WeaponObject1.transform.position = Vector3.zero; // Set it's position to 0
-        WeaponSlot1 = newRef; // Set the iweapon reference to the new iweapon
-        WeaponSlot1.Owner = this; // Set it's owner
-        _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
-        currentWeapon = _newWeapon; // If you picked it up chances are you want it equiped
-    }
+    //void SetPrimary(IWeapon newRef, GameObject _newWeapon)
+    //{
+    //    //  If we already have one weapon and can pick up another
+    //    WeaponObject1 = _newWeapon; // Set the secondary equal to the new weapon
+    //    WeaponObject1.transform.parent = transform; // Set it's transform to the parent
+    //    WeaponObject1.transform.position = Vector3.zero; // Set it's position to 0
+    //    WeaponSlot1 = newRef; // Set the iweapon reference to the new iweapon
+    //    WeaponSlot1.Owner = this; // Set it's owner
+    //    _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
+    //    currentWeapon = _newWeapon; // If you picked it up chances are you want it equiped
+    //}
 
     public virtual void Reset()
     {
@@ -449,4 +447,10 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         get { return Zone; }
         set { Zone = value; }
     }
+
+
+    //void SetWeaponsOwner(WeaponBase w)
+    //{
+    //    w.heldData.Pickup(this);
+    //}
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class TrainingTurret1 : MonoBehaviour, IArmed {
 
     public UnitStruct myUnit;
-    IWeapon MyWeapon;
+    WeaponBase MyWeapon;
     HealthBar healthBar;
     public GameObject gunObj;
 
@@ -19,11 +19,12 @@ public class TrainingTurret1 : MonoBehaviour, IArmed {
 
     // Use this for initialization
     void Start () {
-        MyWeapon = gunObj.GetComponent<IWeapon>();
+        MyWeapon = gunObj.GetComponent<WeaponBase>();
         healthBar = GetComponentInChildren<HealthBar>();
-        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>(); 
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
 
-        MyWeapon.Owner = this; 
+        MyWeapon.heldData.DisableMulti();
+        MyWeapon.myOwner = this; 
 	}
 	
 	// Update is called once per frame
@@ -71,11 +72,11 @@ public class TrainingTurret1 : MonoBehaviour, IArmed {
         }
     }
 
-    IWeapon IArmed.myWeapon
+    WeaponBase IArmed.myWeapon
     {
         get
         {
-            return GetComponentInChildren<IWeapon>();
+            return GetComponentInChildren<WeaponBase>();
         }
     }
 
@@ -93,16 +94,12 @@ public class TrainingTurret1 : MonoBehaviour, IArmed {
         {
             GameObject obj = Resources.Load("Prefabs/Particles/deathPartParent") as GameObject;
             Instantiate(obj,transform.position,obj.transform.rotation);
+            MyWeapon.ReleaseWeapon();
             gameObject.SetActive(false);
         }
     }
 
-
-    public virtual void TossWeapon()
-    {
-
-    }
-
+ 
     ZoneScript Zone;
     public ZoneScript myZone
     {

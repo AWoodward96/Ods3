@@ -31,10 +31,13 @@ public class GlobalConstants {
         return (sign > 0) ? angle : 360 - angle;
     }
 
+    // Gravity calculation
     // Inaccessable variables that are used to calculate the gravity of the world I want
-    float jumpHeight = 3;
-    float timeToJumpApex = 1f;
-    public static float Gravity = (2 * 3) / Mathf.Pow(((1 > 0) ? 1 : 1), 2); // Global gravity since we're not using unitys rigidbody
+    // float jumpHeight = 3; 
+    // float timeToJumpApex = 1f;
+    //public static float Gravity = (2 * jumpHeight) / Mathf.Pow(((timeToJumpApex > 0) ? timeToJumpApex : 1), 2); // This weird calculation gets me 6. So I'm just going to duplicate this line and have it be 6
+
+    public static float Gravity = 6; // Global gravity since we're not using unitys rigidbody
     public static float Friction = .9f; // Slows down CControllers
     public static float AirFriction = 1f; // This variable is here just in case I want to change it. For now, there is no air friction
 

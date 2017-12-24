@@ -70,7 +70,7 @@ public class targetPractice : MonoBehaviour, IPermanent {
 
             if(player.myWeapon != null)
             {
-                if (player.myWeapon.myWeaponInfo.currentAmmo < 2 && !triggedReload)
+                if (player.myWeapon.weaponData.currentAmmo < 2 && !triggedReload)
                 {
                     CutsceneManager.instance.StartCutscene(ReloadDialog);
                     triggedReload = true;

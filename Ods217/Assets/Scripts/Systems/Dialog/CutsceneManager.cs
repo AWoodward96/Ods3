@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CutsceneManager : MonoBehaviour {
-
-    Canvas MyCanvas;
+    
     Text TextArea;
     Text sideTextArea;
     Image portraitArea;
@@ -59,7 +58,6 @@ public class CutsceneManager : MonoBehaviour {
         }
 
         InCutscene = false;
-        MyCanvas = GetComponentInChildren<Canvas>();
         mySource = GetComponent<AudioSource>();
 
 

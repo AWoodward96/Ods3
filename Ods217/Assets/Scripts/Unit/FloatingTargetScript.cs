@@ -48,7 +48,7 @@ public class FloatingTargetScript : MonoBehaviour, IArmed {
         }
     }
 
-    public IWeapon myWeapon
+    public WeaponBase myWeapon
     {
         get
         {
@@ -89,5 +89,8 @@ public class FloatingTargetScript : MonoBehaviour, IArmed {
         Triggered = false;
     }
 
- 
+    public void SetWeaponsOwner(WeaponBase w)
+    {
+        throw new NotImplementedException();
+    }
 }

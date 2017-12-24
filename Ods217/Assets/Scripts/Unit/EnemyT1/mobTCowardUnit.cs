@@ -73,13 +73,13 @@ public class mobTCowardUnit : mobCowardUnit {
     {
         if (canPickUp)
         {
-            List<usableWeapon> Weapons = myZone.Weapons;
+            List<WeaponBase> Weapons = myZone.Weapons;
 
             // Look for a weapon we can pick ups
-            usableWeapon desiredWeapon = null;
+            WeaponBase desiredWeapon = null;
             for (int i = 0; i < Weapons.Count; i++)
             {
-                if (Weapons[i].isBeingUsed)
+                if (Weapons[i].heldData.PickedUp)
                     continue;
 
                 if (!Weapons[i].gameObject.activeInHierarchy)
@@ -104,9 +104,9 @@ public class mobTCowardUnit : mobCowardUnit {
                 myCC.ApplyForce(d);
 
                 // If we're close enough pick it up
-                if (d.magnitude < desiredWeapon.Range || d.magnitude < 1)
+                if (d.magnitude < desiredWeapon.heldData.Range || d.magnitude < 1)
                 {
-                    desiredWeapon.PickedUp(this);
+                    desiredWeapon.heldData.PickUp(this);
                     canPickUp = false;
                     StartCoroutine(pickupCRT());
                 }

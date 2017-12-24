@@ -39,7 +39,7 @@ public class UsableIndicator : MonoBehaviour
         { 
             GameObject o = new GameObject("MyIndicator"); 
             o.transform.parent = this.gameObject.transform;
-            o.transform.localScale = new Vector3(1, 1, 1);
+            o.transform.localScale = new Vector3(1, 2, 1);
             ind_Renderer = o.AddComponent<SpriteRenderer>();
             ind_Renderer.sortingOrder = 10;
             ind_Renderer.sprite = ind_Sprite;

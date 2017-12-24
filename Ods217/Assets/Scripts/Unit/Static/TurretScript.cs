@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Holy shit this is simultaniously a non unit and a unit
-/// AAAAAAAA I'M FIXING IT
+/// An automated shooting turret
 /// </summary>
 public class TurretScript : MonoBehaviour, IArmed {
 
@@ -19,8 +18,8 @@ public class TurretScript : MonoBehaviour, IArmed {
     ParticleSystem mySystem;
     AudioSource mySource;
     HealthBar myHealthBar;
-    Light onOffLight; 
-    IWeapon myWeapon; 
+    Light onOffLight;
+    WeaponBase myWeapon; 
     bool reloadinginprocess;
    
 
@@ -28,10 +27,10 @@ public class TurretScript : MonoBehaviour, IArmed {
     void Awake () {
         onOffLight = GetComponentInChildren<Light>();
         mySystem = GetComponentInChildren<ParticleSystem>();
-        myWeapon = GetComponentInChildren<IWeapon>();
+        myWeapon = GetComponentInChildren<WeaponBase>();
         myHealthBar = GetComponentInChildren<HealthBar>();
         mySource = GetComponent<AudioSource>();
-        myWeapon.Owner = this;
+        myWeapon.myOwner = this;
 	}
 	
 	// Update is called once per frame
@@ -45,7 +44,7 @@ public class TurretScript : MonoBehaviour, IArmed {
             myWeapon.FireWeapon(Direction);
 
 
-            if (myWeapon.isReloading)
+            if (myWeapon.Reloading)
             {
                 if (!reloadinginprocess)
                 {
@@ -92,7 +91,7 @@ public class TurretScript : MonoBehaviour, IArmed {
         }
     }
 
-    IWeapon IArmed.myWeapon
+    WeaponBase IArmed.myWeapon
     {
         get
         {
