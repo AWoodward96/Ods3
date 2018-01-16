@@ -1,0 +1,41 @@
+ HaltPlayer()
+
+LoadChar(Star,Ster)
+LoadPerm(MinibossStar,Ster)
+LoadPawn(MinibossStar,Ster)
+MovePawn(Ster, 270, 13.51,-1.2)
+
+CameraTarget(Ster)
+Say(Ster,Yes.,Right)
+Continue(. . . .,ShiftyLeft)
+Continue(I get it.,Right)
+Continue(. . . .,Hmm)
+Continue(Yep. Mhm. Alright,Right)
+Say(Ster,Yeah but what about-,LookDown)
+Continue(- - -,Down)
+
+Say(Ster,Hey Fredrick did we order take out from that seafood place?,Right)
+Continue(. . .,ShiftyRight)
+Say(Ster,Well there's a guy here who looks like the delivery boy,Right)
+Continue( except he has a gun.,ShiftyLeft)
+
+// Check if the alarms are going off?
+
+EndSay()
+Wait(1)
+Say(Ster, An intruder you say?,Right)
+Continue(Don't mind if I do!,Down)
+
+EndSay()
+Wait(1) 
+Trigger(Ster)
+Say(Ster,Hi there!,LookDown)
+Continue(My name is Star!)
+Say(Ster,You're not supposed to be here right now!,Down)
+Continue(So I'm going to have to deal with you~,idle)
+Continue(With explosions!, Happy)
+
+LerpCameraSize(11, 1)
+
+Resume()
+CameraTarget(Char1)

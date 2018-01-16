@@ -7,6 +7,7 @@ using UnityEngine;
 /// A script that handles camera placement and sceudo levels
 /// Runs in edit mode so we can see how each zone is layed out
 /// </summary>
+[RequireComponent(typeof(LineRenderer))]
 public class ZoneScript : MonoBehaviour {
 
     
@@ -19,6 +20,8 @@ public class ZoneScript : MonoBehaviour {
     ZoneScript PrevZone;
     public enum AggressionType { NoCombat, SomeCombat, OnlyCombat };
     public AggressionType ZoneAggression;
+
+    public ZoneLock[] ZoneLocks;
 
 
     [Header("Meta")]
@@ -33,6 +36,9 @@ public class ZoneScript : MonoBehaviour {
 
     Vector3 topLeft;
     Vector3 bottomRight;
+
+    PlayerScript player;
+    
 
 
     public ZoneScript()
@@ -100,8 +106,8 @@ public class ZoneScript : MonoBehaviour {
 	void Update ()
     {
   
-        checkZone(); 
-         
+        CheckZone();
+        CheckLocks();
         if (PrevZone != ActiveZone)
         { 
             SetLights((ActiveZone == this));
@@ -134,20 +140,33 @@ public class ZoneScript : MonoBehaviour {
         if (type == ViewType.Solid)
             Gizmos.DrawCube(pos, zoneSize);
 
+        // Draw all the locks
+        Color c2 = Color.red ;
+        c.a = .1f;
+        Gizmos.color = c2;
+        for (int i = 0; i < ZoneLocks.Length; i++)
+        {
+            Vector3 lockSize = new Vector3(ZoneLocks[i].Size.x, .5f, ZoneLocks[i].Size.y);
+            Vector3 lockPosition = (transform.position + new Vector3(ZoneLocks[i].Location.x, 0, ZoneLocks[i].Location.y));
+
+            
+            Gizmos.DrawCube(lockPosition, lockSize);
+        }
+
 
         Gizmos.DrawIcon(transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2), "TopLeftBracket");
         Gizmos.DrawIcon(transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2), "BottomRightBracket");
         Gizmos.DrawIcon(pos, "ZoneIcon");
     }
 
-    void checkZone()
+    void CheckZone()
     {
         // See if the player entered this zone
         if(ActiveZone != this)
         {
-           
+
             // Check for the player
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameObject player = playerRef.gameObject;
             if(player) // Can't do anything if he doesn't exist
             {
                 // Calculate the zones extents
@@ -183,6 +202,81 @@ public class ZoneScript : MonoBehaviour {
     }
   
  
+    public void CheckLocks()
+    {
+        bool anyActive = false;
+        for(int i = 0; i < ZoneLocks.Length; i++)
+        {
+            if (ZoneLocks[i].Enabled)
+            {
+                anyActive = true;
+                Vector3 worldPosTopLeft = (transform.position + new Vector3(ZoneLocks[i].Location.x,0, ZoneLocks[i].Location.y)) + new Vector3(-ZoneLocks[i].Size.x / 2, 0, ZoneLocks[i].Size.y / 2);
+                Vector3 worldPosBottomRight = (transform.position + new Vector3(ZoneLocks[i].Location.x, 0, ZoneLocks[i].Location.y)) + new Vector3(ZoneLocks[i].Size.x / 2, 0, -ZoneLocks[i].Size.y / 2);
+
+                Vector3 newPos = playerRef.transform.position;
+                if (newPos.x < worldPosTopLeft.x)
+                    newPos.x = worldPosTopLeft.x;
+                if (newPos.z > worldPosTopLeft.z)
+                    newPos.z = worldPosTopLeft.z;
+
+                if (newPos.x > worldPosBottomRight.x)
+                    newPos.x = worldPosBottomRight.x;
+                if (newPos.z < worldPosBottomRight.z)
+                    newPos.z = worldPosBottomRight.z;
+
+                playerRef.transform.position = newPos;
+
+                LineRenderer lRender = GetComponent<LineRenderer>();
+                if(lRender != null)
+                {
+                    lRender.enabled = true; 
+                    lRender.positionCount = 4;
+                    lRender.useWorldSpace = true;
+                    float newYPos = YPosition + lRender.widthMultiplier / 2;
+                    lRender.SetPosition(0, new Vector3(worldPosTopLeft.x, newYPos, worldPosTopLeft.z));
+                    lRender.SetPosition(1, new Vector3(worldPosTopLeft.x, newYPos, worldPosBottomRight.z));
+                    lRender.SetPosition(2, new Vector3(worldPosBottomRight.x, newYPos, worldPosBottomRight.z));
+                    lRender.SetPosition(3, new Vector3(worldPosBottomRight.x, newYPos, worldPosTopLeft.z));
+                }
+
+                break; // only have one lock on at a time
+            }
+        }
+
+        LineRenderer lineRender = GetComponent<LineRenderer>();
+        if(lineRender != null)
+        { 
+            lineRender.widthMultiplier = Mathf.Lerp(lineRender.widthMultiplier, ((anyActive) ? 1 : 0), .9f * Time.deltaTime);
+            if(lineRender.widthMultiplier < .1f)
+            {
+                lineRender.widthMultiplier = .1f;
+                lineRender.enabled = false;
+            }
+        }
+
+    }
+
+
+    public virtual PlayerScript playerRef
+    {
+        get
+        {
+            if (player == null)
+                player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+
+            return player;
+        }
+    }
+}
+
+
+[System.Serializable]
+public struct ZoneLock
+{
+    public bool Enabled;
+    public bool EnableOnEntry;
+    public Vector2 Size;
+    public Vector2 Location;
 }
 
  

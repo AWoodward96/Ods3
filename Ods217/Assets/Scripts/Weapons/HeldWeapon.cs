@@ -134,18 +134,15 @@ public class HeldWeapon {
 
         Physics.IgnoreCollision(thrownObj.GetComponent<Collider>(), playerObj.GetComponent<Collider>(), true);
 
-        // We've been tossed!
-        PickedUp = false;
 
         thrownObj.transform.parent = null;
-
-        thrownObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-        thrownObj.transform.localScale = new Vector3(1, 1, 1);
         thrownObj.transform.position = pos;
 
         // Reset the transform
         if (WillToss == TossType.Toss)
-        { 
+        {
+            thrownObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+            thrownObj.transform.localScale = new Vector3(1, 1, 1);
             myRigidBody.isKinematic = false;
             myRigidBody.velocity = dir; 
             myRigidBody.angularVelocity = (new Vector3(0, 500, 0) * ((Random.Range(0, 1) == 1) ? 1 : -1));
@@ -156,7 +153,11 @@ public class HeldWeapon {
         weaponBase.transform.rotation = Quaternion.identity;
         weaponBase.transform.localScale = Vector3.one;
 
+
         if (DEBUG) Debug.Log("HeldWeapon: Toss");
+
+        // We've been tossed!
+        PickedUp = false;
     }
 
     public void HandlePlayerPickupRange()

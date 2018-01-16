@@ -36,21 +36,29 @@ public class CamScript : MonoBehaviour
         if (Target == null)
             Target = new GameObject().transform;
 
+        // Load in the cursors new world position
         CursorToWorld();
 
-
+        // If we have something to look at
         if (Target.GetComponent<CController>() != null)
         {
+            // Take its position and add a standard distance from it
             Vector3 Additive = Target.position + FollowBack;
 
-            if (!DialogManager.InDialog && !UpgradesManager.MenuOpen)
+            // If we're not in cutscene and the menu is not open, do not account for the cursors position
+            if (!CutsceneManager.InCutscene && !UpgradesManager.MenuOpen)
             {
+                // Otherwise, shift the cameras position towards where the cursor is
                 Vector3 toCursor = CursorLocation - transform.position;
                 toCursor = GlobalConstants.ZeroYComponent(toCursor);
                 if (toCursor.magnitude > 6)
                     toCursor = toCursor.normalized * 6;
 
                 Additive += toCursor;
+            }else
+            {
+                // W/o the cursor, the focus gets a bit weird, add a z vector to fix
+                Additive += (Vector3.forward * 6);
             }
 
             Additive.y = Target.position.y + FollowBack.y;
@@ -143,5 +151,24 @@ public class CamScript : MonoBehaviour
         Vector3 center = (ExtentsTL - ExtentsBR) / 2;
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(center, new Vector3(center.x + Mathf.Abs(center.x - ExtentsBR.x), 2, center.x + Mathf.Abs(center.z - ExtentsBR.z)));
+    }
+
+    public void LerpSize(float _newSize, float _speed)
+    {
+        StopCoroutine("lerpSizeCRT");
+        StartCoroutine(lerpSizeCRT(_newSize, _speed));
+    }
+
+    IEnumerator lerpSizeCRT(float _newSize, float _speed)
+    {
+        float newVal= Camera.main.orthographicSize;
+        while(Mathf.Abs( _newSize - newVal) > .1f)
+        {
+            newVal = Mathf.Lerp(newVal, _newSize, _speed * Time.deltaTime);
+            Camera.main.orthographicSize = newVal;
+            yield return null;
+        }
+
+        Camera.main.orthographicSize = _newSize;
     }
 }

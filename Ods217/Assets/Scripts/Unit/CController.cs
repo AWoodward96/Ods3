@@ -17,7 +17,7 @@ public class CController : MonoBehaviour
     [Range(0, 1000)]
     public float MaxSpeed = 500;
 
-    public bool canMove; // Can this object move?
+    public bool canMove = true; // Can this object move?
     public bool Airborne;
 
     [Header("Buffs")]
@@ -26,6 +26,7 @@ public class CController : MonoBehaviour
     public bool Sprinting;
     [HideInInspector]
     public bool SprintingPrev; // So we can tell when we've switched from sprinting to not sprinting
+    public bool Immovable; // If true, explosions wont move this character
 
 
     Vector3 Acceleration;

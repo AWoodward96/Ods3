@@ -222,6 +222,7 @@
     <None Include="Assets\Plugins\SpriteParticleEmitter\UI Particles Shaders\UI Particle Premultiply Blend.shader" />
     <None Include="Assets\Plugins\SpriteParticleEmitter\UI Particles Shaders\UI Particle VertexLit Blended.shader" />
     <None Include="Assets\Resources\CutsceneData\Text\pirateShipCS1.txt" />
+    <None Include="Assets\Resources\CutsceneData\Text\starCutscene.txt" />
     <None Include="Assets\Resources\CutsceneData\Text\tutorialCS1.txt" />
     <None Include="Assets\Scripts\SampleSaveFile.txt" />
   </ItemGroup>

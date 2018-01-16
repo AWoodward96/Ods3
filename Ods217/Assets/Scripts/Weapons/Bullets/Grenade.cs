@@ -12,6 +12,9 @@ public class Grenade : BulletBase
     [Header("Grenade Data")]
     public GameObject AlertIndicator;
     public ParticleSystem ExplosionParticle;
+    
+    [Tooltip("This refers to the size of the alert asset. If an alert asset is 32x32 it should be 1. 48x48: 1.5, etc etc")] public float NativeAlertIndicatorRatio = 1.5f;
+    public float ExplosionSize = 1.5f;
  
 
     /// <summary>
@@ -25,8 +28,8 @@ public class Grenade : BulletBase
         Ray r = new Ray(Direction, Vector3.down);
         RaycastHit hit;
         // Raycast down 
-        if(Physics.Raycast(r,out hit,10,LayerMask.GetMask("Ground")))
-        {
+        if(Physics.Raycast(r,out hit,50,LayerMask.GetMask("Ground")))
+        { 
             Direction = hit.point;
         }
 
@@ -39,7 +42,8 @@ public class Grenade : BulletBase
         AlertIndicator.SetActive(true);
         AlertIndicator.transform.parent = null;
         AlertIndicator.transform.position = Direction + new Vector3(0, .1f, 0);
-
+        AlertIndicator.transform.localScale = new Vector3(ExplosionSize / 1.5f, ExplosionSize / 1.5f, ExplosionSize / 1.5f);
+         
         Fired = true;
     }
 
@@ -61,12 +65,19 @@ public class Grenade : BulletBase
         AlertIndicator.transform.SetParent(transform);
         AlertIndicator.SetActive(false);
 
-
+        // Set the explosion particle at the new location
         ExplosionParticle.transform.SetParent(null);
         ExplosionParticle.transform.position = this.transform.position;
+        ExplosionParticle.transform.localScale = new Vector3(ExplosionSize, ExplosionSize, ExplosionSize);
         ExplosionParticle.Play();
 
-        Collider[] cols = Physics.OverlapSphere(transform.position, 1.5f);
+        // Play the explosion sound effect if possible
+        AudioSource explosionSource = ExplosionParticle.GetComponent<AudioSource>();
+        if (explosionSource != null) 
+            explosionSource.Play(); 
+
+        // See if we hit anyone
+        Collider[] cols = Physics.OverlapSphere(transform.position, ExplosionSize);
         IDamageable foo;
         CController cc;
         for (int i = 0; i < cols.Length; i ++)
@@ -80,9 +91,12 @@ public class Grenade : BulletBase
             cc = cols[i].GetComponent<CController>();
             if(cc != null)
             {
-                Vector3 dist = cc.transform.position - transform.position;
-                float strength = (1.5f - dist.magnitude) * -10; 
-                cc.ApplyForce(dist * strength);
+                if (!cc.Immovable)
+                {
+                    Vector3 dist = cc.transform.position - transform.position;
+                    float strength = (1.5f - dist.magnitude) * -10;
+                    cc.ApplyForce(dist * strength);
+                } 
             }
         }
  

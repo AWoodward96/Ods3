@@ -85,7 +85,7 @@ public class mobTCowardStatic : mobCowardUnit
                 if (!Weapons[i].gameObject.activeInHierarchy)
                     continue;
 
-                Vector3 dist = Weapons[i].transform.position - transform.position;
+                Vector3 dist = Weapons[i].ThrownObject.transform.position - transform.position;
                 if (dist.magnitude < 3)
                 {
                     desiredWeapon = Weapons[i];
@@ -97,7 +97,7 @@ public class mobTCowardStatic : mobCowardUnit
             if (desiredWeapon != null)
             {
 
-                Vector3 d = desiredWeapon.transform.position - transform.position;
+                Vector3 d = desiredWeapon.ThrownObject.transform.position - transform.position;
                 d = GlobalConstants.ZeroYComponent(d);
 
                 // Move towards it

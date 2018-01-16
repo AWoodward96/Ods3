@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CController))]
-public class AIStandardUnit : MonoBehaviour, IMultiArmed {
+public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
 
     [Header("AIStandardUnit")]
     public UnitStruct UnitData;
@@ -22,23 +22,20 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
 
     [HideInInspector]
     public Vector3 LastSeen;
+    public bool UpdateLookingVector = true;
 
     [HideInInspector]
     public PlayerScript player;
-    MovementAI moveAI;  
+    public MovementAI moveAI;  
     [HideInInspector]
     public  CController myCC;
-    Animator myAnimator;
+    [HideInInspector]
+    public Animator myAnimator;
     EffectSystem myEmojis;
 
     public WeaponBase currentWeapon;
     public WeaponBase WeaponSlot1;
-    public WeaponBase WeaponSlot2;
-    //public GameObject currentWeapon;
-    //public IWeapon WeaponSlot1;
-    //public IWeapon WeaponSlot2;
-    //public GameObject WeaponObject1;
-    //public GameObject WeaponObject2;
+    public WeaponBase WeaponSlot2; 
 
     public ZoneScript Zone;
 
@@ -70,6 +67,9 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
             case EnemyAIState.Aggro:
                 AggroState();
                 break;
+            case EnemyAIState.Defeated:
+                DefeatedState();
+                break;
         } 
         moveAI.Update();
 
@@ -83,12 +83,12 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
     public virtual void UpdateAnimationController()
     {
 
-        if(AIState != EnemyAIState.Idle) // If we're not in idle state ...
+        if(AIState != EnemyAIState.Idle && UpdateLookingVector) // If we're not in idle state ...
         {
             Vector3 looking = Vector3.zero; // We should change the looking vector to look at the player
             if (SeePlayer()) // If we can see the player ...
             {
-                looking = playerRef.transform.position - transform.position; // Look at him
+                looking = GlobalConstants.ZeroYComponent(playerRef.transform.position - transform.position); // Look at him
                 LastSeen = playerRef.transform.position;
             }
             else
@@ -101,6 +101,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
             if (AIState != EnemyAIState.Aggro)
                 looking.z = -.1f;
 
+            
             animationHandler.LookingVector = looking;
         } 
 
@@ -202,7 +203,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
     }
      
 
-    PlayerScript playerRef
+    public virtual PlayerScript playerRef
     {
         get
         {
@@ -241,7 +242,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
         }
     }
 
-    public WeaponBase myWeapon
+    public virtual WeaponBase myWeapon
     {
         get
         {
@@ -275,38 +276,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
 
         myVisualizer.BuildAmmoBar();
 
-        //if (WeaponSlot1 == currentWeapon)
-        //{
-
-        //    WeaponObject2.transform.parent = null;
-        //    WeaponObject2.transform.position = transform.position;
-        //    WeaponObject2.GetComponent<usableWeapon>().Toss(_dir, transform.position);
-
-        //    WeaponSlot2 = null;
-        //    WeaponObject2 = null;
-        //    currentWeapon = null;
-
-        //    if (WeaponObject1 != null)
-        //        currentWeapon = WeaponObject1;
-
-        //    myVisualizer.BuildAmmoBar();
-        //}
-        //else if (WeaponObject1 == currentWeapon)
-        //{
-        //    Debug.Log("Tossing2");
-        //    WeaponObject1.transform.parent = null;
-        //    WeaponObject1.transform.position = transform.position;
-        //    WeaponObject1.GetComponent<usableWeapon>().Toss(_dir, transform.position);
-
-        //    WeaponSlot1 = null;
-        //    WeaponObject1 = null;
-        //    currentWeapon = null;
-
-        //    if (WeaponObject2 != null)
-        //        currentWeapon = WeaponObject2;
-
-        //    myVisualizer.BuildAmmoBar();
-        //}
+ 
     }
 
     public virtual bool Triggered
@@ -325,6 +295,10 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
     public virtual void Activate()
     {
 
+    }
+    public virtual void DefeatedState()
+    {
+        // Nothing for now
     }
  
 
@@ -406,29 +380,11 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
        
 
     }
-
-    //void SetSecondary(IWeapon newRef, GameObject _newWeapon)
-    //{
-    //    //  If we already have one weapon and can pick up another
-    //    WeaponObject2 = _newWeapon; // Set the secondary equal to the new weapon
-    //    WeaponObject2.transform.parent = transform; // Set it's transform to the parent
-    //    WeaponObject2.transform.position = Vector3.zero; // Set it's position to 0
-    //    WeaponSlot2 = newRef; // Set the iweapon reference to the new iweapon
-    //    _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
-    //    currentWeapon = _newWeapon; // If you picked it up chances are you want it equiped
-    //}
-
-    //void SetPrimary(IWeapon newRef, GameObject _newWeapon)
-    //{
-    //    //  If we already have one weapon and can pick up another
-    //    WeaponObject1 = _newWeapon; // Set the secondary equal to the new weapon
-    //    WeaponObject1.transform.parent = transform; // Set it's transform to the parent
-    //    WeaponObject1.transform.position = Vector3.zero; // Set it's position to 0
-    //    WeaponSlot1 = newRef; // Set the iweapon reference to the new iweapon
-    //    WeaponSlot1.Owner = this; // Set it's owner
-    //    _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
-    //    currentWeapon = _newWeapon; // If you picked it up chances are you want it equiped
-    //}
+ 
+    public void SwapWeapons()
+    {
+        currentWeapon = (currentWeapon == WeaponSlot1) ? WeaponSlot2 : WeaponSlot1;
+    }
 
     public virtual void Reset()
     {
@@ -449,8 +405,22 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed {
     }
 
 
-    //void SetWeaponsOwner(WeaponBase w)
-    //{
-    //    w.heldData.Pickup(this);
-    //}
+    public void RemoveWeapon(WeaponBase _Weapon)
+    {
+        if (_Weapon == WeaponSlot1)
+        { WeaponSlot1 = null; currentWeapon = WeaponSlot2; } 
+
+        if (_Weapon == WeaponSlot2)
+        { WeaponSlot2 = null; currentWeapon = WeaponSlot1; }  
+
+        if(myWeapon != null)
+            myWeapon.ResetShootCD();
+
+        myVisualizer.BuildAmmoBar();
+    }
+
+    public void MoveTo(Vector3 _destination)
+    {
+        moveAI.MoveTo(_destination);
+    }
 }

@@ -1,5 +1,5 @@
 LoadChar(Slas,Slas)
-LoadChar(Con1,Con1)
+LoadChar(Pirate3,Con1)
 
 HaltPlayer()
 
@@ -9,12 +9,12 @@ Say(Con1,You there!,Idle)
 Wait(1.5)
 Say(Slas,Me?)
 Say(Con1,Yeah you.)
-Continue(I haven't seen you around here before.)
-Continue(Whats your code-name?)
+Continue(I haven't seen you around here before.,Suspicious)
+Continue(Whats your code-name?,Idle)
 Say(Slas,Oh my code-names Spiffy Turtle I'm new here what's your code-name?)
-Say(Con1,Spiffy Turtle?)
+Say(Con1,Spiffy Turtle?,What)
 Continue(My code-name is Dartz and I ain't ever heard of anyone named Spiffy Turtle...)
-Say(Con1, Wait a minute...)
+Say(Con1, Wait a minute...,Suspicious)
 Continue(What's going on here...?)
 
 LoadPerm(SpecialCutsceneEnemy,e1)
@@ -26,6 +26,8 @@ Trigger(e3)
 
 Resume()
 
+Lock(0)
+
 EndSay()
-SideSay(Con1,He's not with us! Get him!)
+SideSay(Con1,He's not with us! Get him!,Idle)
 Wait(5)

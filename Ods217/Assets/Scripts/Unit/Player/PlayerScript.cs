@@ -39,7 +39,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     AudioSource myAudioSource;
     public AudioClip[] AudioClips;
 
-    public bool AcceptInput;
+    public bool AcceptInput; 
 
     public WeaponBase PrimaryWeapon;
     public WeaponBase SecondaryWeapon;
@@ -158,7 +158,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             if(ActiveWeapon.heldData.holdType == HeldWeapon.HoldType.Hold)
             {
                 rotateMe.transform.rotation = Quaternion.identity;
-                rotateMe.GetComponent<SpriteRenderer>().flipY = false;
+                rotateMe.GetComponentInChildren<SpriteRenderer>().flipY = false;
                 return;
             }
 
@@ -169,7 +169,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             // Alright now we need the angle between those two vectors and then rotate the object 
             rotateMe.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(toCursor));
             // Flip the gun if it's on the left side of the player
-            rotateMe.GetComponent<SpriteRenderer>().flipY = (CursorLoc.x < transform.position.x);
+            rotateMe.GetComponentInChildren<SpriteRenderer>().flipY = (CursorLoc.x < transform.position.x);
         }
         else // If you're sprinting then loc the guns rotation at 20 degrees depending on which direction you're facing
         {
@@ -200,13 +200,13 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             if (ActiveWeapon.heldData.holdType == HeldWeapon.HoldType.Hold)
             {
                 rotateMe.transform.rotation = Quaternion.identity;
-                rotateMe.GetComponent<SpriteRenderer>().flipY = false;
+                rotateMe.GetComponentInChildren<SpriteRenderer>().flipY = false;
                 return;
             }
 
 
             //// Flip the gun if you're moving left
-            rotateMe.GetComponent<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
+            rotateMe.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
             rotateMe.transform.localRotation = Quaternion.Euler((PrimaryWeapon == ActiveWeapon) ? HolsteredRotation : HolseredRotation2);
 
         }
@@ -339,10 +339,12 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
                         WeaponBase weaponToFire = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
                         weaponToFire.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
                         combatCD = 0;
+ 
                         if (!InCombat)
                         {
                             myAudioSource.clip = AudioClips[0];
                             myAudioSource.Play();
+                            combatCD = 0;
                             InCombat = true;
                         }
                     }
@@ -370,7 +372,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         {
             TossWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
         }
-
+ 
     }
 
     public void TossWeapon(Vector3 _dir)
@@ -416,36 +418,8 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
     void handleRolling()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.LogAssertion("Mode Changed to Sprint");
-            myCtrl.Speed = .75f;
-            movementType = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            Debug.LogAssertion("Roll mode changed to: Movement Direction");
-            myCtrl.Speed = 1.3f;
-            movementType = true;
-        }
-
-
         rollSoftCD++;
-
-        //if (!Rolling && Input.GetKeyDown(KeyCode.Space) && !movementType && rollSoftCD > 40 && myCtrl.canMove)
-        //{
-        //    Vector3 dir = GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position);
-        //    dir = dir.normalized;
-        //    rollingDirection = dir;
-        //    Rolling = true;
-        //    myCtrl.Velocity = rollingDirection * RollSpeed;
-        //    rollSoftCD = 0;
-        //    myAnimator.SetTrigger("Rolling");
-        //    StopAllCoroutines();
-        //    StartCoroutine(RollCD());
-        //}
-
+ 
         if (!Rolling && Input.GetKeyDown(KeyCode.Space) && movementType && rollSoftCD > 40 && myCtrl.canMove)
         {
             Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -480,6 +454,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         {
             myAudioSource.clip = AudioClips[0];
             myAudioSource.Play();
+            combatCD = 0;
             InCombat = true;
         }
 
@@ -649,30 +624,22 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         throw new NotImplementedException();
     }
 
-    //void SetSecondary(IWeapon newRef, GameObject _newWeapon)
-    //{
-    //    //  If we already have one weapon and can pick up another
-    //    secondaryGunWeapon = _newWeapon; // Set the secondary equal to the new weapon
-    //    secondaryGunWeapon.transform.parent = transform; // Set it's transform to the parent
-    //    secondaryGunWeapon.transform.position = Vector3.zero; // Set it's position to 0
-    //    secondaryWeapon = newRef; // Set the iweapon reference to the new iweapon
-    //    secondaryWeapon.Owner = this; // Set it's owner
-    //    _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
-    //    activeWeapon = _newWeapon; // If you picked it up chances are you want it equiped
-    //}
+    /// <summary>
+    /// A forced removal of a weapon that's either lost its use or isn't avaible anymore
+    /// </summary>
+    public void RemoveWeapon(WeaponBase _Base)
+    {
+        if (_Base == PrimaryWeapon)
+        { PrimaryWeapon = null; ActiveWeapon = SecondaryWeapon; }
 
-    //void SetPrimary(IWeapon newRef, GameObject _newWeapon)
-    //{
+        if (_Base == SecondaryWeapon)
+        { SecondaryWeapon = null; ActiveWeapon = PrimaryWeapon; }
 
-    //    //  If we already have one weapon and can pick up another
-    //    primaryGunWeapon = _newWeapon; // Set the secondary equal to the new weapon
-    //    primaryGunWeapon.transform.parent = transform; // Set it's transform to the parent
-    //    primaryGunWeapon.transform.position = Vector3.zero; // Set it's position to 0
-    //    primaryWeapon = newRef; // Set the iweapon reference to the new iweapon
-    //    primaryWeapon.Owner = this; // Set it's owner
-    //    _newWeapon.transform.localScale = new Vector3(1, 1, 1); // Make sure it's the right scale
-    //    activeWeapon = _newWeapon; // If you picked it up chances are you want it equiped
-    //}
+        if(ActiveWeapon != null)
+            ActiveWeapon.ResetShootCD();
+
+        myVisualizer.BuildAmmoBar();
+    }
 
     bool Armed
     {

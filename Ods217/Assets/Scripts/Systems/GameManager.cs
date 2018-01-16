@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
  
     public int scrapcount;
 
-    public   enum GameDifficulty { Easy, Normal, Hard, FuckYou }
+    public   enum GameDifficulty { Easy, Normal, Hard }
     public static GameDifficulty curDifficulty;
 
 

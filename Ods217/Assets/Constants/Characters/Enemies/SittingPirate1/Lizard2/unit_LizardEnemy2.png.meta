@@ -1,0 +1,790 @@
+fileFormatVersion: 2
+guid: 7e24cc3e4bc4e1a4284435a506f1f0b6
+timeCreated: 1514757992
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: unit_LizardEnemy2_0
+    21300002: unit_LizardEnemy2_1
+    21300004: unit_LizardEnemy2_2
+    21300006: unit_LizardEnemy2_3
+    21300008: unit_LizardEnemy2_4
+    21300010: unit_LizardEnemy2_5
+    21300012: unit_LizardEnemy2_6
+    21300014: unit_LizardEnemy2_7
+    21300016: unit_LizardEnemy2_8
+    21300018: unit_LizardEnemy2_9
+    21300020: unit_LizardEnemy2_10
+    21300022: unit_LizardEnemy2_11
+    21300024: unit_LizardEnemy2_12
+    21300026: unit_LizardEnemy2_13
+    21300028: unit_LizardEnemy2_14
+    21300030: unit_LizardEnemy2_15
+    21300032: unit_LizardEnemy2_16
+    21300034: unit_LizardEnemy2_17
+    21300036: unit_LizardEnemy2_18
+    21300038: unit_LizardEnemy2_19
+    21300040: unit_LizardEnemy2_20
+    21300042: unit_LizardEnemy2_21
+    21300044: unit_LizardEnemy2_22
+    21300046: unit_LizardEnemy2_23
+    21300048: unit_LizardEnemy2_24
+    21300050: unit_LizardEnemy2_25
+    21300052: unit_LizardEnemy2_26
+    21300054: unit_LizardEnemy2_27
+    21300056: unit_LizardEnemy2_28
+    21300058: unit_LizardEnemy2_29
+    21300060: unit_LizardEnemy2_30
+    21300062: unit_LizardEnemy2_31
+    21300064: unit_LizardEnemy2_32
+    21300066: unit_LizardEnemy2_33
+    21300068: unit_LizardEnemy2_34
+    21300070: unit_LizardEnemy2_35
+    21300072: unit_LizardEnemy2_36
+    21300074: unit_LizardEnemy2_37
+    21300076: unit_LizardEnemy2_38
+    21300078: unit_LizardEnemy2_39
+    21300080: unit_LizardEnemy2_40
+    21300082: unit_LizardEnemy2_41
+    21300084: unit_LizardEnemy2_42
+    21300086: unit_LizardEnemy2_43
+    21300088: unit_LizardEnemy2_44
+    21300090: unit_LizardEnemy2_45
+    21300092: unit_LizardEnemy2_46
+    21300094: unit_LizardEnemy2_47
+    21300096: unit_LizardEnemy2_48
+    21300098: unit_LizardEnemy2_49
+    21300100: unit_LizardEnemy2_50
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 1
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 12
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_1
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_3
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_4
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 501
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_6
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_7
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_8
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_9
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 451
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_10
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_11
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_12
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_13
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_14
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 401
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_15
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_16
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_17
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_18
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_19
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 351
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_20
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_21
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_22
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_23
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_24
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 301
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_25
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_26
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_27
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_28
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_29
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 251
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_30
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_31
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_32
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_33
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_34
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 201
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_35
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_36
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_37
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_38
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_39
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_40
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_41
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_42
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_43
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_44
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_45
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_46
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_47
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_48
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_49
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_LizardEnemy2_50
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -85,8 +85,9 @@ public class mobTCowardUnit : mobCowardUnit {
                 if (!Weapons[i].gameObject.activeInHierarchy)
                     continue;
 
-                Vector3 dist = Weapons[i].transform.position - transform.position;
-                if (dist.magnitude < 3)
+                Vector3 dist = Weapons[i].ThrownObject.transform.position - transform.position;
+ 
+                if (dist.magnitude < 4)
                 {
                     desiredWeapon = Weapons[i];
                     break;
@@ -96,8 +97,7 @@ public class mobTCowardUnit : mobCowardUnit {
             // If there is a weapon nearby we can pick up
             if (desiredWeapon != null)
             {
-
-                Vector3 d = desiredWeapon.transform.position - transform.position;
+                Vector3 d = desiredWeapon.ThrownObject.transform.position - transform.position;
                 d = GlobalConstants.ZeroYComponent(d);
 
                 // Move towards it

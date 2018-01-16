@@ -91,10 +91,8 @@ public class WeaponBase : MonoBehaviour {
             }
             else
             {
-                if (myBullets[i].gameObject.activeInHierarchy)
-                {
-                    myBullets[i].gameObject.SetActive(false); 
-                }  
+                if (myBullets[i].gameObject.activeInHierarchy) 
+                    myBullets[i].gameObject.SetActive(false);  
             }
         }
     }
@@ -116,7 +114,7 @@ public class WeaponBase : MonoBehaviour {
 
             // Then refill it
             for (int i = 0; i < weaponData.maxAmmo; i++)
-            {
+            { 
                 GameObject newObj = (GameObject)Instantiate(weaponData.BulletObject);
                 myBullets.Add(newObj.GetComponent<BulletBase>());
                 newObj.SetActive(false);
@@ -124,7 +122,7 @@ public class WeaponBase : MonoBehaviour {
         }
     }
 
-    public void FireWeapon(Vector3 _dir)
+    public virtual void FireWeapon(Vector3 _dir)
     {
         // Break out if we can't even shoot
         if (currentshootCD < weaponData.fireCD)
@@ -139,22 +137,29 @@ public class WeaponBase : MonoBehaviour {
         myBullets[i].gameObject.SetActive(true); 
         myBullets[i].myOwner = (myOwner);
         myBullets[i].myInfo = (weaponData);
-        myBullets[i].transform.position = transform.position;
+        myBullets[i].transform.position = transform.position + (_dir.normalized/2);
         myBullets[i].Shoot(_dir);
 
         currentshootCD = 0;
         weaponData.currentAmmo--;
-
-        //if (myAnimator != null)
-        //{
-        //    myAnimator.SetTrigger("Fire");
-        //}
+ 
 
         //Play the sound
-        myAudioSource.clip = ShootClip;
-        myAudioSource.Play();
+        if(myAudioSource != null)
+        {
+            myAudioSource.clip = ShootClip;
+            myAudioSource.Play();
+        }
 
-        myOwner.myVisualizer.ShowMenu();
+        // Check for an animator
+        Animator anim = RotateObject.GetComponentInChildren<Animator>();
+        if (anim != null)
+            anim.SetTrigger("Fire");
+
+        if (myOwner != null)
+            myOwner.myVisualizer.ShowMenu();
+
+
         return; 
 
     }
@@ -164,9 +169,8 @@ public class WeaponBase : MonoBehaviour {
         weaponData.currentAmmo = 0;
         tryReload = true;
         Reloading = true;
-        myOwner.myVisualizer.ShowMenu();
-        //myAudioSource.clip = weaponData.reloadClip;
-        //myAudioSource.Play();
+        if(myOwner != null)
+            myOwner.myVisualizer.ShowMenu(); 
         StopAllCoroutines();
         StartCoroutine(Reload());
     }
@@ -175,11 +179,15 @@ public class WeaponBase : MonoBehaviour {
     {
         yield return new WaitForSeconds(weaponData.reloadSpeed);
         weaponData.currentAmmo = weaponData.maxAmmo;
-        myOwner.myVisualizer.ShowMenu();
+        if(myOwner != null)
+            myOwner.myVisualizer.ShowMenu();
         Reloading = false;
         tryReload = false;
-        myAudioSource.clip = weaponData.reloadClip;
-        myAudioSource.Play();
+        if(myAudioSource != null)
+        {
+            myAudioSource.clip = weaponData.reloadClip;
+            myAudioSource.Play(); 
+        }
     }
 
     private void OnDisable()
@@ -206,6 +214,10 @@ public class WeaponBase : MonoBehaviour {
         }
     }
 
+    public void ResetShootCD()
+    {
+        currentshootCD = 0;
+    }
 
     /// <summary>
     /// Method called when we want to get rid of a weapon but not toss it when it's owner dies. 
@@ -218,6 +230,13 @@ public class WeaponBase : MonoBehaviour {
         RotateObject.SetActive(false);
         heldData.PickedUp = false;
         WeaponReleased = true;
+
+        IMultiArmed armed = myOwner.gameObject.GetComponent<IMultiArmed>();
+        if(armed != null)
+        {
+            armed.RemoveWeapon(this);
+        }
+        
     }
 }
 

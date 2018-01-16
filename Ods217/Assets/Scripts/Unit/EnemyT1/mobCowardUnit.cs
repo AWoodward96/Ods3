@@ -17,8 +17,7 @@ public class mobCowardUnit : AIStandardUnit {
 
     [Space(20)]
     [Header("mobCowardUnit")]
-    public int segments = 20;
-    public GameObject DisarmedWeapon;
+    int segments = 20;
 
     AIStandardUnit.EnemyAIState prevState;
     public AudioClip[] Clips;
@@ -124,14 +123,5 @@ public class mobCowardUnit : AIStandardUnit {
 
 
 
-    PlayerScript playerRef
-    {
-        get
-        {
-            if (playerref == null)
-                playerref = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
-
-            return playerref;
-        }
-    }
+  
 }

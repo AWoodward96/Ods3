@@ -133,4 +133,30 @@ public class GlobalConstants {
         // Rotate our velocity to match the direction between the two objects 
         return Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
     }
+
+    public static Vector3 getPhysicsArc(Vector3 myPos, Vector3 targetPos, float _angle)
+    {
+        Vector3 p = targetPos;
+
+        float gravity = Physics.gravity.magnitude;
+
+        // Positions of this object and the target on the same plane
+        Vector3 planarTarget = new Vector3(p.x, 0, p.z);
+        Vector3 planarPostion = new Vector3(myPos.x, 0, myPos.z);
+
+        // Planar distance between objects
+        float distance = Vector3.Distance(planarTarget, planarPostion);
+        // Distance along the y axis between objects
+        float yOffset = myPos.y - p.y;
+
+        // Selected angle in radians 
+        float angle = _angle * Mathf.Deg2Rad;
+
+        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) + yOffset));
+
+        Vector3 velocity = new Vector3(0, initialVelocity * Mathf.Sin(angle), initialVelocity * Mathf.Cos(angle));
+        float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPostion) * (p.x > myPos.x ? 1 : -1);
+        // Rotate our velocity to match the direction between the two objects 
+        return Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
+    }
 }

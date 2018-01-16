@@ -8,14 +8,15 @@ using UnityEngine.UI;
 /// <summary>
 /// A script to handle all forms of dialog and severl other interactions in the game
 /// </summary>
-public class DialogManager : MonoBehaviour {
+public class DialogManager : MonoBehaviour
+{
 
     Canvas MyCanvas;
     Text TextArea;
     CustomButtonUI buttonLeft;
     CustomButtonUI buttonRight;
 
-   
+
     enum DecisionType { Power, Pickup };
     DecisionType currentDecisionType;
     List<GameObject> buttonEffector; // A generic variable to determine what the decision is effecting
@@ -44,13 +45,14 @@ public class DialogManager : MonoBehaviour {
     // IPawn currentPawn;
 
     // Use this for initialization 
-    void Start() { 
+    void Start()
+    {
         if (instance == null)
         {
-            instance = this; 
+            instance = this;
         }
         else
-        { 
+        {
             Destroy(this.gameObject);
         }
 
@@ -60,14 +62,14 @@ public class DialogManager : MonoBehaviour {
 
         // Set up the texts
         Text[] allText = GetComponentsInChildren<Text>();
-        foreach(Text t in allText)
+        foreach (Text t in allText)
         {
             if (t.name == "TextArea")
                 TextArea = t;
         }
 
         CustomButtonUI[] buttons = GetComponentsInChildren<CustomButtonUI>();
-        foreach(CustomButtonUI b in buttons)
+        foreach (CustomButtonUI b in buttons)
         {
             if (b.name == "DecisionL")
                 buttonLeft = b;
@@ -83,21 +85,22 @@ public class DialogManager : MonoBehaviour {
         waiting = false;
         DontDestroyOnLoad(this);
     }
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
         // enable and disable assets depending on booleans
         MyCanvas.enabled = InDialog && !waiting;
         buttonLeft.gameObject.SetActive(makingADecision);
-        buttonRight.gameObject.SetActive(makingADecision);  
-	}
+        buttonRight.gameObject.SetActive(makingADecision);
+    }
 
     void Update()
     {
         // Handle button nav because we have custom buttons
         if (makingADecision)
         {
-            
+
             if (Input.GetKeyDown(KeyCode.D))
             {
                 if (CustomButtonUI.Selected.NavRight != null)
@@ -110,11 +113,11 @@ public class DialogManager : MonoBehaviour {
                     CustomButtonUI.Selected = CustomButtonUI.Selected.NavLeft;
             }
 
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 DecisionMade((CustomButtonUI.Selected == buttonLeft));
             }
-          
+
         }
     }
 
@@ -124,15 +127,15 @@ public class DialogManager : MonoBehaviour {
         // set up the variables
         Dialog = _dialogString;
         currentLine = 0;
-        InDialog = true; 
+        InDialog = true;
 
         // Ok turn off the player if he can be turnt off
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerHalted = false;
-        if(player)
-        { 
+        if (player)
+        {
             playerCC = player.GetComponent<CController>();
-            if(playerCC != null)
+            if (playerCC != null)
             {
                 playerCC.canMove = false;
                 playerHalted = true;
@@ -170,18 +173,18 @@ public class DialogManager : MonoBehaviour {
         // Get the line
         string[] splitString = Dialog.Split('\n');
         string fullLine = GetValidLine(splitString);
-       
+
         // Our break out. If the current line number is greater then the amount of lines in the dialog then we're finished.
-        if(currentLine >= splitString.Length)
+        if (currentLine >= splitString.Length)
         {
             // We're done!
-           InDialog = false;
+            InDialog = false;
 
-           if (playerHalted)
-               playerCC.canMove = true;
-           return;
+            if (playerHalted)
+                playerCC.canMove = true;
+            return;
         }
-        
+
         currentLine++; // Increment so we never read the same line twice
 
         // Alright now determine what to do with it
@@ -190,7 +193,7 @@ public class DialogManager : MonoBehaviour {
         if (fullLine.Contains("$l:"))
         {
             // Send it to the coroutine 
-            StartCoroutine(PrintLine(fullLine.Substring(3))); 
+            StartCoroutine(PrintLine(fullLine.Substring(3)));
             return;
         }
 
@@ -226,7 +229,7 @@ public class DialogManager : MonoBehaviour {
         //}
 
 
-        if(fullLine.ToUpper().Contains("PICKUP?"))
+        if (fullLine.ToUpper().Contains("PICKUP?"))
         {
             // The pickup name should be the item name in the resources folder
             string line = fullLine.Substring(9);
@@ -259,19 +262,19 @@ public class DialogManager : MonoBehaviour {
         }
 
 
-        if(fullLine.ToUpper().Contains("HASITEM:"))
+        if (fullLine.ToUpper().Contains("HASITEM:"))
         {
-            string itemName = fullLine.Substring(9,1);
+            string itemName = fullLine.Substring(9, 1);
             int itemID;
-            int.TryParse(itemName,out itemID);
- 
+            int.TryParse(itemName, out itemID);
+
 
             string identifier = splitString[currentLine];
             identifier = identifier.Trim();
             identifier = identifier.Substring(1);
 
             List<Item> list = GameManager.Inventory;
-            for(int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].ID == itemID)
                 {
@@ -282,16 +285,17 @@ public class DialogManager : MonoBehaviour {
             }
         }
 
-        if(fullLine.ToUpper().Contains("TRIGGER:"))
+        if (fullLine.ToUpper().Contains("TRIGGER:"))
         {
             string objectName = fullLine.Substring(9);
 
             GameObject obj = GlobalConstants.FindGameObject(objectName.Trim());
             IPermanent activateMe = obj.GetComponent<IPermanent>();
-            if(activateMe != null)
+            if (activateMe != null)
             {
                 activateMe.Triggered = !activateMe.Triggered;
-            }else
+            }
+            else
             {
                 Debug.Log("Dialog manager could not find object: " + objectName);
             }
@@ -300,7 +304,7 @@ public class DialogManager : MonoBehaviour {
             return;
         }
 
-        if(fullLine.ToUpper().Contains("SETACTIVE:"))
+        if (fullLine.ToUpper().Contains("SETACTIVE:"))
         {
             // Find a game object and turn it off/on
             // SYNTAX: SetActive:[Name].[True/False];
@@ -308,18 +312,19 @@ public class DialogManager : MonoBehaviour {
             string[] commands = lineTrimmed.Split('.');
             GameObject obj = GlobalConstants.FindGameObject(commands[0]);
 
-            if(obj != null)
+            if (obj != null)
             {
                 string toUp = commands[1].ToUpper();
-                if(toUp == "TRUE" || toUp == "FALSE")
+                if (toUp == "TRUE" || toUp == "FALSE")
                 {
-                    obj.SetActive((toUp == "TRUE") ? true : false); 
+                    obj.SetActive((toUp == "TRUE") ? true : false);
                 }
                 else
                 {
                     Debug.Log(":DIALOG: Error at line: " + currentLine + " in dialog. Setting an objects active boolean to " + commands[1]);
                 }
-            }else
+            }
+            else
             {
                 Debug.Log("DIALOG: Could not find object: " + commands[0]);
             }
@@ -328,11 +333,11 @@ public class DialogManager : MonoBehaviour {
             return;
         }
 
-        if(fullLine.ToUpper().Contains("WAIT:"))
+        if (fullLine.ToUpper().Contains("WAIT:"))
         {
             string[] lineSplit = fullLine.Split(':');
             int value = 0;
-            int.TryParse(lineSplit[1], out value); 
+            int.TryParse(lineSplit[1], out value);
             waiting = true;
             StartCoroutine(waitCRT(value));
             return;
@@ -345,7 +350,7 @@ public class DialogManager : MonoBehaviour {
             ParseLine();
             return;
         }
-    
+
         // Otherwise keep parsing lines
         ParseLine();
     }
@@ -354,9 +359,9 @@ public class DialogManager : MonoBehaviour {
     string GetValidLine(string[] _splitString)
     {
         bool valid = false;
-        while(!valid)
+        while (!valid)
         {
-            if(currentLine >= _splitString.Length)
+            if (currentLine >= _splitString.Length)
             {
                 // We're done return nothing
                 return "";
@@ -376,7 +381,7 @@ public class DialogManager : MonoBehaviour {
                 continue;
             }
 
-            if(fullLine[0] == '!' || fullLine[0] == '*')
+            if (fullLine[0] == '!' || fullLine[0] == '*')
             {
                 currentLine++;
                 continue;
@@ -399,10 +404,10 @@ public class DialogManager : MonoBehaviour {
         mySource.clip = AudioClips[0];
 
         bool readingText = true; // Lets start an infinite loop
-        while(readingText) // WEEEEEEEE
+        while (readingText) // WEEEEEEEE
         {
             // If the string is less then the full line then keep writing
-            if(currentString.Length < fullLine.Length)
+            if (currentString.Length < fullLine.Length)
             {
                 // This will write the text out all scrolly n shit
                 currentString = fullLine.Substring(0, currentCharacter);
@@ -416,26 +421,27 @@ public class DialogManager : MonoBehaviour {
             }
 
             // If we're making a decision, our break out is dependent on if the player has made a decision yet
-            if(makingADecision)
+            if (makingADecision)
             {
-                if(breakOutDecision)
+                if (breakOutDecision)
                 {
                     // break out 
                     makingADecision = false;
                     readingText = false;
                     ParseLine();
                 }
-            }else if (Input.GetKeyDown(KeyCode.Space) && currentString.Length == fullLine.Length)// If the line is complete, then lets gtfo of here
+            }
+            else if (Input.GetKeyDown(KeyCode.Space) && currentString.Length == fullLine.Length)// If the line is complete, then lets gtfo of here
             {
                 // break out
                 readingText = false;
-                ParseLine(); 
+                ParseLine();
             }
 
             // This makes it so we don't get an infinite loop error
             yield return null;
         }
-        
+
 
         yield break;
     }
@@ -443,7 +449,7 @@ public class DialogManager : MonoBehaviour {
     void GoToLine(string _Marker, string[] _splitString)
     {
         // Set up the dialog to start reading at another line
-        for(int i = 0; i < _splitString.Length; i++)
+        for (int i = 0; i < _splitString.Length; i++)
         {
             string line = _splitString[i];
 
@@ -455,9 +461,9 @@ public class DialogManager : MonoBehaviour {
             if (line[0] == '*')
             {
                 line = line.Substring(1);
-                if(line == _Marker)
+                if (line == _Marker)
                 {
-                    currentLine = i; 
+                    currentLine = i;
                     return;
                 }
             }
@@ -478,7 +484,7 @@ public class DialogManager : MonoBehaviour {
                     mySource.Play();
                     nonUnit.Triggered = !nonUnit.Triggered;
                     Dialog = modifyString(currentLine + 1, Dialog, "$l: You turned the " + buttonEffector[0].name + ((nonUnit.Triggered) ? ": On" : ": Off"));
-                }  
+                }
 
                 break;
             case DecisionType.Pickup:
@@ -488,32 +494,33 @@ public class DialogManager : MonoBehaviour {
                     // 1st index is the object to destroy
                     Item i = buttonEffector[0].GetComponent<Item>();
                     GameManager.Inventory.Add(i);
-                    DestroyImmediate(buttonEffector[1]); 
-                }else
+                    DestroyImmediate(buttonEffector[1]);
+                }
+                else
                 {
                     currentLine++;
                 }
                 break;
-        } 
+        }
 
-       
-        breakOutDecision = true; 
+
+        breakOutDecision = true;
     }
 
- 
+
     string InsertString(int _lineNumber, string _fullString, string _insertedLine)
     {
         // add the inserted line into the fullstring at linenumber and return it
         List<string> splitString = _fullString.Split('\n').ToList();
         splitString.Insert(_lineNumber, _insertedLine);
         string returnedString = "";
-        for(int i = 0; i < splitString.Count; i++)
+        for (int i = 0; i < splitString.Count; i++)
         {
             returnedString += splitString[i];
         }
 
         return returnedString;
-        
+
     }
 
     IEnumerator waitCRT(float _time)
@@ -536,7 +543,7 @@ public class DialogManager : MonoBehaviour {
         }
 
         return returnedString;
-        
+
     }
 
     string[] parseCommand(string _Command)
@@ -545,7 +552,7 @@ public class DialogManager : MonoBehaviour {
         cutCommand = cutCommand.TrimEnd(')');
 
         string[] returned = cutCommand.Split(',');
-        for(int i = 0; i < returned.Length; i++)
+        for (int i = 0; i < returned.Length; i++)
         {
             returned[i] = returned[i].Trim();
         }
@@ -590,7 +597,7 @@ public class DialogManager : MonoBehaviour {
     //        return;
     //    }
 
-        
+
     //    if(_fullline.ToUpper().Contains(".AIM") || _fullline.ToUpper().Contains(".POINT"))
     //    {
     //        string[] parameters = parseCommand(_fullline);
@@ -601,6 +608,6 @@ public class DialogManager : MonoBehaviour {
     //        currentPawn.MyCommands.Add(new PawnCommand(PawnCommand.commandType.Aim, 0, 0, _fullline.ToUpper().Contains(".AIM"), "", new Vector3(val1, 0, val2)));
     //        return;
     //    }
-        
+
     //}
 }

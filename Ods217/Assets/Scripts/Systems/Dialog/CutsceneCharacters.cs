@@ -14,6 +14,6 @@ public class CutsceneCharacters : MonoBehaviour {
 public struct CutscenePortraits
 {
     public string PortId;
-    public Sprite PortImg;
+    public Sprite PortImg; 
 }
  

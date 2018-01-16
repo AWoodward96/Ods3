@@ -13,6 +13,7 @@ public class StandardUnitAnim {
     public bool holdGun; 
 
     public Vector3 HolsteredRotation;
+    Vector3 HolsteredRotation2 = new Vector3(0, 0, -119);
     public Vector3 HolsteredPosition;
     public Vector3 HeldPosition;
 
@@ -69,6 +70,7 @@ public class StandardUnitAnim {
     {
         if (activeGunObject == null)
             return;
+ 
 
         GameObject rotateMe = activeGunObject.RotateObject;
 
@@ -87,6 +89,11 @@ public class StandardUnitAnim {
             return;
         }
 
+        // A fix for the flipxrotation issue
+        //Vector3 scale = activeGunObject.RotateObject.transform.localScale;
+        //float sY = Mathf.Abs(activeGunObject.RotateObject.transform.localScale.y);
+        //sY *= (flipSprites) ? -1 : 1;
+        //activeGunObject.RotateObject.transform.localScale = new Vector3(scale.x, sY, scale.z); 
 
         SpriteRenderer gunRend = activeGunObject.RotateObject.GetComponentInChildren<SpriteRenderer>();
         gunRend.flipY = flipSprites;
@@ -96,6 +103,17 @@ public class StandardUnitAnim {
             rotateMe.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(LookingVector.normalized)); // NOT local because if it's local then it'll be relative to the rest of this objects rotation. Set it globally
         else
             rotateMe.transform.localRotation = Quaternion.Euler(HolsteredRotation);
+
+        // If we have two objects
+        if(gunObject1 != null && gunObject2 != null)
+        {
+            WeaponBase notHeldObject = (activeGunObject == gunObject1) ? gunObject2 : gunObject1;
+
+            Vector3 newPos = HolsteredPosition;
+            newPos.z = (faceFront) ? .1f : -.1f;
+            notHeldObject.transform.localPosition = newPos;
+            notHeldObject.RotateObject.transform.localRotation = Quaternion.Euler(HolsteredRotation);
+        }
 
     }
 

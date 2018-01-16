@@ -39,6 +39,7 @@ public class CutsceneManager : MonoBehaviour {
     CutsceneCharacters currentCutsceneCharacter;
     Dictionary<string, CutsceneCharacters> loadedCharacters = new Dictionary<string, CutsceneCharacters>();
     Dictionary<string, IPermanent> loadedPermanents = new Dictionary<string, IPermanent>();
+    Dictionary<string, IPawn> loadedPawns = new Dictionary<string, IPawn>();
      
 
     public GameObject MainTextBox;
@@ -148,6 +149,9 @@ public class CutsceneManager : MonoBehaviour {
         string CharacterID = "";
         string PortraitID = "";
         string savedName = "";
+        IPawn pawn;
+        float fGeneric;
+        int iGeneric;
         switch (commandID.ToUpper())
         {
             case "SAY":
@@ -398,6 +402,75 @@ public class CutsceneManager : MonoBehaviour {
                     actionComplete = true;
                     return;
                 } 
+                break;
+            case "CAMERASIZE":
+                // Sets the main cameras orthographic size to whatever we want it to
+                savedName = parameters[0].Trim().Replace(")", "");
+                float.TryParse(savedName, out fGeneric);
+
+                Camera.main.orthographicSize = fGeneric;
+                actionComplete = true;
+                break;
+            case "LERPCAMERASIZE":
+                // Sets the main cameras orthographic size to whatever we want it to (LERPED VERSION)
+                savedName = parameters[0].Trim().Replace(")", "");
+                float.TryParse(savedName, out fGeneric);
+                savedName = parameters[1].Trim().Replace(")", "");
+                float foo;
+                float.TryParse(savedName, out foo);
+                Camera.main.GetComponent<CamScript>().LerpSize(fGeneric, foo);
+                actionComplete = true;
+                break;
+            case "LOCK":
+                // Toggle the zones lock
+                savedName = parameters[0].Trim().Replace(")", "");
+                int.TryParse(savedName, out iGeneric);
+
+                if(iGeneric < ZoneScript.ActiveZone.ZoneLocks.Length)
+                {
+                    ZoneScript.ActiveZone.ZoneLocks[iGeneric].Enabled = !ZoneScript.ActiveZone.ZoneLocks[iGeneric].Enabled;
+                }
+
+                actionComplete = true;
+                break;
+            case "LOADPAWN":
+                // Save a pawn in the dictionazry for further use 
+                // LoadPawn(ObjectInSceneName, pawnName)
+                savedName = parameters[0].Trim().Replace(")", "");
+                GameObject nObj = GlobalConstants.FindGameObject(savedName); 
+               
+                pawn = nObj.GetComponent<IPawn>();
+                if(pawn != null)
+                {
+                    loadedPawns.Add(parameters[1].Trim().Replace(")", ""), pawn);
+                }
+
+                actionComplete = true;
+                break;
+            case "MOVEPAWN":
+                // Tell a pawn to move
+                // MovePawn(ID, x,y,z)
+                Vector3 newVec = Vector3.zero;
+                savedName = parameters[0].Trim().Replace(")", ""); 
+
+                if(loadedPawns.ContainsKey(savedName))
+                {
+                    pawn = loadedPawns[savedName];
+                    savedName = parameters[1].Trim().Replace(")", "");
+                    float.TryParse(savedName, out fGeneric);
+                    newVec.x = fGeneric;
+                    savedName = parameters[2].Trim().Replace(")", "");
+                    float.TryParse(savedName, out fGeneric);
+                    newVec.y = fGeneric;
+                    savedName = parameters[3].Trim().Replace(")", "");
+                    float.TryParse(savedName, out fGeneric);
+                    newVec.z = fGeneric;
+
+ 
+                    pawn.MoveTo(newVec);
+                }
+
+                actionComplete = true;
                 break;
             default:
                 Debug.Log("Couldn't process: " + commandID);

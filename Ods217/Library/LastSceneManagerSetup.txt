@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Level_Data/lvl_Testing/BrokenScenes/lvl_0/lvl0_TrainStation.unity
+- path: Assets/Level_Data/lvl_PirateShip/PirateShip1.unity
   isLoaded: 1
   isActive: 1

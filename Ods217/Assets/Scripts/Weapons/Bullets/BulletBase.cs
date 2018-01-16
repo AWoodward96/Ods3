@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using SpriteToParticlesAsset;
 using UnityEngine;
 
 public class BulletBase : MonoBehaviour {
@@ -9,7 +10,9 @@ public class BulletBase : MonoBehaviour {
     public float Speed;
 
     public IArmed myOwner;
-    public WeaponInfo myInfo; 
+    public WeaponInfo myInfo;
+
+    EffectorExplode explode;
  
 	public virtual void UpdateBullet()
     {
@@ -28,6 +31,7 @@ public class BulletBase : MonoBehaviour {
     public virtual void Shoot(Vector3 _dir)
     {
         Direction = _dir;
+        GetComponent<SpriteRenderer>().enabled = true;
         Fired = true;
     }
 
@@ -45,8 +49,17 @@ public class BulletBase : MonoBehaviour {
             // Hey maybe the non unit has something that it does when it's hit by a bullet
             IDamageable u = other.GetComponent<IDamageable>();
 
-            u.OnHit(myInfo.bulletDamage); 
-            Fired = false;
+            u.OnHit(myInfo.bulletDamage);  
+        }
+
+
+        if(explode == null) explode = GetComponentInChildren<EffectorExplode>();
+
+        if(explode != null)
+        {
+            explode.transform.position = transform.position;
+            explode.transform.SetParent(null);
+            explode.ExplodeAt(new Vector3(2, 0, 0), 6, 360, 0, 1);
         }
 
         // Either way set it's fired to false

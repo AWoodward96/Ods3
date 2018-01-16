@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 8ecf360d8f27f3548a482880fbaf92b8
-timeCreated: 1511026075
+timeCreated: 1514758119
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,6 +8,16 @@ TextureImporter:
     21300002: unit_Android-01_1
     21300004: unit_Android-01_2
     21300006: unit_Android-01_3
+    21300008: unit_Android-01_4
+    21300010: unit_Android-01_5
+    21300012: unit_Android-01_6
+    21300014: unit_Android-01_7
+    21300016: unit_Android-01_8
+    21300018: unit_Android-01_9
+    21300020: unit_Android-01_10
+    21300022: unit_Android-01_11
+    21300024: unit_Android-01_12
+    21300026: unit_Android-01_13
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -78,7 +88,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 1
+        y: 109
         width: 32
         height: 52
       alignment: 0
@@ -91,7 +101,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 35
-        y: 1
+        y: 109
         width: 32
         height: 52
       alignment: 0
@@ -104,7 +114,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 69
-        y: 1
+        y: 109
         width: 32
         height: 52
       alignment: 0
@@ -114,6 +124,136 @@ TextureImporter:
       tessellationDetail: 0
     - serializedVersion: 2
       name: unit_Android-01_3
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 109
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_4
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 109
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 55
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_6
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 55
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_7
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 55
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_8
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 55
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_9
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 55
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_10
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_11
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 1
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_12
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 1
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Android-01_13
       rect:
         serializedVersion: 2
         x: 103

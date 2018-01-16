@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class MovementAI {
+public class MovementAI : IPawn {
 
     public bool ActionComplete;
     public GameObject myObject;
     public CController myCC; 
 
-    public enum MovementAIType { Wander, SmartWander, Chase, SmartChase, Wait };
+    public enum MovementAIType { Wander, SmartWander, Chase, SmartChase, MoveTo, Wait };
     public MovementAIType curType;
     public MovementAIType lastType;
 
@@ -45,6 +45,9 @@ public class MovementAI {
                     break;
                 case MovementAIType.SmartWander:
                     doWander(); // Doesn't matter if it's smart, the smart part is handled in the initial method
+                    break;
+                case MovementAIType.MoveTo:
+                    doMoveTo();
                     break;
             }
         }
@@ -90,6 +93,32 @@ public class MovementAI {
         }
     }
 
+    void doMoveTo()
+    {
+        Vector3 myPos = myObject.transform.position;
+        Vector3 distVec = GlobalConstants.ZeroYComponent(direction - myPos);
+
+        if (distVec.magnitude < 1)
+        {
+            ActionComplete = true;
+            // myObject.transform.position = new Vector3(direction.x, myPos.y, direction.z);
+            myCC.Velocity = distVec;
+            lastType = curType;
+        }
+        else
+            myCC.ApplyForce(distVec.normalized);
+    }
+
+    public void MoveTo(Vector3 _position)
+    {
+        if(ActionComplete)
+        {
+            direction = _position;
+            curType = MovementAIType.MoveTo;
+            ActionComplete = false;
+        }
+    }
+
     public void Wander(float _time, float _speed)
     {
         if (ActionComplete)
@@ -106,6 +135,7 @@ public class MovementAI {
 
         }
     }
+ 
 
     public void SmartWander(float _time, float _speed, Transform desiredLocation)
     {
