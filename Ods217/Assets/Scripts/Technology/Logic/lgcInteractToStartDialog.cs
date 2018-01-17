@@ -49,9 +49,9 @@ public class lgcInteractToStartDialog : MonoBehaviour
 
 
         // If we get input that we want to interact, and we're able to interact with it
-        if (Input.GetKeyDown(KeyCode.E) && Interactable && !DialogManager.InDialog)
+        if (Input.GetKeyDown(KeyCode.E) && Interactable && !CutsceneManager.InCutscene)
         {
-            DialogManager.instance.ShowDialog(MyDialog);
+            CutsceneManager.instance.StartCutscene(MyDialog);
             shown = true;
         }
     }

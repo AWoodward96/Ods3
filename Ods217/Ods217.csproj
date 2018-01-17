@@ -137,7 +137,7 @@
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcMoveToOnTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcOnCollisionTrigger.cs" />
-    <Compile Include="Assets\Scripts\Technology\Logic\lgcSyncTriggers.cs" />
+    <Compile Include="Assets\Scripts\Technology\Logic\lgcSyncTriggerWithAnimCTRL.cs" />
     <Compile Include="Assets\Scripts\Technology\PawnCTRL.cs" />
     <Compile Include="Assets\Scripts\Technology\SlidingDoor.cs" />
     <Compile Include="Assets\Scripts\Technology\SpireElevator.cs" />
