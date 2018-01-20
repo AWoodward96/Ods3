@@ -20,6 +20,7 @@ public class mobTechieT1 : AIStandardUnit {
 
     public GameObject DronePrefab;
     public mobDroneT1 DroneReference;
+    CharacterController myCharacterController;
 
     public override void Update()
     { 
@@ -91,6 +92,7 @@ public class mobTechieT1 : AIStandardUnit {
 
         ind_Usable = GetComponentInChildren<UsableIndicator>();
         audioSrc = GetComponent<AudioSource>();
+        myCharacterController = GetComponent<CharacterController>();
         base.Start();
     }
 
@@ -146,7 +148,7 @@ public class mobTechieT1 : AIStandardUnit {
                 base.TossWeapon(transform.position - playerRef.transform.position);
 
                 //GetComponent<CController>().ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
-                base.myCC.ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
+                base.myCC.ApplyForce( GlobalConstants.ZeroYComponent(transform.position - playerRef.transform.position).normalized * 20);
             }
         }
         else
@@ -164,8 +166,8 @@ public class mobTechieT1 : AIStandardUnit {
     {
         // Run away from the player  
         Vector3 moveVec = GlobalConstants.ZeroYComponent(transform.position - playerRef.transform.position);
-
-        myCC.ApplyForce(moveVec.normalized);  
+         
+        myCC.ApplyForce(moveVec.normalized); 
 
     }
 

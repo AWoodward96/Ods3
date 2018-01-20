@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: dcaff19eb21318d4883b3028aa6fff9e
-timeCreated: 1515176679
+timeCreated: 1516326092
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,6 +8,7 @@ TextureImporter:
     21300002: ConsoleScreen_1
     21300004: ConsoleScreen_2
     21300006: ConsoleScreen_3
+    21300008: ConsoleScreen_4
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -117,6 +118,19 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 103
+        y: 1
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ConsoleScreen_4
+      rect:
+        serializedVersion: 2
+        x: 137
         y: 1
         width: 32
         height: 32

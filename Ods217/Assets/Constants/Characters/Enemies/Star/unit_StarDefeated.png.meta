@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a2518713c1de52b4db9a53e039f68bad
-timeCreated: 1515547506
+timeCreated: 1516375389
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,21 @@ TextureImporter:
     21300018: unit_StarDefeated_9
     21300020: unit_StarDefeated_10
     21300022: unit_StarDefeated_11
+    21300024: unit_StarDefeated_12
+    21300026: unit_StarDefeated_13
+    21300028: unit_StarDefeated_14
+    21300030: unit_StarDefeated_15
+    21300032: unit_StarDefeated_16
+    21300034: unit_StarDefeated_17
+    21300036: unit_StarDefeated_18
+    21300038: unit_StarDefeated_19
+    21300040: unit_StarDefeated_20
+    21300042: unit_StarDefeated_21
+    21300044: unit_StarDefeated_22
+    21300046: unit_StarDefeated_23
+    21300048: unit_StarDefeated_24
+    21300050: unit_StarDefeated_25
+    21300052: unit_StarDefeated_26
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -86,7 +101,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 51
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -99,7 +114,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 35
-        y: 51
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -112,7 +127,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 69
-        y: 51
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -125,7 +140,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 103
-        y: 51
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -138,7 +153,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 137
-        y: 51
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -151,7 +166,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 171
-        y: 51
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -164,7 +179,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 205
-        y: 51
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -177,7 +192,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 1
+        y: 101
         width: 32
         height: 48
       alignment: 0
@@ -190,7 +205,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 35
-        y: 1
+        y: 101
         width: 32
         height: 48
       alignment: 0
@@ -203,7 +218,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 69
-        y: 1
+        y: 101
         width: 32
         height: 48
       alignment: 0
@@ -216,7 +231,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 103
-        y: 1
+        y: 101
         width: 32
         height: 48
       alignment: 0
@@ -229,6 +244,201 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 137
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_12
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_13
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_14
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_15
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_16
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_17
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_18
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_19
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_20
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_21
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_22
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_23
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_24
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_25
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_StarDefeated_26
+      rect:
+        serializedVersion: 2
+        x: 171
         y: 1
         width: 32
         height: 48

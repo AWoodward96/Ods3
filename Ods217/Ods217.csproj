@@ -133,6 +133,7 @@
     <Compile Include="Assets\Scripts\Technology\Effects\sinFloat.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\spin.cs" />
     <Compile Include="Assets\Scripts\Technology\ForceFieldScript.cs" />
+    <Compile Include="Assets\Scripts\Technology\Logic\lgcDoorSwitch.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToStartDialog.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcMoveToOnTrigger.cs" />

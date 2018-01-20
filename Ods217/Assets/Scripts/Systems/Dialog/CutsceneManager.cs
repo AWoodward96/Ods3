@@ -472,6 +472,14 @@ public class CutsceneManager : MonoBehaviour {
 
                 actionComplete = true;
                 break;
+            case "FLIP":
+                // Flip the portrait areas x axis so they look the other way now
+                Vector3 currentScale = portraitArea.transform.localScale;
+                currentScale.x *= -1;
+                portraitArea.transform.localScale = currentScale;
+                actionComplete = true;
+
+                break;
             default:
                 Debug.Log("Couldn't process: " + commandID);
                 actionComplete = true;
@@ -494,6 +502,9 @@ public class CutsceneManager : MonoBehaviour {
         ShowMain = false;
 
         StopAllCoroutines();
+
+        portraitArea.transform.localScale = new Vector3(-1, 1, 1);
+        sidePortraitArea.transform.localScale = new Vector3(-1, 1, 1);
 
   
 

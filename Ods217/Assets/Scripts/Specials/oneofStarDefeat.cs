@@ -10,13 +10,14 @@ public class oneofStarDefeat : MonoBehaviour, IPermanent {
 
     bool triggered;
     public GameObject StarReference;
+    public ParticleSystem SmokeBomb;
 
     ZoneScript zone;
     Animator myAnim;
     SpriteRenderer myRnd;
     AudioSource mySource;
     int triggeredCount;
-
+    float dTime;
 
     void Start () {
         mySource = GetComponent<AudioSource>();
@@ -27,6 +28,19 @@ public class oneofStarDefeat : MonoBehaviour, IPermanent {
 	
 	void Update () {
         myAnim.SetInteger("State", triggeredCount);
+
+        if(triggeredCount == 4)
+        {
+            dTime += Time.deltaTime;
+            if(dTime > 1)
+            {
+                SmokeBomb.gameObject.SetActive(true);
+                SmokeBomb.transform.position = this.transform.position;
+                SmokeBomb.Play();
+                triggeredCount++;
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     public ZoneScript myZone
