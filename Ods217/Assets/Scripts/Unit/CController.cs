@@ -35,12 +35,14 @@ public class CController : MonoBehaviour
 
     LayerMask SolidMask;
 
+    public bool P50;
+
     // Use this for initialization
     void Start()
     {
         myCtrl = GetComponent<CharacterController>();
         SolidMask = LayerMask.GetMask("Ground");
-        SolidMask += LayerMask.GetMask("Platform");
+        SolidMask += LayerMask.GetMask("Platform"); 
 
          
     }
@@ -68,8 +70,7 @@ public class CController : MonoBehaviour
         }
         else
         {
-            Airborne = false;
-
+            Airborne = false; 
         }
 
 
@@ -89,7 +90,7 @@ public class CController : MonoBehaviour
     {
         Velocity += Acceleration;
         Velocity = Vector3.ClampMagnitude(Velocity, MaxSpeed);
-        myCtrl.Move(Velocity * Time.deltaTime);
+        myCtrl.Move(Velocity * Time.deltaTime * ((P50) ? .5f : 1));
 
         Velocity *= (Airborne) ? GlobalConstants.AirFriction : GlobalConstants.Friction;
 

@@ -85,8 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Constants\Materials\Colors\MirrorReflection.cs" />
-    <Compile Include="Assets\ExplodeTest.cs" />
-    <Compile Include="Assets\ParticleAndTarget.cs" />
+    <Compile Include="Assets\Level_Data\lvl_Testing\SpriteToPartTesting\ExplodeTest.cs" />
+    <Compile Include="Assets\Level_Data\lvl_Testing\SpriteToPartTesting\ParticleAndTarget.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\Classes\MovementAI.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IArmed.cs" />
@@ -125,6 +125,7 @@
     <Compile Include="Assets\Scripts\Systems\UI\UpgradesManager.cs" />
     <Compile Include="Assets\Scripts\Systems\UsableIndicator.cs" />
     <Compile Include="Assets\Scripts\Systems\ZoneScript.cs" />
+    <Compile Include="Assets\Scripts\Technology\ConveyorBelt.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\DestroyAfterXSeconds.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\delayedExplosion.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\disintegratingBlocks.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Assets\Scripts\Technology\SpireElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\StandardElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\StandardUnitAnim.cs" />
+    <Compile Include="Assets\Scripts\Technology\WaypointsMovement.cs" />
     <Compile Include="Assets\Scripts\Technology\weaponDispenser.cs" />
     <Compile Include="Assets\Scripts\Unit\CController.cs" />
     <Compile Include="Assets\Scripts\Unit\DropShadowScript.cs" />
