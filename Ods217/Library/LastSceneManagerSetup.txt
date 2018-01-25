@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Level_Data/lvl_Spire/Spire.unity
+- path: Assets/Level_Data/lvl_Testing/SaveStations.unity
   isLoaded: 1
   isActive: 1

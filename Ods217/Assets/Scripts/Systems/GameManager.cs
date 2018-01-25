@@ -152,6 +152,8 @@ public class GameManager : MonoBehaviour {
 			}
 
             writer.WriteLine(System.DateTime.Now);
+
+			Debug.Log("Game Saved.");
         }
     }
 
@@ -285,6 +287,14 @@ public class GameManager : MonoBehaviour {
     {
         LoadSaveFile(GameData.FileName);
     }
+
+	// I feel like I shouldn't do this
+	// But I also don't know if porting the save function over to the InteractToSave script would be a good idea, so...
+	public void WriteToCurrentSave()
+	{
+		// NOTE: Replace "Beta" with whatever the current save file's name is later!
+		WriteSaveFile("Beta");
+	}
 }
 
 // A struct to hold relavent information to save to a text file
