@@ -92,10 +92,65 @@ public class GameManager : MonoBehaviour {
         {
             // First line should be the name of the user
             writer.WriteLine(GameData.Username);
-            writer.WriteLine("--------------Plz don't edit this. You might break the game and then you're saved file is lost.--------------");
+            writer.WriteLine("--------------Plz don't edit this. You might break the game and then your saved file is lost.--------------");
             writer.WriteLine(SceneManager.GetActiveScene().name);
             writer.WriteLine(scrapcount);
             writer.WriteLine(GameObject.FindGameObjectWithTag("Player").transform.position);
+
+			// And then Ed jumped in and added:
+			// HP (Player.GetComponent<PlayerScript>().MyUnit.CurrentHealth)
+			PlayerScript Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+			writer.WriteLine(Player.MyUnit.CurrentHealth);
+
+			// Weapons (Player.GetComponent<PlayerScript>().PrimaryWeapon, SecondaryWeapon, ActiveWeapon
+			if(Player.PrimaryWeapon != null)
+			{
+				writer.WriteLine(Player.PrimaryWeapon.name);
+			}
+			else
+			{
+				writer.WriteLine("null");	
+			}
+			if(Player.SecondaryWeapon != null)
+			{
+				writer.WriteLine(Player.SecondaryWeapon.name);
+			}
+			else
+			{
+				writer.WriteLine("null");
+			}
+			if(Player.ActiveWeapon != null)
+			{
+				writer.WriteLine(Player.ActiveWeapon.name);
+			}
+			else
+			{
+				writer.WriteLine("null");
+			}
+
+
+			// Which doors are shut/locked (currentSceneData.Permanents[].GetComponent<SlidingDoor>().State)
+			SlidingDoor currentDoor;
+			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
+			{
+				currentDoor = currentSceneData.Permanents[i].Object.GetComponent<SlidingDoor>();
+				if(currentDoor != false)
+				{
+					writer.WriteLine(currentDoor.State);
+					writer.WriteLine(currentDoor.Locked);
+				}
+			}
+
+			// Remaining enemies (currentSceneData.Permanents[])
+			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
+			{
+				if(currentSceneData.Permanents[i].Object.GetComponent<AIStandardUnit>() != null)
+				{
+					// I feel like this is hacky; replace this with a check if their HP is 0, or something like that
+					writer.WriteLine(currentSceneData.Permanents[i].Object.activeInHierarchy);
+				}
+			}
+
             writer.WriteLine(System.DateTime.Now);
         }
     }
@@ -127,6 +182,28 @@ public class GameManager : MonoBehaviour {
                     case 4:
                         GameData.SavedPlayerPosition = GlobalConstants.StringToVector3(val);
                         break;
+
+					// Add the other things to read here, Ed!
+					// Player HP
+					case 5:
+						int.TryParse(val, out GameData.PlayerHP);
+						break;
+
+					// Player's Primary Weapon
+					case 6:
+						GameData.PlayerWeapon1 = val;
+						break;
+					
+					// Player's Secondary Weapon
+					case 7:
+						GameData.PlayerWeapon2 = val;
+						break;
+
+					// Player's Active Weapon
+					case 8:
+						GameData.PlayerWeaponActive = val;
+						break;
+						
                 }
                 linenum++;
             }
@@ -139,14 +216,69 @@ public class GameManager : MonoBehaviour {
     void LoadLevelBasedOnMetaData()
     {
         SceneManager.LoadScene(GameData.LevelName);
+		SceneManager.sceneLoaded += LevelLoaded;
     }
 
     void LevelLoaded(Scene _scene, LoadSceneMode _loadMode)
     {
         GameObject Player = GameObject.FindGameObjectWithTag("Player");
+		PlayerScript ps = Player.GetComponent<PlayerScript>();
         Player.transform.position = GameData.SavedPlayerPosition;
+		ps.MyUnit.CurrentHealth = GameData.PlayerHP;
+
+		// The following 3 loads are ugly as sin. There HAS to be a neater way to do this, right?
+
+		// If the player starts out with a weapon on opening the scene, delete it...
+		if(ps.PrimaryWeapon != null)
+		{
+			Destroy(ps.PrimaryWeapon.gameObject);
+		}
+		if(GameData.PlayerWeapon1 != "null")
+		{
+			// ... Then replace it with the weapon we saved (if any).
+			ps.PrimaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon1), Player.transform) as GameObject).GetComponent<WeaponBase>();
+
+			// Hacky failsafing because sometimes the weapon gets named with a (clone) suffix, which throws a monkey wrench in my plans
+			ps.PrimaryWeapon.gameObject.name = GameData.PlayerWeapon1;
+		}
+
+		// Do the same for secondary and active weapons
+		if(ps.SecondaryWeapon != null)
+		{
+			Destroy(ps.PrimaryWeapon.gameObject);
+		}
+		if(GameData.PlayerWeapon2 != "null")
+		{
+			ps.SecondaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon2), Player.transform) as GameObject).GetComponent<WeaponBase>();
+
+			ps.SecondaryWeapon.gameObject.name = GameData.PlayerWeapon2;
+		}
+
+		if(ps.ActiveWeapon != null)
+		{
+			Destroy(ps.PrimaryWeapon.gameObject);
+		}
+		if(GameData.PlayerWeaponActive != "null")
+		{
+			ps.ActiveWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeaponActive), Player.transform) as GameObject).GetComponent<WeaponBase>();
+
+			ps.ActiveWeapon.gameObject.name = GameData.PlayerWeaponActive;
+		}
 
         currentSceneData = FindObjectOfType<SceneData>();
+
+		if(currentSceneData)
+		{
+			Debug.Log("Scene Data loaded.");
+		}
+		else
+		{
+			Debug.Log("Could not locate Scene Data Object.");
+		}
+
+		currentSceneData.LoadList();
+
+		SceneManager.sceneLoaded -= LevelLoaded;
     }
 
     public void LoadLastSaveFile()
@@ -163,7 +295,12 @@ public struct MetaData
     public string Username;
     public string LevelName;
     public int scrapCount;
+
     public Vector3 SavedPlayerPosition;
+	public int PlayerHP;
+	public string PlayerWeapon1;
+	public string PlayerWeapon2;
+	public string PlayerWeaponActive;
 }
 
 [System.Serializable]
