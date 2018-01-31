@@ -25,7 +25,9 @@ public class lgcInteractToTrigger : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        ind_Interactable = GetComponent<UsableIndicator>();
+        ind_Interactable = GetComponentInChildren<UsableIndicator>();
+        ind_Interactable.Output = InteractDelgate;
+
         triggerObjects = new List<IPermanent>();
 
         foreach(GameObject o in ObjectsToTrigger)
@@ -43,36 +45,18 @@ public class lgcInteractToTrigger : MonoBehaviour {
         
         mySource.clip = SoundToPlayWhenTriggered;
     }
-
-    // Update is called once per frame
-    void Update()
+ 
+    void InteractDelgate()
     {
-        if (Player == null) // Ensure that we have the player
-            Player = GameObject.FindGameObjectWithTag("Player");
-
-        // Check to make sure we can even do this calculation
-        // At this point we'll know if there's a player in the scene at all
-        if (Player != null)
+        foreach (IPermanent perm in triggerObjects)
         {
-            Vector3 dist = transform.position - Player.transform.position;
-            Interactable = (dist.magnitude <= Range);
-            ind_Interactable.ind_Enabled = Interactable;
+            perm.Triggered = !perm.Triggered;
         }
 
-
-        // If we get input that we want to interact, and we're able to interact with it
-        if (Input.GetKeyDown(KeyCode.E) && Interactable)
+        if (SoundToPlayWhenTriggered != null)
         {
-            foreach(IPermanent perm in triggerObjects)
-            {
-                perm.Triggered = !perm.Triggered;
-            }
-
-            if(SoundToPlayWhenTriggered != null)
-            {
-                mySource.clip = SoundToPlayWhenTriggered;
-                mySource.Play();
-            }
+            mySource.clip = SoundToPlayWhenTriggered;
+            mySource.Play();
         }
     }
 

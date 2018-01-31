@@ -44,6 +44,8 @@ public class UpgradesManager : MonoBehaviour {
     void Start () {
         instance = this;
         ind_Interactable = GetComponent<UsableIndicator>();
+        ind_Interactable.Output = StartMenu;
+        ind_Interactable.Preset = UsableIndicator.usableIndcPreset.Interact;
         myCanvas = GetComponentInChildren<Canvas>();
         myCanvas.enabled = false;
         mySource = GetComponent<AudioSource>();
@@ -93,31 +95,7 @@ public class UpgradesManager : MonoBehaviour {
 
         if (Player == null) // Ensure that we have the player
             Player = GameObject.FindGameObjectWithTag("Player");
-
-        // Check to make sure we can even do this calculation
-        // At this point we'll know if there's a player in the scene at all
-        if (Player != null)
-        {
-            Vector3 dist = transform.position - Player.transform.position;
-            Interactable = (dist.magnitude <= Range);
-            ind_Interactable.ind_Enabled = Interactable;
-             
-        }
-
-        // If we get input that we want to interact, and we're able to interact with it
-        if (Input.GetKeyDown(KeyCode.E) && Interactable)
-        {
-            MenuOpen = true;
-            UpdateMenu();
-            if(Player != null)
-            {
-                // don't allow the player to move if the menu is open
-                CController playerCC = Player.GetComponent<CController>();
-                playerCC.canMove = false;
-            }
-            StopAllCoroutines();
-            StartCoroutine(PrintLine("Welcome to the upgrade station! :D"));
-        }
+  
 
         if(MenuOpen)
         {
@@ -142,6 +120,19 @@ public class UpgradesManager : MonoBehaviour {
          
     }
 
+    void StartMenu()
+    {
+        MenuOpen = true;
+        UpdateMenu();
+        if (Player != null)
+        {
+            // don't allow the player to move if the menu is open
+            CController playerCC = Player.GetComponent<CController>();
+            playerCC.canMove = false;
+        }
+        StopAllCoroutines();
+        StartCoroutine(PrintLine("Welcome to the upgrade station! :D"));
+    }
 
     void UpdateMenu()
     {

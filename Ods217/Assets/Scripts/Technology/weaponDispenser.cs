@@ -32,6 +32,8 @@ public class weaponDispenser : MonoBehaviour {
 
         visualizerRenderer.sprite = WeaponPrefab.RotateObject.GetComponent<SpriteRenderer>().sprite;
         ind_Indicator = GetComponentInChildren<UsableIndicator>();
+        ind_Indicator.Preset = UsableIndicator.usableIndcPreset.PickUp;
+        ind_Indicator.Output = InteractDelegate;
 
         // Set up the weapon reference
         if(WeaponReference == null && Application.isPlaying)
@@ -50,28 +52,16 @@ public class weaponDispenser : MonoBehaviour {
         if (Application.isPlaying)
         {
             bool pickedup = isPickedUp;
-
-             if (Player == null) // Ensure that we have the player
-                Player = GameObject.FindGameObjectWithTag("Player");
-
-            // Check to make sure we can even do this calculation
-            // At this point we'll know if there's a player in the scene at all
-            if (Player != null)
-            {
-                Vector3 dist = transform.position - Player.transform.position;
-                ind_Indicator.ind_Enabled = (dist.magnitude <= Range) && !pickedup;
-            }
-             
-            // If we get input that we want to interact, and we're able to interact with it
-            if (Input.GetKeyDown(KeyCode.E) && ind_Indicator.ind_Enabled && !pickedup)
-            {
-                WeaponReference.gameObject.SetActive(true);
-                WeaponReference.heldData.PickUp(Player.GetComponent<IMultiArmed>());
-            }
-
+ 
             visualizerRenderer.enabled = !pickedup;
         }
 	}
+
+    void InteractDelegate()
+    { 
+        WeaponReference.gameObject.SetActive(true);
+        WeaponReference.heldData.PickUp(Player.GetComponent<IMultiArmed>());
+    }
 
     private void OnDrawGizmos()
     {

@@ -48,7 +48,9 @@ public class SpireElevator: MonoBehaviour {
         CurrentFloor = (SpireFloors)closestIndex;
 
         // Set up other references
-        ind_Interactable = GetComponent<UsableIndicator>();
+        ind_Interactable = GetComponentInChildren<UsableIndicator>();
+        ind_Interactable.Preset = UsableIndicator.usableIndcPreset.Interact;
+        ind_Interactable.Output = toggleDelegate;
         myCanvas = GetComponentInChildren<Canvas>();
         myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
         MenuOpen = false;
@@ -61,8 +63,7 @@ public class SpireElevator: MonoBehaviour {
 
 
         if(Moving)
-        {
- 
+        { 
             transform.position += Velocity * Time.deltaTime;
 
             // Check to see if we can stop moving
@@ -77,22 +78,13 @@ public class SpireElevator: MonoBehaviour {
             }
         }
 
-        if (myPlayer != null)
-        {
-            Vector3 dist = transform.position - myPlayer.transform.position;
-            Interactable = (dist.magnitude <= Range);
-            ind_Interactable.ind_Enabled = Interactable;
-            if (!Interactable)
-                MenuOpen = false;
-        }
-
-
-        //If we get input that we want to interact, and we're able to interact with it
-        if (Input.GetKeyDown(KeyCode.E) && Interactable)
-        {
-            MenuOpen = !MenuOpen;
-        }
+      
         myCanvas.enabled = MenuOpen && Interactable;
+    }
+
+    void toggleDelegate()
+    {
+        MenuOpen = !MenuOpen;
     }
 
     public void GoToFloor(int _index)

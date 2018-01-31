@@ -33,7 +33,11 @@ public class HeldWeapon {
         playerObj = _player;
         thrownObj = _thrownObj;
 
-        ind_MyIndicator = thrownObj.GetComponent<UsableIndicator>();
+        ind_MyIndicator = thrownObj.GetComponentInChildren<UsableIndicator>();
+        ind_MyIndicator.Output = PickupDelegate;
+        ind_MyIndicator.Preset = UsableIndicator.usableIndcPreset.PickUp;
+
+
         myRigidBody = thrownObj.GetComponent<Rigidbody>();
         initialized = true;
 
@@ -175,27 +179,18 @@ public class HeldWeapon {
             {
                 playerObj = GameObject.FindGameObjectWithTag("Player");
                 Physics.IgnoreCollision(thrownObj.GetComponent<Collider>(), playerObj.GetComponent<Collider>(), true);
-            }
-
-            // Check to make sure we can even do this calculation
-            // At this point we'll know if there's a player in the scene at all
-            if (playerObj != null)
-            {
-                Vector3 dist = thrownObj.transform.position + (Vector3.up * 2) - playerObj.transform.position;
-                Interactable = (dist.magnitude <= Range);
-                ind_MyIndicator.ind_Enabled = Interactable; 
-                ind_MyIndicator.ind_Object.transform.rotation = Quaternion.Euler(-thrownObj.transform.rotation.x, -thrownObj.transform.rotation.y, -thrownObj.transform.rotation.z);
-            }
-
-
-            // If we get input that we want to interact, and we're able to interact with it
-            if (Input.GetKeyDown(KeyCode.E) && Interactable)
-            {
-                PickUp(playerObj.GetComponent<IMultiArmed>());
-            }
+            } 
+            
+            ind_MyIndicator.transform.rotation = Quaternion.Euler(-thrownObj.transform.rotation.x, -thrownObj.transform.rotation.y, -thrownObj.transform.rotation.z); 
+ 
 
             if(DEBUG) Debug.Log("HeldWeapon: HandlePlayerPickupRange");
         } 
+    }
+
+    void PickupDelegate()
+    {
+        PickUp(playerObj.GetComponent<IMultiArmed>());
     }
 
  

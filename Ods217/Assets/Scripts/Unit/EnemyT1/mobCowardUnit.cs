@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
-[RequireComponent(typeof(UsableIndicator))]
+[RequireComponent(typeof(LineRenderer))] 
 [RequireComponent(typeof(AudioSource))]
 public class mobCowardUnit : AIStandardUnit {
      
@@ -22,6 +21,21 @@ public class mobCowardUnit : AIStandardUnit {
     AIStandardUnit.EnemyAIState prevState;
     public AudioClip[] Clips;
     AudioSource audioSrc;
+
+    public override void Start()
+    {
+        line = gameObject.GetComponent<LineRenderer>();
+
+        line.positionCount = (segments + 1);
+        line.useWorldSpace = false;
+
+        ind_Usable = GetComponentInChildren<UsableIndicator>();
+        ind_Usable.Preset = UsableIndicator.usableIndcPreset.Disarm;
+        ind_Usable.Output = DisarmDelegate;
+
+        audioSrc = GetComponent<AudioSource>();
+        base.Start();
+    }
 
     public override void Update()
     { 
@@ -50,17 +64,7 @@ public class mobCowardUnit : AIStandardUnit {
         base.Update();
     }
 
-    public override void Start()
-    {
-        line = gameObject.GetComponent<LineRenderer>();
 
-        line.positionCount = (segments + 1);
-        line.useWorldSpace = false;
-
-        ind_Usable = GetComponentInChildren<UsableIndicator>();
-        audioSrc = GetComponent<AudioSource>();
-        base.Start();
-    }
 
     public override void OnHit(int _damage)
     {
@@ -93,35 +97,21 @@ public class mobCowardUnit : AIStandardUnit {
 
     public virtual void CheckDistance()
     {
-        // If we're vulnerable
-        if (base.AIState == EnemyAIState.Vulnerable)
-        {
-            // Check to see if we can be disarmed and make it so
-            Vector3 distToPlayer = playerRef.transform.position - transform.position;
-            distToPlayer = GlobalConstants.ZeroYComponent(distToPlayer);
-
-            ind_Usable.ind_Enabled = distToPlayer.magnitude < 2;
-
-
-            if (Input.GetKeyDown(KeyCode.E) && distToPlayer.magnitude < 3.5f)
-            {
-                GetComponent<Animator>().SetBool("Disarmed", true);
-                base.AIState = EnemyAIState.Defeated;
-
-                // Toss the weapon
-                //usableWeapon w = Instantiate(DisarmedWeapon, transform.position, Quaternion.identity).GetComponent<usableWeapon>();
-                base.TossWeapon(transform.position - playerRef.transform.position);
-
-                //GetComponent<CController>().ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
-                base.myCC.ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
-            }
-        } else
-        {
-            ind_Usable.ind_Enabled = false;
-        }
+        ind_Usable.Disabled = !(base.AIState == EnemyAIState.Vulnerable);
     }
 
+    public void DisarmDelegate()
+    {
+        GetComponent<Animator>().SetBool("Disarmed", true);
+        base.AIState = EnemyAIState.Defeated;
 
+        // Toss the weapon
+        //usableWeapon w = Instantiate(DisarmedWeapon, transform.position, Quaternion.identity).GetComponent<usableWeapon>();
+        base.TossWeapon(transform.position - playerRef.transform.position);
+
+        //GetComponent<CController>().ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
+        base.myCC.ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
+    }
 
   
 }

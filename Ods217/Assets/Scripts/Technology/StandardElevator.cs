@@ -44,10 +44,13 @@ public class StandardElevator : MonoBehaviour {
             }
         }
 
+
+
         FloorIndex = closestIndex;
 
         // Set up other references
-        ind_Interactable = GetComponent<UsableIndicator>(); 
+        ind_Interactable = GetComponentInChildren<UsableIndicator>();
+        ind_Interactable.Output = InteractDelegate;
         myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>(); 
     }
 
@@ -74,22 +77,11 @@ public class StandardElevator : MonoBehaviour {
             }
         }
 
-        if (myPlayer != null)
-        {
-            Vector3 dist = (transform.position + (Vector3.up * 2)) - myPlayer.transform.position;
-            Interactable = (dist.magnitude <= Range);
-            ind_Interactable.ind_Enabled = Interactable;
-             
-        }
+    }
 
-
-        //If we get input that we want to interact, and we're able to interact with it
-        if (Input.GetKeyDown(KeyCode.E) && Interactable)
-        {
-            // Start movin 
-
-            GoToFloor(FloorIndex + 1);
-        } 
+    void InteractDelegate()
+    {
+        GoToFloor(FloorIndex + 1); 
     }
 
 

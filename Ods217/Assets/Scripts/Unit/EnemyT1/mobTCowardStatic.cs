@@ -16,36 +16,30 @@ public class mobTCowardStatic : mobCowardUnit
 
     public override void Start()
     {
-        myusableIndicator = GetComponent<UsableIndicator>();
+        myusableIndicator = GetComponentInChildren<UsableIndicator>();
+        
         base.Start();
     }
-
 
     public override void CheckDistance()
     {
         if (Triggered)
         {
+            myusableIndicator.Preset = UsableIndicator.usableIndcPreset.Disarm;
+            myusableIndicator.Output = DisarmDelegate;
             base.CheckDistance();
 
         }
         else
         {
-            if (player == null)
-            {
-                player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
-
-            }
-            else
-            {
-                Vector3 dist = player.transform.position - transform.position;
-                myusableIndicator.ind_Enabled = (dist.magnitude < myRange);
-
-                if (Input.GetKeyDown(KeyCode.E) && dist.magnitude < myRange)
-                {
-                    CutsceneManager.instance.StartCutscene(myDialog);
-                }
-            }
+            myusableIndicator.Preset = UsableIndicator.usableIndcPreset.Talk;
+            myusableIndicator.Output = TalkDelegate;
         }
+    }
+
+    void TalkDelegate()
+    {
+        CutsceneManager.instance.StartCutscene(myDialog);
     }
 
     public override bool CheckAggro()

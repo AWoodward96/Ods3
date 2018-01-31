@@ -32,7 +32,7 @@ public class StarMiniboss1 : AIStandardUnit{
     Vector3 overrideLookingVector;
     LineRenderer line; 
 
-    UsableIndicator ind_Usable;
+    public UsableIndicator ind_Usable; // Has to be initialized publicly because we're holding shit like weapons
 
     // Use this for initialization
     public override void Start () {
@@ -45,7 +45,8 @@ public class StarMiniboss1 : AIStandardUnit{
         line.useWorldSpace = false;
 
         myForceField = GetComponentInChildren<ForceFieldScript>();
-        ind_Usable = GetComponent<UsableIndicator>();
+        ind_Usable.Preset = UsableIndicator.usableIndcPreset.Disarm;
+        ind_Usable.Output = DisarmDelegate;
 
         explosiveMine.gameObject.SetActive(false);
         Physics.IgnoreCollision(this.GetComponent<Collider>(), explosiveMine.GetComponent<Collider>());
@@ -60,6 +61,7 @@ public class StarMiniboss1 : AIStandardUnit{
         if (currentWeapon.weaponData.name == "Machine Gun")
             base.SwapWeapons();
 	}
+
 	
 	// Update is called once per frame
 	public override void Update () {
@@ -445,33 +447,21 @@ public class StarMiniboss1 : AIStandardUnit{
     }
 
     public virtual void CheckDistance()
+    { 
+        ind_Usable.Disabled = !(base.AIState == EnemyAIState.Vulnerable); 
+    }
+
+
+    void DisarmDelegate()
     {
-        // If we're vulnerable
-        if (base.AIState == EnemyAIState.Vulnerable)
+        if (myForceField != null) // As long as the forcefield exists
         {
-            // Check to see if we can be disarmed and make it so
-            Vector3 distToPlayer = playerRef.transform.position - transform.position;
-            distToPlayer = GlobalConstants.ZeroYComponent(distToPlayer);
+            // Break it!
+            myForceField.RegisterHit((int)myForceField.Health);
+            disarmed = true;
+            waitTimer = 0;
 
-            ind_Usable.ind_Enabled = distToPlayer.magnitude < 2;
-
-            // If we're close enough and you press e
-            if (Input.GetKeyDown(KeyCode.E) && distToPlayer.magnitude < 3.5f)
-            {
-                if(myForceField != null) // As long as the forcefield exists
-                {
-                    // Break it!
-                    myForceField.RegisterHit((int)myForceField.Health);
-                    disarmed = true;
-                    waitTimer = 0;
-
-                    base.myCC.ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
-                }
-            }
-        }
-        else
-        {
-            ind_Usable.ind_Enabled = false;
+            base.myCC.ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
         }
     }
 

@@ -124,6 +124,7 @@
     <Compile Include="Assets\Scripts\Systems\UI\UpgradesBox.cs" />
     <Compile Include="Assets\Scripts\Systems\UI\UpgradesManager.cs" />
     <Compile Include="Assets\Scripts\Systems\UsableIndicator.cs" />
+    <Compile Include="Assets\Scripts\Systems\UsableIndicatorOld.cs" />
     <Compile Include="Assets\Scripts\Systems\ZoneScript.cs" />
     <Compile Include="Assets\Scripts\Technology\ConveyorBelt.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\DestroyAfterXSeconds.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Assets\Scripts\Technology\Effects\spin.cs" />
     <Compile Include="Assets\Scripts\Technology\ForceFieldScript.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcDoorSwitch.cs" />
+    <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToSave.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToStartDialog.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcMoveToOnTrigger.cs" />

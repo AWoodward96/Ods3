@@ -17,7 +17,9 @@ public class mobTCowardUnit : mobCowardUnit {
 
     public override void Start()
     {
-        usableIndicator = GetComponent<UsableIndicator>();
+        usableIndicator = GetComponentInChildren<UsableIndicator>();
+        usableIndicator.Preset = UsableIndicator.usableIndcPreset.Talk;
+        usableIndicator.Output = TalkDelegate;
         base.Start();
     }
 
@@ -26,26 +28,20 @@ public class mobTCowardUnit : mobCowardUnit {
     { 
         if(Triggered)
         {
+            usableIndicator.Preset = UsableIndicator.usableIndcPreset.Disarm;
+            usableIndicator.Output = DisarmDelegate;
             base.CheckDistance();
 
         }else
         {
-            if (player == null)
-            {
-                player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
-
-            }
-            else
-            {
-                Vector3 dist = player.transform.position - transform.position;
-                usableIndicator.ind_Enabled = (dist.magnitude < myRange);
-
-                if (Input.GetKeyDown(KeyCode.E) && dist.magnitude < myRange)
-                {
-                    CutsceneManager.instance.StartCutscene(myDialog);
-                }
-            }
+            usableIndicator.Preset = UsableIndicator.usableIndcPreset.Talk;
+            usableIndicator.Output = TalkDelegate;
         } 
+    }
+
+    void TalkDelegate()
+    { 
+        CutsceneManager.instance.StartCutscene(myDialog);
     }
 
     public override bool CheckAggro()
