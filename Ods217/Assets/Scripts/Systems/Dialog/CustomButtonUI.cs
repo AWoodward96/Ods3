@@ -33,7 +33,7 @@ public class CustomButtonUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (CutsceneManager.InCutscene) // Only handle this if we're in a dialog prompt
+		if (DialogManager.InDialog) // Only handle this if we're in a dialog prompt
         {
             if (Selected == this)
             {
@@ -55,9 +55,9 @@ public class CustomButtonUI : MonoBehaviour
     // If it's clicked, let the dialog manager know that a decision was made and pass the boolian value
     public void Clicked(bool _value)
     {
-		if (CutsceneManager.InCutscene)
+		if (DialogManager.InDialog)
         {
-			// No idea how to replace this; to my knowledge, this is the only DialogManager call left
+			// TODO: Replace this function with a new one you'll make in the Cutscene Manager!
 			DialogManager.instance.DecisionMade(_value);
         }
     }

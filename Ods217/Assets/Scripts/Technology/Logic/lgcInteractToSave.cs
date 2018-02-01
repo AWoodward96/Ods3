@@ -29,7 +29,10 @@ public class lgcInteractToSave : MonoBehaviour
 
     void InteractDelegate()
     {
-        GameObject.Find("GameManager").GetComponent<GameManager>().WriteToCurrentSave(); 
+        //GameObject.Find("GameManager").GetComponent<GameManager>().WriteToCurrentSave();
+
+		// TODO: Replace this with its analogue in the cutscene manager!
+		DialogManager.instance.ShowDialog("Would you like to save?");
     }
 
 	private void OnDrawGizmos()

@@ -17,7 +17,7 @@ public class DialogManager : MonoBehaviour
     CustomButtonUI buttonRight;
 
 
-    enum DecisionType { Power, Pickup };
+    enum DecisionType { Power, Pickup, Save };
     DecisionType currentDecisionType;
     List<GameObject> buttonEffector; // A generic variable to determine what the decision is effecting
 
@@ -261,6 +261,21 @@ public class DialogManager : MonoBehaviour
             return;
         }
 
+		if (fullLine.ToUpper().Contains("SAVE?"))
+		{
+			// Set up the buttons
+			buttonLeft.GetComponentInChildren<Text>().text = "Yes";
+			buttonRight.GetComponentInChildren<Text>().text = "No";
+			CustomButtonUI.Selected = buttonLeft;
+
+			currentDecisionType = DecisionType.Save;
+			makingADecision = true;
+			breakOutDecision = false;
+			StartCoroutine(PrintLine(fullLine));
+
+			return;
+		}
+
 
         if (fullLine.ToUpper().Contains("HASITEM:"))
         {
@@ -501,6 +516,14 @@ public class DialogManager : MonoBehaviour
                     currentLine++;
                 }
                 break;
+
+		case DecisionType.Save:
+			if(_decision)
+			{
+				// Save the game!
+				GameManager.instance.WriteToCurrentSave();
+			}
+			break;
         }
 
 
