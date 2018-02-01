@@ -76,12 +76,16 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Alpha9))
             LoadSaveFile("Beta");
        
-
+		// Temp fix to see if player data transfers to a new room
+		if(Input.GetKeyDown(KeyCode.KeypadPlus))
+		{
+			PreservePlayer();
+			SceneManager.LoadScene("Level_Data/lvl_Spire/Spire");
+			SceneManager.sceneLoaded += RestorePlayer;
+		}
     }
-
-    /// <notice>
-    /// A sample save file can be found in the scripts folder
-    /// </notice>
+		
+	// For saving the player and the current scene at a save station.
     void WriteSaveFile(string _filePath)
     {
         string actualPath = Application.dataPath + '\\' + _filePath;
@@ -157,6 +161,94 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+	// Preserves the player for transfer between scenes.
+	void PreservePlayer()
+	{
+		PlayerScript Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+
+		GameData.PlayerHP = Player.myUnit.CurrentHealth;
+
+		if(Player.PrimaryWeapon != null)
+		{
+			GameData.PlayerWeapon1 = Player.PrimaryWeapon.name;
+		}
+		else
+		{
+			GameData.PlayerWeapon1 = "null";	
+		}
+		if(Player.SecondaryWeapon != null)
+		{
+			GameData.PlayerWeapon2 = Player.SecondaryWeapon.name;
+		}
+		else
+		{
+			GameData.PlayerWeapon2 = "null";
+		}
+		if(Player.ActiveWeapon != null)
+		{
+			GameData.PlayerWeaponActive = Player.ActiveWeapon.name;
+		}
+		else
+		{
+			GameData.PlayerWeaponActive = "null";
+		}
+
+		Debug.Log("Player data preserved.");
+	}
+
+	// Restores the player upon their entry into a new scene.
+	// To use this function, do SceneManager.sceneLoaded += RestorePlayer; after loading a new scene.
+	// It will only work properly if PreservePlayer() is done first.
+	void RestorePlayer(Scene _scene, LoadSceneMode _loadMode)
+	{
+		GameObject Player = GameObject.FindGameObjectWithTag("Player");
+		PlayerScript ps = Player.GetComponent<PlayerScript>();
+
+		ps.myUnit.CurrentHealth = GameData.PlayerHP;
+
+		// If the player starts out with a weapon on opening the scene, delete it...
+		if(ps.PrimaryWeapon != null)
+		{
+			Destroy(ps.PrimaryWeapon.gameObject);
+		}
+		if(GameData.PlayerWeapon1 != "null")
+		{
+			// ... Then replace it with the weapon we saved (if any).
+			ps.PrimaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon1), Player.transform) as GameObject).GetComponent<WeaponBase>();
+
+			// Hacky failsafing because sometimes the weapon gets named with a (clone) suffix, which throws a monkey wrench in my plans
+			ps.PrimaryWeapon.gameObject.name = GameData.PlayerWeapon1;
+		}
+
+		// Do the same for secondary and active weapons
+		if(ps.SecondaryWeapon != null)
+		{
+			Destroy(ps.PrimaryWeapon.gameObject);
+		}
+		if(GameData.PlayerWeapon2 != "null")
+		{
+			ps.SecondaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon2), Player.transform) as GameObject).GetComponent<WeaponBase>();
+
+			ps.SecondaryWeapon.gameObject.name = GameData.PlayerWeapon2;
+		}
+
+		if(ps.ActiveWeapon != null)
+		{
+			Destroy(ps.PrimaryWeapon.gameObject);
+		}
+		if(GameData.PlayerWeaponActive != "null")
+		{
+			ps.ActiveWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeaponActive), Player.transform) as GameObject).GetComponent<WeaponBase>();
+
+			ps.ActiveWeapon.gameObject.name = GameData.PlayerWeaponActive;
+		}
+
+		Debug.Log("Player data restored.");
+
+		SceneManager.sceneLoaded -= RestorePlayer;
+	}
+
+	// Loading save data upon starting the game.
     void LoadSaveFile(string _filePath)
     {
         string actualPath = Application.dataPath + '\\' + _filePath;

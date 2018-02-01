@@ -23,18 +23,17 @@ public class CustomButtonUI : MonoBehaviour
     public CustomButtonUI NavDown;
 
     Image myImage;
- 
 
     // Use this for initialization
     void Start()
     {
-        myImage = GetComponent<Image>(); 
+        myImage = GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (DialogManager.InDialog) // Only handle this if we're in a dialog prompt
+		if (CutsceneManager.InCutscene) // Only handle this if we're in a dialog prompt
         {
             if (Selected == this)
             {
@@ -56,9 +55,10 @@ public class CustomButtonUI : MonoBehaviour
     // If it's clicked, let the dialog manager know that a decision was made and pass the boolian value
     public void Clicked(bool _value)
     {
-        if (DialogManager.InDialog)
+		if (CutsceneManager.InCutscene)
         {
-            DialogManager.instance.DecisionMade(_value);
+			// No idea how to replace this; to my knowledge, this is the only DialogManager call left
+			DialogManager.instance.DecisionMade(_value);
         }
     }
 }
