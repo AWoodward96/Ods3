@@ -227,6 +227,7 @@ Assets/StreamingAssets*
 # ===================================== #
 ExportedObj/
 obj/
+*.obj
 *.svd
 *.userprefs
 *.csproj
