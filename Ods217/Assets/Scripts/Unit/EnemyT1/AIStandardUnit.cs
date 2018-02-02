@@ -145,8 +145,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     }
 
     public virtual void AggroState()
-    { 
-
+    {  
         // First get some references
         Vector3 playerPos = playerRef.transform.position;
         Vector3 distVec = playerRef.transform.position - transform.position;
@@ -321,10 +320,18 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
 
         if (UnitData.CurrentHealth <= 0)
         {
-            GameObject obj = Resources.Load("Prefabs/Particles/deathPartParent") as GameObject;
-            Instantiate(obj, transform.position, obj.transform.rotation);
+            CorpseScript cs = GetComponentInChildren<CorpseScript>(true);
+            if(cs != null)
+            {
+                cs.DropCorpse(transform.position, animationHandler.flipSprites);
+            }else
+            { 
+                GameObject obj = Resources.Load("Prefabs/Particles/deathPartParent") as GameObject;
+                Instantiate(obj, transform.position, obj.transform.rotation); 
+            }
 
-            if(currentWeapon != null)
+
+            if (currentWeapon != null)
                 currentWeapon.ReleaseWeapon();
              
 

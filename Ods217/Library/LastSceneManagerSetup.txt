@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Level_Data/lvl_PirateShip/PirateShip1.unity
+- path: Assets/Level_Data/lvl_Spire/Spire.unity
   isLoaded: 1
   isActive: 1

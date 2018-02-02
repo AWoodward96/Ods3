@@ -24,7 +24,7 @@ public class SpireElevator: MonoBehaviour {
 
     PlayerScript myPlayer;
 
-    Canvas myCanvas;
+    public Canvas myCanvas;
 
     // Use this for initialization
     void Start () {
@@ -50,8 +50,7 @@ public class SpireElevator: MonoBehaviour {
         // Set up other references
         ind_Interactable = GetComponentInChildren<UsableIndicator>();
         ind_Interactable.Preset = UsableIndicator.usableIndcPreset.Interact;
-        ind_Interactable.Output = toggleDelegate;
-        myCanvas = GetComponentInChildren<Canvas>();
+        ind_Interactable.Output = toggleDelegate; 
         myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
         MenuOpen = false;
     }
@@ -78,8 +77,12 @@ public class SpireElevator: MonoBehaviour {
             }
         }
 
+        ind_Interactable.Disabled = Moving;
+
       
-        myCanvas.enabled = MenuOpen && Interactable;
+        myCanvas.enabled = MenuOpen && ind_Interactable.ActiveInd;
+        if (!ind_Interactable.ActiveInd)
+            MenuOpen = false;
     }
 
     void toggleDelegate()

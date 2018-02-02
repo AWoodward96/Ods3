@@ -135,6 +135,7 @@
     <Compile Include="Assets\Scripts\Technology\Effects\sinFloat.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\spin.cs" />
     <Compile Include="Assets\Scripts\Technology\ForceFieldScript.cs" />
+    <Compile Include="Assets\Scripts\Technology\GeneratorBehavior.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcDoorSwitch.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToSave.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToStartDialog.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Assets\Scripts\Technology\Logic\lgcMoveToOnTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcOnCollisionTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcSyncTriggerWithAnimCTRL.cs" />
+    <Compile Include="Assets\Scripts\Technology\LogicDoor.cs" />
     <Compile Include="Assets\Scripts\Technology\PawnCTRL.cs" />
     <Compile Include="Assets\Scripts\Technology\SlidingDoor.cs" />
     <Compile Include="Assets\Scripts\Technology\SpireElevator.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="Assets\Scripts\Technology\WaypointsMovement.cs" />
     <Compile Include="Assets\Scripts\Technology\weaponDispenser.cs" />
     <Compile Include="Assets\Scripts\Unit\CController.cs" />
+    <Compile Include="Assets\Scripts\Unit\CorpseScript.cs" />
     <Compile Include="Assets\Scripts\Unit\DropShadowScript.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\AIStandardUnit.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\customTechie1.cs" />
