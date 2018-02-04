@@ -104,11 +104,11 @@ public class MenuManager : MonoBehaviour
     {
 
         // Check the things that would prevent you from opening a menu
-        if (DialogManager.InDialog)
+		if (CutsceneManager.InCutscene)
             MenuOpen = false;
 
         // Handle opening and closing the inventory menu
-        if (!DialogManager.InDialog) // They'll probably be more checks in this if statement later on
+		if (!CutsceneManager.InCutscene) // They'll probably be more checks in this if statement later on
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {

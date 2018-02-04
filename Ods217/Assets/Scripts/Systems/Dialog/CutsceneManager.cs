@@ -9,11 +9,21 @@ public class CutsceneManager : MonoBehaviour {
     Text sideTextArea;
     Image portraitArea;
     Image sidePortraitArea;
+
+	CustomButtonUI buttonLeft;
+	CustomButtonUI buttonRight;
+
+	enum DecisionType { Power, Pickup, Save };
+	DecisionType currentDecisionType;
+	List<GameObject> buttonEffector; // A generic variable to determine what the decision is effecting
      
     public static CutsceneManager instance;
     public static bool InCutscene;
     [TextArea(1,100)]
     public string fullCutscene;
+
+	bool makingADecision;
+	bool breakOutDecision;
 
 
     // For texting purposes
@@ -84,6 +94,20 @@ public class CutsceneManager : MonoBehaviour {
                 sidePortraitArea = i;
         }
 
+		CustomButtonUI[] buttons = GetComponentsInChildren<CustomButtonUI>();
+		foreach (CustomButtonUI b in buttons)
+		{
+			if (b.name == "DecisionL")
+				buttonLeft = b;
+			if (b.name == "DecisionR")
+				buttonRight = b;
+		}
+
+		buttonRight.gameObject.SetActive(false);
+		buttonLeft.gameObject.SetActive(false);
+		makingADecision = false;
+
+		buttonEffector = new List<GameObject>();
         DontDestroyOnLoad(this);
     }
 
@@ -91,6 +115,32 @@ public class CutsceneManager : MonoBehaviour {
     {
         MainTextBox.SetActive(ShowMain);
         SideTextBox.SetActive(ShowSide);
+
+		buttonLeft.gameObject.SetActive(makingADecision);
+		buttonRight.gameObject.SetActive(makingADecision);
+
+		// Handle button nav because we have custom buttons
+		if (makingADecision)
+		{
+
+			if (Input.GetKeyDown(KeyCode.D))
+			{
+				if (CustomButtonUI.Selected.NavRight != null)
+					CustomButtonUI.Selected = CustomButtonUI.Selected.NavRight;
+			}
+
+			if (Input.GetKeyDown(KeyCode.A))
+			{
+				if (CustomButtonUI.Selected.NavLeft != null)
+					CustomButtonUI.Selected = CustomButtonUI.Selected.NavLeft;
+			}
+
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				DecisionMade((CustomButtonUI.Selected == buttonLeft));
+			}
+
+		}
 
         if(InCutscene)
         {
@@ -480,6 +530,33 @@ public class CutsceneManager : MonoBehaviour {
                 actionComplete = true;
 
                 break;
+			case "DECISION":
+				// There's a decision to be made
+				// Decision(Type,TextLeft,TextRight)
+
+				string Type = parameters[0].Trim().ToUpper();
+
+				switch (Type)
+				{
+					case "SAVE":
+						currentDecisionType = DecisionType.Save;
+						break;
+					default:
+						Debug.Log("Couldn't determine decision type");
+						actionComplete = true;
+						break;
+				}
+
+				buttonLeft.GetComponentInChildren<Text>().text = parameters[1].Trim();
+				buttonRight.GetComponentInChildren<Text>().text = parameters[2].Trim().Replace(")", "");
+
+				CustomButtonUI.Selected = buttonLeft;
+
+				makingADecision = true;
+				breakOutDecision = false;
+
+				break;
+
             default:
                 Debug.Log("Couldn't process: " + commandID);
                 actionComplete = true;
@@ -612,6 +689,23 @@ public class CutsceneManager : MonoBehaviour {
         actionComplete = true;
     }
 
+	public void DecisionMade(bool _decision)
+	{
+		switch (currentDecisionType)
+		{
+		case DecisionType.Save:
+			if(_decision)
+			{
+				// Save the game!
+				GameManager.instance.WriteToCurrentSave();
+			}
+			break;
+		}
+			
+		breakOutDecision = true;
+		makingADecision = false;
+		actionComplete = true;
+	}
 }
 
 

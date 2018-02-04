@@ -326,7 +326,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UpgradesManager.MenuOpen);
 
         // No shooting if the menu is open
-        if (!MenuManager.MenuOpen && !DialogManager.InDialog && !UpgradesManager.MenuOpen)
+		if (!MenuManager.MenuOpen && !CutsceneManager.InCutscene && !UpgradesManager.MenuOpen)
         {
             // No shooting when we're in a no combat zone
             if (ZoneScript.ActiveZone.ZoneAggression != ZoneScript.AggressionType.NoCombat)

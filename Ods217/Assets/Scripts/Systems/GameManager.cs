@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour {
 			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
 			{
 				currentDoor = currentSceneData.Permanents[i].Object.GetComponent<SlidingDoor>();
-				if(currentDoor != false)
+				if(currentDoor != null)
 				{
 					writer.WriteLine(currentDoor.State);
 					writer.WriteLine(currentDoor.Locked);

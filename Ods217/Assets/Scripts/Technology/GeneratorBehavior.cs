@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneratorBehavior : MonoBehaviour, IDamageable, IArmed
+public class GeneratorBehavior : MonoBehaviour, IArmed
 {
 	public UnitStruct myUnit;
 	bool Activated;
-
-	LogicDoor myDoor;
 
 	ZoneScript Zone;
 
@@ -15,7 +13,6 @@ public class GeneratorBehavior : MonoBehaviour, IDamageable, IArmed
 	void Start()
 	{
 		Activated = true;
-		myDoor = transform.parent.gameObject.GetComponent<LogicDoor>();
 	}
 
 	// Update is called once per frame
@@ -41,25 +38,6 @@ public class GeneratorBehavior : MonoBehaviour, IDamageable, IArmed
 				Activated = !Activated;
 
 				Debug.Log(name + " deactivated");
-
-				// If this was the last generator needed to open (or shut) the door, let the door know!
-				for(int i = 0; i < myDoor.triggers.Count; i++)
-				{
-					if(myDoor.triggers[i].Activated)
-					{
-						if(myDoor.State)
-						{
-							Debug.Log(myDoor.gameObject.name + " Closed");
-						}
-						myDoor.State = false;
-						break;
-					}
-					else if (i == myDoor.triggers.Count - 1)
-					{
-						myDoor.State = true;
-						Debug.Log(myDoor.gameObject.name + " Opened");
-					}
-				}
 			}
 		}
 	}
@@ -98,11 +76,11 @@ public class GeneratorBehavior : MonoBehaviour, IDamageable, IArmed
 	{
 		get
 		{
-			return Activated;
+			return !Activated;
 		}
 		set
 		{
-			Activated = value;
+			Activated = !value;
 		}
 	}
 

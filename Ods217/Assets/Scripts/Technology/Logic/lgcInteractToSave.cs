@@ -32,7 +32,15 @@ public class lgcInteractToSave : MonoBehaviour
         //GameObject.Find("GameManager").GetComponent<GameManager>().WriteToCurrentSave();
 
 		// TODO: Replace this with its analogue in the cutscene manager!
-		DialogManager.instance.ShowDialog("Would you like to save?");
+		//DialogManager.instance.ShowDialog("Would you like to save?");
+
+		CutsceneManager.instance.StartCutscene
+		(
+			"HaltPlayer()\n" +
+			"Loadchar(Con1,Console)\n" +
+			"Say(Console,Would you like to save?\n" +
+			"Decision(Save,Yes,No)\n"
+		);
     }
 
 	private void OnDrawGizmos()
