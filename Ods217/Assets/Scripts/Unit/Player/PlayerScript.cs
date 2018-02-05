@@ -250,23 +250,22 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
 
         // Handle walking and running bools
+        Vector3 toCursor = GlobalConstants.ZeroYComponent( CamScript.CursorLocation - transform.position);
         myAnimator.SetFloat("SpeedX", myCtrl.Velocity.x);
         myAnimator.SetFloat("SpeedY", myCtrl.Velocity.z);
+        myAnimator.SetFloat("LookX", toCursor.x);
+        myAnimator.SetFloat("LookY", toCursor.z);
         myAnimator.SetFloat("Speed", spd);
         myAnimator.SetBool("Moving", (GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f));
         myAnimator.SetBool("Running", myCtrl.Sprinting);
+        myAnimator.SetBool("InCombat", InCombat);
 
         // Footstep data
         if (myCtrl.Sprinting != myCtrl.SprintingPrev)
             myFootStep.stepCooldown = 0;
 
-        myFootStep.Speed = (myCtrl.Sprinting) ? .2f : .45f;
-
-
-        // Handle in combat and out of combat
-        myAnimator.SetLayerWeight(0, Convert.ToInt32(InCombat));
-        myAnimator.SetLayerWeight(1, Convert.ToInt32(!InCombat));
-
+        myFootStep.Speed = (myCtrl.Sprinting) ? .2f : ((InCombat) ? .45f : .35f);
+ 
         combatCD += Time.deltaTime;
         if (combatCD > 5 && InCombat)
         {

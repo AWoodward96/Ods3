@@ -234,6 +234,7 @@ Assets/StreamingAssets*
 *.user
 *.unityproj
 *.booproj
+*.ods
 
 # ============ #
 # OS generated #
