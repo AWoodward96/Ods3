@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour {
     }
 		
 	// For saving the player and the current scene at a save station.
-    void WriteSaveFile(string _filePath)
+    bool WriteSaveFile(string _filePath)
     {
         string actualPath = Application.dataPath + '\\' + _filePath;
         if (File.Exists(actualPath))
@@ -158,6 +158,7 @@ public class GameManager : MonoBehaviour {
             writer.WriteLine(System.DateTime.Now);
 
 			Debug.Log("Game Saved.");
+			return true;
         }
     }
 
@@ -382,10 +383,10 @@ public class GameManager : MonoBehaviour {
 
 	// I feel like I shouldn't do this
 	// But I also don't know if porting the save function over to the InteractToSave script would be a good idea, so...
-	public void WriteToCurrentSave()
+	public bool WriteToCurrentSave()
 	{
 		// NOTE: Replace "Beta" with whatever the current save file's name is later!
-		WriteSaveFile("Beta");
+		return WriteSaveFile("Beta");
 	}
 }
 

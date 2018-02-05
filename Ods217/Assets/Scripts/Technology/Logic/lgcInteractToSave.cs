@@ -39,7 +39,7 @@ public class lgcInteractToSave : MonoBehaviour
 			"HaltPlayer()\n" +
 			"Loadchar(Con1,Console)\n" +
 			"Say(Console,Would you like to save?\n" +
-			"Decision(Save,Yes,No)\n"
+			"Decision(Save,Yes,No)"
 		);
     }
 

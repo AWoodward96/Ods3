@@ -1395,7 +1395,7 @@ MonoBehaviour:
   WeaponSlot2: {fileID: 0}
   Zone: {fileID: 0}
   Clips: []
-  isTriggered: 0
+  isTriggered: 1
   MoveToAr:
   - {x: -3, y: 2.48}
   - {x: -0.05, y: 5.47}

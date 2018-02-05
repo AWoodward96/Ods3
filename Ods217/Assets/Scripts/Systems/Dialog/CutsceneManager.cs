@@ -119,29 +119,6 @@ public class CutsceneManager : MonoBehaviour {
 		buttonLeft.gameObject.SetActive(makingADecision);
 		buttonRight.gameObject.SetActive(makingADecision);
 
-		// Handle button nav because we have custom buttons
-		if (makingADecision)
-		{
-
-			if (Input.GetKeyDown(KeyCode.D))
-			{
-				if (CustomButtonUI.Selected.NavRight != null)
-					CustomButtonUI.Selected = CustomButtonUI.Selected.NavRight;
-			}
-
-			if (Input.GetKeyDown(KeyCode.A))
-			{
-				if (CustomButtonUI.Selected.NavLeft != null)
-					CustomButtonUI.Selected = CustomButtonUI.Selected.NavLeft;
-			}
-
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				DecisionMade((CustomButtonUI.Selected == buttonLeft));
-			}
-
-		}
-
         if(InCutscene)
         {
             if(actionComplete) // If we've completed the previous action
@@ -174,6 +151,27 @@ public class CutsceneManager : MonoBehaviour {
                 }
             }
         }
+
+		// Handle button nav because we have custom buttons
+		if (makingADecision)
+		{
+			if (Input.GetKeyDown(KeyCode.D))
+			{
+				if (CustomButtonUI.Selected.NavRight != null)
+					CustomButtonUI.Selected = CustomButtonUI.Selected.NavRight;
+			}
+
+			if (Input.GetKeyDown(KeyCode.A))
+			{
+				if (CustomButtonUI.Selected.NavLeft != null)
+					CustomButtonUI.Selected = CustomButtonUI.Selected.NavLeft;
+			}
+
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				DecisionMade((CustomButtonUI.Selected == buttonLeft));
+			}
+		}
     }
 
 
@@ -697,7 +695,16 @@ public class CutsceneManager : MonoBehaviour {
 			if(_decision)
 			{
 				// Save the game!
-				GameManager.instance.WriteToCurrentSave();
+				if(GameManager.instance.WriteToCurrentSave())
+				{
+					fullCutscene += "\nSay(Console,Game Saved!,Happy)";
+				}
+				else
+				{
+					fullCutscene += "\nSay(Console,Sorry... There was a problem saving your data.,Sad)";
+				}
+
+				maxLine++;
 			}
 			break;
 		}

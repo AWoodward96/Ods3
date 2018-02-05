@@ -558,7 +558,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1448760595023000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 214.23183, y: 5.32, z: -1.0357615}
+  m_LocalPosition: {x: 314.75323, y: 4.920621, z: -365.5974}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 4373856891395680}
@@ -1188,7 +1188,7 @@ MonoBehaviour:
   UnitData:
     Name: Drone T1
     MaxHealth: 10
-    CurrentHealth: 10
+    CurrentHealth: 25
   Weapon: {fileID: 114263986088573854}
   Activated: 0
 --- !u!114 &114763435259364944

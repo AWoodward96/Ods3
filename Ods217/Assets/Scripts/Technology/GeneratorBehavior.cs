@@ -21,7 +21,7 @@ public class GeneratorBehavior : MonoBehaviour, IArmed
 
 	}
 
-	public void OnHit(int _damage)
+	virtual public void OnHit(int _damage)
 	{
 		if(myUnit.CurrentHealth > 0)
 		{
