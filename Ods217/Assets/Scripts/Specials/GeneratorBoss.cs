@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GeneratorBoss : GeneratorBehavior
 {
+	GameObject Player;
 
 	ForceFieldScript myForceField;
 	SpriteRenderer ffSprite;
@@ -18,6 +19,8 @@ public class GeneratorBoss : GeneratorBehavior
 	float currentTimer;			// The amount of time since the shield dropped.
 
 	bool engaged;				// Once the player first shoots the generator, the fight will begin.
+
+	UsableIndicator myInteract;
 
 
 	// Use this for initialization
@@ -34,6 +37,11 @@ public class GeneratorBoss : GeneratorBehavior
 		myZone = transform.parent.GetComponentInChildren<ZoneScript>();
 
 		myBlueprint = Resources.Load("Prefabs/Enemies/MiniDroneT1") as GameObject;
+
+		myInteract = GetComponentInChildren<UsableIndicator>();
+		myInteract.Preset = UsableIndicator.usableIndcPreset.Interact;
+
+		Player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
 	// Update is called once per frame
@@ -87,7 +95,14 @@ public class GeneratorBoss : GeneratorBehavior
 
 		if(!engaged)
 		{
+			// If the player is shooting wildly for WHATEVER reason, we don't want them to trigger the battle unintentionally
+			if((Player.transform.position - transform.position).sqrMagnitude > 400)
+			{
+				return;
+			}
+
 			engaged = true;
+			myInteract.gameObject.SetActive(false);
 		}
 
 		myVisualizer.ShowMenu();
