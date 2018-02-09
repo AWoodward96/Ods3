@@ -17,6 +17,8 @@ public class NewMusicManager : MonoBehaviour {
     [Header("Zone Information")]
     public List<MusicZone> MusicZones;
 
+
+
     [Space(25)]
     [Header("Script Information")]
     public bool Override; // Override is where a new zone should take priority over the base layers
@@ -33,8 +35,9 @@ public class NewMusicManager : MonoBehaviour {
                 AudioTrack a = AudioTracks[i];
                 AudioSource src = gameObject.AddComponent<AudioSource>();
                 a.Source = src;
+                a.isPlaying = a.PlayOnAwake;
                 src.volume = a.Volume;
-                src.playOnAwake = a.PlayOnAwake;
+                src.playOnAwake = a.PlayOnAwake; 
                 src.loop = a.Loop;
                 src.clip = a.Audio;
 
@@ -59,7 +62,7 @@ public class NewMusicManager : MonoBehaviour {
 
             foreach (AudioTrack track in AudioTracks)
             {
-                if (Override)
+                if (track.isPlaying)
                 {
                     track.Volume = Mathf.Lerp(track.Volume, track.TargetVolume, .5f * Time.deltaTime);
                     track.Source.volume = Mathf.Clamp(track.Volume, 0, track.Cap);
@@ -72,18 +75,9 @@ public class NewMusicManager : MonoBehaviour {
                 track.Source.loop = track.Loop;
             }
 
-        }
-        else
-        { 
-            for(int i = 0; i < MusicZones.Count; i ++) 
-            { 
-                if (MusicZones[i].POPULATETRACKS)
-                {
-                    MusicZones[i].POPULATETRACKS = false;
-                    MusicZones[i].TrackVolumes = new float[AudioTracks.Count];
-                }
-            }
-        }
+            if (Input.GetKeyDown(KeyCode.Q))
+                SetTrack(2, .5f);
+        } 
 	}
 
 
@@ -105,18 +99,35 @@ public class NewMusicManager : MonoBehaviour {
                 // If the player is in the audio zone
                 if (playerPos.x > zoneTopLeft.x && playerPos.x < zoneBottomRight.x && playerPos.z < zoneTopLeft.z && playerPos.z > zoneBottomRight.z)
                 {
-                    Override = true;
+                    AudioTracks[zone.TrackIndex].isPlaying = (zone.TrackVolume > 0);
                     StopCoroutine(OverrideCoroutine());
                     StartCoroutine(OverrideCoroutine());
-                    for(int i = 0; i < AudioTracks.Count;i++)
-                    {
-                        // loop through and dump all the values into the target volume
-                        AudioTracks[i].TargetVolume = zone.TrackVolumes[i]; 
-                    }
+
+                    zone.inZone = true;
+
+                    // loop through and dump all the values into the target volume
+                    AudioTracks[zone.TrackIndex].TargetVolume = zone.TrackVolume;  
+                }else
+                {  
+                    if(zone.Relative && zone.inZone)
+                        AudioTracks[zone.TrackIndex].TargetVolume = 0;
+
+                    zone.inZone = false;
                 }
             }
 
         }
+    }
+
+
+    public void SetTrack(int _trackIndex, float _trackvolume)
+    {
+        Override = true;
+        StopCoroutine(OverrideCoroutine());
+        StartCoroutine(OverrideCoroutine());
+
+        //AudioTracks[_trackIndex].BaseVolume = _trackvolume;
+        AudioTracks[_trackIndex].TargetVolume = _trackvolume;
     }
 
     IEnumerator OverrideCoroutine()
@@ -139,6 +150,8 @@ public class NewMusicManager : MonoBehaviour {
             Gizmos.DrawCube(tpos, transSize);
         }
     }
+
+ 
 }
 
 [System.Serializable]
@@ -147,32 +160,44 @@ public class MusicZone
     public Vector2 Size;
     public Vector2 Position; 
 
-    public bool POPULATETRACKS;
-    [Range(0,1)]
-    public float[] TrackVolumes;
+    [Tooltip("Should the track be turned off upon exiting this zone?")]
+    public bool Relative;
+    public bool inZone;
 
-    public Color ZoneColor;
-    public int AudioTrackIndex;
+    [Range(0,1)]
+    public float TrackVolume;
+    public int TrackIndex;
+
+    public Color ZoneColor; 
 }
 
 
 [System.Serializable]
 public class AudioTrack
 {
+
+    [Tooltip("The actual sound clip that we'll be playing")]
     public AudioClip Audio;
+
+    [Tooltip("The Audio Source generated on runtime that we'll be using for this Track.")]
     public AudioSource Source;
 
+    public bool isPlaying = false;
     public bool PlayOnAwake = false;
     public bool Loop = true;
+
+    [Tooltip("Current volume of this track.")]
     [Range(0, 1)]
     public float Volume = 1;
-
-    [HideInInspector]
+    [Tooltip("The desired volume of this track.")]
+    [Range(0, 1)]
     public float TargetVolume;
+
 
     [HideInInspector]
     public float BaseVolume;
-    
+
+    [Tooltip("How loud the volume is allowed to get")]
     [Range(0, 1)]
     public float Cap = 1;
 }

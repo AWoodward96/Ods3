@@ -24,6 +24,10 @@ Trigger(e1)
 Trigger(e2)
 Trigger(e3)
 
+SetTrack(1,0.3)
+SetTrack(0,0.1) 
+SetTrack(2,0.3) 
+
 Resume()
 
 Lock(0)

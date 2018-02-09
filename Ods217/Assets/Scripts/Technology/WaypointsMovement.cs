@@ -48,8 +48,7 @@ public class WaypointsMovement : MonoBehaviour {
 
         Collider[] d = Physics.OverlapBox(transform.position, new Vector3(1.1f, 1.1f, 1.1f), Quaternion.identity, LayerMask.GetMask("Units"));
         if (d.Length > 0)
-        {
-            Debug.Log("Slaying the spire");
+        { 
             d[0].GetComponent<CController>().ApplyForce(myCC.Velocity);
         }
 

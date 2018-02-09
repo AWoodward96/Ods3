@@ -43,4 +43,4 @@ LerpCameraSize(11, 1)
 
 Lock(0)
 Resume()
-CameraTarget(Char1)
+CameraTarget(Player)

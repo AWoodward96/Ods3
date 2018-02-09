@@ -12,11 +12,7 @@ public class lgcDoorSwitch : MonoBehaviour {
     public SlidingDoor DoorToTrigger;
     public AudioClip SoundToPlayWhenTriggered; 
     AudioSource mySource;
-
-    [Range(.1f, 10)]
-    public float Range;
-    public bool Interactable;
-
+  
     public SpriteRenderer ConsoleRenderer;
     public Sprite Open;
     public Sprite Closed;
@@ -64,14 +60,7 @@ public class lgcDoorSwitch : MonoBehaviour {
 
     }
 
-    private void OnDrawGizmos()
-    {
-        Color c = Color.blue;
-        c.a = .1f;
-        Gizmos.color = c;
-        Gizmos.DrawSphere(transform.position, Range);
-    }
-
+  
     void OnInteract()
     {
         DoorToTrigger.Triggered = !DoorToTrigger.Triggered;

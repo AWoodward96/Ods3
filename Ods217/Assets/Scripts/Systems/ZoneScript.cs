@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using SpriteToParticlesAsset;
  
 /// <summary>
 /// A script that handles camera placement and sceudo levels
@@ -33,7 +34,8 @@ public class ZoneScript : MonoBehaviour {
     public List<IPermanent> Perms; // A list of the enemies in this zone
     public List<Light> LightObjects; // A list of lights in this zone
     public List<WeaponBase> Weapons;
-
+    public List<SpriteToParticles> StP;
+ 
     Vector3 topLeft;
     Vector3 bottomRight;
 
@@ -68,11 +70,20 @@ public class ZoneScript : MonoBehaviour {
             GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
             Weapons = new List<WeaponBase>();
             Perms = new List<IPermanent>();
+            StP = new List<SpriteToParticles>();
             LightObjects = new List<Light>();
             foreach (GameObject g in gos)
             {
                 if (g.transform.position.x < bottomRight.x && g.transform.position.x > topLeft.x && g.transform.position.z < topLeft.z && g.transform.position.z > bottomRight.z)
                 {
+                     
+                    SpriteToParticles spritToPart = g.GetComponent<SpriteToParticles>();
+                    if (spritToPart != null)
+                    {
+                        StP.Add(spritToPart);
+                        // No continue because we want all sprite to parts
+                    }
+
                     WeaponBase isUsableWeapon = g.GetComponent<WeaponBase>();
                     if(isUsableWeapon != null)
                     {
@@ -94,6 +105,7 @@ public class ZoneScript : MonoBehaviour {
                         Perms.Add(perminant);
                         continue;
                     }
+
                 }
 
             }
@@ -111,11 +123,21 @@ public class ZoneScript : MonoBehaviour {
         if (PrevZone != ActiveZone)
         { 
             SetLights((ActiveZone == this));
+            SetParts((ActiveZone == this));
         }
          
         PrevZone = ActiveZone;
     }
 
+    void SetParts(bool _val)
+    { 
+        StP = StP.Where(item => item != null).ToList(); // get rid of any values that are invalid
+
+        foreach (SpriteToParticles P in StP)
+        {
+            P.enabled = _val;
+        }
+    }
 
     private void OnDrawGizmos()
     {

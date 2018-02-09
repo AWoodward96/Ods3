@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Level_Data/lvl_Testing/trainingMiniGame.unity
     guid: 9704c894e15dddb469213dc771c9add3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Level_Data/lvl_Spire/Spire.unity
     guid: e2a66da4ac95002488be32013e8e82ba
   - enabled: 0

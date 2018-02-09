@@ -554,6 +554,21 @@ public class CutsceneManager : MonoBehaviour {
 				breakOutDecision = false;
 
 				break;
+            case "SETTRACK":
+                // Set the music managers track to a desired volume
+                // SYNTAX: SetTrack(index, newvolume)
+                savedName = parameters[0].Trim().Replace(")", "");
+                int.TryParse(savedName, out iGeneric);
+                savedName = parameters[1].Trim().Replace(")", ""); 
+                float.TryParse(savedName, out fGeneric);
+
+                if(NewMusicManager.instance != null)
+                {
+                    NewMusicManager.instance.SetTrack(iGeneric, fGeneric);
+                    actionComplete = true;
+                } 
+                break;
+            
 
             default:
                 Debug.Log("Couldn't process: " + commandID);
