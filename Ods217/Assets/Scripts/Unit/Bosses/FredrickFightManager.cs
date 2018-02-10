@@ -15,6 +15,8 @@ public class FredrickFightManager : MonoBehaviour {
     public float ExplosiveRatio;
     public float Speed;
 
+    public Vector3 setMove;
+
     float dTime = 0;
 
     BoxCollider myCol;
@@ -28,12 +30,14 @@ public class FredrickFightManager : MonoBehaviour {
         {
             ExplosiveBoxes.Add(Instantiate(ExplosivePrefab, transform.position, Quaternion.identity));
             ExplosiveBoxes[i].SetActive(false);
+            ExplosiveBoxes[i].GetComponent<SimpleMove>().Move = setMove;
         }
 
         for (int i = 0; i < 5; i++)
         {
             NormalBoxes.Add(Instantiate(NormalBoxPrefab, transform.position, Quaternion.identity));
             NormalBoxes[i].SetActive(false);
+            NormalBoxes[i].GetComponent<SimpleMove>().Move = setMove;
         }
     }
 	

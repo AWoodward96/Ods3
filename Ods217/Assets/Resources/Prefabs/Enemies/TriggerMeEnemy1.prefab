@@ -1449,7 +1449,6 @@ MonoBehaviour:
   Immovable: 0
   Velocity: {x: 0, y: 0, z: 0}
   ProjectedPosition: {x: 0, y: 0, z: 0}
-  P50: 0
 --- !u!114 &114429025698020064
 MonoBehaviour:
   m_ObjectHideFlags: 1

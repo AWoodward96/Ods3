@@ -34,8 +34,7 @@ public class CController : MonoBehaviour
     public Vector3 ProjectedPosition; // Where this object should be next frame
 
     LayerMask SolidMask;
-
-    public bool P50;
+     
 
     // Use this for initialization
     void Start()
@@ -90,7 +89,7 @@ public class CController : MonoBehaviour
     {
         Velocity += Acceleration;
         Velocity = Vector3.ClampMagnitude(Velocity, MaxSpeed);
-        myCtrl.Move(Velocity * Time.deltaTime * ((P50) ? .5f : 1));
+        myCtrl.Move(Velocity * Time.deltaTime );
 
         Velocity *= (Airborne) ? GlobalConstants.AirFriction : GlobalConstants.Friction;
 
