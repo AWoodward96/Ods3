@@ -105,11 +105,11 @@ public class HealthBar : MonoBehaviour {
             else
             {
                 // the health bar should be shrunk to fit in the armor bar
-                float armorHealth = myArmor.MaxHealth;
-                float totalHealth = maxHPVal + myArmor.Health;
+				float armorHealth = myUnit.MaxEnergy;
+				float totalHealth = maxHPVal + myUnit.CurrentEnergy;
                 // Get the percentages
                 float hpPercent = currentHPVal / totalHealth;
-                float armorPercent = myArmor.Health / totalHealth;
+				float armorPercent = myUnit.CurrentEnergy / totalHealth;
                 // Calculate the new sizes
                 float newHPSize = (maxWidthHPBar * hpPercent);
                 float newArmorSize = (maxWidthHPBar * armorPercent);
@@ -137,7 +137,7 @@ public class HealthBar : MonoBehaviour {
             if (hasWeapon)
             {
                 WeaponBase myWeapon = myArmedObject.myWeapon; 
-                float bulPercentage = myWeapon.weaponData.currentAmmo / (float)myWeapon.weaponData.maxAmmo; 
+				float bulPercentage = myUnit.CurrentEnergy / (float)myUnit.MaxEnergy; 
                 float newBulRectSize = maxWidthBulletBar * bulPercentage;
                 float newBulPosition = (maxWidthBulletBar - newBulRectSize) / 2;
 
@@ -146,7 +146,7 @@ public class HealthBar : MonoBehaviour {
                 BulBartransform.sizeDelta = new Vector2(newBulRectSize, BulBartransform.sizeDelta.y);
                 BulBartransform.anchoredPosition = new Vector2(-newBulPosition, bulPos.y);
 
-                ReloadIcon.enabled = myWeapon.Reloading; 
+                ReloadIcon.enabled = false; 
             }else
             {
                 ReloadIcon.enabled = false;
@@ -187,7 +187,7 @@ public class HealthBar : MonoBehaviour {
         }
 
         // The total bars that we want should be equal to the maximum clip of the weapon  
-        int totalBars = myArmedObject.myWeapon.weaponData.maxAmmo;
+		int totalBars = myUnit.MaxEnergy;
         totalBars--; // It should be total bars - 1 because we're calculating for divisions, not actual shots
         if (DEBUG) Debug.Log("total bars should be: " + totalBars);
 
@@ -220,13 +220,13 @@ public class HealthBar : MonoBehaviour {
         // change the size of the bar
         RectTransform rectT = BulletBarCovers[0].GetComponent<RectTransform>();
         rectT.sizeDelta = new Vector2(dividedWidthBulletBar, rectT.sizeDelta.y);
-        rectT.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)totalBars / (float)myArmedObject.myWeapon.weaponData.maxAmmo) * maxWidthBulletBar), rectT.anchoredPosition.y);
+		rectT.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)totalBars / (float)myUnit.MaxEnergy) * maxWidthBulletBar), rectT.anchoredPosition.y);
 
         for(int i = 1; i < BulletBarCovers.Length; i++)
         {
             Image img = Instantiate(BulletBarCovers[0], rectT.parent).GetComponent<Image>();
             RectTransform rt = img.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)i / (float)myArmedObject.myWeapon.weaponData.maxAmmo) * maxWidthBulletBar), rectT.anchoredPosition.y); 
+			rt.anchoredPosition = new Vector2((-maxWidthBulletBar / 2) + (((float)i / (float)myUnit.MaxEnergy) * maxWidthBulletBar), rectT.anchoredPosition.y); 
                 BulletBarCovers[i] = img;
         }
 

@@ -10,8 +10,11 @@ public class GeneratorBoss : GeneratorBehavior
 	SpriteRenderer ffSprite;
 
 	List<mobDroneT1> minions;
+	List<bool> isAlive;
 
 	GameObject myBlueprint;
+
+	UsableIndicator myInteract;
 
 	public float recoverTime;	// Time the player has to shoot before the shield starts regenerating, in seconds
 	public float regenRate;		// Pace at which the shield recovers after the weak-phase is over. Purely for aesthetic.
@@ -19,8 +22,6 @@ public class GeneratorBoss : GeneratorBehavior
 	float currentTimer;			// The amount of time since the shield dropped.
 
 	bool engaged;				// Once the player first shoots the generator, the fight will begin.
-
-	UsableIndicator myInteract;
 
 
 	// Use this for initialization
@@ -32,7 +33,8 @@ public class GeneratorBoss : GeneratorBehavior
 
 		ffSprite = myForceField.GetComponent<SpriteRenderer>();
 
-		minions = new List<mobDroneT1>(6);
+		minions = new List<mobDroneT1>();
+		isAlive = new List<bool>();
 
 		myZone = transform.parent.GetComponentInChildren<ZoneScript>();
 
@@ -59,10 +61,15 @@ public class GeneratorBoss : GeneratorBehavior
 		{
 			if(!minions[i].gameObject.activeInHierarchy)
 			{
-				myForceField.RegisterHit(minions[i].MyUnit.MaxHealth);
+				if(isAlive[i])
+				{
+					myForceField.RegisterHit(minions[i].MyUnit.MaxHealth);
 
-				minions.RemoveAt(i);
-				i--;
+					/*minions.RemoveAt(i);
+					i--;*/
+
+					isAlive[i] = false;
+				}
 				continue;
 			}
 
@@ -79,7 +86,7 @@ public class GeneratorBoss : GeneratorBehavior
 				myForceField.RegenTime = regenRate;
 			}
 
-			if(myForceField.Health == myForceField.MaxHealth)
+			if(myUnit.CurrentEnergy == myUnit.MaxEnergy)
 			{
 				spawnNewWave(4);
 			}
@@ -108,14 +115,14 @@ public class GeneratorBoss : GeneratorBehavior
 		myVisualizer.ShowMenu();
 		if (myForceField != null)
 		{
-			if(myForceField.Health <= 0)
+			if(myUnit.CurrentEnergy <= 0)
 			{ 
 				myUnit.CurrentHealth -= _damage;
 
 				if(myUnit.CurrentHealth <= 0)
 				{
 					myUnit.CurrentHealth = 0;
-					myForceField.RegisterHit(myForceField.MaxHealth);
+					myForceField.RegisterHit(myUnit.MaxEnergy);
 					myForceField.gameObject.SetActive(false);
 
 					GameObject obj = Resources.Load("Prefabs/Particles/SmallExplosion") as GameObject;
@@ -135,17 +142,46 @@ public class GeneratorBoss : GeneratorBehavior
 
 		for(int i = 0; i < numEnemies; i++)
 		{
-			minions.Add((Instantiate(myBlueprint) as GameObject).GetComponent<mobDroneT1>());
+			if(minions.Count <= i)
+			{
+				minions.Add((Instantiate(myBlueprint) as GameObject).GetComponent<mobDroneT1>());
+				isAlive.Add(true);
 
-			Vector3 myRandom = Random.onUnitSphere;
-			myRandom.y = 0;
-			myRandom.Normalize();
-			minions[i].gameObject.transform.position = transform.position + (myRandom * 5);
-			minions[i].MyUnit.CurrentHealth = (int)(myForceField.MaxHealth / numEnemies);
+				minions[i].transform.parent = transform;
+			}
+			else
+			{
+				minions[i].gameObject.SetActive(true);
+				isAlive[i] = true;
+
+				minions[i].myWeapon.transform.SetParent(minions[i].transform);
+				minions[i].myWeapon.RotateObject.SetActive(true);
+			}
+				
+			minions[i].gameObject.transform.position = transform.position;
+
+			switch(i % 4)
+			{
+			case 0:
+				minions[i].gameObject.transform.localPosition += new Vector3(-10.0f, 0.0f, 0.0f);
+				break;
+
+			case 1:
+				minions[i].gameObject.transform.localPosition += new Vector3(10.0f, 0.0f, 0.0f);
+				break;
+
+			case 2:
+				minions[i].gameObject.transform.localPosition += new Vector3(10.0f, 0.0f, -7.5f);
+				break;
+
+			case 3:
+				minions[i].gameObject.transform.localPosition += new Vector3(-10.0f, 0.0f, -7.5f);
+				break;
+			}
+
+			minions[i].MyUnit.CurrentHealth = (int)(myUnit.MaxEnergy / numEnemies);
 			minions[i].MyUnit.MaxHealth = minions[i].MyUnit.CurrentHealth;
 			minions[i].myZone = myZone;
-
-			minions[i].Activated = true;
 		}
 	}
 }

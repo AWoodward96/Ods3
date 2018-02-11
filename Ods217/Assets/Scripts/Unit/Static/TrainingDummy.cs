@@ -79,7 +79,7 @@ public class TrainingDummy : MonoBehaviour, IArmed {
 
         if (myForceField)
         {
-            if (myForceField.Health > 0)
+			if (MyUnit.CurrentEnergy > 0)
                 myForceField.RegisterHit(_damage);
             else
                 UnitData.CurrentHealth -= _damage;

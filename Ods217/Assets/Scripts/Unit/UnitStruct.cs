@@ -16,4 +16,8 @@ public class UnitStruct
     public int MaxHealth;
     public int CurrentHealth;
 
+	// Energy for shields and weapons
+	public int MaxEnergy;
+	public int CurrentEnergy;
+
 }

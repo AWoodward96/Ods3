@@ -187,7 +187,9 @@ public class mobDroneT1 : MonoBehaviour, IArmed {
             Instantiate(obj, transform.position, obj.transform.rotation);
 
             if (myWeapon != null)
-                myWeapon.ReleaseWeapon(); 
+			{
+                myWeapon.ReleaseWeapon();
+			}
 
             this.gameObject.SetActive(false);
         }

@@ -4,8 +4,12 @@ using UnityEngine;
  
 public class ForceFieldScript : MonoBehaviour {
 
-    public float Health;
-    public int MaxHealth;
+	UnitStruct myOwner;
+
+	// These are both now obsolete, replaced by myOwner's stats
+    //public float Health;
+    //public int MaxHealth;
+
     public float RegenTime;
     private bool recentHit;
     SpriteRenderer Barrier; // The sprite that is surrounding the forcefield 
@@ -21,6 +25,8 @@ public class ForceFieldScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		myOwner = transform.parent.GetComponent<IDamageable>().MyUnit;
+
         Barrier = GetComponent<SpriteRenderer>();
         myMat = GetComponent<Renderer>().material;
         Barrier.enabled = false;
@@ -37,8 +43,12 @@ public class ForceFieldScript : MonoBehaviour {
             Barrier.enabled = false;
         }
 
-        myMat.SetFloat("_Edges", (1 - (Health / MaxHealth)) / 5);
-        if (Health <= 0)
+		if(myOwner.MaxEnergy > 0)
+		{
+			myMat.SetFloat("_Edges", (1 - (myOwner.CurrentEnergy / myOwner.MaxEnergy)) / 5);
+		}
+
+        if (myOwner.CurrentEnergy <= 0)
         {
             disolveValue += .03f;
             disolveValue = Mathf.Min(disolveValue, 1f);
@@ -48,7 +58,7 @@ public class ForceFieldScript : MonoBehaviour {
         }
 
         timeSinceHit += Time.deltaTime;
-        if (timeSinceHit > 3 && Health != MaxHealth)
+        if (timeSinceHit > 3 && myOwner.CurrentEnergy != myOwner.MaxEnergy)
         {
             HealShield();
         }
@@ -57,14 +67,14 @@ public class ForceFieldScript : MonoBehaviour {
     public void RegisterHit(int _damage)
     {
         // Take a hit
-        Health -= _damage;
+        myOwner.CurrentEnergy -= _damage;
 
         // Turn on every barrier color
         Barrier.enabled = true;
 
         timeSinceHit = 0;
 
-        if(Health <= 0)
+        if(myOwner.CurrentEnergy <= 0)
         {
             disolveValue = 0;
         }
@@ -72,21 +82,21 @@ public class ForceFieldScript : MonoBehaviour {
 
     void HealShield()
     {
-        if (MaxHealth <= 0)
+        if (myOwner.MaxEnergy <= 0)
             return;
 
         // RegenTime should be how much shield is regenerated per second
         regenCheck = Time.deltaTime;
         float addedHealth = regenCheck * RegenTime;
-        Health += addedHealth;
+		myOwner.CurrentEnergy += (int)Mathf.Ceil(addedHealth);
 
         // Turn on every barrier color
         Barrier.enabled = true;
 
         // And then if we're at full health turn it off
-        if(Health >= MaxHealth)
+        if(myOwner.CurrentEnergy >= myOwner.MaxEnergy)
         {
-            Health = MaxHealth;
+            myOwner.CurrentEnergy = myOwner.MaxEnergy;
             StopAllCoroutines();
             StartCoroutine(startRecentHit());
         }

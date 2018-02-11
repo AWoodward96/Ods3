@@ -219,7 +219,7 @@ public class StarMiniboss1 : AIStandardUnit{
                     transform.position = jumpPointMarkers[jumpPointIndex].position;
 
                 // If we've run out, start a quick timer
-                if (myWeapon.weaponData.currentAmmo <= 0)
+				if (MyUnit.CurrentEnergy <= 0)
                 {
                     waitTimer += Time.deltaTime;
                 }
@@ -363,7 +363,7 @@ public class StarMiniboss1 : AIStandardUnit{
 
             overrideLookingVector = Vector3.RotateTowards(overrideLookingVector, GlobalConstants.ZeroYComponent(playerRef.transform.position - transform.position), .1f, .1f);
             myWeapon.FireWeapon(overrideLookingVector);
-            if (myWeapon.weaponData.currentAmmo <= 0)
+			if (MyUnit.CurrentEnergy <= 0)
             {
                 base.AIState = EnemyAIState.Vulnerable;
 
@@ -397,7 +397,11 @@ public class StarMiniboss1 : AIStandardUnit{
 
             line.enabled = true;
 
-            if (waitTimer > myWeapon.weaponData.reloadSpeed + .5f)
+			// The point of this is to see if Star's reloaded yet.
+			// I don't think RegenTime is the best variable to represent that!
+			// I need to fix this later.
+			//		- Ed
+			if (MyUnit.CurrentEnergy == MyUnit.MaxEnergy)
             {
                 aiCounter++;
                 waitTimer = 0;
@@ -437,8 +441,8 @@ public class StarMiniboss1 : AIStandardUnit{
 
         for (int i = 0; i < (14 + 1); i++)
         {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * (myWeapon.weaponData.reloadSpeed - waitTimer + .5f);
-            z = Mathf.Cos(Mathf.Deg2Rad * angle) * (myWeapon.weaponData.reloadSpeed - waitTimer + .5f);
+			x = Mathf.Sin(Mathf.Deg2Rad * angle) * (myForceField.RegenTime - waitTimer + .5f);
+			z = Mathf.Cos(Mathf.Deg2Rad * angle) * (myForceField.RegenTime - waitTimer + .5f);
 
             line.SetPosition(i, new Vector3(x, y, z));
 
@@ -457,7 +461,7 @@ public class StarMiniboss1 : AIStandardUnit{
         if (myForceField != null) // As long as the forcefield exists
         {
             // Break it!
-            myForceField.RegisterHit((int)myForceField.Health);
+			myForceField.RegisterHit(MyUnit.CurrentEnergy);
             disarmed = true;
             waitTimer = 0;
 
@@ -475,7 +479,7 @@ public class StarMiniboss1 : AIStandardUnit{
         myVisualizer.ShowMenu();
         if (myForceField != null)
         {
-            if (myForceField.Health > 0)
+			if (MyUnit.CurrentEnergy > 0)
                 myForceField.RegisterHit(_damage);
             else
             { 

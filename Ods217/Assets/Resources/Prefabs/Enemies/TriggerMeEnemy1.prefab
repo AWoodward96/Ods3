@@ -1361,6 +1361,8 @@ MonoBehaviour:
     Name: 
     MaxHealth: 30
     CurrentHealth: 30
+    MaxEnergy: 0
+    CurrentEnergy: 0
   animationHandler:
     LookingVector: {x: 0, y: 0, z: 0}
     faceFront: 0
@@ -1395,7 +1397,7 @@ MonoBehaviour:
   WeaponSlot2: {fileID: 0}
   Zone: {fileID: 0}
   Clips: []
-  isTriggered: 1
+  isTriggered: 0
   MoveToAr:
   - {x: -3, y: 2.48}
   - {x: -0.05, y: 5.47}
@@ -1902,17 +1904,15 @@ MonoBehaviour:
     PickedUp: 0
   weaponData:
     name: UselessBlaster
-    currentAmmo: 2
-    maxAmmo: 2
-    reloadSpeed: 1.5
+    shotCost: 0
     fireCD: 1
     BulletObject: {fileID: 1489644613865720, guid: 373bf6682013d974f85c51bf8328f8de,
       type: 2}
     bulletDamage: 15
     reloadClip: {fileID: 8300000, guid: 2923a5877b56b334b8c5886c017b3eab, type: 3}
-  Reloading: 0
   ShootClip: {fileID: 8300000, guid: 56750ae9c6d85234d8bfe3361b3f479f, type: 3}
   myBullets: []
+  myShield: {fileID: 0}
 --- !u!114 &114869343514459432
 MonoBehaviour:
   m_ObjectHideFlags: 1

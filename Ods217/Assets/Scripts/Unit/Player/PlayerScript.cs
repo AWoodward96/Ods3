@@ -363,8 +363,10 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         // Handle reload
         if (Input.GetKeyDown(KeyCode.R) && Armed)
         {
-            WeaponBase weaponToReload = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
-            weaponToReload.ForceReload();
+			// Is reload code even necessary if we're using an energy system?
+
+            /*WeaponBase weaponToReload = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
+            weaponToReload.ForceReload();*/
         }
 
         if (Input.GetMouseButtonDown(1)) // When we left click throw our weapon
@@ -459,7 +461,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
         if (myForceField)
         {
-            if (myForceField.Health > 0)
+			if (myUnit.CurrentEnergy > 0)
                 myForceField.RegisterHit(_damage);
             else
             {
@@ -550,9 +552,9 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
         }
 
-        myForceField.Health = ForcefieldHealth;
-        myForceField.MaxHealth = (int)ForcefieldHealth;
-        myForceField.RegenTime = RegenSpeed;
+		//myUnit.CurrentEnergy = (int)ForcefieldHealth;
+		//myUnit.MaxEnergy = (int)ForcefieldHealth;
+        //myForceField.RegenTime = RegenSpeed;
 
         myVisualizer.ShowMenu();
 
@@ -574,6 +576,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         combatCD = 0;
         InCombat = true;
         _newWeapon.myOwner = this;
+		_newWeapon.myShield = GetComponentInChildren<ForceFieldScript>();
 
         if (PrimaryWeapon == null)
         {
