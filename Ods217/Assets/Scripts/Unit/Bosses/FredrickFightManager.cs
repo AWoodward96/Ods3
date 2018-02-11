@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class FredrickFightManager : MonoBehaviour {
+public class FredrickFightManager : MonoBehaviour, IPermanent {
 
     public GameObject ExplosivePrefab;
     public GameObject NormalBoxPrefab;
@@ -16,13 +17,41 @@ public class FredrickFightManager : MonoBehaviour {
     public float Speed;
 
     public Vector3 setMove;
+    public bool Enabled;
 
     float dTime = 0;
 
     BoxCollider myCol;
+    ZoneScript z;
 
-	// Use this for initialization
-	void Start () {
+    public ZoneScript myZone
+    {
+        get
+        {
+            return z;
+        }
+
+        set
+        {
+            z = value;
+        }
+    }
+
+    public bool Triggered
+    {
+        get
+        {
+            return Enabled;
+        }
+
+        set
+        {
+            Enabled = value;
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
         myCol = GetComponent<BoxCollider>();
         myCol.isTrigger = true;
 
@@ -43,10 +72,13 @@ public class FredrickFightManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!Enabled)
+            return;
+
         dTime += Time.deltaTime;
         if(dTime > Speed)
         {
-            float rnd = Random.Range(0f, 1f);
+            float rnd = UnityEngine.Random.Range(0f, 1f);
 
             GameObject obj = getObjectThatCanBeUsed((rnd < ExplosiveRatio));
             obj.transform.position = StartPos;
@@ -101,5 +133,10 @@ public class FredrickFightManager : MonoBehaviour {
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawCube(StartPos, new Vector3(1, 1, 1));
+    }
+
+    public void Activate()
+    {
+        throw new NotImplementedException();
     }
 }

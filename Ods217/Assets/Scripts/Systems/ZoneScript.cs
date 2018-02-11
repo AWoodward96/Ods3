@@ -199,9 +199,9 @@ public class ZoneScript : MonoBehaviour {
                 {
                     // We've entered!
                     CamScript c = Camera.main.GetComponent<CamScript>();
+                    Camera.main.orthographicSize = CameraSize;
                     c.ExtentsBR = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2 + 2);
                     c.ExtentsTL = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2 + 4);
-                    Camera.main.orthographicSize = CameraSize;
                     ZoneScript.ActiveZone = this;
                     player.GetComponent<PlayerScript>().EnteredNewZone(); 
                    
