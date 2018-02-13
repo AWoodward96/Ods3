@@ -105,6 +105,7 @@ public class StandardElevator : MonoBehaviour {
             }
 
             myPlayer.AcceptInput = false;
+            myPlayer.GetComponent<CController>().HaltMomentum();
             FloorIndex = _to;
 
             StopAllCoroutines();

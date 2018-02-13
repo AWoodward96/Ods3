@@ -81,6 +81,7 @@ public class StarMiniboss1 : AIStandardUnit{
             UpdateAnimationController();
 
         myAnimator.SetBool("AIState", aistate);
+        ind_Usable.Disabled = !(AIState == EnemyAIState.Vulnerable);
     }
 
     public override bool Triggered

@@ -559,16 +559,16 @@ public class CutsceneManager : MonoBehaviour {
                 // SYNTAX: SetTrack(index, newvolume)
                 savedName = parameters[0].Trim().Replace(")", "");
                 int.TryParse(savedName, out iGeneric);
-                savedName = parameters[1].Trim().Replace(")", ""); 
+                savedName = parameters[1].Trim().Replace(")", "");
                 float.TryParse(savedName, out fGeneric);
 
-                if(NewMusicManager.instance != null)
+                if (NewMusicManager.instance != null)
                 {
                     NewMusicManager.instance.SetTrack(iGeneric, fGeneric);
                     actionComplete = true;
-                } 
+                }
                 break;
-            
+
 
             default:
                 Debug.Log("Couldn't process: " + commandID);
@@ -601,6 +601,7 @@ public class CutsceneManager : MonoBehaviour {
         // Reset important variables
         loadedCharacters = new Dictionary<string, CutsceneCharacters>();
         loadedPermanents = new Dictionary<string, IPermanent>();
+        loadedPawns = new Dictionary<string, IPawn>();
         currentCutsceneCharacter = null;
         sideTextArea.text = "";
         TextArea.text = "";
@@ -614,6 +615,9 @@ public class CutsceneManager : MonoBehaviour {
             playerS = player.GetComponent<PlayerScript>();
             if (playerS != null)
             {
+                if (_isHalted)
+                    playerS.GetComponent<CController>().HaltMomentum();
+
                 playerS.AcceptInput = !_isHalted;
                 playerHalted = _isHalted;
             }

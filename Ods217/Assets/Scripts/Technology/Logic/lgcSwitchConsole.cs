@@ -10,12 +10,13 @@ public class lgcSwitchConsole : lgcSwitch {
     public Sprite Open;
     public Sprite Closed;
 
-    bool triggeredPrev;
+    AudioSource src;
 
     public override void Start()
     {
         base.Start();
         ind.Preset = UsableIndicator.usableIndcPreset.Interact;
+        src = GetComponent<AudioSource>();
     } 
 
     // Update is called once per frame
@@ -25,6 +26,13 @@ public class lgcSwitchConsole : lgcSwitch {
         if (ConsoleRenderer != null)
         {
             ConsoleRenderer.sprite = (Triggered) ? Open : Closed;
+
         }  
+    }
+    public override void Delegate()
+    {
+        base.Delegate();
+        if (src != null)
+            src.Play();
     }
 }

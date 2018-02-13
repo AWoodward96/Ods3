@@ -52,10 +52,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Slas
-  defaultPortrait: {fileID: 21300000, guid: 8d2c7f8d7d7abbf4195272da9fb04d84, type: 3}
+  defaultPortrait: {fileID: 21300000, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   characterPortraits:
   - PortId: Idle
-    PortImg: {fileID: 21300000, guid: 8d2c7f8d7d7abbf4195272da9fb04d84, type: 3}
+    PortImg: {fileID: 21300000, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: Concerned
-    PortImg: {fileID: 21300014, guid: 8d2c7f8d7d7abbf4195272da9fb04d84, type: 3}
+    PortImg: {fileID: 21300012, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: HoldUp
+    PortImg: {fileID: 21300020, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: HoldUpT
+    PortImg: {fileID: 21300022, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: IdleT
+    PortImg: {fileID: 21300008, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: LookHere
+    PortImg: {fileID: 21300026, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: LookHereT
+    PortImg: {fileID: 21300028, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: OMG
+    PortImg: {fileID: 21300014, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: OMGc
+    PortImg: {fileID: 21300016, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: OMGs
+    PortImg: {fileID: 21300018, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: SeriouslyT
+    PortImg: {fileID: 21300024, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Seriously
+    PortImg: {fileID: 21300024, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Smiling
+    PortImg: {fileID: 21300002, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Smile
+    PortImg: {fileID: 21300002, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: SmileT
+    PortImg: {fileID: 21300010, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: SmilingT
+    PortImg: {fileID: 21300010, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Smirk
+    PortImg: {fileID: 21300004, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: SmirkT
+    PortImg: {fileID: 21300006, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   talkingClip: {fileID: 8300000, guid: 5d619a0aab7cc11429e7b13f3520e1b9, type: 3}

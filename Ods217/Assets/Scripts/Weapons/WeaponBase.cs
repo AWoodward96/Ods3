@@ -164,6 +164,11 @@ public class WeaponBase : MonoBehaviour {
 
     }
 
+    public void StaggerShootTime()
+    {
+        currentshootCD = UnityEngine.Random.Range(0, weaponData.reloadSpeed);
+    }
+
     public void ForceReload()
     {
         weaponData.currentAmmo = 0;

@@ -10,6 +10,7 @@ public class GeneratorBoss : GeneratorBehavior
 	SpriteRenderer ffSprite;
 
 	List<mobDroneT1> minions;
+    List<bool> isAlive;
 
 	GameObject myBlueprint;
 
@@ -18,13 +19,18 @@ public class GeneratorBoss : GeneratorBehavior
 
 	float currentTimer;			// The amount of time since the shield dropped.
 
-	bool engaged;				// Once the player first shoots the generator, the fight will begin.
+	public bool engaged;				// Once the player first shoots the generator, the fight will begin.
 
 	UsableIndicator myInteract;
 
+    public lgcLogicDoor DoorToLock;
+    public Transform[] SpawnPositions;
 
-	// Use this for initialization
-	void Start ()
+    const float orthSizeStart = 20;
+    const float orthSizeEnd = 15;
+
+    // Use this for initialization
+    void Start ()
 	{
 		engaged = false;
 
@@ -33,6 +39,7 @@ public class GeneratorBoss : GeneratorBehavior
 		ffSprite = myForceField.GetComponent<SpriteRenderer>();
 
 		minions = new List<mobDroneT1>(6);
+        isAlive = new List<bool>();
 
 		myZone = transform.parent.GetComponentInChildren<ZoneScript>();
 
@@ -44,7 +51,7 @@ public class GeneratorBoss : GeneratorBehavior
 		Player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
-	// Update is called once per frame
+// Update is called once per frame
 	void Update ()
 	{
 		if(myUnit.CurrentHealth == 0 || ZoneScript.ActiveZone != myZone || !engaged)
@@ -59,10 +66,15 @@ public class GeneratorBoss : GeneratorBehavior
 		{
 			if(!minions[i].gameObject.activeInHierarchy)
 			{
-				myForceField.RegisterHit(minions[i].MyUnit.MaxHealth);
+				if(isAlive[i])
+				{
+					myForceField.RegisterHit(minions[i].MyUnit.MaxHealth);
 
-				minions.RemoveAt(i);
-				i--;
+					/*minions.RemoveAt(i);
+					i--;*/
+
+					isAlive[i] = false;
+				}
 				continue;
 			}
 
@@ -79,7 +91,7 @@ public class GeneratorBoss : GeneratorBehavior
 				myForceField.RegenTime = regenRate;
 			}
 
-			if(myForceField.Health == myForceField.MaxHealth)
+			if(myForceField.MaxHealth == myForceField.Health)
 			{
 				spawnNewWave(4);
 			}
@@ -96,16 +108,18 @@ public class GeneratorBoss : GeneratorBehavior
 		if(!engaged)
 		{
 			// If the player is shooting wildly for WHATEVER reason, we don't want them to trigger the battle unintentionally
-			if((Player.transform.position - transform.position).sqrMagnitude > 400)
-			{
-				return;
+			if((Player.transform.position - transform.position).magnitude > 400)
+            { 
+                return;
 			}
 
-			engaged = true;
+            Camera.main.GetComponent<CamScript>().LerpSize(orthSizeStart, 1);
+            engaged = true;
+            DoorToLock.Locked = true;
 			myInteract.gameObject.SetActive(false);
-		}
+        }
 
-		myVisualizer.ShowMenu();
+        myVisualizer.ShowMenu();
 		if (myForceField != null)
 		{
 			if(myForceField.Health <= 0)
@@ -122,7 +136,9 @@ public class GeneratorBoss : GeneratorBehavior
 					obj = Instantiate(obj, transform.position, obj.transform.rotation);
 					obj.transform.localScale *= 4;
 
-					GetComponent<AudioSource>().Play();
+                    Camera.main.GetComponent<CamScript>().LerpSize(orthSizeEnd, 1);
+                    DoorToLock.Locked = false;
+                    GetComponent<AudioSource>().Play();
 				}
 			}
 		} 
@@ -135,17 +151,46 @@ public class GeneratorBoss : GeneratorBehavior
 
 		for(int i = 0; i < numEnemies; i++)
 		{
-			minions.Add((Instantiate(myBlueprint) as GameObject).GetComponent<mobDroneT1>());
+			if(minions.Count <= i)
+			{
+				minions.Add((Instantiate(myBlueprint) as GameObject).GetComponent<mobDroneT1>());
+				isAlive.Add(true);
 
-			Vector3 myRandom = Random.onUnitSphere;
-			myRandom.y = 0;
-			myRandom.Normalize();
-			minions[i].gameObject.transform.position = transform.position + (myRandom * 5);
-			minions[i].MyUnit.CurrentHealth = (int)(myForceField.MaxHealth / numEnemies);
+				minions[i].transform.parent = transform;
+			}
+			else
+			{
+				minions[i].gameObject.SetActive(true);
+				isAlive[i] = true;
+
+				minions[i].myWeapon.transform.SetParent(minions[i].transform);
+				minions[i].myWeapon.RotateObject.SetActive(true);
+			}
+				
+			minions[i].gameObject.transform.position = transform.position;
+
+			switch(i % 4)
+			{
+			case 0:
+                minions[i].gameObject.transform.position = SpawnPositions[0].position + Vector3.down;
+				break; 
+			case 1:
+				minions[i].gameObject.transform.position = SpawnPositions[1].position + Vector3.down;
+                    minions[i].Weapon.ResetShootCD();
+                    break; 
+			case 2:
+				minions[i].gameObject.transform.position = SpawnPositions[2].position + Vector3.down;
+                break; 
+			case 3:
+				minions[i].gameObject.transform.position = SpawnPositions[3].position + Vector3.down;
+                    minions[i].Weapon.ResetShootCD();
+                    break;
+			}
+
+            minions[i].myWeapon.StaggerShootTime();
+            minions[i].MyUnit.CurrentHealth = 10;
 			minions[i].MyUnit.MaxHealth = minions[i].MyUnit.CurrentHealth;
 			minions[i].myZone = myZone;
-
-			minions[i].Activated = true;
 		}
 	}
 }

@@ -1188,7 +1188,7 @@ MonoBehaviour:
   UnitData:
     Name: Drone T1
     MaxHealth: 10
-    CurrentHealth: 25
+    CurrentHealth: 10
   Weapon: {fileID: 114263986088573854}
   Activated: 0
 --- !u!114 &114763435259364944

@@ -15,8 +15,8 @@ public class ReloadSceneAfter : MonoBehaviour
     IEnumerator reload()
     {
         yield return new WaitForSeconds(4);
-        // GameManager.instance.LoadLastSaveFile();
+        GameManager.instance.LoadLastSaveFile();
         Debug.Log("loading scene");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

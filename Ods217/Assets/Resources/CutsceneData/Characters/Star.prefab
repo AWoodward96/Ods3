@@ -74,4 +74,14 @@ MonoBehaviour:
     PortImg: {fileID: 21300020, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
   - PortId: Retreat
     PortImg: {fileID: 21300018, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
+  - PortId: RightH
+    PortImg: {fileID: 21300024, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
+  - PortId: ShiftyLeftH
+    PortImg: {fileID: 21300028, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
+  - PortId: LookDownH
+    PortImg: {fileID: 21300026, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
+  - PortId: HmmH
+    PortImg: {fileID: 21300022, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
+  - PortId: DownH
+    PortImg: {fileID: 21300026, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
   talkingClip: {fileID: 8300000, guid: 85bb2a52dc7066946b4fb0a1fa647adc, type: 3}

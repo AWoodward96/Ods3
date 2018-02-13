@@ -41,8 +41,6 @@ public class mobDroneT1 : MonoBehaviour, IArmed {
     
     public virtual void UpdateDrone()
     {
-        if (myZone != ZoneScript.ActiveZone)
-            return;
 
         // The goal of the mobDroneT1 is to circle around the player always trying to dodge it's aim
         // Keep a distance from the player but try to not stay within its sights
@@ -58,6 +56,10 @@ public class mobDroneT1 : MonoBehaviour, IArmed {
 
         Vector3 moveVector = (radiusVector * RADVECWEIGHT) + (rotationVector * ROTVECWEIGHT) + (noiseVector * NOISEWEIGHT);
         myRGB.AddForce(moveVector);
+
+        if (Mathf.Abs(transform.position.y - targetPos.y) > 1)
+            myRGB.AddForce(0, targetPos.y - transform.position.y, 0);
+
         myRGB.velocity *= .975f;
 
         // Try to shoot at the player
@@ -174,9 +176,6 @@ public class mobDroneT1 : MonoBehaviour, IArmed {
 
     public void OnHit(int _damage)
     {
-        if (myZone != ZoneScript.ActiveZone) // Don't let them take damage if you're not in their scene
-            return;
-         
 
         UnitData.CurrentHealth -= _damage;
         myVisualizer.ShowMenu();
