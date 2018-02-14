@@ -7,8 +7,7 @@ using UnityEngine;
 public class FredrickSensor : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Yeaaah");
+    { 
         if(other.tag == "ExplosiveBox")
         {
             other.GetComponent<ExplosiveBox>().Triggered = true;

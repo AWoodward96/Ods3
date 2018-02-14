@@ -1397,7 +1397,7 @@ MonoBehaviour:
   WeaponSlot2: {fileID: 0}
   Zone: {fileID: 0}
   Clips: []
-  isTriggered: 0
+  isTriggered: 1
   MoveToAr:
   - {x: -3, y: 2.48}
   - {x: -0.05, y: 5.47}
@@ -1913,6 +1913,7 @@ MonoBehaviour:
   ShootClip: {fileID: 8300000, guid: 56750ae9c6d85234d8bfe3361b3f479f, type: 3}
   myBullets: []
   myShield: {fileID: 0}
+  myEnergy: {fileID: 0}
 --- !u!114 &114869343514459432
 MonoBehaviour:
   m_ObjectHideFlags: 1

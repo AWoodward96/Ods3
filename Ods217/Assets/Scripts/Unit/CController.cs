@@ -50,7 +50,7 @@ public class CController : MonoBehaviour
     void FixedUpdate()
     {
         // Update the projected position
-        ProjectedPosition = Velocity * Time.deltaTime + transform.position;
+        ProjectedPosition = (Velocity * Time.deltaTime) + transform.position;
         CalculateMove(); // This actually makes you move
 
         // Make sure that you're on the ground and not floating in mid air
@@ -94,6 +94,12 @@ public class CController : MonoBehaviour
         Velocity *= (Airborne) ? GlobalConstants.AirFriction : GlobalConstants.Friction;
 
         Acceleration = Vector3.zero;
+    }
+
+    public void HaltMomentum()
+    {
+        Velocity = new Vector3(0, Velocity.y, 0);
+        Acceleration = new Vector3(0, Acceleration.y, 0);
     }
 }
 

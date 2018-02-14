@@ -10,15 +10,15 @@ public class ForceFieldScript : MonoBehaviour {
     //public float Health;
     //public int MaxHealth;
 
-    public float RegenTime;
     private bool recentHit;
     SpriteRenderer Barrier; // The sprite that is surrounding the forcefield 
 
-    float timeSinceHit;
     float regenCheck;
 
     [HideInInspector]
     public HealthBar myHealthBar;
+
+	EnergyManager myEnergy;
 
     Material myMat;
     float disolveValue;
@@ -26,6 +26,7 @@ public class ForceFieldScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myOwner = transform.parent.GetComponent<IDamageable>().MyUnit;
+		myEnergy = transform.parent.GetComponent<EnergyManager>();
 
         Barrier = GetComponent<SpriteRenderer>();
         myMat = GetComponent<Renderer>().material;
@@ -50,15 +51,15 @@ public class ForceFieldScript : MonoBehaviour {
 
         if (myOwner.CurrentEnergy <= 0)
         {
-            disolveValue += .03f;
+            //disolveValue += .03f;
+			disolveValue += myEnergy.RegenTime / 1000.0f;
             disolveValue = Mathf.Min(disolveValue, 1f);
             if (disolveValue < 0)
                 disolveValue = 0;
             myMat.SetFloat("_Level", disolveValue);
         }
-
-        timeSinceHit += Time.deltaTime;
-        if (timeSinceHit > 3 && myOwner.CurrentEnergy != myOwner.MaxEnergy)
+			
+		if (myEnergy.timeSinceHit > myEnergy.ChargeDelay && myOwner.CurrentEnergy != myOwner.MaxEnergy)
         {
             HealShield();
         }
@@ -67,12 +68,10 @@ public class ForceFieldScript : MonoBehaviour {
     public void RegisterHit(int _damage)
     {
         // Take a hit
-        myOwner.CurrentEnergy -= _damage;
+		myEnergy.ExpendEnergy(_damage);
 
         // Turn on every barrier color
         Barrier.enabled = true;
-
-        timeSinceHit = 0;
 
         if(myOwner.CurrentEnergy <= 0)
         {
@@ -85,10 +84,7 @@ public class ForceFieldScript : MonoBehaviour {
         if (myOwner.MaxEnergy <= 0)
             return;
 
-        // RegenTime should be how much shield is regenerated per second
-        regenCheck = Time.deltaTime;
-        float addedHealth = regenCheck * RegenTime;
-		myOwner.CurrentEnergy += (int)Mathf.Ceil(addedHealth);
+		myEnergy.ChargeEnergy();
 
         // Turn on every barrier color
         Barrier.enabled = true;
@@ -96,20 +92,15 @@ public class ForceFieldScript : MonoBehaviour {
         // And then if we're at full health turn it off
         if(myOwner.CurrentEnergy >= myOwner.MaxEnergy)
         {
-            myOwner.CurrentEnergy = myOwner.MaxEnergy;
             StopAllCoroutines();
             StartCoroutine(startRecentHit());
         }
 
-        disolveValue -= .03f;
+        //disolveValue -= .03f;
+		disolveValue -= myEnergy.RegenTime / 1000.0f;
         if (disolveValue < 0)
             disolveValue = 0;
         myMat.SetFloat("_Level", disolveValue);
-
-        if (myHealthBar != null)
-        {
-            myHealthBar.ShowMenu();
-        }
     }
 
     // This coroutine lets us have a bright barrier be shown for 1 second before it starts to fade

@@ -9,6 +9,8 @@ public class GeneratorBoss : GeneratorBehavior
 	ForceFieldScript myForceField;
 	SpriteRenderer ffSprite;
 
+	EnergyManager myEnergy;
+
 	List<mobDroneT1> minions;
 	List<bool> isAlive;
 
@@ -30,8 +32,9 @@ public class GeneratorBoss : GeneratorBehavior
 		engaged = false;
 
 		myForceField = GetComponentInChildren<ForceFieldScript>();
-
 		ffSprite = myForceField.GetComponent<SpriteRenderer>();
+
+		myEnergy = GetComponent<EnergyManager>();
 
 		minions = new List<mobDroneT1>();
 		isAlive = new List<bool>();
@@ -83,7 +86,7 @@ public class GeneratorBoss : GeneratorBehavior
 			currentTimer += Time.deltaTime;
 			if(currentTimer >= recoverTime)
 			{
-				myForceField.RegenTime = regenRate;
+				myEnergy.RegenTime = regenRate;
 			}
 
 			if(myUnit.CurrentEnergy == myUnit.MaxEnergy)
@@ -103,7 +106,9 @@ public class GeneratorBoss : GeneratorBehavior
 		if(!engaged)
 		{
 			// If the player is shooting wildly for WHATEVER reason, we don't want them to trigger the battle unintentionally
-			if((Player.transform.position - transform.position).sqrMagnitude > 400)
+			Vector3 myVector = Player.transform.position - transform.position;
+			myVector.y = 0;
+			if(myVector.sqrMagnitude > 400)
 			{
 				return;
 			}
@@ -137,7 +142,7 @@ public class GeneratorBoss : GeneratorBehavior
 
 	void spawnNewWave(int numEnemies)
 	{
-		myForceField.RegenTime = 0.0f;
+		myEnergy.RegenTime = 0.0f;
 		currentTimer = 0.0f;
 
 		for(int i = 0; i < numEnemies; i++)
@@ -158,24 +163,24 @@ public class GeneratorBoss : GeneratorBehavior
 				minions[i].myWeapon.RotateObject.SetActive(true);
 			}
 				
-			minions[i].gameObject.transform.position = transform.position;
+			minions[i].gameObject.transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
 
 			switch(i % 4)
 			{
 			case 0:
-				minions[i].gameObject.transform.localPosition += new Vector3(-10.0f, 0.0f, 0.0f);
+				minions[i].gameObject.transform.localPosition += new Vector3(-32.0f, 0.0f, 19.0f);
 				break;
 
 			case 1:
-				minions[i].gameObject.transform.localPosition += new Vector3(10.0f, 0.0f, 0.0f);
+				minions[i].gameObject.transform.localPosition += new Vector3(33.0f, 0.0f, 19.0f);
 				break;
 
 			case 2:
-				minions[i].gameObject.transform.localPosition += new Vector3(10.0f, 0.0f, -7.5f);
+				minions[i].gameObject.transform.localPosition += new Vector3(33.0f, 0.0f, -7.0f);
 				break;
 
 			case 3:
-				minions[i].gameObject.transform.localPosition += new Vector3(-10.0f, 0.0f, -7.5f);
+				minions[i].gameObject.transform.localPosition += new Vector3(-32.0f, 0.0f, -7.0f);
 				break;
 			}
 

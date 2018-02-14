@@ -6,17 +6,14 @@ using UnityEngine;
 /// An Effects Script
 /// When it's interacted with by pressing [E] it will save the game.
 /// </summary>
-
-[RequireComponent(typeof(UsableIndicator))]
+ 
 public class lgcInteractToSave : MonoBehaviour
-{
-
-	[Range(.1f, 10)]
-	public float Range;
-	public bool Interactable;
+{ 
+	public bool HealOnSave;
 
 	UsableIndicator ind_Interactable;
 	GameObject Player;
+    AudioSource src;
 
 	// Use this for initialization
 	void Start ()
@@ -24,6 +21,8 @@ public class lgcInteractToSave : MonoBehaviour
 		ind_Interactable = GetComponentInChildren<UsableIndicator>();
         ind_Interactable.Preset = UsableIndicator.usableIndcPreset.Interact;
         ind_Interactable.Output = InteractDelegate;
+
+        src = GetComponent<AudioSource>();
 	}
  
 
@@ -41,13 +40,16 @@ public class lgcInteractToSave : MonoBehaviour
 			"Say(Console,Would you like to save?\n" +
 			"Decision(Save,Yes,No)"
 		);
-    }
 
-	private void OnDrawGizmos()
-	{
-		Color c = Color.blue;
-		c.a = .1f;
-		Gizmos.color = c;
-		Gizmos.DrawSphere(transform.position, Range);
-	}
+        if(HealOnSave)
+        {
+            PlayerScript p =GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+            if (p)
+            {
+                p.myVisualizer.ShowMenu();
+                p.myUnit.CurrentHealth = p.myUnit.MaxHealth;
+            }
+        }
+    }
+ 
 }

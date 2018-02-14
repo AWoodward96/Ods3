@@ -577,6 +577,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         InCombat = true;
         _newWeapon.myOwner = this;
 		_newWeapon.myShield = GetComponentInChildren<ForceFieldScript>();
+		_newWeapon.myEnergy = GetComponent<EnergyManager>();
 
         if (PrimaryWeapon == null)
         {

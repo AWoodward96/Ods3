@@ -31,6 +31,10 @@ public class GameManager : MonoBehaviour {
 
     public SceneData currentSceneData;
 
+    [Header("Sounds")]
+    public AudioClip SaveSound;
+    AudioSource src;
+
     // Use this for initialization
 	void Awake () {
         // There can only be one
@@ -63,6 +67,7 @@ public class GameManager : MonoBehaviour {
 
         Cursor.SetCursor(Resources.Load("Sprites/UI/CursorTexture") as Texture2D, new Vector2(8, 8), CursorMode.Auto);
 
+        src = GetComponent<AudioSource>(); 
 	}
 	
 	// Update is called once per frame
@@ -92,7 +97,13 @@ public class GameManager : MonoBehaviour {
         if (File.Exists(actualPath))
             File.Delete(actualPath);
 
-        using(StreamWriter writer = new StreamWriter(actualPath))
+        // Make sure you've got the scene data
+        if (currentSceneData == null)
+        {
+            currentSceneData = FindObjectOfType<SceneData>();
+        }
+
+        using (StreamWriter writer = new StreamWriter(actualPath))
         {
             // First line should be the name of the user
             writer.WriteLine(GameData.Username);
@@ -157,6 +168,11 @@ public class GameManager : MonoBehaviour {
 
             writer.WriteLine(System.DateTime.Now);
 
+            if(src != null)
+            {
+                src.clip = SaveSound;
+                src.Play();
+            }
 			Debug.Log("Game Saved.");
 			return true;
         }
@@ -374,6 +390,12 @@ public class GameManager : MonoBehaviour {
 		currentSceneData.LoadList();
 
 		SceneManager.sceneLoaded -= LevelLoaded;
+
+        // Make sure you've got the scene data
+        if(currentSceneData == null)
+        {
+            currentSceneData = FindObjectOfType<SceneData>();
+        }
     }
 
     public void LoadLastSaveFile()
@@ -385,8 +407,8 @@ public class GameManager : MonoBehaviour {
 	// But I also don't know if porting the save function over to the InteractToSave script would be a good idea, so...
 	public bool WriteToCurrentSave()
 	{
-		// NOTE: Replace "Beta" with whatever the current save file's name is later!
-		return WriteSaveFile("Beta");
+		// NOTE: Replace "BetaTest2.ods" with whatever the current save file's name is later!
+		return WriteSaveFile("BetaTest2.ods");
 	}
 }
 

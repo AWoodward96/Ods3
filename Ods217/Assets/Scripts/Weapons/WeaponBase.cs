@@ -20,6 +20,7 @@ public class WeaponBase : MonoBehaviour {
     public List<BulletBase> myBullets;
     public IArmed myOwner;
 	public ForceFieldScript myShield;
+	public EnergyManager myEnergy;
 
 
     float currentshootCD;
@@ -44,6 +45,7 @@ public class WeaponBase : MonoBehaviour {
 			// Set to ceiling to prevent running out of bullet objects if someone shoots constantly from full energy
 			maxBullets = (int)Math.Ceiling(myOwner.MyUnit.MaxEnergy / (float)weaponData.shotCost);
 			myShield = myOwner.gameObject.GetComponentInChildren<ForceFieldScript>();
+			myEnergy = myOwner.gameObject.GetComponent<EnergyManager>();
 		}
 
 		// Index of the bullet to be fired to stop us from firing the same bullet twice in a row
@@ -159,7 +161,7 @@ public class WeaponBase : MonoBehaviour {
 		//myOwner.MyUnit.CurrentEnergy -= weaponData.shotCost;
 		currentBullet = ((currentBullet - 1) + maxBullets) % maxBullets;
 
-		if(myShield != null)
+		/*if(myShield != null)
 		{
 			myShield.RegisterHit(weaponData.shotCost);
 		}
@@ -167,6 +169,8 @@ public class WeaponBase : MonoBehaviour {
 		{
 			myOwner.MyUnit.CurrentEnergy -= weaponData.shotCost;
 		}*/
+
+		myEnergy.ExpendEnergy(weaponData.shotCost);
 
 
         //Play the sound

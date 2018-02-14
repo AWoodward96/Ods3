@@ -49,7 +49,12 @@ public class lgcSwitch : MonoBehaviour, IPermanent {
     public virtual void Start()
     {
         ind = GetComponentInChildren<UsableIndicator>();
-        ind.Output = () => { State = !State; };
+        ind.Output = Delegate;
+    }
+
+    public virtual void Delegate()
+    {
+        State = !State;
     }
   
 }

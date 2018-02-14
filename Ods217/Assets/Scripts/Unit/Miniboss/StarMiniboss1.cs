@@ -19,7 +19,8 @@ public class StarMiniboss1 : AIStandardUnit{
     public bool hopping;
     Rigidbody myRGB;
     ForceFieldScript myForceField;
-     
+    
+	EnergyManager myEnergy;
    
     bool aistate = false; // false = rafters; true = floor;
     bool exitState;
@@ -45,6 +46,9 @@ public class StarMiniboss1 : AIStandardUnit{
         line.useWorldSpace = false;
 
         myForceField = GetComponentInChildren<ForceFieldScript>();
+
+		myEnergy = GetComponent<EnergyManager>();
+
         ind_Usable.Preset = UsableIndicator.usableIndcPreset.Disarm;
         ind_Usable.Output = DisarmDelegate;
 
@@ -219,7 +223,7 @@ public class StarMiniboss1 : AIStandardUnit{
                     transform.position = jumpPointMarkers[jumpPointIndex].position;
 
                 // If we've run out, start a quick timer
-				if (MyUnit.CurrentEnergy <= 0)
+				if (MyUnit.CurrentEnergy < myWeapon.weaponData.shotCost)
                 {
                     waitTimer += Time.deltaTime;
                 }
@@ -363,7 +367,7 @@ public class StarMiniboss1 : AIStandardUnit{
 
             overrideLookingVector = Vector3.RotateTowards(overrideLookingVector, GlobalConstants.ZeroYComponent(playerRef.transform.position - transform.position), .1f, .1f);
             myWeapon.FireWeapon(overrideLookingVector);
-			if (MyUnit.CurrentEnergy <= 0)
+			if (MyUnit.CurrentEnergy < myWeapon.weaponData.shotCost)
             {
                 base.AIState = EnemyAIState.Vulnerable;
 
@@ -397,10 +401,6 @@ public class StarMiniboss1 : AIStandardUnit{
 
             line.enabled = true;
 
-			// The point of this is to see if Star's reloaded yet.
-			// I don't think RegenTime is the best variable to represent that!
-			// I need to fix this later.
-			//		- Ed
 			if (MyUnit.CurrentEnergy == MyUnit.MaxEnergy)
             {
                 aiCounter++;
@@ -441,8 +441,8 @@ public class StarMiniboss1 : AIStandardUnit{
 
         for (int i = 0; i < (14 + 1); i++)
         {
-			x = Mathf.Sin(Mathf.Deg2Rad * angle) * (myForceField.RegenTime - waitTimer + .5f);
-			z = Mathf.Cos(Mathf.Deg2Rad * angle) * (myForceField.RegenTime - waitTimer + .5f);
+			x = Mathf.Sin(Mathf.Deg2Rad * angle) * (myEnergy.RegenTime - waitTimer + .5f);
+			z = Mathf.Cos(Mathf.Deg2Rad * angle) * (myEnergy.RegenTime - waitTimer + .5f);
 
             line.SetPosition(i, new Vector3(x, y, z));
 

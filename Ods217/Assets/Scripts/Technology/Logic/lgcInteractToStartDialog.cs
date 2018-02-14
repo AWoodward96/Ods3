@@ -39,6 +39,8 @@ public class lgcInteractToStartDialog : MonoBehaviour
 
         CutsceneManager.instance.StartCutscene(MyDialog);
         shown = true;
+        if (showOnce)
+            ind_Interactable.Disabled = true;
     }
 
     private void OnDrawGizmos()

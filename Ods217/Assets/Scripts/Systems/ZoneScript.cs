@@ -18,6 +18,7 @@ public class ZoneScript : MonoBehaviour {
     public float YPosition; // Ideally 0, but this only effects inspector view and has no effect on the rest of the game
     public Vector2 ZoneSize; // The width and height of the zone
     public static ZoneScript ActiveZone; // Whichever zone is currently being occupied by the player
+    public static ZoneLock ActiveLock;
     ZoneScript PrevZone;
     public enum AggressionType { NoCombat, SomeCombat, OnlyCombat };
     public AggressionType ZoneAggression;
@@ -34,6 +35,7 @@ public class ZoneScript : MonoBehaviour {
     public List<IPermanent> Perms; // A list of the enemies in this zone
     public List<Light> LightObjects; // A list of lights in this zone
     public List<WeaponBase> Weapons;
+    [Tooltip("Sprite to Particle objects")]
     public List<SpriteToParticles> StP;
  
     Vector3 topLeft;
@@ -199,9 +201,9 @@ public class ZoneScript : MonoBehaviour {
                 {
                     // We've entered!
                     CamScript c = Camera.main.GetComponent<CamScript>();
+                    Camera.main.orthographicSize = CameraSize;
                     c.ExtentsBR = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2 + 2);
                     c.ExtentsTL = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2 + 4);
-                    Camera.main.orthographicSize = CameraSize;
                     ZoneScript.ActiveZone = this;
                     player.GetComponent<PlayerScript>().EnteredNewZone(); 
                    
@@ -229,13 +231,20 @@ public class ZoneScript : MonoBehaviour {
         bool anyActive = false;
         for(int i = 0; i < ZoneLocks.Length; i++)
         {
+            Vector3 worldPosTopLeft = (transform.position + new Vector3(ZoneLocks[i].Location.x, 0, ZoneLocks[i].Location.y)) + new Vector3(-ZoneLocks[i].Size.x / 2, 0, ZoneLocks[i].Size.y / 2);
+            Vector3 worldPosBottomRight = (transform.position + new Vector3(ZoneLocks[i].Location.x, 0, ZoneLocks[i].Location.y)) + new Vector3(ZoneLocks[i].Size.x / 2, 0, -ZoneLocks[i].Size.y / 2);
+            Vector3 playerPos = playerRef.transform.position;
+            if (playerPos.x > worldPosTopLeft.x && playerPos.x < worldPosBottomRight.x && playerPos.z < worldPosTopLeft.z && playerPos.z > worldPosBottomRight.z && !ZoneLocks[i].Enabled && ZoneLocks[i].EnableOnEntry && !ZoneLocks[i].Completed)
+            {
+                ActiveLock = ZoneLocks[i];
+                ZoneLocks[i].Enabled = true;
+            }
+
             if (ZoneLocks[i].Enabled)
             {
                 anyActive = true;
-                Vector3 worldPosTopLeft = (transform.position + new Vector3(ZoneLocks[i].Location.x,0, ZoneLocks[i].Location.y)) + new Vector3(-ZoneLocks[i].Size.x / 2, 0, ZoneLocks[i].Size.y / 2);
-                Vector3 worldPosBottomRight = (transform.position + new Vector3(ZoneLocks[i].Location.x, 0, ZoneLocks[i].Location.y)) + new Vector3(ZoneLocks[i].Size.x / 2, 0, -ZoneLocks[i].Size.y / 2);
 
-                Vector3 newPos = playerRef.transform.position;
+                Vector3 newPos = playerPos;
                 if (newPos.x < worldPosTopLeft.x)
                     newPos.x = worldPosTopLeft.x;
                 if (newPos.z > worldPosTopLeft.z)
@@ -259,6 +268,24 @@ public class ZoneScript : MonoBehaviour {
                     lRender.SetPosition(1, new Vector3(worldPosTopLeft.x, newYPos, worldPosBottomRight.z));
                     lRender.SetPosition(2, new Vector3(worldPosBottomRight.x, newYPos, worldPosBottomRight.z));
                     lRender.SetPosition(3, new Vector3(worldPosBottomRight.x, newYPos, worldPosTopLeft.z));
+                }
+
+
+                // Check each enemy for if alive
+                bool b = true;
+                // loop through each unit in the GameObject. If they're dead, or defeated then, turn the lock off
+                for (int e = 0; e < ZoneLocks[i].Enemies.Length; e++)
+                {
+                    IArmed a = ZoneLocks[i].Enemies[e].GetComponent<IArmed>();
+                    if (a.MyUnit.CurrentHealth > 0)
+                    {
+                        b = false;
+                    }
+                }
+
+                if (b && !ZoneLocks[i].Completed) {
+                    ZoneLocks[i].Completed = true;
+                    ZoneLocks[i].Enabled = false; 
                 }
 
                 break; // only have one lock on at a time
@@ -299,6 +326,8 @@ public struct ZoneLock
     public bool EnableOnEntry;
     public Vector2 Size;
     public Vector2 Location;
+    public GameObject[] Enemies;
+    public bool Completed;
 }
 
  
