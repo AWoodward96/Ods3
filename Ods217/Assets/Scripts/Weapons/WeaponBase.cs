@@ -140,6 +140,9 @@ public class WeaponBase : MonoBehaviour {
 		if (myOwner.MyUnit.CurrentEnergy < weaponData.shotCost)
             return;
 
+        if (myEnergy.BrokenEnergy)
+            return;
+
 		if(myBullets.Count == 0)
 		{
 			maxBullets = (int)Math.Ceiling(myOwner.MyUnit.MaxEnergy / (float)weaponData.shotCost);

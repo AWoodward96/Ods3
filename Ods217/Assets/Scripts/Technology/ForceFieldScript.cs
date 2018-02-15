@@ -6,20 +6,11 @@ public class ForceFieldScript : MonoBehaviour {
 
 	UnitStruct myOwner;
 
-	// These are both now obsolete, replaced by myOwner's stats
-    //public float Health;
-    //public int MaxHealth;
 
-    private bool recentHit;
-    SpriteRenderer Barrier; // The sprite that is surrounding the forcefield 
-
-    float regenCheck;
-
-    [HideInInspector]
-    public HealthBar myHealthBar;
-
-	EnergyManager myEnergy;
-
+    public bool fadeCRT = false;
+  
+    SpriteRenderer Barrier; // The sprite that is surrounding the forcefield  
+	EnergyManager myEnergy; 
     Material myMat;
     float disolveValue;
 
@@ -30,19 +21,19 @@ public class ForceFieldScript : MonoBehaviour {
 
         Barrier = GetComponent<SpriteRenderer>();
         myMat = GetComponent<Renderer>().material;
-        Barrier.enabled = false;
-        
+        Barrier.enabled = false; 
         
 	}
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (recentHit)
+        if (myEnergy == null || myOwner == null)
         {
-            recentHit = false;
-            Barrier.enabled = false;
+            Debug.Log("Force field isn't initialized properly." + this.gameObject);
+            return;
         }
+ 
 
 		if(myOwner.MaxEnergy > 0)
 		{
@@ -63,15 +54,22 @@ public class ForceFieldScript : MonoBehaviour {
         {
             HealShield();
         }
+
+        if(Barrier.enabled && myOwner.CurrentEnergy == myOwner.MaxEnergy && !fadeCRT)
+        {
+            fadeCRT = true;
+            StopAllCoroutines();
+            StartCoroutine(hideBarrier());
+        }
     }
 
-    public void RegisterHit(int _damage)
+    public void RegisterHit(float _damage)
     {
         // Take a hit
 		myEnergy.ExpendEnergy(_damage);
-
+         
         // Turn on every barrier color
-        Barrier.enabled = true;
+        Barrier.enabled = true; 
 
         if(myOwner.CurrentEnergy <= 0)
         {
@@ -88,13 +86,7 @@ public class ForceFieldScript : MonoBehaviour {
 
         // Turn on every barrier color
         Barrier.enabled = true;
-
-        // And then if we're at full health turn it off
-        if(myOwner.CurrentEnergy >= myOwner.MaxEnergy)
-        {
-            StopAllCoroutines();
-            StartCoroutine(startRecentHit());
-        }
+ 
 
         //disolveValue -= .03f;
 		disolveValue -= myEnergy.RegenTime / 1000.0f;
@@ -104,9 +96,10 @@ public class ForceFieldScript : MonoBehaviour {
     }
 
     // This coroutine lets us have a bright barrier be shown for 1 second before it starts to fade
-    IEnumerator startRecentHit()
+    IEnumerator hideBarrier()
     {
-        yield return new WaitForSeconds(1);
-        recentHit = true;
+        yield return new WaitForSeconds(1); 
+        Barrier.enabled = false;
+        fadeCRT = false;
     }
 }

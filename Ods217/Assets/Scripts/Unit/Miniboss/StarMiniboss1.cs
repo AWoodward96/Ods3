@@ -85,6 +85,7 @@ public class StarMiniboss1 : AIStandardUnit{
             UpdateAnimationController();
 
         myAnimator.SetBool("AIState", aistate);
+        ind_Usable.Disabled = !(base.AIState == EnemyAIState.Vulnerable); // Hide the usable indicator if we're not vulnerable
     }
 
     public override bool Triggered
@@ -369,8 +370,8 @@ public class StarMiniboss1 : AIStandardUnit{
             myWeapon.FireWeapon(overrideLookingVector);
 			if (MyUnit.CurrentEnergy < myWeapon.weaponData.shotCost)
             {
-                base.AIState = EnemyAIState.Vulnerable;
-
+                waitTimer = 0;
+                base.AIState = EnemyAIState.Vulnerable; 
             }
 
             // Exit state
@@ -389,30 +390,30 @@ public class StarMiniboss1 : AIStandardUnit{
         // Keep updating the looking vector while we're vulnerable
         animationHandler.holdGun = true;
 
+        waitTimer += Time.deltaTime;
+
         if (!disarmed)
         {
-            waitTimer += Time.deltaTime; 
 
             myCC.ApplyForce(overrideLookingVector.normalized * .2f);
 
             // The circles size is based on how long it'll take to 
             CreatePoints();
-            CheckDistance();
+
 
             line.enabled = true;
 
-			if (MyUnit.CurrentEnergy == MyUnit.MaxEnergy)
+			if (MyUnit.CurrentEnergy >= MyUnit.MaxEnergy - 10)
             {
                 aiCounter++;
                 waitTimer = 0;
-                base.AIState = EnemyAIState.Aggro;
+                base.AIState = EnemyAIState.Aggro; 
                 line.enabled = false;
             }
         }
         else
         {
-            myAnimator.SetBool("Vulnerable", true);
-            waitTimer += Time.deltaTime;
+            myAnimator.SetBool("Vulnerable", true); 
             line.enabled = false;
 
             animationHandler.holdGun = false;
@@ -421,7 +422,7 @@ public class StarMiniboss1 : AIStandardUnit{
             if(waitTimer > 5)
             {
                 myAnimator.SetBool("Vulnerable", false);
-                aiCounter++;
+                aiCounter++; 
                 disarmed = false;
                 waitTimer = 0;
                 base.AIState = EnemyAIState.Aggro; 
@@ -441,8 +442,8 @@ public class StarMiniboss1 : AIStandardUnit{
 
         for (int i = 0; i < (14 + 1); i++)
         {
-			x = Mathf.Sin(Mathf.Deg2Rad * angle) * (myEnergy.RegenTime - waitTimer + .5f);
-			z = Mathf.Cos(Mathf.Deg2Rad * angle) * (myEnergy.RegenTime - waitTimer + .5f);
+			x = Mathf.Sin(Mathf.Deg2Rad * angle) * (myEnergy.RegenTime + myEnergy.ChargeDelay - waitTimer + .5f);
+			z = Mathf.Cos(Mathf.Deg2Rad * angle) * (myEnergy.RegenTime + myEnergy.ChargeDelay - waitTimer + .5f);
 
             line.SetPosition(i, new Vector3(x, y, z));
 
@@ -450,11 +451,7 @@ public class StarMiniboss1 : AIStandardUnit{
         }
     }
 
-    public virtual void CheckDistance()
-    { 
-        ind_Usable.Disabled = !(base.AIState == EnemyAIState.Vulnerable); 
-    }
-
+ 
 
     void DisarmDelegate()
     {
@@ -473,6 +470,10 @@ public class StarMiniboss1 : AIStandardUnit{
     {
 
         if (myZone != ZoneScript.ActiveZone) // Don't let them take damage if you're not in their scene
+            return;
+
+        // Take no damage if on rafters
+        if (!aistate)
             return;
 
         // Firstly show the health bar (Remove this when we have the on-screen healthbar)

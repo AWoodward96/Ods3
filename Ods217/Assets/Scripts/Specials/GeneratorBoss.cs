@@ -66,11 +66,7 @@ public class GeneratorBoss : GeneratorBehavior
 			{
 				if(isAlive[i])
 				{
-					myForceField.RegisterHit(minions[i].MyUnit.MaxHealth);
-
-					/*minions.RemoveAt(i);
-					i--;*/
-
+					myForceField.RegisterHit(myUnit.MaxEnergy / 4); 
 					isAlive[i] = false;
 				}
 				continue;

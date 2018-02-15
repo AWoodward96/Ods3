@@ -165,10 +165,11 @@ GameObject:
   - component: {fileID: 114446303290053088}
   - component: {fileID: 82234294616232088}
   - component: {fileID: 81352335343031430}
+  - component: {fileID: 114627641671827804}
   m_Layer: 9
   m_Name: Char1
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -586,7 +587,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1342282789828828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.816315, y: 4.58, z: 23.6}
+  m_LocalPosition: {x: 11.4, y: 6.76, z: 24.9}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 4038693895619770}
@@ -887,7 +888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -978,7 +979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8, g: 0.827451, b: 0.8980392, a: 1}
+  m_Color: {r: 0.8, g: 0.827451, b: 0.8980392, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1167,7 +1168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1193,9 +1194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84d94eb5b6759d94e8873420babc6fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 100
-  MaxHealth: 100
-  RegenTime: 33
   myHealthBar: {fileID: 0}
 --- !u!114 &114358938755508914
 MonoBehaviour:
@@ -1320,6 +1318,8 @@ MonoBehaviour:
     Name: Basic
     MaxHealth: 100
     CurrentHealth: 100
+    MaxEnergy: 100
+    CurrentEnergy: 100
   InCombat: 0
   Rolling: 0
   RollSpeed: 20
@@ -1344,7 +1344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1359,6 +1359,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114627641671827804
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1342282789828828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 921db120924395041b114986c41ece00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RegenTime: 66
+  ChargeDelay: 1
+  timeSinceHit: 0
+  myHealthBar: {fileID: 0}
 --- !u!114 &114689232705539250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1371,7 +1386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1452,7 +1467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1488,17 +1503,16 @@ MonoBehaviour:
     PickedUp: 0
   weaponData:
     name: Slas' Weapon
-    currentAmmo: 4
-    maxAmmo: 4
-    reloadSpeed: 1
+    shotCost: 25
     fireCD: 0.2
     BulletObject: {fileID: 1943961055214674, guid: a8ef36a3f41b1644d8c364042fec7d17,
       type: 2}
     bulletDamage: 10
     reloadClip: {fileID: 8300000, guid: 2923a5877b56b334b8c5886c017b3eab, type: 3}
-  Reloading: 0
   ShootClip: {fileID: 8300000, guid: 3aa2e87d4f1e6594db45bac5ed7929e7, type: 3}
   myBullets: []
+  myShield: {fileID: 0}
+  myEnergy: {fileID: 0}
 --- !u!114 &114876063912582340
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1514,13 +1528,12 @@ MonoBehaviour:
   MaxSpeed: 50
   canMove: 1
   Airborne: 0
-  SprintSpeed: 1.03
+  SprintSpeed: 1.45
   Sprinting: 0
   SprintingPrev: 0
   Immovable: 0
   Velocity: {x: 0, y: 0, z: 0}
   ProjectedPosition: {x: 0, y: 0, z: 0}
-  P50: 0
 --- !u!114 &114900866606978894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1557,7 +1570,7 @@ MonoBehaviour:
   OverrideAdditionalVec: {x: 0, y: 0, z: 0}
   OverrideText: 
   OverrideHoverRange: 1
-  debugHide: 0
+  debugHide: 1
 --- !u!143 &143741841902241956
 CharacterController:
   m_ObjectHideFlags: 1
