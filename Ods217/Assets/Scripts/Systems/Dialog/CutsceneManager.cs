@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CutsceneManager : MonoBehaviour {
     
@@ -567,6 +568,11 @@ public class CutsceneManager : MonoBehaviour {
                     NewMusicManager.instance.SetTrack(iGeneric, fGeneric);
                     actionComplete = true;
                 }
+                break;
+            case "MOVETO":
+
+                savedName = parameters[0].Trim().Replace(")", "");
+                SceneManager.LoadScene(savedName);
                 break;
 
 

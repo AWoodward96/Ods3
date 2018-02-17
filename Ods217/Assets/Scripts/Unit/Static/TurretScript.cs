@@ -43,8 +43,8 @@ public class TurretScript : MonoBehaviour, IArmed {
 
             myWeapon.FireWeapon(Direction);
 
-
-            if (myWeapon.Reloading)
+			// This code might need to be modified because of the switch to the energy system
+            /*if (myWeapon.Reloading)
             {
                 if (!reloadinginprocess)
                 {
@@ -59,7 +59,7 @@ public class TurretScript : MonoBehaviour, IArmed {
                 mySystem.Stop();
                 mySource.Stop();
                 reloadinginprocess = false;
-            }
+            }*/
         }else
         {
             mySystem.Stop();

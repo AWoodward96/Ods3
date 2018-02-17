@@ -4,67 +4,74 @@ using UnityEngine;
  
 public class ForceFieldScript : MonoBehaviour {
 
-    public float Health;
-    public int MaxHealth;
-    public float RegenTime;
-    private bool recentHit;
-    SpriteRenderer Barrier; // The sprite that is surrounding the forcefield 
+	UnitStruct myOwner;
 
-    float timeSinceHit;
-    float regenCheck;
 
-    [HideInInspector]
-    public HealthBar myHealthBar;
-
+    public bool fadeCRT = false;
+  
+    SpriteRenderer Barrier; // The sprite that is surrounding the forcefield  
+	EnergyManager myEnergy; 
     Material myMat;
     float disolveValue;
 
 	// Use this for initialization
 	void Start () {
+		myOwner = transform.parent.GetComponent<IDamageable>().MyUnit;
+		myEnergy = transform.parent.GetComponent<EnergyManager>();
+
         Barrier = GetComponent<SpriteRenderer>();
         myMat = GetComponent<Renderer>().material;
-        Barrier.enabled = false;
-        
+        Barrier.enabled = false; 
         
 	}
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (recentHit)
+        if (myEnergy == null || myOwner == null)
         {
-            recentHit = false;
-            Barrier.enabled = false;
+            Debug.Log("Force field isn't initialized properly." + this.gameObject);
+            return;
         }
+ 
 
-        myMat.SetFloat("_Edges", (1 - (Health / MaxHealth)) / 5);
-        if (Health <= 0)
+		if(myOwner.MaxEnergy > 0)
+		{
+			myMat.SetFloat("_Edges", (1 - (myOwner.CurrentEnergy / myOwner.MaxEnergy)) / 5);
+		}
+
+        if (myOwner.CurrentEnergy <= 0)
         {
-            disolveValue += .03f;
+            //disolveValue += .03f;
+			disolveValue += myEnergy.RegenTime / 1000.0f;
             disolveValue = Mathf.Min(disolveValue, 1f);
             if (disolveValue < 0)
                 disolveValue = 0;
             myMat.SetFloat("_Level", disolveValue);
         }
-
-        timeSinceHit += Time.deltaTime;
-        if (timeSinceHit > 3 && Health != MaxHealth)
+			
+		if (myEnergy.timeSinceHit > myEnergy.ChargeDelay && myOwner.CurrentEnergy != myOwner.MaxEnergy)
         {
             HealShield();
         }
+
+        if(Barrier.enabled && myOwner.CurrentEnergy == myOwner.MaxEnergy && !fadeCRT)
+        {
+            fadeCRT = true;
+            StopAllCoroutines();
+            StartCoroutine(hideBarrier());
+        }
     }
 
-    public void RegisterHit(int _damage)
+    public void RegisterHit(float _damage)
     {
         // Take a hit
-        Health -= _damage;
-
+		myEnergy.ExpendEnergy(_damage);
+         
         // Turn on every barrier color
-        Barrier.enabled = true;
+        Barrier.enabled = true; 
 
-        timeSinceHit = 0;
-
-        if(Health <= 0)
+        if(myOwner.CurrentEnergy <= 0)
         {
             disolveValue = 0;
         }
@@ -72,40 +79,27 @@ public class ForceFieldScript : MonoBehaviour {
 
     void HealShield()
     {
-        if (MaxHealth <= 0)
+        if (myOwner.MaxEnergy <= 0)
             return;
 
-        // RegenTime should be how much shield is regenerated per second
-        regenCheck = Time.deltaTime;
-        float addedHealth = regenCheck * RegenTime;
-        Health += addedHealth;
+		myEnergy.ChargeEnergy();
 
         // Turn on every barrier color
         Barrier.enabled = true;
+ 
 
-        // And then if we're at full health turn it off
-        if(Health >= MaxHealth)
-        {
-            Health = MaxHealth;
-            StopAllCoroutines();
-            StartCoroutine(startRecentHit());
-        }
-
-        disolveValue -= .03f;
+        //disolveValue -= .03f;
+		disolveValue -= myEnergy.RegenTime / 1000.0f;
         if (disolveValue < 0)
             disolveValue = 0;
         myMat.SetFloat("_Level", disolveValue);
-
-        if (myHealthBar != null)
-        {
-            myHealthBar.ShowMenu();
-        }
     }
 
     // This coroutine lets us have a bright barrier be shown for 1 second before it starts to fade
-    IEnumerator startRecentHit()
+    IEnumerator hideBarrier()
     {
-        yield return new WaitForSeconds(1);
-        recentHit = true;
+        yield return new WaitForSeconds(1); 
+        Barrier.enabled = false;
+        fadeCRT = false;
     }
 }

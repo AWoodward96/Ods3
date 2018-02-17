@@ -61,19 +61,19 @@ public class FredrickBoss : AIStandardUnit {
             if(!Physics.SphereCast(r.origin,1.5f,r.direction,out hit,toPlayer.magnitude,LayerMask.GetMask("Platform")))
             {
                 myWeapon.FireWeapon(toPlayer);
-            }else if(myWeapon.weaponData.currentAmmo <= 3) // if we're low on ammo then bail
+			}else if(MyUnit.CurrentEnergy <= 3 * myWeapon.weaponData.shotCost) // if we're low on ammo then bail
             {
-                myWeapon.ForceReload();
+                //myWeapon.ForceReload();
                 JumpToNewPoint();
                 localAIState = true;
                 return;
             }
 
             // Check if you are out of ammo
-            if (myWeapon.weaponData.currentAmmo == 0 || dTime > 5)
+			if (MyUnit.CurrentEnergy < myWeapon.weaponData.shotCost || dTime > 5)
             {
-                if(!myWeapon.Reloading)
-                    myWeapon.ForceReload();
+                /*if(!myWeapon.Reloading)
+                    myWeapon.ForceReload();*/
                 JumpToNewPoint();
                 localAIState = true; 
                 return;

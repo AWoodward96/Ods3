@@ -13,15 +13,17 @@ public class WeaponBase : MonoBehaviour {
     public WeaponInfo weaponData;
 
     [Space(10)] 
-    public bool Reloading;
     public AudioClip ShootClip;
 
+	int maxBullets;
+	int currentBullet;
     public List<BulletBase> myBullets;
     public IArmed myOwner;
+	public ForceFieldScript myShield;
+	public EnergyManager myEnergy;
 
 
     float currentshootCD;
-    bool tryReload;
 
     GameObject player;
     AudioSource myAudioSource;
@@ -35,6 +37,19 @@ public class WeaponBase : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player");
         heldData.Initialize(this, ThrownObject, player);
         myBullets = new List<BulletBase>();
+
+		myOwner = GetComponentInParent<IArmed>();
+
+		if(myOwner != null)
+		{
+			// Set to ceiling to prevent running out of bullet objects if someone shoots constantly from full energy
+			maxBullets = (int)Math.Ceiling(myOwner.MyUnit.MaxEnergy / (float)weaponData.shotCost);
+			myShield = myOwner.gameObject.GetComponentInChildren<ForceFieldScript>();
+			myEnergy = myOwner.gameObject.GetComponent<EnergyManager>();
+		}
+
+		// Index of the bullet to be fired to stop us from firing the same bullet twice in a row
+		currentBullet = maxBullets - 1;
 
         // Check if we're being held
         IMultiArmed isMulti = GetComponentInParent<IMultiArmed>();
@@ -72,12 +87,6 @@ public class WeaponBase : MonoBehaviour {
 
         UpdateBullets();
 
-        if (weaponData.currentAmmo <= 0 && !tryReload)
-        {
-            tryReload = true;
-            ForceReload();
-        }
-
         currentshootCD += Time.deltaTime;
 	}
 
@@ -102,7 +111,7 @@ public class WeaponBase : MonoBehaviour {
     { 
 
         // Ensure the bullets are properly stored
-        if (myBullets.Count != weaponData.maxAmmo)
+		if (myBullets.Count != maxBullets)
         {
             // If they aren't, clear the list
             foreach (BulletBase o in myBullets)
@@ -113,7 +122,7 @@ public class WeaponBase : MonoBehaviour {
             myBullets = new List<BulletBase>();
 
             // Then refill it
-            for (int i = 0; i < weaponData.maxAmmo; i++)
+            for (int i = 0; i < maxBullets; i++)
             { 
                 GameObject newObj = (GameObject)Instantiate(weaponData.BulletObject);
                 myBullets.Add(newObj.GetComponent<BulletBase>());
@@ -128,21 +137,44 @@ public class WeaponBase : MonoBehaviour {
         if (currentshootCD < weaponData.fireCD)
             return;
 
-        if (weaponData.currentAmmo <= 0)
+		if (myOwner.MyUnit.CurrentEnergy < weaponData.shotCost)
             return;
+
+        if (myEnergy.BrokenEnergy)
+            return;
+
+		if(myBullets.Count == 0)
+		{
+			maxBullets = (int)Math.Ceiling(myOwner.MyUnit.MaxEnergy / (float)weaponData.shotCost);
+			MakeBullets();
+			currentBullet = 0;
+			if(myBullets.Count == 0)
+				return;
+		}
  
-        int i = weaponData.currentAmmo - 1;
         // Do something based on the type
         // For now we'll just shoot one bullet    
-        myBullets[i].gameObject.SetActive(true); 
-        myBullets[i].myOwner = (myOwner);
-        myBullets[i].myInfo = (weaponData);
-        myBullets[i].transform.position = transform.position + (_dir.normalized/2);
-        myBullets[i].Shoot(_dir);
+		myBullets[currentBullet].gameObject.SetActive(true); 
+		myBullets[currentBullet].myOwner = (myOwner);
+		myBullets[currentBullet].myInfo = (weaponData);
+		myBullets[currentBullet].transform.position = transform.position + (_dir.normalized/2);
+		myBullets[currentBullet].Shoot(_dir);
 
         currentshootCD = 0;
-        weaponData.currentAmmo--;
- 
+		//myOwner.MyUnit.CurrentEnergy -= weaponData.shotCost;
+		currentBullet = ((currentBullet - 1) + maxBullets) % maxBullets;
+
+		/*if(myShield != null)
+		{
+			myShield.RegisterHit(weaponData.shotCost);
+		}
+		/*else
+		{
+			myOwner.MyUnit.CurrentEnergy -= weaponData.shotCost;
+		}*/
+
+		myEnergy.ExpendEnergy(weaponData.shotCost);
+
 
         //Play the sound
         if(myAudioSource != null)
@@ -164,12 +196,8 @@ public class WeaponBase : MonoBehaviour {
 
     }
 
-    public void StaggerShootTime()
-    {
-        currentshootCD = UnityEngine.Random.Range(0, weaponData.reloadSpeed);
-    }
-
-    public void ForceReload()
+	// Is this function even necessary anymore now that we're using an energy system?
+    /*public void ForceReload()
     {
         weaponData.currentAmmo = 0;
         tryReload = true;
@@ -178,9 +206,10 @@ public class WeaponBase : MonoBehaviour {
             myOwner.myVisualizer.ShowMenu(); 
         StopAllCoroutines();
         StartCoroutine(Reload());
-    }
+    }*/
 
-    IEnumerator Reload()
+	// Ditto
+   /* IEnumerator Reload()
     {
         yield return new WaitForSeconds(weaponData.reloadSpeed);
         weaponData.currentAmmo = weaponData.maxAmmo;
@@ -193,7 +222,7 @@ public class WeaponBase : MonoBehaviour {
             myAudioSource.clip = weaponData.reloadClip;
             myAudioSource.Play(); 
         }
-    }
+    }*/
 
     private void OnDisable()
     {

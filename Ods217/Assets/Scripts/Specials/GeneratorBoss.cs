@@ -9,37 +9,35 @@ public class GeneratorBoss : GeneratorBehavior
 	ForceFieldScript myForceField;
 	SpriteRenderer ffSprite;
 
+	EnergyManager myEnergy;
+
 	List<mobDroneT1> minions;
-    List<bool> isAlive;
+	List<bool> isAlive;
 
 	GameObject myBlueprint;
+
+	UsableIndicator myInteract;
 
 	public float recoverTime;	// Time the player has to shoot before the shield starts regenerating, in seconds
 	public float regenRate;		// Pace at which the shield recovers after the weak-phase is over. Purely for aesthetic.
 
 	float currentTimer;			// The amount of time since the shield dropped.
 
-	public bool engaged;				// Once the player first shoots the generator, the fight will begin.
+	bool engaged;				// Once the player first shoots the generator, the fight will begin.
 
-	UsableIndicator myInteract;
 
-    public lgcLogicDoor DoorToLock;
-    public Transform[] SpawnPositions;
-
-    const float orthSizeStart = 20;
-    const float orthSizeEnd = 15;
-
-    // Use this for initialization
-    void Start ()
+	// Use this for initialization
+	void Start ()
 	{
 		engaged = false;
 
 		myForceField = GetComponentInChildren<ForceFieldScript>();
-
 		ffSprite = myForceField.GetComponent<SpriteRenderer>();
 
-		minions = new List<mobDroneT1>(6);
-        isAlive = new List<bool>();
+		myEnergy = GetComponent<EnergyManager>();
+
+		minions = new List<mobDroneT1>();
+		isAlive = new List<bool>();
 
 		myZone = transform.parent.GetComponentInChildren<ZoneScript>();
 
@@ -51,7 +49,7 @@ public class GeneratorBoss : GeneratorBehavior
 		Player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
-// Update is called once per frame
+	// Update is called once per frame
 	void Update ()
 	{
 		if(myUnit.CurrentHealth == 0 || ZoneScript.ActiveZone != myZone || !engaged)
@@ -68,11 +66,7 @@ public class GeneratorBoss : GeneratorBehavior
 			{
 				if(isAlive[i])
 				{
-					myForceField.RegisterHit(minions[i].MyUnit.MaxHealth);
-
-					/*minions.RemoveAt(i);
-					i--;*/
-
+					myForceField.RegisterHit(myUnit.MaxEnergy / 4); 
 					isAlive[i] = false;
 				}
 				continue;
@@ -88,10 +82,10 @@ public class GeneratorBoss : GeneratorBehavior
 			currentTimer += Time.deltaTime;
 			if(currentTimer >= recoverTime)
 			{
-				myForceField.RegenTime = regenRate;
+				myEnergy.RegenTime = regenRate;
 			}
 
-			if(myForceField.MaxHealth == myForceField.Health)
+			if(myUnit.CurrentEnergy == myUnit.MaxEnergy)
 			{
 				spawnNewWave(4);
 			}
@@ -108,37 +102,35 @@ public class GeneratorBoss : GeneratorBehavior
 		if(!engaged)
 		{
 			// If the player is shooting wildly for WHATEVER reason, we don't want them to trigger the battle unintentionally
-			if((Player.transform.position - transform.position).magnitude > 400)
-            { 
-                return;
+			Vector3 myVector = Player.transform.position - transform.position;
+			myVector.y = 0;
+			if(myVector.sqrMagnitude > 400)
+			{
+				return;
 			}
 
-            Camera.main.GetComponent<CamScript>().LerpSize(orthSizeStart, 1);
-            engaged = true;
-            DoorToLock.Locked = true;
+			engaged = true;
 			myInteract.gameObject.SetActive(false);
-        }
+		}
 
-        myVisualizer.ShowMenu();
+		myVisualizer.ShowMenu();
 		if (myForceField != null)
 		{
-			if(myForceField.Health <= 0)
+			if(myUnit.CurrentEnergy <= 0)
 			{ 
 				myUnit.CurrentHealth -= _damage;
 
 				if(myUnit.CurrentHealth <= 0)
 				{
 					myUnit.CurrentHealth = 0;
-					myForceField.RegisterHit(myForceField.MaxHealth);
+					myForceField.RegisterHit(myUnit.MaxEnergy);
 					myForceField.gameObject.SetActive(false);
 
 					GameObject obj = Resources.Load("Prefabs/Particles/SmallExplosion") as GameObject;
 					obj = Instantiate(obj, transform.position, obj.transform.rotation);
 					obj.transform.localScale *= 4;
 
-                    Camera.main.GetComponent<CamScript>().LerpSize(orthSizeEnd, 1);
-                    DoorToLock.Locked = false;
-                    GetComponent<AudioSource>().Play();
+					GetComponent<AudioSource>().Play();
 				}
 			}
 		} 
@@ -146,7 +138,7 @@ public class GeneratorBoss : GeneratorBehavior
 
 	void spawnNewWave(int numEnemies)
 	{
-		myForceField.RegenTime = 0.0f;
+		myEnergy.RegenTime = 0.0f;
 		currentTimer = 0.0f;
 
 		for(int i = 0; i < numEnemies; i++)
@@ -167,28 +159,28 @@ public class GeneratorBoss : GeneratorBehavior
 				minions[i].myWeapon.RotateObject.SetActive(true);
 			}
 				
-			minions[i].gameObject.transform.position = transform.position;
+			minions[i].gameObject.transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
 
 			switch(i % 4)
 			{
 			case 0:
-                minions[i].gameObject.transform.position = SpawnPositions[0].position + Vector3.down;
-				break; 
+				minions[i].gameObject.transform.localPosition += new Vector3(-32.0f, 0.0f, 19.0f);
+				break;
+
 			case 1:
-				minions[i].gameObject.transform.position = SpawnPositions[1].position + Vector3.down;
-                    minions[i].Weapon.ResetShootCD();
-                    break; 
+				minions[i].gameObject.transform.localPosition += new Vector3(33.0f, 0.0f, 19.0f);
+				break;
+
 			case 2:
-				minions[i].gameObject.transform.position = SpawnPositions[2].position + Vector3.down;
-                break; 
+				minions[i].gameObject.transform.localPosition += new Vector3(33.0f, 0.0f, -7.0f);
+				break;
+
 			case 3:
-				minions[i].gameObject.transform.position = SpawnPositions[3].position + Vector3.down;
-                    minions[i].Weapon.ResetShootCD();
-                    break;
+				minions[i].gameObject.transform.localPosition += new Vector3(-32.0f, 0.0f, -7.0f);
+				break;
 			}
 
-            minions[i].myWeapon.StaggerShootTime();
-            minions[i].MyUnit.CurrentHealth = 10;
+			minions[i].MyUnit.CurrentHealth = (int)(myUnit.MaxEnergy / numEnemies);
 			minions[i].MyUnit.MaxHealth = minions[i].MyUnit.CurrentHealth;
 			minions[i].myZone = myZone;
 		}

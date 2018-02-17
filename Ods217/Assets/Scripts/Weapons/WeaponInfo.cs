@@ -7,9 +7,7 @@ using UnityEngine;
 public class WeaponInfo
 {
     public string name;
-    public int currentAmmo;
-    public int maxAmmo;
-    public float reloadSpeed;
+	public int shotCost;
     public float fireCD;
 
     public GameObject BulletObject;
