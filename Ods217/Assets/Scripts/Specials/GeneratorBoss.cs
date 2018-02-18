@@ -18,11 +18,6 @@ public class GeneratorBoss : GeneratorBehavior
 
 	UsableIndicator myInteract;
 
-	public float recoverTime;	// Time the player has to shoot before the shield starts regenerating, in seconds
-	public float regenRate;		// Pace at which the shield recovers after the weak-phase is over. Purely for aesthetic.
-
-	float currentTimer;			// The amount of time since the shield dropped.
-
 	bool engaged;				// Once the player first shoots the generator, the fight will begin.
 
 
@@ -79,10 +74,9 @@ public class GeneratorBoss : GeneratorBehavior
 
 		if(!minionsRemain)
 		{
-			currentTimer += Time.deltaTime;
-			if(currentTimer >= recoverTime)
+			if(myEnergy.timeSinceHit >= myEnergy.ChargeDelay)
 			{
-				myEnergy.RegenTime = regenRate;
+				myEnergy.canRecharge = true;
 			}
 
 			if(myUnit.CurrentEnergy == myUnit.MaxEnergy)
@@ -104,7 +98,7 @@ public class GeneratorBoss : GeneratorBehavior
 			// If the player is shooting wildly for WHATEVER reason, we don't want them to trigger the battle unintentionally
 			Vector3 myVector = Player.transform.position - transform.position;
 			myVector.y = 0;
-			if(myVector.sqrMagnitude > 400)
+			if(myVector.sqrMagnitude > 625)
 			{
 				return;
 			}
@@ -138,8 +132,7 @@ public class GeneratorBoss : GeneratorBehavior
 
 	void spawnNewWave(int numEnemies)
 	{
-		myEnergy.RegenTime = 0.0f;
-		currentTimer = 0.0f;
+		myEnergy.canRecharge = false;
 
 		for(int i = 0; i < numEnemies; i++)
 		{
@@ -159,7 +152,7 @@ public class GeneratorBoss : GeneratorBehavior
 				minions[i].myWeapon.RotateObject.SetActive(true);
 			}
 				
-			minions[i].gameObject.transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+			minions[i].gameObject.transform.position = new Vector3(transform.position.x, 4.0f, transform.position.z);
 
 			switch(i % 4)
 			{

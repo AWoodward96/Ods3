@@ -2221,10 +2221,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921db120924395041b114986c41ece00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RegenTime: 33
+  RegenTime: 3
   ChargeDelay: 3
   timeSinceHit: 0
   BrokenEnergy: 0
+  canRecharge: 1
   myHealthBar: {fileID: 0}
 --- !u!114 &114915379793437770
 MonoBehaviour:
@@ -2330,7 +2331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b81ee4df432f64480bfda31bd05d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletBarCovers: []
 --- !u!120 &120513262794088302
 LineRenderer:
   m_ObjectHideFlags: 1

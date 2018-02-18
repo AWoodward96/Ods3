@@ -1,8 +1,8 @@
 Author
 --------------Plz don't edit this. You might break the game and then your saved file is lost.--------------
 PirateShip1
-200
-(152.5, 4.1, -392.4)
+0
+(168.6, 9.4, -411.0)
 100
 NewWeapon
 null
@@ -31,16 +31,16 @@ False
 False
 False
 False
+False
+False
 True
-False
-True
-False
-False
 False
 False
 False
 False
 False
+False
+False
 True
 True
 True
@@ -65,4 +65,4 @@ True
 True
 True
 True
-2/17/2018 10:19:22 PM
+2/18/2018 2:21:17 AM

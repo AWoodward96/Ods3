@@ -43,7 +43,8 @@ public class ForceFieldScript : MonoBehaviour {
         if (myOwner.CurrentEnergy <= 0)
         {
             //disolveValue += .03f;
-			disolveValue += myEnergy.RegenTime / 1000.0f;
+			//disolveValue = (myOwner.MaxEnergy - myOwner.CurrentEnergy) / myOwner.MaxEnergy;
+			disolveValue += .03f;
             disolveValue = Mathf.Min(disolveValue, 1f);
             if (disolveValue < 0)
                 disolveValue = 0;
@@ -71,15 +72,15 @@ public class ForceFieldScript : MonoBehaviour {
         // Turn on every barrier color
         Barrier.enabled = true; 
 
-        if(myOwner.CurrentEnergy <= 0)
+        /*if(myOwner.CurrentEnergy <= 0)
         {
             disolveValue = 0;
-        }
+        }*/
     }
 
     void HealShield()
     {
-        if (myOwner.MaxEnergy <= 0)
+		if (myOwner.MaxEnergy <= 0 || !myEnergy.canRecharge)
             return;
 
 		myEnergy.ChargeEnergy();
@@ -89,7 +90,7 @@ public class ForceFieldScript : MonoBehaviour {
  
 
         //disolveValue -= .03f;
-		disolveValue -= myEnergy.RegenTime / 1000.0f;
+		disolveValue = (myOwner.MaxEnergy - myOwner.CurrentEnergy) / myOwner.MaxEnergy;
         if (disolveValue < 0)
             disolveValue = 0;
         myMat.SetFloat("_Level", disolveValue);

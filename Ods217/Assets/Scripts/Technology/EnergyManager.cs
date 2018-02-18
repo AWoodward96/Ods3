@@ -13,6 +13,7 @@ public class EnergyManager : MonoBehaviour
 	public float timeSinceHit;
 
     public bool BrokenEnergy;
+	public bool canRecharge = true;
 
 	[HideInInspector]
 	public HealthBar myHealthBar;
@@ -49,7 +50,7 @@ public class EnergyManager : MonoBehaviour
 
 	public void ChargeEnergy()
 	{
-		if (myOwner.MaxEnergy <= 0)
+		if (myOwner.MaxEnergy <= 0 || !canRecharge)
 			return;
 
 		// RegenTime is how long it should take to regen the full bar in seconds
