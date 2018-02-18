@@ -15,6 +15,9 @@ public class ExplosiveBox : MonoBehaviour, IDamageable {
 
     BoxCollider myCol;
 
+    public bool DealDamage;
+    public int Damage;
+
     Vector3 defaultSize = new Vector3(4, 4, 4);
     Vector3 defaultPosition = new Vector3(0, 2, -2);
     Vector3 brokenSize = new Vector3(4, .2f, 4);
@@ -88,7 +91,35 @@ public class ExplosiveBox : MonoBehaviour, IDamageable {
     public void OnHit(int _damage)
     {
         if(!Triggered)
-            Triggered = true;  
+        {
+            Triggered = true;
+
+            if(DealDamage)
+            {
+                Collider[] cols = Physics.OverlapBox(transform.position, new Vector3(6, 6, 6));
+                for (int i = 0; i < cols.Length; i++)
+                {
+                    IDamageable dmg = cols[i].GetComponent<IDamageable>();
+                    if (dmg != null)
+                    {
+                        dmg.OnHit(Damage);
+                    }
+
+                    CController cc = cols[i].GetComponent<CController>();
+                    if(cc != null)
+                    {
+                        cc.ApplyForce(GlobalConstants.ZeroYComponent(cols[i].transform.position - transform.position).normalized * 20);
+                    }
+
+                    FredrickBoss boss = cols[i].GetComponent<FredrickBoss>();
+                    if(boss != null)
+                    {
+                        boss.StunBoss();
+                    }
+                }
+            }
+
+        }
     }
 
 }

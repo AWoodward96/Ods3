@@ -14,11 +14,13 @@ public class FredrickBoss : AIStandardUnit {
     public Transform[] JumpPoints;
     Transform selectedPoint;
 
+    ForceFieldScript myForceField;
     Rigidbody myRGB;
 
     public override void Start()
     {
         myRGB = GetComponent<Rigidbody>();
+        myForceField = GetComponentInChildren<ForceFieldScript>();
         myRGB.isKinematic = true;
         base.Start();
     }
@@ -44,8 +46,9 @@ public class FredrickBoss : AIStandardUnit {
         if (localAIState)
         {
             Vector3 toPoint = GlobalConstants.ZeroYComponent(selectedPoint.position - transform.position);  
-            if(toPoint.magnitude < .33f)
-            {
+            if(toPoint.magnitude < .33f || transform.position.y < 3)
+            { 
+
                 myRGB.isKinematic = true;
                 myCC.enabled = true;
                 localAIState = false;
@@ -61,7 +64,7 @@ public class FredrickBoss : AIStandardUnit {
             if(!Physics.SphereCast(r.origin,1.5f,r.direction,out hit,toPlayer.magnitude,LayerMask.GetMask("Platform")))
             {
                 myWeapon.FireWeapon(toPlayer);
-			}else if(MyUnit.CurrentEnergy <= 3 * myWeapon.weaponData.shotCost) // if we're low on ammo then bail
+			}else if(MyUnit.CurrentEnergy <= (MyUnit.MaxEnergy / 2)) // if we're low on ammo then bail
             {
                 //myWeapon.ForceReload();
                 JumpToNewPoint();
@@ -70,7 +73,7 @@ public class FredrickBoss : AIStandardUnit {
             }
 
             // Check if you are out of ammo
-			if (MyUnit.CurrentEnergy < myWeapon.weaponData.shotCost || dTime > 5)
+			if (MyUnit.CurrentEnergy <= (MyUnit.MaxEnergy / 2) || dTime > 5)
             {
                 /*if(!myWeapon.Reloading)
                     myWeapon.ForceReload();*/
@@ -121,16 +124,65 @@ public class FredrickBoss : AIStandardUnit {
     }
 
     public override void OnHit(int _damage)
-    {
-        base.OnHit(_damage);
+    { 
 
         if (UnitData.CurrentHealth / UnitData.MaxHealth < .66f)
             curJumpAngle = JumpAngle[1];
 
         if (UnitData.CurrentHealth / UnitData.MaxHealth < .33f)
             curJumpAngle = JumpAngle[2];
+
+        // Firstly show the health bar (Remove this when we have the on-screen healthbar)
+        myVisualizer.ShowMenu();
+        if (myForceField != null)
+        {
+            if (MyUnit.CurrentEnergy > 0)
+                myForceField.RegisterHit(_damage);
+            else
+            {
+                UnitData.CurrentHealth -= _damage;
+            }
+        }
+
+        if (UnitData.CurrentHealth <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
+    public void StunBoss()
+    {
+        if (localAIState)
+            return;
+
+        AIState = EnemyAIState.Vulnerable;
+        dTime = 0;
+        GetComponent<EnergyManager>().timeSinceHit = -3;
+    }
+
+    public void SaveBoss()
+    {
+        if(localAIState)
+        {
+            myRGB.isKinematic = true;
+            myCC.enabled = true;
+            localAIState = false;
+
+            myAnimator.SetBool("Jumping", false);
+            transform.position = selectedPoint.position;
+        }
+    }
+
+    public override void VulnState()
+    {
+        dTime += Time.deltaTime;
+
+        if(dTime > 3)
+        {
+            AIState = EnemyAIState.Aggro;
+            dTime = 0;
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

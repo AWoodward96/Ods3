@@ -55,14 +55,14 @@ public class FredrickFightManager : MonoBehaviour, IPermanent {
         myCol = GetComponent<BoxCollider>();
         myCol.isTrigger = true;
 
-        for(int i =0; i < 5; i++)
+        for(int i =0; i < 8; i++)
         {
             ExplosiveBoxes.Add(Instantiate(ExplosivePrefab, transform.position, Quaternion.identity));
             ExplosiveBoxes[i].SetActive(false);
             ExplosiveBoxes[i].GetComponent<SimpleMove>().Move = setMove;
         }
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 8; i++)
         {
             NormalBoxes.Add(Instantiate(NormalBoxPrefab, transform.position, Quaternion.identity));
             NormalBoxes[i].SetActive(false);

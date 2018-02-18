@@ -606,6 +606,7 @@ MonoBehaviour:
   CameraSize: 14
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!4 &31962855
 Transform:
   m_ObjectHideFlags: 0
@@ -1869,6 +1870,7 @@ MonoBehaviour:
   CameraSize: 8
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!4 &191694828
 Transform:
   m_ObjectHideFlags: 0
@@ -6051,6 +6053,7 @@ MonoBehaviour:
   CameraSize: 9
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!4 &690826731
 Transform:
   m_ObjectHideFlags: 0
@@ -10691,6 +10694,7 @@ MonoBehaviour:
   CameraSize: 8
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!4 &888786748
 Transform:
   m_ObjectHideFlags: 0
@@ -11942,6 +11946,7 @@ MonoBehaviour:
   CameraSize: 8
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!4 &968940775
 Transform:
   m_ObjectHideFlags: 0
@@ -12509,6 +12514,7 @@ MonoBehaviour:
   CameraSize: 10
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!4 &1023476357
 Transform:
   m_ObjectHideFlags: 0
@@ -24142,6 +24148,7 @@ MonoBehaviour:
   CameraSize: 10
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!1 &1606017665
 GameObject:
   m_ObjectHideFlags: 0
@@ -25217,11 +25224,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4937002696526876, guid: 3a41eef7a1fa8264c81f9c53dd453ff8, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -95.45
+      value: 95.2
       objectReference: {fileID: 0}
     - target: {fileID: 4937002696526876, guid: 3a41eef7a1fa8264c81f9c53dd453ff8, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -3.67
+      value: 7.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a41eef7a1fa8264c81f9c53dd453ff8, type: 2}
@@ -25263,6 +25270,7 @@ MonoBehaviour:
   CameraSize: 8
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!4 &1685841924
 Transform:
   m_ObjectHideFlags: 0
@@ -29889,6 +29897,7 @@ MonoBehaviour:
   CameraSize: 8
   LightObjects: []
   Weapons: []
+  StP: []
 --- !u!4 &1833401633
 Transform:
   m_ObjectHideFlags: 0
@@ -30367,6 +30376,7 @@ MonoBehaviour:
     ShieldHealth: 000000
     ShieldRegen: 000000
   currentSceneData: {fileID: 952250024}
+  SaveSound: {fileID: 0}
 --- !u!4 &1851430089
 Transform:
   m_ObjectHideFlags: 0
