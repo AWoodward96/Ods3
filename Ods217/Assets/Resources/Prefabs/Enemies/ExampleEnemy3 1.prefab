@@ -2075,8 +2075,8 @@ MonoBehaviour:
   WeaponSlot2: {fileID: 0}
   Zone: {fileID: 0}
   Clips:
-  - {fileID: 8300000, guid: b0da78533e2a8bd4482ddc5aff2ea3d9, type: 3}
-  - {fileID: 8300000, guid: ed4118fe40e61de41a1f08e5828ffe9f, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114796115509882866
 MonoBehaviour:
   m_ObjectHideFlags: 1
