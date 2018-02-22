@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/Level_Data/cs_TitleScreen/Title.unity
+    guid: 2f2a4c9a063d76440bc81559469c1634
   - enabled: 0
     path: Assets/Level_Data/lvl_BetaLevels/lvl_Gambling/lvl_Gambling.unity
     guid: 4207e3c655731374f8dfe2439658fae1
@@ -35,3 +38,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Level_Data/lvl_PirateShip/PirateShip1.unity
     guid: 17816610e23efc743af6583bdfb9f576
+  - enabled: 0
+    path: Assets/Level_Data/lvl_Testing/MovingPlatforms.unity
+    guid: ca9bfe7a2a7330b44bccfe4086112d95

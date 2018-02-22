@@ -935,7 +935,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 2965a61b372c71848b195d14ceca547b, type: 2}
+  - {fileID: 2100000, guid: 2a5b1094cbab6b94eaf2e740247ae962, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2812,8 +2812,9 @@ MonoBehaviour:
     or...,LookLeft)\nContinue(well... 'Good' as our actual tutorial.,Sad)\n\r\nSay(Con1,So
     if you have any questions before getting to a real level)\nContinue(just ask the
     person running the playtest.)\n\nSay(Con1,For now--)\nContinue(Welcome to the
-    Odyssey demo!,Happy)\n\nSay(Con1,Move with WASD and look around with the mouse)\nSay(Con1,Use
-    this area to get used to moving a bit before continuing to the next room,Idle)\r\n//Trigger(TriggerMe1)\r\nWait(1.5)\r\n\r "
+    Odyssey demo!,Happy)\n\nSay(Con1,Move with WASD and look around with the mouse)\nSay(Con1,You
+    can also use LShift to sprint)\nSay(Con1,Use this area to get used to moving a
+    bit before continuing to the next room,Idle)\r \nWait(1.5)\r\n\r "
   Text: {fileID: 0}
   Zone: {fileID: 0}
 --- !u!114 &714
@@ -5269,7 +5270,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 676289137}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 5, y: 0.75, z: -2.82}
+  m_LocalPosition: {x: 9.64, y: 0.75, z: -2.82}
   m_LocalScale: {x: 7.24, y: 1.5, z: 0.4}
   m_Children: []
   m_Father: {fileID: 1496854416}
@@ -5734,8 +5735,8 @@ MonoBehaviour:
   ActiveInd: 0
   Disabled: 0
   curGrab:
-    distanceToCursor: 100000
-    distanceToPlayer: 100000
+    distanceToCursor: 0
+    distanceToPlayer: 0
     ind: {fileID: 0}
   OverrideTransform: {fileID: 1102380221}
   OverrideAdditionalVec: {x: 0, y: 0, z: 0}
@@ -5913,7 +5914,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 798299831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.55, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1496854416}
@@ -5933,7 +5934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   YPosition: 0.1
-  ZoneSize: {x: 32, y: 32}
+  ZoneSize: {x: 44.86, y: 32}
   ZoneAggression: 1
   ZoneLocks: []
   PrimaryZone: 1
@@ -6041,8 +6042,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 814963872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.75, z: 4.5}
-  m_LocalScale: {x: 10, y: 1.5, z: 0.4}
+  m_LocalPosition: {x: 2.51, y: 0.75, z: 4.5}
+  m_LocalScale: {x: 16.9, y: 1.5, z: 0.4}
   m_Children: []
   m_Father: {fileID: 1496854416}
   m_RootOrder: 1
@@ -6153,7 +6154,7 @@ Prefab:
     - target: {fileID: 114051814184315182, guid: 4f7076299d929c04289f7ffd43131a0e,
         type: 2}
       propertyPath: ActivatedPos.z
-      value: 62
+      value: 59
       objectReference: {fileID: 0}
     - target: {fileID: 114051814184315182, guid: 4f7076299d929c04289f7ffd43131a0e,
         type: 2}
@@ -6452,7 +6453,7 @@ Prefab:
     - target: {fileID: 114051814184315182, guid: 4f7076299d929c04289f7ffd43131a0e,
         type: 2}
       propertyPath: ActivatedPos.z
-      value: 62
+      value: 59
       objectReference: {fileID: 0}
     - target: {fileID: 114051814184315182, guid: 4f7076299d929c04289f7ffd43131a0e,
         type: 2}
@@ -6494,8 +6495,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 934597803}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 0.75, z: -4.97}
-  m_LocalScale: {x: 10, y: 1.5, z: 0.4}
+  m_LocalPosition: {x: 2.74, y: 0.75, z: -4.97}
+  m_LocalScale: {x: 15.7, y: 1.5, z: 0.4}
   m_Children: []
   m_Father: {fileID: 1496854416}
   m_RootOrder: 0
@@ -7471,7 +7472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2436fd687268f2e41825f312fd81b95c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dialog: "LoadChar(Con1,Con)\nLoadPerm(Turret,T)\nLoadPerm(TutEn,Tut)\nTrigger(T)\n\nHaltPlayer()\nSay(Con,
+  Dialog: "LoadChar(Con1,Con)\nLoadPerm(SpecTurret,T)\nLoadPerm(TutEn,Tut)\nTrigger(T)\n\nHaltPlayer()\nSay(Con,
     Ok one last thing I promise,Idle)\nCameraTarget(Tut)\n \nWait(1)\nSay(Con, This
     is a top of the line simulated enemy dummy)\n\nSay(Con, Usually fighting enemies
     head on would end badly,Sad)\nContinue(but you have the element of surprise on
@@ -7479,7 +7480,7 @@ MonoBehaviour:
     at him)\nContinue(get right up close to him)\nContinue(and while he's startled
     press E!)\nSay(Con, Then)\nContinue(when he's vulnerable)\nContinue(take him out.)\nSay(Con,If
     you do it right he won't have a chance to fire a single shot!,Happy)\nSay(Con,
-    Try it!) \nCameraTarget(Player)\nResume()\nWait(1)\n\nTrigger(Tut) \n"
+    Try it!) \nCameraTarget(Player)\nResume() \n\nTrigger(Tut) \n"
   Text: {fileID: 0}
   Zone: {fileID: 0}
 --- !u!65 &1440932942
@@ -7588,7 +7589,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4846252317784190, guid: 7110f360c5213334cb2fb2ac939322b9, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 34.48
+      value: 46.77
       objectReference: {fileID: 0}
     - target: {fileID: 4846252317784190, guid: 7110f360c5213334cb2fb2ac939322b9, type: 2}
       propertyPath: m_LocalPosition.y
@@ -7596,7 +7597,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4846252317784190, guid: 7110f360c5213334cb2fb2ac939322b9, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 119.46522
+      value: 113.93
       objectReference: {fileID: 0}
     - target: {fileID: 4846252317784190, guid: 7110f360c5213334cb2fb2ac939322b9, type: 2}
       propertyPath: m_LocalRotation.x
@@ -7669,7 +7670,7 @@ MonoBehaviour:
   AIState: 0
   ArmingTime: 3
   AggroRange: 5
-  AggroTime: 4
+  AggroTime: 6
   Weapon: {fileID: 0}
   LastSeen: {x: 0, y: 0, z: 0}
   UpdateLookingVector: 1
@@ -7955,7 +7956,7 @@ Prefab:
     - target: {fileID: 114051814184315182, guid: 4f7076299d929c04289f7ffd43131a0e,
         type: 2}
       propertyPath: ActivatedPos.z
-      value: 62
+      value: 59
       objectReference: {fileID: 0}
     - target: {fileID: 114051814184315182, guid: 4f7076299d929c04289f7ffd43131a0e,
         type: 2}
@@ -8454,6 +8455,7 @@ MonoBehaviour:
   ChargeDelay: 1
   timeSinceHit: 0
   BrokenEnergy: 0
+  canRecharge: 1
   myHealthBar: {fileID: 0}
 --- !u!81 &1747064843
 AudioListener:
@@ -8713,7 +8715,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1747064841}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5, y: 4.45, z: -2.3}
+  m_LocalPosition: {x: -2.67, y: 4.45, z: -2.36}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 1674467199}
@@ -9122,7 +9124,7 @@ MonoBehaviour:
 
     Say(Con, Ok I''m gonna stop you here to explain something important.,Idle)
 
-    LoadPerm(Turret,T)
+    LoadPerm(SpecTurret,T)
 
     Say(Con,You have a forcefield. If you get hit it will absorb the damage you would
     have taken otherwise.)
@@ -9147,6 +9149,8 @@ MonoBehaviour:
     Say(Con, If you empty your battery firing all your bullets then you are vulnerable.)
 
     Say(Con, Be careful!)
+
+    Continue(When you''re done move to the room on your right.)
 
     CameraTarget(Player)
 
@@ -9212,7 +9216,13 @@ MonoBehaviour:
 
     SideSay(Con,Shoot with Left Mouse Button.)
 
-    Wait(3)
+    Wait(2)
+
+    EndSide()
+
+    SideSay(Con,You can''t shoot while sprinting.)
+
+    Wait(2)
 
     EndSide()'
   Text: {fileID: 0}
@@ -9541,7 +9551,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2013182275}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4.88, y: 0.75, z: 2.43}
+  m_LocalPosition: {x: 9.52, y: 0.75, z: 2.43}
   m_LocalScale: {x: 4.5, y: 1.5, z: 0.4}
   m_Children: []
   m_Father: {fileID: 1496854416}
@@ -9790,7 +9800,7 @@ GameObject:
   - component: {fileID: 2115508692}
   - component: {fileID: 2115508697}
   m_Layer: 9
-  m_Name: Turret
+  m_Name: SpecTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9820,8 +9830,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.6666667, y: 4, z: 1}
-  m_Center: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 2.6666667, y: 4, z: 2}
+  m_Center: {x: 0, y: 0, z: 1}
 --- !u!212 &2115508694
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9917,6 +9927,7 @@ MonoBehaviour:
   ChargeDelay: 1
   timeSinceHit: 0
   BrokenEnergy: 0
+  canRecharge: 1
   myHealthBar: {fileID: 0}
 --- !u!1 &2139435474
 GameObject:

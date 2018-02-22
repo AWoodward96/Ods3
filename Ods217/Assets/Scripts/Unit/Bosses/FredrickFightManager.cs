@@ -81,8 +81,11 @@ public class FredrickFightManager : MonoBehaviour, IPermanent {
             float rnd = UnityEngine.Random.Range(0f, 1f);
 
             GameObject obj = getObjectThatCanBeUsed((rnd < ExplosiveRatio));
-            obj.transform.position = StartPos;
-            obj.SetActive(true);
+            if(obj != null)
+            {
+                obj.transform.position = StartPos;
+                obj.SetActive(true); 
+            }
             dTime = 0;
         }
 		

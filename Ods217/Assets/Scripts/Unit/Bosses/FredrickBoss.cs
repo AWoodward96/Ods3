@@ -27,14 +27,22 @@ public class FredrickBoss : AIStandardUnit {
 
     public override void Update()
     { 
-        if(Aggro)
-        base.Update();
+        if (CutsceneManager.InCutscene)
+        {
+            moveAI.Update();
+            animationHandler.Update();
+        }
+
+        if (Aggro)
+         base.Update();
     } 
 
     public override bool Triggered
     {
         get  { return Aggro; } 
-        set  { Aggro = value; }
+        set  { Aggro = value;
+
+        }
     }
 
 
@@ -55,6 +63,8 @@ public class FredrickBoss : AIStandardUnit {
 
                 myAnimator.SetBool("Jumping", false);
                 transform.position = selectedPoint.position;
+                myCC.Velocity = Vector3.zero;
+                
             }
         }else
         { 
@@ -146,6 +156,8 @@ public class FredrickBoss : AIStandardUnit {
 
         if (UnitData.CurrentHealth <= 0)
         {
+            GameObject obj = Resources.Load("Prefabs/Particles/deathPartParent") as GameObject;
+            Instantiate(obj, transform.position, obj.transform.rotation);
             this.gameObject.SetActive(false);
         }
     }

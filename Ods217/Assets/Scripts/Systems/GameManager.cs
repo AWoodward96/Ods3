@@ -89,6 +89,11 @@ public class GameManager : MonoBehaviour {
 			SceneManager.sceneLoaded += RestorePlayer;
 		}
     }
+
+    public void LoadScene(string _Name)
+    {
+        SceneManager.LoadScene(_Name);
+    }
 		
 	// For saving the player and the current scene at a save station.
     bool WriteSaveFile(string _filePath)

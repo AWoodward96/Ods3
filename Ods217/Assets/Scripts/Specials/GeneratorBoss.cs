@@ -18,7 +18,12 @@ public class GeneratorBoss : GeneratorBehavior
 
 	UsableIndicator myInteract;
 
+    public Transform[] SpawnPoint;
+    public ParticleSystem[] Explosions;
+    int explosionInd = 0;
+
 	bool engaged;				// Once the player first shoots the generator, the fight will begin.
+    bool deathCrt = false;
 
 
 	// Use this for initialization
@@ -53,6 +58,7 @@ public class GeneratorBoss : GeneratorBehavior
 		}
 
 		ffSprite.enabled = true;
+        myForceField.fadeCRT = true;
 
 		bool minionsRemain = false;
 		for(int i = 0; i < minions.Count; i++)
@@ -81,7 +87,10 @@ public class GeneratorBoss : GeneratorBehavior
 
 			if(myUnit.CurrentEnergy == myUnit.MaxEnergy)
 			{
-				spawnNewWave(4);
+                Material myMat = myForceField.GetComponent<Renderer>().material; 
+                myMat.SetFloat("_Edges", 0);
+                myMat.SetFloat("_Level", 0);
+                spawnNewWave(4);
 			}
 		}
 	}
@@ -114,17 +123,33 @@ public class GeneratorBoss : GeneratorBehavior
 			{ 
 				myUnit.CurrentHealth -= _damage;
 
+                // Play a hit explosion
+                Explosions[explosionInd].Play();
+                Explosions[explosionInd].GetComponent<AudioSource>().Play();
+                explosionInd++;
+                if (explosionInd >= Explosions.Length)
+                    explosionInd = 0;
+
 				if(myUnit.CurrentHealth <= 0)
 				{
 					myUnit.CurrentHealth = 0;
 					myForceField.RegisterHit(myUnit.MaxEnergy);
 					myForceField.gameObject.SetActive(false);
 
-					GameObject obj = Resources.Load("Prefabs/Particles/SmallExplosion") as GameObject;
-					obj = Instantiate(obj, transform.position, obj.transform.rotation);
-					obj.transform.localScale *= 4;
+                    // death coroutine
+                    if(!deathCrt)
+                    {
+                        deathCrt = true;
+                        StartCoroutine(deathCRT());
+                    }
 
-					GetComponent<AudioSource>().Play();
+
+					// Kill all drones just in case
+                    for(int i = 0; i < minions.Count; i++)
+                    {
+                        if(minions[i].UnitData.CurrentHealth > 0)
+                            minions[i].OnHit(10);
+                    }
 				}
 			}
 		} 
@@ -157,25 +182,46 @@ public class GeneratorBoss : GeneratorBehavior
 			switch(i % 4)
 			{
 			case 0:
-				minions[i].gameObject.transform.localPosition += new Vector3(-32.0f, 0.0f, 19.0f);
+                    minions[i].gameObject.transform.position = SpawnPoint[0].position + Vector3.down;
 				break;
 
 			case 1:
-				minions[i].gameObject.transform.localPosition += new Vector3(33.0f, 0.0f, 19.0f);
-				break;
+				minions[i].gameObject.transform.position = SpawnPoint[1].position + Vector3.down;
+                    break;
 
 			case 2:
-				minions[i].gameObject.transform.localPosition += new Vector3(33.0f, 0.0f, -7.0f);
-				break;
+				minions[i].gameObject.transform.position = SpawnPoint[2].position + Vector3.down;
+                    break;
 
 			case 3:
-				minions[i].gameObject.transform.localPosition += new Vector3(-32.0f, 0.0f, -7.0f);
-				break;
+				minions[i].gameObject.transform.position = SpawnPoint[3].position + Vector3.down;
+                    break;
 			}
 
-			minions[i].MyUnit.CurrentHealth = (int)(myUnit.MaxEnergy / numEnemies);
+			minions[i].MyUnit.CurrentHealth = (int)(10);
 			minions[i].MyUnit.MaxHealth = minions[i].MyUnit.CurrentHealth;
 			minions[i].myZone = myZone;
 		}
 	}
+
+    IEnumerator deathCRT()
+    {
+        // Go through the explosions and explode them (twice)
+        for(int i = 0; i < Explosions.Length; i++)
+        {
+            Explosions[i].Play();
+            Explosions[i].GetComponent<AudioSource>().Play();
+            yield return new WaitForSeconds(.5f);
+
+        }
+
+        for (int i = 0; i < Explosions.Length; i++)
+        {
+            Explosions[i].Play();
+            Explosions[i].GetComponent<AudioSource>().Play();
+            yield return new WaitForSeconds(.5f);
+
+        }
+
+    }
 }

@@ -41,7 +41,8 @@ public class mobTCowardUnit : mobCowardUnit {
 
     void TalkDelegate()
     { 
-        CutsceneManager.instance.StartCutscene(myDialog);
+        if(myDialog != "")  
+            CutsceneManager.instance.StartCutscene(myDialog);
     }
 
     public override bool CheckAggro()

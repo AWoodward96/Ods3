@@ -37,6 +37,7 @@ public class oneofStarDefeat : MonoBehaviour, IPermanent {
                 SmokeBomb.gameObject.SetActive(true);
                 SmokeBomb.transform.position = this.transform.position;
                 SmokeBomb.Play();
+                SmokeBomb.GetComponent<AudioSource>().Play();
                 triggeredCount++;
                 gameObject.SetActive(false);
             }

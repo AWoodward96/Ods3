@@ -28,10 +28,7 @@ public class mobTechieT1 : AIStandardUnit {
 
         line.positionCount = (segments + 1);
         line.useWorldSpace = false;
-
-        ind_Usable = GetComponentInChildren<UsableIndicator>();
-        ind_Usable.Preset = UsableIndicator.usableIndcPreset.Disarm;
-        ind_Usable.Output = DisarmedDelegate;
+         
         audioSrc = GetComponent<AudioSource>();
         myCharacterController = GetComponent<CharacterController>();
         base.Start();
@@ -53,9 +50,8 @@ public class mobTechieT1 : AIStandardUnit {
             CreatePoints();
         }
 
-        vuln = (base.AIState == EnemyAIState.Vulnerable);
-        line.enabled = vuln;
-        CheckDistance();
+        vuln = (base.AIState == EnemyAIState.Vulnerable); 
+        line.enabled = vuln; 
 
         if (base.AIState == EnemyAIState.Vulnerable && prevState != base.AIState && audioSrc != null && Clips.Length > 0)
         {
@@ -130,23 +126,8 @@ public class mobTechieT1 : AIStandardUnit {
         }
     }
 
-    public virtual void CheckDistance()
-    {
-        ind_Usable.Disabled = !(base.AIState == EnemyAIState.Vulnerable); 
-    }
-
-    void DisarmedDelegate()
-    {
-        GetComponent<Animator>().SetBool("Disarmed", true);
-        base.AIState = EnemyAIState.Defeated;
-
-        // Toss the weapon
-        //usableWeapon w = Instantiate(DisarmedWeapon, transform.position, Quaternion.identity).GetComponent<usableWeapon>();
-        base.TossWeapon(transform.position - playerRef.transform.position);
-
-        //GetComponent<CController>().ApplyForce((transform.position - playerRef.transform.position).normalized * 20);
-        base.myCC.ApplyForce(GlobalConstants.ZeroYComponent(transform.position - playerRef.transform.position).normalized * 20);
-    }
+ 
+ 
  
     public override void AggroState()
     {
@@ -155,10 +136,12 @@ public class mobTechieT1 : AIStandardUnit {
 
     public override void DefeatedState()
     {
-        // Run away from the player  
-        Vector3 moveVec = GlobalConstants.ZeroYComponent(transform.position - playerRef.transform.position);
+        //// Run away from the player  
+        //Vector3 moveVec = GlobalConstants.ZeroYComponent(transform.position - playerRef.transform.position);
          
-        myCC.ApplyForce(moveVec.normalized); 
+        //myCC.ApplyForce(moveVec.normalized); 
+
+        // Stand still because of bug
 
     }
 

@@ -11,7 +11,7 @@ public class StarMiniboss1 : AIStandardUnit{
     public Transform impactPointMarker;
     public Rigidbody explosiveMine;
     public delayedExplosion giantExplosion;
-    public ParticleSystem SmokeBomb;
+    public ParticleSystem SmokeBomb; 
     int jumpPointIndex;
      
     public bool triggered;
@@ -254,6 +254,8 @@ public class StarMiniboss1 : AIStandardUnit{
         // Reset the animation
         SmokeBomb.transform.position = transform.position + Vector3.forward;
         SmokeBomb.Play();
+        SmokeBomb.GetComponent<AudioSource>().Play();
+        
 
         yield return new WaitForSeconds(.5f);
 

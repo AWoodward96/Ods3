@@ -665,8 +665,8 @@ MonoBehaviour:
     PickedUp: 0
   weaponData:
     name: UselessBlaster
-    shotCost: 50
-    fireCD: 1
+    shotCost: 20
+    fireCD: 0.3
     BulletObject: {fileID: 1489644613865720, guid: 373bf6682013d974f85c51bf8328f8de,
       type: 2}
     bulletDamage: 15

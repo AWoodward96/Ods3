@@ -87,6 +87,7 @@
     <Compile Include="Assets\Constants\Materials\Colors\MirrorReflection.cs" />
     <Compile Include="Assets\Level_Data\lvl_Testing\SpriteToPartTesting\ExplodeTest.cs" />
     <Compile Include="Assets\Level_Data\lvl_Testing\SpriteToPartTesting\ParticleAndTarget.cs" />
+    <Compile Include="Assets\Parallax.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\Classes\MovementAI.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IArmed.cs" />
@@ -119,7 +120,9 @@
     <Compile Include="Assets\Scripts\Systems\Sound\FootStepScript.cs" />
     <Compile Include="Assets\Scripts\Systems\Sound\NewMusicManager.cs" />
     <Compile Include="Assets\Scripts\Systems\Sound\myAudioSystem.cs" />
+    <Compile Include="Assets\Scripts\Systems\TitleScreenScript.cs" />
     <Compile Include="Assets\Scripts\Systems\UI\HealthBar.cs" />
+    <Compile Include="Assets\Scripts\Systems\UI\IgnoreRaycast.cs" />
     <Compile Include="Assets\Scripts\Systems\UI\InventoryMenu.cs" />
     <Compile Include="Assets\Scripts\Systems\UI\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Systems\UI\UpgradesBox.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="Assets\Scripts\Unit\EnemyT1\mobCowardUnit.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\mobDroneT1.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\mobDroneT2.cs" />
+    <Compile Include="Assets\Scripts\Unit\EnemyT1\mobIdleStatic.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\mobTCowardMoveTo.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\mobTCowardStatic.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\mobTCowardUnit.cs" />

@@ -59,12 +59,6 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         updatedForcefield = false;
     }
 
-    private void Start()
-    {
-        
-    }
-
-
     // Have to run everything through fixed update
     void FixedUpdate()
     {
@@ -574,7 +568,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             return;
 
         combatCD = 0;
-        InCombat = true;
+        //InCombat = true;
         _newWeapon.myOwner = this;
 		_newWeapon.myShield = GetComponentInChildren<ForceFieldScript>();
 		_newWeapon.myEnergy = GetComponent<EnergyManager>();

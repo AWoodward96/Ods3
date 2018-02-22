@@ -257,9 +257,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     IEnumerator toss(Vector3 _dir)
     {
         yield return new WaitForEndOfFrame();
-
- 
-
+         
         currentWeapon.heldData.Toss(_dir, transform.position);
         if (WeaponSlot2 == currentWeapon)
         {

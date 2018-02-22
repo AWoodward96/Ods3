@@ -462,17 +462,16 @@ MonoBehaviour:
     PickedUp: 0
   weaponData:
     name: Slas' Weapon
-    currentAmmo: 4
-    maxAmmo: 4
-    reloadSpeed: 1
+    shotCost: 5
     fireCD: 0.2
     BulletObject: {fileID: 1943961055214674, guid: a8ef36a3f41b1644d8c364042fec7d17,
       type: 2}
     bulletDamage: 10
     reloadClip: {fileID: 8300000, guid: 2923a5877b56b334b8c5886c017b3eab, type: 3}
-  Reloading: 0
   ShootClip: {fileID: 8300000, guid: 3aa2e87d4f1e6594db45bac5ed7929e7, type: 3}
   myBullets: []
+  myShield: {fileID: 0}
+  myEnergy: {fileID: 0}
 --- !u!114 &114330004121683442
 MonoBehaviour:
   m_ObjectHideFlags: 1
