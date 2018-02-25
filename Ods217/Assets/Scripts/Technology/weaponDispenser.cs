@@ -35,6 +35,8 @@ public class weaponDispenser : MonoBehaviour {
         ind_Indicator.Preset = UsableIndicator.usableIndcPreset.PickUp;
         ind_Indicator.Output = InteractDelegate;
 
+        Player = GameObject.FindGameObjectWithTag("Player");
+
         // Set up the weapon reference
         if(WeaponReference == null && Application.isPlaying)
         { 

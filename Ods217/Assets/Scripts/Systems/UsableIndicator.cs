@@ -96,9 +96,7 @@ public class UsableIndicator : MonoBehaviour
 
     void RunUsable()
     {
-        handlePresets();
-
-        
+        handlePresets(); 
 
         if (!Application.isPlaying)
         {
@@ -112,7 +110,6 @@ public class UsableIndicator : MonoBehaviour
             return;
         }
 
-        handleSelection();
 
         if (Disabled) // If we're disabled we want to hide this so hide it
         {
@@ -121,6 +118,8 @@ public class UsableIndicator : MonoBehaviour
             UpdateAlphaImages();
             return; // Go no further because it doesn't matter, we're disabled
         }
+
+        handleSelection();
 
         if (Grab.ind == this) // If we're hovering over this object then 
         {

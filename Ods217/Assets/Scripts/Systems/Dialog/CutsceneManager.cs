@@ -574,7 +574,32 @@ public class CutsceneManager : MonoBehaviour {
                 savedName = parameters[0].Trim().Replace(")", "");
                 SceneManager.LoadScene(savedName);
                 break;
+            case "TRIGGERIND":
+                // Flip the disabled switch on an EIndicator script
+                // Based on perminants 
+                // TriggerInd(PermName)
+                savedName = parameters[0].Trim().Replace(")", "").ToUpper();
+                if (loadedPermanents.ContainsKey(savedName))
+                {
+                    if (loadedPermanents[savedName] == null)
+                        Debug.Log("Couldn't find perminant on loaded perm: " + savedName);
+                    else
+                    {
+                        UsableIndicator ind = loadedPermanents[savedName].gameObject.GetComponentInChildren<UsableIndicator>();
+                        if(ind != null)
+                        {
+                            ind.Disabled = !ind.Disabled;
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Log("Couldn't find permanent: " + savedName + " within the loaded permanents dictionary. Make sure it's loaded first");
+                }
 
+                actionComplete = true;
+
+                break;
 
             default:
                 Debug.Log("Couldn't process: " + commandID);
