@@ -8,6 +8,9 @@ public class FallPlaneScript : MonoBehaviour
 
 	public int penalty;	// How much HP does the player lose for falling?
 
+	static int numWeaponTosses = 0;
+	static int maxWeaponTosses = 5;
+
 	List<Vector3> safeSpawns;	// Safe places for the player to spawn after a fall
 
 	// Use this for initialization
@@ -57,6 +60,29 @@ public class FallPlaneScript : MonoBehaviour
 				}
 
 				player.transform.position = safeSpawns[winner];
+			}
+		}
+
+		// ... Unless it's a weapon
+		else if(other.gameObject.name == "ThrowMe")
+		{
+			other.gameObject.transform.position = player.transform.position;
+			other.gameObject.transform.position += new Vector3(0.0f, 50.0f, 0.0f);
+
+			other.attachedRigidbody.velocity = new Vector3(0.0f, other.attachedRigidbody.velocity.y, 0.0f);
+			numWeaponTosses++;
+
+			if(numWeaponTosses >= maxWeaponTosses)
+			{
+				// Fun easter egg?
+				CutsceneManager.instance.StartCutscene
+				(
+					"HaltPlayer()\n" +
+					"LoadChar(Con1,Console)\n" +
+					"Say(Console,Stop doing that!)"
+				);
+
+				numWeaponTosses = 0;
 			}
 		}
 	}

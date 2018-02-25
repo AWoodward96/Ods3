@@ -10,6 +10,10 @@ public class lgcSwitchConsole : lgcSwitch {
     public Sprite Open;
     public Sprite Closed;
 
+	public bool isTimed;
+	float currentTime;
+	public float maxTime;
+
     AudioSource src;
 
     public override void Start()
@@ -17,6 +21,8 @@ public class lgcSwitchConsole : lgcSwitch {
         base.Start();
         ind.Preset = UsableIndicator.usableIndcPreset.Interact;
         src = GetComponent<AudioSource>();
+
+		currentTime = 0.0f;
     } 
 
     // Update is called once per frame
@@ -27,7 +33,21 @@ public class lgcSwitchConsole : lgcSwitch {
         {
             ConsoleRenderer.sprite = (Triggered) ? Open : Closed;
 
-        }  
+        } 
+
+		// If it's a timed switch, update the timer
+		if(isTimed && Triggered)
+		{
+			currentTime += Time.deltaTime;
+			if(currentTime >= maxTime)
+			{
+				Triggered = false;
+				currentTime = 0.0f;
+
+				if(src != null)
+					src.Play();
+			}
+		}
     }
     public override void Delegate()
     {

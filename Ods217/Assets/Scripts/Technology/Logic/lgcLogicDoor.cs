@@ -83,7 +83,21 @@ public class lgcLogicDoor: MonoBehaviour, IPermanent {
             }
         }
 
-        State = done; 
+		// If we're done, we need to make sure the timed switches don't close the door again!
+		// We only want to spend time doing this once, though
+		if(done && !State)
+		{
+			for(int i = 0; i < TriggerObjects.Count; i++)
+			{
+				lgcSwitchConsole mySwitch = TriggerObjects[i].GetComponent<lgcSwitchConsole>();
+				if(mySwitch != null)
+				{
+					mySwitch.isTimed = false;
+				}
+			}
+		}
+
+        State = done;
     }
 
     public ZoneScript myZone

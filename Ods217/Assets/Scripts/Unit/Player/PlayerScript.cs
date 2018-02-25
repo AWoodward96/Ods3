@@ -20,6 +20,9 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     ForceFieldScript myForceField;
     bool updatedForcefield;
 
+	[HideInInspector]
+	public int numHealthpacks = 0;
+
     //Vector3 RootPosition = new Vector3(-.138f, -0.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
     //public Vector3 RootPosition = new Vector3(0, -.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
     Vector3 HolsteredPosition = new Vector3(0, .5f, 0);
@@ -62,10 +65,10 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     // Have to run everything through fixed update
     void FixedUpdate()
     {
-        if (AcceptInput)
-            myInput();
+		if(AcceptInput)
+			myFixedInput();
 
-        GunObject();
+       	GunObject();
         Animations();
 
         if (myUnit.CurrentHealth < 0)
@@ -77,6 +80,14 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             UpdateForcefield();
         }
     }
+
+	// Put input code here
+	// There's a chance that FixedUpdate will duplicate the input, causing unintended effects
+	void Update()
+	{
+		if (AcceptInput)
+			myInput();
+	}
 
     void GunObject()
     {
@@ -273,7 +284,8 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
     }
 
-    void myInput()
+	// For input that is physics-based; goes in FixedUpdate
+    void myFixedInput()
     {
         // Basic Movement
         // This could look a lot nicer, but ultimately it gets the job done
@@ -313,62 +325,78 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             }
         }
 
+		handleRolling();
 
-        // Set the springing bool equal to if we have the left shift key held down or not
-        if(!movementType)
-            myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UpgradesManager.MenuOpen);
+    }
 
-        // No shooting if the menu is open
+	// For input that is frame-based; goes in Update
+	void myInput()
+	{
+		// Set the springing bool equal to if we have the left shift key held down or not
+		if(!movementType)
+			myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UpgradesManager.MenuOpen);
+
+		// No shooting if the menu is open
 		if (!MenuManager.MenuOpen && !UpgradesManager.MenuOpen)
-        {
-            // No shooting when we're in a no combat zone
-            if (ZoneScript.ActiveZone.ZoneAggression != ZoneScript.AggressionType.NoCombat)
-            {
-                // Also no shooting if we're sprinting
-                if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)) && Armed)
-                {
-                    if (!Rolling)
-                    { 
-                        WeaponBase weaponToFire = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
-                        weaponToFire.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
-                        combatCD = 0;
- 
-                        if (!InCombat)
-                        {
-                            myAudioSource.clip = AudioClips[0];
-                            myAudioSource.Play();
-                            combatCD = 0;
-                            InCombat = true;
-                        }
-                    }
-                }
-            }
-        }
+		{
+			// No shooting when we're in a no combat zone
+			if (ZoneScript.ActiveZone.ZoneAggression != ZoneScript.AggressionType.NoCombat)
+			{
+				// Also no shooting if we're sprinting
+				if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)) && Armed)
+				{
+					if (!Rolling)
+					{ 
+						WeaponBase weaponToFire = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
+						weaponToFire.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
+						combatCD = 0;
 
-        handleRolling();
+						if (!InCombat)
+						{
+							myAudioSource.clip = AudioClips[0];
+							myAudioSource.Play();
+							combatCD = 0;
+							InCombat = true;
+						}
+					}
+				}
+			}
+		}
 
-        // Handle sprinting
-        if (InCombat && myCtrl.Sprinting != myCtrl.SprintingPrev)
-        {
-            myAudioSource.clip = (myCtrl.Sprinting) ? AudioClips[0] : AudioClips[1];
-            myAudioSource.Play();
-        }
+		// Handle sprinting
+		if (InCombat && myCtrl.Sprinting != myCtrl.SprintingPrev)
+		{
+			myAudioSource.clip = (myCtrl.Sprinting) ? AudioClips[0] : AudioClips[1];
+			myAudioSource.Play();
+		}
 
-        // Handle reload
-        if (Input.GetKeyDown(KeyCode.R) && Armed)
-        {
+		// Handle reload
+		/*if (Input.GetKeyDown(KeyCode.R) && Armed)
+		{
 			// Is reload code even necessary if we're using an energy system?
 
-            /*WeaponBase weaponToReload = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
-            weaponToReload.ForceReload();*/
-        }
+			WeaponBase weaponToReload = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
+            weaponToReload.ForceReload();
+		}*/
 
-        if (Input.GetMouseButtonDown(1)) // When we left click throw our weapon
-        {
-            TossWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
-        }
- 
-    }
+		if (Input.GetMouseButtonDown(1)) // When we left click throw our weapon
+		{
+			TossWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
+		}
+
+		// Secondary weapon != null because we don't want the player to be able to switch if they only have one weapon /  none at all
+		if(Input.GetKeyDown(KeyCode.Q) && SecondaryWeapon != null)
+		{
+			SwitchWeapons();
+		}
+
+		// Use a healthpack (currently functions as a full heal)
+		if(Input.GetKeyDown(KeyCode.R) && numHealthpacks > 0)
+		{
+			myUnit.CurrentHealth = myUnit.MaxHealth;
+			numHealthpacks--;
+		}
+	}
 
     public void TossWeapon(Vector3 _dir)
     {
@@ -388,8 +416,6 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         }
 
         myVisualizer.BuildAmmoBar();
-
-     
     }
 
     public void OnDeath()
@@ -637,6 +663,14 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
         myVisualizer.BuildAmmoBar();
     }
+
+	public void SwitchWeapons()
+	{
+		ActiveWeapon = ((ActiveWeapon == PrimaryWeapon) ? SecondaryWeapon : PrimaryWeapon);
+
+		myAudioSource.clip = AudioClips[1];
+		myAudioSource.Play();
+	}
 
     bool Armed
     {

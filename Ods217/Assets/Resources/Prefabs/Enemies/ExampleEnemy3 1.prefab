@@ -862,8 +862,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1588453434845394}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 176.98, y: 4.58, z: -194.82}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalPosition: {x: 96.66, y: 4.23, z: -3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224534097812505762}
   - {fileID: 224431315000937600}
@@ -1350,8 +1350,8 @@ MonoBehaviour:
     PickedUp: 0
   weaponData:
     name: UselessBlaster
-    shotCost: 50
-    fireCD: 1
+    shotCost: 10
+    fireCD: 0.3
     BulletObject: {fileID: 1489644613865720, guid: 373bf6682013d974f85c51bf8328f8de,
       type: 2}
     bulletDamage: 15
@@ -1812,8 +1812,8 @@ MonoBehaviour:
   ActiveInd: 0
   Disabled: 0
   curGrab:
-    distanceToCursor: 0
-    distanceToPlayer: 0
+    distanceToCursor: 100000
+    distanceToPlayer: 100000
     ind: {fileID: 0}
   OverrideTransform: {fileID: 4708859734736816}
   OverrideAdditionalVec: {x: 0, y: -1, z: 0}
@@ -2039,8 +2039,8 @@ MonoBehaviour:
     Name: 
     MaxHealth: 30
     CurrentHealth: 30
-    MaxEnergy: 100
-    CurrentEnergy: 100
+    MaxEnergy: 20
+    CurrentEnergy: 20
   animationHandler:
     LookingVector: {x: 0, y: 0, z: -4}
     faceFront: 1
@@ -2075,8 +2075,8 @@ MonoBehaviour:
   WeaponSlot2: {fileID: 0}
   Zone: {fileID: 0}
   Clips:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: b0da78533e2a8bd4482ddc5aff2ea3d9, type: 3}
+  - {fileID: 8300000, guid: ed4118fe40e61de41a1f08e5828ffe9f, type: 3}
 --- !u!114 &114796115509882866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2198,7 +2198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Preset: 1
   Style: 0
-  Range: 2.5
+  Range: 3.5
   ActiveInd: 0
   Disabled: 0
   curGrab:
@@ -2221,7 +2221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921db120924395041b114986c41ece00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RegenTime: 3
+  RegenTime: 2
   ChargeDelay: 3
   timeSinceHit: 0
   BrokenEnergy: 0
@@ -2331,12 +2331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b81ee4df432f64480bfda31bd05d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletBarCovers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!120 &120513262794088302
 LineRenderer:
   m_ObjectHideFlags: 1
