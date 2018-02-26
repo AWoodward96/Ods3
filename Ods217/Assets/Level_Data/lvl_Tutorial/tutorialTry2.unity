@@ -5735,8 +5735,8 @@ MonoBehaviour:
   ActiveInd: 0
   Disabled: 0
   curGrab:
-    distanceToCursor: 0
-    distanceToPlayer: 0
+    distanceToCursor: 100000
+    distanceToPlayer: 100000
     ind: {fileID: 0}
   OverrideTransform: {fileID: 1102380221}
   OverrideAdditionalVec: {x: 0, y: 0, z: 0}
@@ -7321,7 +7321,7 @@ MonoBehaviour:
     PickedUp: 0
   weaponData:
     name: Slas' Weapon
-    shotCost: 25
+    shotCost: 5
     fireCD: 0.2
     BulletObject: {fileID: 1943961055214674, guid: a8ef36a3f41b1644d8c364042fec7d17,
       type: 2}
@@ -7627,6 +7627,10 @@ Prefab:
         type: 2}
       propertyPath: Range
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4846252317784190, guid: 7110f360c5213334cb2fb2ac939322b9, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114757643175565328, guid: 7110f360c5213334cb2fb2ac939322b9, type: 2}
@@ -8580,10 +8584,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myUnit:
     Name: Basic
-    MaxHealth: 100
-    CurrentHealth: 100
-    MaxEnergy: 100
-    CurrentEnergy: 100
+    MaxHealth: 30
+    CurrentHealth: 30
+    MaxEnergy: 20
+    CurrentEnergy: 20
+  numHealthpacks: 0
   InCombat: 0
   Rolling: 0
   RollSpeed: 20
@@ -8772,7 +8777,12 @@ Prefab:
     - target: {fileID: 114191717976864662, guid: 17ea6451428c02544bb8faa107fc5c2f,
         type: 2}
       propertyPath: weaponData.shotCost
-      value: 10
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114191717976864662, guid: 17ea6451428c02544bb8faa107fc5c2f,
+        type: 2}
+      propertyPath: weaponData.bulletDamage
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 17ea6451428c02544bb8faa107fc5c2f, type: 2}

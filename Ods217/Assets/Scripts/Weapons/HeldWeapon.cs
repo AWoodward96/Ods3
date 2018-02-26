@@ -65,6 +65,10 @@ public class HeldWeapon {
         // First things first, toggle the flag to say we're being used
         PickedUp = true;
 
+        ind_MyIndicator.Disabled = true;
+        if (ind_MyIndicator == UsableIndicator.Grab.ind)
+            UsableIndicator.ResetInd();
+
         // Reset the thrownObj
         thrownObj.transform.localRotation = Quaternion.identity;
         thrownObj.transform.parent = weaponBase.transform;
@@ -84,9 +88,7 @@ public class HeldWeapon {
         {
             Debug.Log("Weapon is not initialized: " + this);
             return;
-        }
-
-
+        } 
 
         // First things first, toggle the flag to say we're being used
         PickedUp = true;
@@ -109,6 +111,11 @@ public class HeldWeapon {
 
         // First things first, toggle the flag to say we're being used
         PickedUp = true;
+
+        ind_MyIndicator.Disabled = true;
+        if (ind_MyIndicator == UsableIndicator.Grab.ind)
+            UsableIndicator.ResetInd();
+          
 
         // Reset the thrownObj
         thrownObj.transform.localRotation = Quaternion.identity;
@@ -157,6 +164,7 @@ public class HeldWeapon {
         weaponBase.transform.rotation = Quaternion.identity;
         weaponBase.transform.localScale = Vector3.one;
 
+        ind_MyIndicator.Disabled = false;
 
         if (DEBUG) Debug.Log("HeldWeapon: Toss");
 

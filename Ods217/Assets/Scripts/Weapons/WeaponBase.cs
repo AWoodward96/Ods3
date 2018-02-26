@@ -87,6 +87,7 @@ public class WeaponBase : MonoBehaviour {
 
         UpdateBullets();
 
+
         currentshootCD += Time.deltaTime;
 	}
 

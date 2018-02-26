@@ -110,16 +110,21 @@ public class UsableIndicator : MonoBehaviour
             return;
         }
 
-
         if (Disabled) // If we're disabled we want to hide this so hide it
         {
             alphaValue -= alphaSpeed;
             alphaValue = Mathf.Max(0, alphaValue);
             UpdateAlphaImages();
+
+            if (Grab.ind == this)
+                Grab = resetInd;
+
             return; // Go no further because it doesn't matter, we're disabled
         }
 
         handleSelection();
+
+         
 
         if (Grab.ind == this) // If we're hovering over this object then 
         {
@@ -289,6 +294,16 @@ public class UsableIndicator : MonoBehaviour
         Color c2 = myText.color;
         c2.a = alphaValue;
         myText.color = c2;
+    }
+
+    public static void ResetInd()
+    {
+        IndicatorInfo i;
+        // A copy of the reset ind, hardcoded because static
+        i.ind = null;
+        i.distanceToPlayer = 100000;
+        i.distanceToCursor = 100000;
+        Grab = i;
     }
 }
 
