@@ -12,8 +12,13 @@ public class lgcSwitchConsole : lgcSwitch {
 
 	public bool isTimed;
 	float currentTime;
-	public float maxTime;
+    float soundTime;
+    float clickRate;
+    public float maxTime;
 
+    [Header("Sound")]
+    public AudioClip toggleSound;
+    public AudioClip clickingSound;
     AudioSource src;
 
     public override void Start()
@@ -22,6 +27,7 @@ public class lgcSwitchConsole : lgcSwitch {
         ind.Preset = UsableIndicator.usableIndcPreset.Interact;
         src = GetComponent<AudioSource>();
 
+        soundTime = 0.0f;
 		currentTime = 0.0f;
     } 
 
@@ -31,14 +37,25 @@ public class lgcSwitchConsole : lgcSwitch {
         // Update the sprite renderer
         if (ConsoleRenderer != null)
         {
-            ConsoleRenderer.sprite = (Triggered) ? Open : Closed;
-
+            ConsoleRenderer.sprite = (Triggered) ? Open : Closed; 
         } 
 
 		// If it's a timed switch, update the timer
 		if(isTimed && Triggered)
 		{
 			currentTime += Time.deltaTime;
+            soundTime += Time.deltaTime;
+
+            // Handle the clicking sound
+            clickRate = (currentTime >= (maxTime * .75f)) ? .25f : .5f;
+            if(soundTime > clickRate)
+            {
+                src.clip = clickingSound;
+                src.Play();
+                soundTime = 0;
+            } 
+
+            // Handle the logic
 			if(currentTime >= maxTime)
 			{
 				Triggered = false;
@@ -53,6 +70,10 @@ public class lgcSwitchConsole : lgcSwitch {
     {
         base.Delegate();
         if (src != null)
+        {
+            src.clip = toggleSound;
             src.Play();
+
+        }
     }
 }

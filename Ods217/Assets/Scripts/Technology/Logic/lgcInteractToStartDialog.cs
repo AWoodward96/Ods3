@@ -6,8 +6,7 @@ using UnityEngine;
 /// A logic script
 /// If you're close enough, display an E indicator
 /// Once interacted with, start a dialog
-/// </summary>
-[RequireComponent(typeof(UsableIndicator))]
+/// </summary> 
 public class lgcInteractToStartDialog : MonoBehaviour
 {
     [Range(.1f, 10)]
