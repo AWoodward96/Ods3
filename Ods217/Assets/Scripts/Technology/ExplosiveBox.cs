@@ -24,10 +24,17 @@ public class ExplosiveBox : MonoBehaviour, IDamageable {
     Vector3 brokenPosition = new Vector3(2, .1f, -2);
 
     // Use this for initialization
-    void Start () {
+    /*void Start () {
         mySystem = GetComponentInChildren<ParticleSystem>();
         src = GetComponent<AudioSource>();
         myCol = GetComponent<BoxCollider>();
+	}*/
+
+	void Awake()
+	{
+		mySystem = GetComponentInChildren<ParticleSystem>();
+		src = GetComponent<AudioSource>();
+		myCol = GetComponent<BoxCollider>();
 	}
 	
  

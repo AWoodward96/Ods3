@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour {
             newData.FileName = "BetaTest2.ods";
             newData.Username = "Author";
             GameData = newData;
-            WriteSaveFile(newData.FileName);
+            //WriteSaveFile(newData.FileName);
         }
 
         //SceneManager.sceneLoaded += LevelLoaded;
@@ -76,18 +76,18 @@ public class GameManager : MonoBehaviour {
 
         // Some keystrokes to work with saving and loading files
         if (Input.GetKeyDown(KeyCode.Alpha8))
-            WriteSaveFile("Beta");
+            WriteSaveFile("BetaTest2.ods");
 
         if (Input.GetKeyDown(KeyCode.Alpha9))
-            LoadSaveFile("Beta");
+			LoadSaveFile("BetaTest2.ods");
        
 		// Temp fix to see if player data transfers to a new room
-		if(Input.GetKeyDown(KeyCode.KeypadPlus))
+		/*if(Input.GetKeyDown(KeyCode.KeypadPlus))
 		{
 			PreservePlayer();
 			SceneManager.LoadScene("Level_Data/lvl_Spire/Spire");
 			SceneManager.sceneLoaded += RestorePlayer;
-		}
+		}*/
     }
 
     public void LoadScene(string _Name)
@@ -147,21 +147,49 @@ public class GameManager : MonoBehaviour {
 			{
 				writer.WriteLine("null");
 			}
+				
+			// First, write down which permanents are active!
+			writer.WriteLine("$PHASE");
+			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
+			{
+				writer.WriteLine(currentSceneData.Permanents[i].Object.activeInHierarchy);
+			}
 
-
-			// Which doors are shut/locked (currentSceneData.Permanents[].GetComponent<SlidingDoor>().State)
+			// Next, write which ones are triggered!
+			writer.WriteLine("$PHASE");
+			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
+			{
+				writer.WriteLine(currentSceneData.Permanents[i].Object.GetComponent<IPermanent>().Triggered);
+			}
+				
+			// Which doors locked (currentSceneData.Permanents[].GetComponent<SlidingDoor>().State)
+			writer.WriteLine("$PHASE");
 			SlidingDoor currentDoor;
 			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
 			{
 				currentDoor = currentSceneData.Permanents[i].Object.GetComponent<SlidingDoor>();
 				if(currentDoor != null)
 				{
-					writer.WriteLine(currentDoor.State);
 					writer.WriteLine(currentDoor.Locked);
 				}
 			}
 
-			// Remaining enemies (currentSceneData.Permanents[])
+			// Where are the elevators
+			writer.WriteLine("$PHASE");
+			StandardElevator currentElevator;
+			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
+			{
+				currentElevator = currentSceneData.Permanents[i].Object.GetComponent<StandardElevator>();
+				if(currentElevator != null)
+				{
+					writer.WriteLine(currentElevator.FloorIndex);
+				}
+			}
+
+			writer.WriteLine("$PHASE");
+
+			// Remaining enemies (currentSceneData.Permanents[]) :: Commented out because the active permanent check makes this obsolete ::
+			/*writer.WriteLine("$PHASE");
 			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
 			{
 				if(currentSceneData.Permanents[i].Object.GetComponent<AIStandardUnit>() != null)
@@ -169,7 +197,7 @@ public class GameManager : MonoBehaviour {
 					// I feel like this is hacky; replace this with a check if their HP is 0, or something like that
 					writer.WriteLine(currentSceneData.Permanents[i].Object.activeInHierarchy);
 				}
-			}
+			}*/
 
             writer.WriteLine(System.DateTime.Now);
 
@@ -276,51 +304,101 @@ public class GameManager : MonoBehaviour {
         string actualPath = Application.dataPath + '\\' + _filePath;
         if (!File.Exists(actualPath))
             return;
+
+		// Make sure you've got the scene data
+		if (currentSceneData == null)
+		{
+			currentSceneData = FindObjectOfType<SceneData>();
+		}
+			
+		GameData.permsActive = new List<bool>();
+		GameData.permsTriggered = new List<bool>();
+
+		GameData.doorsLocked = new List<bool>();
+		GameData.elevatorIndices = new List<int>();
  
         using (StreamReader reader = new StreamReader(actualPath))
         {
             string val;
             int linenum = 0;
+			int phase = 0;
             while((val = reader.ReadLine()) != null)
             {
-                switch (linenum)
-                {
-                    case 0:
-                        GameData.Username = val;
-                        break;
-                    case 2:
-                        GameData.LevelName = val;
-                        break;
-                    case 3:
-                        int.TryParse(val, out GameData.scrapCount);
-                        ScrapCount = GameData.scrapCount;
-                        break;
-                    case 4:
-                        GameData.SavedPlayerPosition = GlobalConstants.StringToVector3(val);
-                        break;
+				// Player info
+				if(linenum <= 8)
+				{
+	                switch (linenum)
+	                {
+	                    case 0:
+	                        GameData.Username = val;
+	                        break;
+	                    case 2:
+	                        GameData.LevelName = val;
+	                        break;
+	                    case 3:
+	                        int.TryParse(val, out GameData.scrapCount);
+	                        ScrapCount = GameData.scrapCount;
+	                        break;
+	                    case 4:
+	                        GameData.SavedPlayerPosition = GlobalConstants.StringToVector3(val);
+	                        break;
 
-					// Add the other things to read here, Ed!
-					// Player HP
-					case 5:
-						int.TryParse(val, out GameData.PlayerHP);
-						break;
+						// Add the other things to read here, Ed!
+						// Player HP
+						case 5:
+							int.TryParse(val, out GameData.PlayerHP);
+							break;
 
-					// Player's Primary Weapon
-					case 6:
-						GameData.PlayerWeapon1 = val;
-						break;
-					
-					// Player's Secondary Weapon
-					case 7:
-						GameData.PlayerWeapon2 = val;
-						break;
-
-					// Player's Active Weapon
-					case 8:
-						GameData.PlayerWeaponActive = val;
-						break;
+						// Player's Primary Weapon
+						case 6:
+							GameData.PlayerWeapon1 = val;
+							break;
 						
-                }
+						// Player's Secondary Weapon
+						case 7:
+							GameData.PlayerWeapon2 = val;
+							break;
+
+						// Player's Active Weapon
+						case 8:
+							GameData.PlayerWeaponActive = val;
+							break;
+							
+	                }
+				}
+				// Level info
+				else
+				{
+					if(val == "$PHASE")
+					{
+						phase++;
+					}
+
+					// Permanents Active
+					else if(phase == 1)
+					{
+						GameData.permsActive.Add(val.Trim().ToUpper() == "TRUE");
+					}
+
+					// Permanents Triggered
+					else if(phase == 2)
+					{
+						GameData.permsTriggered.Add(val.Trim().ToUpper() == "TRUE");
+					}
+
+					// Doors Locked
+					else if(phase == 3)
+					{
+						GameData.doorsLocked.Add(val.Trim().ToUpper() == "TRUE");
+					}
+
+					// Elevator indices
+					else if(phase == 4)
+					{
+						GameData.elevatorIndices.Add(int.Parse(val.Trim()));
+					}
+				}
+
                 linenum++;
             }
 
@@ -394,13 +472,49 @@ public class GameManager : MonoBehaviour {
 
 		currentSceneData.LoadList();
 
-		SceneManager.sceneLoaded -= LevelLoaded;
+		// Set the permanents' values
+		SlidingDoor currentDoor;
+		int doorCount = 0;
 
-        // Make sure you've got the scene data
-        if(currentSceneData == null)
-        {
-            currentSceneData = FindObjectOfType<SceneData>();
-        }
+		StandardElevator currentElevator;
+		int elevatorCount = 0;
+
+		for(int i = 0; i < currentSceneData.Permanents.Count; i++)
+		{
+			if(!GameData.permsActive[i])
+			{
+				currentSceneData.Permanents[i].Object.SetActive(false);
+				continue;
+			}
+
+			currentSceneData.Permanents[i].Object.SetActive(true);
+
+			if(!currentSceneData.Permanents[i].Object.GetComponent<IPermanent>().Triggered == GameData.permsTriggered[i])
+			{
+				currentSceneData.Permanents[i].Object.GetComponent<IPermanent>().Triggered = GameData.permsTriggered[i];
+			}
+
+			// Doors
+			currentDoor = currentSceneData.Permanents[i].Object.GetComponent<SlidingDoor>();
+			if(currentDoor != null)
+			{
+				currentDoor.Locked = GameData.doorsLocked[doorCount];
+				doorCount++;
+				continue;
+			}
+
+			// Elevators
+			currentElevator = currentSceneData.Permanents[i].Object.GetComponent<StandardElevator>();
+			if(currentElevator != null)
+			{
+				currentElevator.FloorIndex = GameData.elevatorIndices[elevatorCount];
+				currentElevator.transform.position = currentElevator.ArrivalPoints[currentElevator.FloorIndex].transform.position;
+				elevatorCount++;
+				continue;
+			}
+		}
+
+		SceneManager.sceneLoaded -= LevelLoaded;
     }
 
     public void LoadLastSaveFile()
@@ -431,6 +545,12 @@ public struct MetaData
 	public string PlayerWeapon1;
 	public string PlayerWeapon2;
 	public string PlayerWeaponActive;
+
+	public List<bool> permsActive;
+	public List<bool> permsTriggered;
+
+	public List<bool> doorsLocked;
+	public List<int> elevatorIndices;
 }
 
 [System.Serializable]

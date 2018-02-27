@@ -8,9 +8,9 @@ using UnityEngine;
 ///  Loops through all the Objects, it they're IPermenants then check if they're triggered, if they're IDamageable then check if they're alive
 ///  Set an objects trigger state to true only if all IDamageable's are dead and/or all IPermenants are triggered
 /// </summary>
-public class lgcLogicDoor: MonoBehaviour, IPermanent {
+public class lgcLogicDoor: SlidingDoor {
 
-    public GameObject Door1;
+   /* public GameObject Door1;
     public GameObject Door2;
     public Vector3 DoorPos1True;
     public Vector3 DoorPos2True;
@@ -22,13 +22,14 @@ public class lgcLogicDoor: MonoBehaviour, IPermanent {
     public bool State;
     public bool Locked;  
 
-    ZoneScript Zone;
+    ZoneScript Zone;*/
      
 	public List<GameObject> TriggerObjects;
 
     List<IDamageable> harmTriggers;
     List<IPermanent> triggers;
-      
+
+	bool wasTriggered;
 
 	void Awake()
 	{
@@ -49,15 +50,14 @@ public class lgcLogicDoor: MonoBehaviour, IPermanent {
             {
                 triggers.Add(perm);
             }
-
-		 
 		}
+
+		wasTriggered = false;
 	}
 
     // Update is called once per frame
     void Update()
     {
-
         Door1.transform.localPosition = Vector3.Lerp(Door1.transform.localPosition, (State && !Locked) ? DoorPos1True : DoorPos1False, Speed * Time.deltaTime);
         Door2.transform.localPosition = Vector3.Lerp(Door2.transform.localPosition, (State && !Locked) ? DoorPos2True : DoorPos2False, Speed * Time.deltaTime);
  
@@ -85,7 +85,7 @@ public class lgcLogicDoor: MonoBehaviour, IPermanent {
 
 		// If we're done, we need to make sure the timed switches don't close the door again!
 		// We only want to spend time doing this once, though
-		if(done && !State)
+		if(done && !wasTriggered)
 		{
 			for(int i = 0; i < TriggerObjects.Count; i++)
 			{
@@ -98,37 +98,6 @@ public class lgcLogicDoor: MonoBehaviour, IPermanent {
 		}
 
         State = done;
-    }
-
-    public ZoneScript myZone
-    {
-        get
-        {
-            return Zone;
-        }
-
-        set
-        {
-            Zone = value;
-        }
-    }
-
-    public bool Triggered
-    {
-        get
-        {
-            return State ;
-        }
-
-        set
-        {
-            State  = value;
-        }
-    }
-
-
-    public void Activate()
-    {
-		
+		wasTriggered = State;
     }
 }

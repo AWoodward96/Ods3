@@ -497,6 +497,7 @@ GameObject:
   - component: {fileID: 114757643175565328}
   - component: {fileID: 82608724689810580}
   - component: {fileID: 114887873811788676}
+  - component: {fileID: 65309143246602252}
   m_Layer: 9
   m_Name: ExampleEnemy3 1
   m_TagString: Untagged
@@ -900,6 +901,18 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.6666667, y: 0.8333335, z: 0.20000005}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65309143246602252
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1588453434845394}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.6666667, y: 4, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &82509103559732422
 AudioSource:
@@ -2331,12 +2344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b81ee4df432f64480bfda31bd05d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletBarCovers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!120 &120513262794088302
 LineRenderer:
   m_ObjectHideFlags: 1

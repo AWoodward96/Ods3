@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StandardElevator : MonoBehaviour {
+public class StandardElevator : MonoBehaviour, IPermanent {
 
 
     public float Range;
@@ -22,7 +23,7 @@ public class StandardElevator : MonoBehaviour {
 
     PlayerScript myPlayer;
 
-   
+	ZoneScript zone;
 
 
     // Use this for initialization
@@ -133,4 +134,33 @@ public class StandardElevator : MonoBehaviour {
         Gizmos.color = c;
         Gizmos.DrawSphere(transform.position + (Vector3.up * 2), Range);
     }
+
+	public void Activate()
+	{
+		throw new NotImplementedException();
+	}
+
+	public ZoneScript myZone
+	{
+		get
+		{
+			return zone;
+		}
+		set
+		{
+			zone = value;
+		}
+	}
+
+	public bool Triggered
+	{
+		get
+		{
+			return false;	
+		}
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

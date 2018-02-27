@@ -46,7 +46,8 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
             else
                 CutsceneManager.instance.StartCutscene(Dialog);
 
-            myBoxCollider.enabled = false;
+            //myBoxCollider.enabled = false;
+			gameObject.SetActive(false);
         }
     }
 
