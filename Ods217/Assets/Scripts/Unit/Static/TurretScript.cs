@@ -19,8 +19,7 @@ public class TurretScript : MonoBehaviour, IArmed {
     AudioSource mySource;
     HealthBar myHealthBar;
     Light onOffLight;
-    WeaponBase myWeapon; 
-    bool reloadinginprocess;
+    WeaponBase myWeapon;  
    
 
     // Use this for initialization
@@ -62,8 +61,7 @@ public class TurretScript : MonoBehaviour, IArmed {
             }*/
         }else
         {
-            mySystem.Stop();
-            reloadinginprocess = false;
+            mySystem.Stop(); 
         } 
 	}
 

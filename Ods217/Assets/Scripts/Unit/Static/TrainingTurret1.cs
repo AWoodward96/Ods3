@@ -87,6 +87,11 @@ public class TrainingTurret1 : MonoBehaviour, IArmed {
 
     public void OnHit(int _damage)
     {
+        // Don't allow hits from similar weapons
+        // This is a work around a softlock during the tutorial. This isn't normal but it's how we're gonna handle it for now
+        if (_damage == 11)
+            return;
+
         myUnit.CurrentHealth -= _damage;
         healthBar.ShowMenu();
 

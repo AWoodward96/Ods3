@@ -15,10 +15,10 @@ public class lgcInteractToTrigger : MonoBehaviour {
     List<IPermanent> triggerObjects;
     AudioSource mySource;
 
-    [Range(.1f, 10)]
-    public float Range;
-    public bool Interactable;
- 
+
+    public bool SingleUse;
+    bool used;
+
     UsableIndicator ind_Interactable;
     GameObject Player;
 
@@ -48,6 +48,11 @@ public class lgcInteractToTrigger : MonoBehaviour {
  
     void InteractDelgate()
     {
+        if (SingleUse && used)
+            return;
+
+        used = true;
+
         foreach (IPermanent perm in triggerObjects)
         {
             perm.Triggered = !perm.Triggered;
@@ -60,11 +65,4 @@ public class lgcInteractToTrigger : MonoBehaviour {
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Color c = Color.blue;
-        c.a = .1f;
-        Gizmos.color = c;
-        Gizmos.DrawSphere(transform.position, Range);
-    }
 }

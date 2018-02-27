@@ -68,4 +68,10 @@ MonoBehaviour:
     PortImg: {fileID: 21300024, guid: 4639180d9c09cef40b484fbfd6243519, type: 3}
   - PortId: LookLeft
     PortImg: {fileID: 21300026, guid: 4639180d9c09cef40b484fbfd6243519, type: 3}
+  - PortId: Paper1
+    PortImg: {fileID: 21300028, guid: 4639180d9c09cef40b484fbfd6243519, type: 3}
+  - PortId: Paper2
+    PortImg: {fileID: 21300030, guid: 4639180d9c09cef40b484fbfd6243519, type: 3}
+  - PortId: Paper3
+    PortImg: {fileID: 21300032, guid: 4639180d9c09cef40b484fbfd6243519, type: 3}
   talkingClip: {fileID: 8300000, guid: 5d619a0aab7cc11429e7b13f3520e1b9, type: 3}

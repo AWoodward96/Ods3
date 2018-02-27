@@ -19,6 +19,8 @@ public class CamScript : MonoBehaviour
 
     public Transform Vizualiser;
 
+    PlayerScript player;
+
     bool Loaded;
     float loadedPoint = 0;
 
@@ -45,21 +47,31 @@ public class CamScript : MonoBehaviour
             // Take its position and add a standard distance from it
             Vector3 Additive = Target.position + FollowBack;
 
-            // If we're not in cutscene and the menu is not open, do not account for the cursors position
-            if (!CutsceneManager.InCutscene && !UpgradesManager.MenuOpen)
+            if(playerRef != null)
             {
-                // Otherwise, shift the cameras position towards where the cursor is
-                Vector3 toCursor = CursorLocation - transform.position;
-                toCursor = GlobalConstants.ZeroYComponent(toCursor);
-                if (toCursor.magnitude > 6)
-                    toCursor = toCursor.normalized * 6;
+                // If we're not in cutscene and the menu is not open, do not account for the cursors position
+                if (playerRef.AcceptInput && !UpgradesManager.MenuOpen)
+                {
+                    // Otherwise, shift the cameras position towards where the cursor is
+                    Vector3 toCursor = CursorLocation - transform.position;
+                    toCursor = GlobalConstants.ZeroYComponent(toCursor);
+                    if (toCursor.magnitude > 6)
+                        toCursor = toCursor.normalized * 6;
 
-                Additive += toCursor;
-            }else
+                    Additive += toCursor;
+                }
+                else
+                {
+                    // W/o the cursor, the focus gets a bit weird, add a z vector to fix
+                    Additive += (Vector3.forward * 6);
+                }
+            }
+            else
             {
                 // W/o the cursor, the focus gets a bit weird, add a z vector to fix
                 Additive += (Vector3.forward * 6);
             }
+
 
             Additive.y = Target.position.y + FollowBack.y;
 
@@ -131,6 +143,18 @@ public class CamScript : MonoBehaviour
 
         if (transform.position.z < (ExtentsBR.z - bottomBounds))
             transform.position = new Vector3(transform.position.x, transform.position.y, (ExtentsBR.z - bottomBounds));
+    }
+
+
+    public virtual PlayerScript playerRef
+    {
+        get
+        {
+            if (player == null)
+                player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+
+            return player;
+        }
     }
 
     void CursorToWorld()

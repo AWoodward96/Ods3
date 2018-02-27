@@ -471,11 +471,12 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         // Badoop badoop you were hit by a bullet :)
         // Take damage why did I add a smiley you know what it doesn't matter
         myVisualizer.ShowMenu();
+        combatCD = 0;
+
         if (!InCombat)
         {
             myAudioSource.clip = AudioClips[0];
             myAudioSource.Play();
-            combatCD = 0;
             InCombat = true;
         }
 

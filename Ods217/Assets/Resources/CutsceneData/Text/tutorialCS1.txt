@@ -39,8 +39,11 @@ Say(Con1,Ok like any mission the first thing you should to is to get familiar wi
 Say(Con1,Let's practice this now.)
 Continue(Use the mouse to look around.) 
 EndSay()
+Resume()
 
 Wait(5)
+
+HaltPlayer()
  
 Say(Con1, Ok wow that was boring.,Sad)
 Say(Con1, Lets get on with the actual tutorial now shall we?,Happy)

@@ -20,6 +20,8 @@ public class oneofTutorialTracker3 : MonoBehaviour, IPermanent {
 
     public GameObject[] turretObjects;
     TrainingTurret1[] turretScripts;
+
+
     int turretCounter = 0;
 
     BoxCollider myCollider;
@@ -43,6 +45,9 @@ public class oneofTutorialTracker3 : MonoBehaviour, IPermanent {
         set
         {
             triggered = value;
+           
+            if(turretCounter == 0)
+                StartCoroutine(handleSpawn(turretObjects[turretCounter]));
         }
     }
 
@@ -124,7 +129,6 @@ public class oneofTutorialTracker3 : MonoBehaviour, IPermanent {
         if(other.tag == "Player" && !triggered)
         { 
             CutsceneManager.instance.StartCutscene(Dialog1);
-            StartCoroutine(handleSpawn(turretObjects[turretCounter]));
         }
     }
 
@@ -135,6 +139,7 @@ public class oneofTutorialTracker3 : MonoBehaviour, IPermanent {
 
     void checkTurretsIfAlive()
     {
+         
         int checker = 0;
     
         for(int i = 0; i < turretScripts.Length; i++)
