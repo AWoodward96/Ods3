@@ -603,8 +603,7 @@ public class CutsceneManager : MonoBehaviour {
 
 			case "DISABLEOBJECT":
 				// Disables the indicated object; does not need to be loaded in-cutscene
-				// DisableObject(ObjectInSceneName)
-				Debug.Log("Cutscene Triggered!");
+				// DisableObject(ObjectInSceneName) 
 				ObjectInSceneName = parameters[0].Trim().Replace(")", "");
 				GameObject myObj = GameObject.Find(ObjectInSceneName);
 				if(myObj != null)
@@ -617,6 +616,16 @@ public class CutsceneManager : MonoBehaviour {
 				}
 				actionComplete = true;
 				break;
+            case "LOADSCENE":
+                savedName = parameters[0].Trim().Replace(")", "").ToUpper();
+                GameManager.instance.LoadScene(savedName);
+                actionComplete = true;
+                break;
+
+            case "SAVE":
+                GameManager.instance.WriteToCurrentSave();
+                actionComplete = true;
+                break;
 
 		case "TOGGLEDOORLOCK":
 			// Sets the door lock to the given value
@@ -677,6 +686,7 @@ public class CutsceneManager : MonoBehaviour {
 			}
 			actionComplete = true;
 			break;
+           
 				
 
             default:

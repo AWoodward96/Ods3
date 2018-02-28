@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 8da840f976751f14d8afbd049f93b8da
-timeCreated: 1517965966
+timeCreated: 1519780143
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -22,6 +22,25 @@ TextureImporter:
     21300030: unit_Fredrick_15
     21300032: unit_Fredrick_16
     21300034: unit_Fredrick_17
+    21300036: unit_Fredrick_18
+    21300038: unit_Fredrick_19
+    21300040: unit_Fredrick_20
+    21300042: unit_Fredrick_21
+    21300044: unit_Fredrick_22
+    21300046: unit_Fredrick_23
+    21300048: unit_Fredrick_24
+    21300050: unit_Fredrick_25
+    21300052: unit_Fredrick_26
+    21300054: unit_Fredrick_27
+    21300056: unit_Fredrick_28
+    21300058: unit_Fredrick_29
+    21300060: unit_Fredrick_30
+    21300062: unit_Fredrick_31
+    21300064: unit_Fredrick_32
+    21300066: unit_Fredrick_33
+    21300068: unit_Fredrick_34
+    21300070: unit_Fredrick_35
+    21300072: unit_Fredrick_36
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -92,7 +111,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 101
+        y: 251
         width: 32
         height: 48
       alignment: 0
@@ -105,7 +124,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 35
-        y: 101
+        y: 251
         width: 32
         height: 48
       alignment: 0
@@ -118,7 +137,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 69
-        y: 101
+        y: 251
         width: 32
         height: 48
       alignment: 0
@@ -131,7 +150,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 103
-        y: 101
+        y: 251
         width: 32
         height: 48
       alignment: 0
@@ -144,7 +163,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 137
-        y: 101
+        y: 251
         width: 32
         height: 48
       alignment: 0
@@ -157,7 +176,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 171
-        y: 101
+        y: 251
         width: 32
         height: 48
       alignment: 0
@@ -170,7 +189,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 205
-        y: 101
+        y: 251
         width: 32
         height: 48
       alignment: 0
@@ -183,7 +202,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 51
+        y: 201
         width: 32
         height: 48
       alignment: 0
@@ -196,7 +215,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 35
-        y: 51
+        y: 201
         width: 32
         height: 48
       alignment: 0
@@ -209,7 +228,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 69
-        y: 51
+        y: 201
         width: 32
         height: 48
       alignment: 0
@@ -222,7 +241,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 103
-        y: 51
+        y: 201
         width: 32
         height: 48
       alignment: 0
@@ -235,7 +254,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 137
-        y: 51
+        y: 201
         width: 32
         height: 48
       alignment: 0
@@ -248,7 +267,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 171
-        y: 51
+        y: 201
         width: 32
         height: 48
       alignment: 0
@@ -261,7 +280,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 205
-        y: 51
+        y: 201
         width: 32
         height: 48
       alignment: 0
@@ -274,7 +293,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 1
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -287,7 +306,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 35
-        y: 1
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -300,7 +319,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 69
-        y: 1
+        y: 151
         width: 32
         height: 48
       alignment: 0
@@ -313,6 +332,253 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 103
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_18
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_19
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_20
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 151
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_21
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_22
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_23
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_24
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_25
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_26
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_27
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 101
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_28
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_29
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_30
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_31
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_32
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_33
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_34
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 51
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_35
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: unit_Fredrick_36
+      rect:
+        serializedVersion: 2
+        x: 35
         y: 1
         width: 32
         height: 48

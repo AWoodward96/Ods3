@@ -48,7 +48,7 @@ public class oneofTutorialTracker1 : MonoBehaviour, IPermanent {
 
             if(timeInCollider > 24 && !fired2)
             {
-                Debug.Log("Fired");
+ 
                 CutsceneManager.instance.StartCutscene(Dialog2);
                 fired2 = true; 
             }

@@ -351,7 +351,7 @@ MonoBehaviour:
   Unbroken: {fileID: 1049470076558426}
   Broken: {fileID: 1471824889822216}
   DealDamage: 1
-  Damage: 50
+  Damage: 40
 --- !u!114 &114916451188481098
 MonoBehaviour:
   m_ObjectHideFlags: 1

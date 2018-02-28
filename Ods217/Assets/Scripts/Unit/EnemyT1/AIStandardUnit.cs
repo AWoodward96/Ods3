@@ -245,6 +245,9 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     {
         get
         {
+            if (WeaponSlot1 == null && WeaponSlot2 == null)
+                return null;
+
             return currentWeapon; 
         }
     }

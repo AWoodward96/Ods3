@@ -22,12 +22,13 @@ Trigger(MainPlat)
 Say(Con1,It has been. . .,Sad)
 Continue(seven days since your last session!,Happy)
 Say(Con1,I have saved data in my system for an old session.)
-Continue(Would you like to continue where you left off?,Idle2)
+Continue(But you look like you've never played before...,Sad)
+Say(Con1,So we're going to give you a fresh start here!,LookUp);
 
-Say(Slas,Hmm...,Idle)
-Continue(No)
-Continue(please start me off with a new session.)
-Say(Con1,Caaaaaaan do!)
+//Say(Slas,Hmm...,Idle)
+//Continue(No)
+//Continue(please start me off with a new session.)
+//Say(Con1,Caaaaaaan do!)
 
 Trigger(TriggerMe1)
 Trigger(TriggerMe2)
@@ -45,6 +46,11 @@ Wait(5)
 
 HaltPlayer()
  
+ LoadPerm(SpecMoveMeBarrier1,M1)
+ LoadPerm(SpecMoveMeBarrier2,M2)
+ Trigger(M1)
+ Trigger(M2)
+
 Say(Con1, Ok wow that was boring.,Sad)
 Say(Con1, Lets get on with the actual tutorial now shall we?,Happy)
 

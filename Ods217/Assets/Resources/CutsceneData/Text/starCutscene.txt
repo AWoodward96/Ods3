@@ -6,6 +6,12 @@ LoadPawn(MinibossStar,Ster)
 LoadPerm(StarDoorL,Door)
 MovePawn(Ster, 270, 13.51,-1.2)
 
+
+SetTrack(1,0)
+SetTrack(0,0) 
+SetTrack(2,0) 
+
+
 Flip()
 CameraTarget(Ster)
 Say(Ster,Yes.,RightH)
@@ -36,6 +42,13 @@ EndSay()
 Flip()
 Wait(1) 
 Trigger(Ster)
+
+
+SetTrack(1,0.3)
+SetTrack(0,0.1) 
+SetTrack(2,0.3) 
+
+
 Say(Ster,Hi there!,LookDown)
 Continue(My name is Star!)
 Say(Ster,You're not supposed to be here right now!,Down)

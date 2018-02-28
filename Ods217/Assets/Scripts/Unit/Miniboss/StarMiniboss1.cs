@@ -491,7 +491,8 @@ public class StarMiniboss1 : AIStandardUnit{
         } 
 
         if (UnitData.CurrentHealth <= 0)
-        {  
+        {
+            myWeapon.ReleaseWeapon();
             this.gameObject.SetActive(false);
         }
     }

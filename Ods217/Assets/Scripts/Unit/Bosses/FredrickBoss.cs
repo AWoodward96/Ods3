@@ -14,6 +14,8 @@ public class FredrickBoss : AIStandardUnit {
     public Transform[] JumpPoints;
     Transform selectedPoint;
 
+    public Canvas EntranceCanvas;
+
     ForceFieldScript myForceField;
     Rigidbody myRGB;
 
@@ -33,16 +35,38 @@ public class FredrickBoss : AIStandardUnit {
             animationHandler.Update();
         }
 
+
+        myAnimator.SetBool("Disarmed", AIState == EnemyAIState.Vulnerable);
+
         if (Aggro)
          base.Update();
     } 
 
     public override bool Triggered
     {
-        get  { return Aggro; } 
-        set  { Aggro = value;
-
+        get  { return Aggro; }
+        set
+        { 
+            if (!Aggro)
+                StartCoroutine(OnTriggered());
         }
+    }
+
+
+    IEnumerator OnTriggered()
+    {
+        EntranceCanvas.gameObject.SetActive(true);
+
+        myAnimator.SetInteger("Special", 1);
+
+        while (CutsceneManager.InCutscene)
+        {
+            yield return null;
+        }
+
+        myAnimator.SetInteger("Special", 0);
+        EntranceCanvas.gameObject.SetActive(false);
+        Aggro = true; 
     }
 
 
@@ -158,6 +182,8 @@ public class FredrickBoss : AIStandardUnit {
         {
             GameObject obj = Resources.Load("Prefabs/Particles/deathPartParent") as GameObject;
             Instantiate(obj, transform.position, obj.transform.rotation);
+
+            myWeapon.ReleaseWeapon();
             this.gameObject.SetActive(false);
         }
     }
