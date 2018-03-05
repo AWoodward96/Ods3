@@ -107,6 +107,7 @@
     <Compile Include="Assets\Scripts\Specials\oneofTutorialTracker2.cs" />
     <Compile Include="Assets\Scripts\Specials\oneofTutorialTracker3.cs" />
     <Compile Include="Assets\Scripts\Specials\oneofTutorialTracker4.cs" />
+    <Compile Include="Assets\Scripts\Specials\sittingPirates.cs" />
     <Compile Include="Assets\Scripts\Specials\targetPractice.cs" />
     <Compile Include="Assets\Scripts\Systems\CamScript.cs" />
     <Compile Include="Assets\Scripts\Systems\Dialog\CustomButtonUI.cs" />
@@ -154,10 +155,13 @@
     <Compile Include="Assets\Scripts\Technology\Logic\lgcLogicDoor.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcMoveToOnTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcOnCollisionTrigger.cs" />
+    <Compile Include="Assets\Scripts\Technology\Logic\lgcShootSwitch.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcSwitch.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcSwitchConsole.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcSyncTriggerWithAnimCTRL.cs" />
+    <Compile Include="Assets\Scripts\Technology\MovingPlatforms.cs" />
     <Compile Include="Assets\Scripts\Technology\PawnCTRL.cs" />
+    <Compile Include="Assets\Scripts\Technology\PoweredElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\SlidingDoor.cs" />
     <Compile Include="Assets\Scripts\Technology\SpireElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\StandardElevator.cs" />
@@ -189,8 +193,10 @@
     <Compile Include="Assets\Scripts\Unit\UnitStruct.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\BulletBase.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\Grenade.cs" />
+    <Compile Include="Assets\Scripts\Weapons\Bullets\Pellet.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\TossedProjectile.cs" />
     <Compile Include="Assets\Scripts\Weapons\HeldWeapon.cs" />
+    <Compile Include="Assets\Scripts\Weapons\Shotgun.cs" />
     <Compile Include="Assets\Scripts\Weapons\SingleUseWeapon.cs" />
     <Compile Include="Assets\Scripts\Weapons\WeaponBase.cs" />
     <Compile Include="Assets\Scripts\Weapons\WeaponInfo.cs" />

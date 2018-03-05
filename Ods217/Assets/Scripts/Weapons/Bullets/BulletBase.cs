@@ -52,10 +52,16 @@ public class BulletBase : MonoBehaviour {
             u.OnHit(myInfo.bulletDamage);  
         }
 
+        BulletDeath();
 
-        if(explode == null) explode = GetComponentInChildren<EffectorExplode>();
+    }
 
-        if(explode != null)
+    // What should the bullet do when it's destroyed?
+    public virtual void BulletDeath()
+    {
+        if (explode == null) explode = GetComponentInChildren<EffectorExplode>();
+
+        if (explode != null)
         {
             explode.transform.position = transform.position;
             explode.transform.SetParent(null);
@@ -63,8 +69,7 @@ public class BulletBase : MonoBehaviour {
         }
 
         // Either way set it's fired to false
-        Fired = false; 
+        Fired = false;
     }
-
 
 }

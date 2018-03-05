@@ -429,9 +429,12 @@ MonoBehaviour:
     bulletDamage: 10
     reloadClip: {fileID: 8300000, guid: 2923a5877b56b334b8c5886c017b3eab, type: 3}
   ShootClip: {fileID: 8300000, guid: 3aa2e87d4f1e6594db45bac5ed7929e7, type: 3}
+  maxBullets: 0
   myBullets: []
   myShield: {fileID: 0}
   myEnergy: {fileID: 0}
+  currentshootCD: 0
+  myAudioSource: {fileID: 0}
 --- !u!1001 &60436007
 Prefab:
   m_ObjectHideFlags: 0
@@ -792,7 +795,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 70682045}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.9, y: 1.26, z: -109.6}
+  m_LocalPosition: {x: 169.8, y: 1.26, z: -38.4}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 1456424341}

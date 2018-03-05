@@ -19,6 +19,8 @@ public class FredrickBoss : AIStandardUnit {
     ForceFieldScript myForceField;
     Rigidbody myRGB;
 
+    bool jumpTriggered = false;
+
     public override void Start()
     {
         myRGB = GetComponent<Rigidbody>();
@@ -100,9 +102,9 @@ public class FredrickBoss : AIStandardUnit {
                 myWeapon.FireWeapon(toPlayer);
 			}else if(MyUnit.CurrentEnergy <= (MyUnit.MaxEnergy / 2)) // if we're low on ammo then bail
             {
-                //myWeapon.ForceReload();
-                JumpToNewPoint();
-                localAIState = true;
+                //myWeapon.ForceReload(); 
+                if (!jumpTriggered) 
+                    StartCoroutine(WaitJump());
                 return;
             }
 
@@ -111,12 +113,21 @@ public class FredrickBoss : AIStandardUnit {
             {
                 /*if(!myWeapon.Reloading)
                     myWeapon.ForceReload();*/
-                JumpToNewPoint();
-                localAIState = true; 
+                if (!jumpTriggered)
+                    StartCoroutine(WaitJump());
                 return;
             }
 
         }
+    }
+
+    IEnumerator WaitJump()
+    {
+        jumpTriggered = true;
+        yield return new WaitForSeconds(.1f);
+        JumpToNewPoint();
+        localAIState = true;
+        jumpTriggered = false;
     }
 
     void JumpToNewPoint()
@@ -138,6 +149,7 @@ public class FredrickBoss : AIStandardUnit {
         }
 
         selectedPoint = t;
+ 
 
         // Turn off the cc and turn on the rgb
         myRGB.isKinematic = false;

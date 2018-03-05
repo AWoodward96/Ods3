@@ -15,18 +15,20 @@ public class WeaponBase : MonoBehaviour {
     [Space(10)] 
     public AudioClip ShootClip;
 
-	int maxBullets;
+    [HideInInspector]
+	public int maxBullets;
 	int currentBullet;
     public List<BulletBase> myBullets;
     public IArmed myOwner;
 	public ForceFieldScript myShield;
 	public EnergyManager myEnergy;
 
-
-    float currentshootCD;
+    [HideInInspector]
+    public float currentshootCD;
 
     GameObject player;
-    AudioSource myAudioSource;
+    [HideInInspector]
+    public AudioSource myAudioSource;
 
     bool WeaponReleased;
      
@@ -108,7 +110,7 @@ public class WeaponBase : MonoBehaviour {
     }
    
 
-    void MakeBullets()
+    public virtual void MakeBullets()
     { 
 
         // Ensure the bullets are properly stored
@@ -197,34 +199,7 @@ public class WeaponBase : MonoBehaviour {
 
     }
 
-	// Is this function even necessary anymore now that we're using an energy system?
-    /*public void ForceReload()
-    {
-        weaponData.currentAmmo = 0;
-        tryReload = true;
-        Reloading = true;
-        if(myOwner != null)
-            myOwner.myVisualizer.ShowMenu(); 
-        StopAllCoroutines();
-        StartCoroutine(Reload());
-    }*/
-
-	// Ditto
-   /* IEnumerator Reload()
-    {
-        yield return new WaitForSeconds(weaponData.reloadSpeed);
-        weaponData.currentAmmo = weaponData.maxAmmo;
-        if(myOwner != null)
-            myOwner.myVisualizer.ShowMenu();
-        Reloading = false;
-        tryReload = false;
-        if(myAudioSource != null)
-        {
-            myAudioSource.clip = weaponData.reloadClip;
-            myAudioSource.Play(); 
-        }
-    }*/
-
+ 
     private void OnDisable()
     {
         if(ThrownObject != null)
