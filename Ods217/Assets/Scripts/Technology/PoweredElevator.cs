@@ -5,13 +5,14 @@ using UnityEngine;
 public class PoweredElevator : MonoBehaviour, IPermanent {
 
 	UsableIndicator ind_Interactable;
+	Rigidbody myRB;
 
 	private Vector3 Velocity;
 	private bool Moving;
-	private bool Direction; // true up, false down
+	private bool falling = false;
+
 	public int FloorIndex;
 
-	private Vector3 MoveDownVector = new Vector3(0, -10, 0);
 	private Vector3 MoveUpVector = new Vector3(0, 10, 0);
 
 	public GameObject[] CameraLocks;
@@ -21,6 +22,9 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 	IPermanent[] triggerHandles;
 	public bool powered;
 
+	public GameObject[] poweredEnemies;
+	JumpingSpider[] poweredHandles;
+
 	PlayerScript myPlayer;
 
 	ZoneScript zone;
@@ -28,44 +32,29 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 
 	// Use this for initialization
 	void Start () {
-		// Set the current floor
-		int closestIndex = 0;
-		float smallestDistance = 500;
-
 		triggerHandles = new IPermanent[Triggers.Length];
 		for(int i = 0; i < Triggers.Length; i++)
 		{
 			triggerHandles[i] = Triggers[i].GetComponent<IPermanent>();
 		}
 
-		for (int i = 0; i < ArrivalPoints.Length; i++)
-		{
-			if (ArrivalPoints[i] != null)
-			{
-				float curDist = Vector3.Distance(ArrivalPoints[i].transform.position, transform.position);
-				if (curDist < smallestDistance)
-				{
-					smallestDistance = curDist;
-					closestIndex = i;
-				}
-			}
-		}
-
-
-
-		FloorIndex = closestIndex;
-
 		// Set up other references
 		ind_Interactable = GetComponentInChildren<UsableIndicator>();
 		ind_Interactable.Output = InteractDelegate;
 		ind_Interactable.gameObject.SetActive(powered);
-		myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>(); 
+		myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+
+		poweredHandles = new JumpingSpider[poweredEnemies.Length];
+		for(int i = 0; i < poweredEnemies.Length; i++)
+		{
+			poweredHandles[i] = poweredEnemies[i].GetComponent<JumpingSpider>();
+		}
 	}
 
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		Velocity = (Direction) ? MoveUpVector : MoveDownVector;
+		Velocity = MoveUpVector * ((Random.Range(0, 4) - 1) / 2.0f);
 
 		bool done = true;
 		for(int i = 0; i < triggerHandles.Length; i++)
@@ -78,18 +67,53 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 		}
 		if(done)
 		{
+			if(!Triggered)
+			{
+				for(int i = 0; i < poweredEnemies.Length; i++)
+				{
+					poweredHandles[i].Triggered = true;
+				}
+			}
+
 			Triggered = true;
+		}
+		else if(Triggered)
+		{
+			for(int i = 0; i < poweredEnemies.Length; i++)
+			{
+				poweredHandles[i].Triggered = false;
+			}
+
+			Triggered = false;
 		}
 
 		if (Moving && ArrivalPoints.Length > 0)
 		{ 
-			transform.position += Velocity * Time.deltaTime;
+			if(!falling)
+			{
+				transform.position += Velocity * Time.deltaTime;
+			}
+
+			// Is it time to fall?
+			if(Mathf.Abs(transform.position.y - ArrivalPoints[FloorIndex].transform.position.y) > 10.0f && !falling)
+			{
+				falling = true;
+				myRB = gameObject.AddComponent<Rigidbody>();
+			}
 
 			// Check to see if we can stop moving
-			if (Vector3.Distance(transform.position, ArrivalPoints[FloorIndex].transform.position) < .5f)
+			if (falling && Mathf.Abs(transform.position.y - ArrivalPoints[FloorIndex].transform.position.y) > 100.0f)
 			{
+				myRB.velocity = Vector3.zero;
+				Destroy(myRB);
+				FloorIndex = (FloorIndex + 1) % ArrivalPoints.Length;
+				falling = false;
 				Moving = false;
-				transform.position = ArrivalPoints[FloorIndex].transform.position;
+
+				Vector3 playerDistanceVector = myPlayer.transform.position - transform.position;
+
+				myPlayer.transform.position = ArrivalPoints[FloorIndex].transform.position + playerDistanceVector + Vector3.up;
+
 				if (myPlayer == null)
 					myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
 				myPlayer.AcceptInput = true;
@@ -97,27 +121,34 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 			}
 		}
 
+		else if(ArrivalPoints.Length > 0)
+		{
+			transform.position = ArrivalPoints[FloorIndex].transform.position;
+		}
+
 	}
 
 	void InteractDelegate()
 	{
-		GoToFloor(FloorIndex + 1); 
+		GoToFloor((FloorIndex + 1) % ArrivalPoints.Length); 
 	}
 
 
 	public void GoToFloor(int _to)
 	{
-		if (_to >= ArrivalPoints.Length)
-			_to = 0;
-
 		if (_to == FloorIndex)
 			return;
 
 		if (!Moving) // ensure this can only be called once
 		{
-			Direction = ((int)_to > (int)FloorIndex); 
 			Moving = true;
 			Camera.main.gameObject.GetComponent<CamScript>().Target = CameraLocks[FloorIndex].transform;
+
+			for(int i = 0; i < triggerHandles.Length; i++)
+			{
+				triggerHandles[i].Triggered = false;
+			}
+			Triggered = false;
 
 			if (myPlayer == null)
 			{
@@ -126,14 +157,14 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 
 			myPlayer.AcceptInput = false;
 			myPlayer.GetComponent<CController>().HaltMomentum();
-			FloorIndex = _to;
+			//FloorIndex = _to;
 
-			StopAllCoroutines();
-			StartCoroutine(TravelCoroutine());
+			/*StopAllCoroutines();
+			StartCoroutine(TravelCoroutine());*/
 		}
 	}
 
-	IEnumerator TravelCoroutine()
+	/*IEnumerator TravelCoroutine()
 	{
 		yield return new WaitForSeconds(2);
 		// Teleport to our destination
@@ -144,7 +175,7 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 		CamScript main = Camera.main.gameObject.GetComponent<CamScript>();
 		main.Target = CameraLocks[FloorIndex].transform;
 		main.gameObject.transform.position = CameraLocks[FloorIndex].transform.position + GlobalConstants.DEFAULTFOLLOWBACK - (Vector3.down * 5);
-	}
+	}*/
 
 	public void Activate()
 	{
