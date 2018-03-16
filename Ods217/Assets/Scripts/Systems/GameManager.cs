@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour {
 
         //SceneManager.sceneLoaded += LevelLoaded;
         ScrapCount += 200;
-        HealthKits = 3;
+        HealthKits = 0;
 
         Physics.gravity = new Vector3(0, -GlobalConstants.Gravity * 4,0);
 

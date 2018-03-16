@@ -86,9 +86,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 1
-  m_Interpolate: 2
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!65 &65706286036793464
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Fired: 0
   Direction: {x: 0, y: 0, z: 0}
-  Speed: 65
+  Speed: 45
   myInfo:
     name: 
     shotCost: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
     bulletDamage: 0
     reloadClip: {fileID: 0}
   Poofy: {fileID: 1009212858587560}
-  LifeTime: 0.15
+  LifeTime: 0.45
 --- !u!198 &198812242885081130
 ParticleSystem:
   m_ObjectHideFlags: 1

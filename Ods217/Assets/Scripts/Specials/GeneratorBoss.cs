@@ -20,6 +20,10 @@ public class GeneratorBoss : GeneratorBehavior
 
     public Transform[] SpawnPoint;
     public ParticleSystem[] Explosions;
+    public ParticleSystem GlassExplosion;
+    public GameObject GlasObject;
+    public GameObject BrokenGlassObject;
+
     int explosionInd = 0;
 
 	bool engaged;				// Once the player first shoots the generator, the fight will begin.
@@ -47,6 +51,7 @@ public class GeneratorBoss : GeneratorBehavior
 		myInteract.Preset = UsableIndicator.usableIndcPreset.Interact;
 
 		Player = GameObject.FindGameObjectWithTag("Player");
+        
 	}
 	
 	// Update is called once per frame
@@ -222,6 +227,10 @@ public class GeneratorBoss : GeneratorBehavior
             yield return new WaitForSeconds(.5f);
 
         }
+
+        GlassExplosion.Play();
+        GlasObject.SetActive(false);
+        BrokenGlassObject.SetActive(true);
 
     }
 }

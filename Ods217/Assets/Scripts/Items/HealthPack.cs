@@ -15,16 +15,12 @@ public class HealthPack : MonoBehaviour
 
 		myIndicator.Output = OnInteract;
 	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		
-	}
 
 	void OnInteract()
 	{
-		player.GetComponent<PlayerScript>().numHealthpacks++;
+		GameManager.HealthKits++;
+        MenuManager.instance.ShowHealthkit();
 		gameObject.SetActive(false);
 	}
+ 
 }

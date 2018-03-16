@@ -11,7 +11,14 @@ public class Shotgun : WeaponBase {
     public int BulsPerShot;
 
     ParticleSystem ptl;
-     
+
+    public override void Awake()
+    {
+        base.Awake();
+        maxBullets = BulsPerShot * 2;
+        MakeBullets();
+    }
+
     public override void FireWeapon(Vector3 _dir)
     {
         // Break out if we can't even shoot

@@ -19,10 +19,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
     ForceFieldScript myForceField;
     bool updatedForcefield;
-
-	[HideInInspector]
-	public int numHealthpacks = 0;
-
+     
     //Vector3 RootPosition = new Vector3(-.138f, -0.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
     //public Vector3 RootPosition = new Vector3(0, -.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
     Vector3 HolsteredPosition = new Vector3(0, .5f, 0);
@@ -42,7 +39,8 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     AudioSource myAudioSource;
     public AudioClip[] AudioClips;
 
-    public bool AcceptInput; 
+    public bool AcceptInput;
+    bool UsingItem;
 
     public WeaponBase PrimaryWeapon;
     public WeaponBase SecondaryWeapon;
@@ -65,7 +63,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     // Have to run everything through fixed update
     void FixedUpdate()
     {
-		if(AcceptInput)
+		if(AcceptInput && !UsingItem)
 			myFixedInput();
 
        	GunObject();
@@ -85,7 +83,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 	// There's a chance that FixedUpdate will duplicate the input, causing unintended effects
 	void Update()
 	{
-		if (AcceptInput)
+		if (AcceptInput && !UsingItem)
 			myInput();
 	}
 
@@ -150,7 +148,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
 
         // Handle Gun 'animations' 
-        if (!myCtrl.Sprinting && InCombat) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
+        if (!myCtrl.Sprinting && InCombat && !UsingItem) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
         {
 
             Vector3 pos = Vector3.zero;
@@ -191,14 +189,17 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
             }
             else
-            {
-
+            { 
                 if (CursorLoc.z < transform.position.z) // Otherwise put it behind wherever the player is facing
                     pos.z = .01f;
                 else
                     pos.z = -.01f;
 
             }
+
+            // Handle the using item 
+            if (UsingItem)
+                pos.z = .01f;
 
             ActiveWeapon.transform.localPosition = pos;
 
@@ -236,7 +237,10 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         myRenderer.flipX = flip;
 
         // Handle looking up and down based on velocity
-        myAnimator.SetBool("FaceFront", (CursorLoc.z < transform.position.z)); // Flips a bool switch based on if the cursor is above or below the character
+        bool facefront = (CursorLoc.z < transform.position.z);
+        if (UsingItem)
+            facefront = true;
+        myAnimator.SetBool("FaceFront", facefront); // Flips a bool switch based on if the cursor is above or below the character
 
 
         // If we're walking in a reverse direction we want to reverse our animation speed
@@ -391,10 +395,20 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 		}
 
 		// Use a healthpack (currently functions as a full heal)
-		if(Input.GetKeyDown(KeyCode.R) && numHealthpacks > 0)
+		if(Input.GetKeyDown(KeyCode.R) && GameManager.HealthKits > 0 && !UsingItem)
 		{
-			myUnit.CurrentHealth = myUnit.MaxHealth;
-			numHealthpacks--;
+            MenuManager.instance.ShowHealthkit();
+            if(MyUnit.CurrentHealth != MyUnit.MaxHealth)
+            { 
+                myCtrl.Velocity = Vector3.zero;
+                StartCoroutine(UseItemCRT());
+                myAnimator.SetFloat("Special", 1);
+                UsingItem = true;
+            }else
+            {
+                myAudioSource.clip = AudioClips[4];
+                myAudioSource.Play();
+            }
 		}
 	}
 
@@ -588,6 +602,40 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     }
 
     
+    IEnumerator UseItemCRT()
+    {
+        // Show the health visualizer
+        myVisualizer.ShowMenu();
+        yield return new WaitForSeconds(.5f);
+
+        // Start the particle and play the sfx
+        Instantiate(Resources.Load("Prefabs/Particles/HealPart") as GameObject, transform.position + (Vector3.up * 4), Quaternion.identity);
+        myAudioSource.clip = AudioClips[3];
+        myAudioSource.Play();
+
+        yield return new WaitForSeconds(.75f);
+        myAudioSource.clip = AudioClips[3];
+        myAudioSource.Play();
+
+        yield return new WaitForSeconds(.75f);
+        myAudioSource.clip = AudioClips[3];
+        myAudioSource.Play();
+
+        yield return new WaitForSeconds(1f);
+        GameManager.HealthKits--;
+
+        myUnit.CurrentHealth += 30; // Add the health
+        if (myUnit.CurrentHealth > myUnit.MaxHealth)
+            myUnit.CurrentHealth = myUnit.MaxHealth;
+
+        // Ensure that we can see it 
+        myVisualizer.ShowMenu();
+
+        // Exit out of the animation
+        myAnimator.SetFloat("Special", 0);
+        UsingItem = false; 
+    }
+
     public void PickUpWeapon(WeaponBase _newWeapon)
     {
         // First get a reference to the weapon itself

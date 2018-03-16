@@ -62,7 +62,7 @@ public class StarMiniboss1 : AIStandardUnit{
        
         base.Start();
 
-        if (currentWeapon.weaponData.name == "Machine Gun")
+        if (currentWeapon.weaponData.name == "Shotgun")
             base.SwapWeapons();
 	}
 

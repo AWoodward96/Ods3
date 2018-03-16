@@ -34,7 +34,7 @@ public class WeaponBase : MonoBehaviour {
      
  
     // Use this for initialization
-    void Awake () {
+    public virtual void Awake () {
         myAudioSource = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         heldData.Initialize(this, ThrownObject, player);

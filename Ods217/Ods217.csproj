@@ -95,6 +95,7 @@
     <Compile Include="Assets\Scripts\Interfaces\IMultiArmed.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPawn.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPermanent.cs" />
+    <Compile Include="Assets\Scripts\Items\Chest.cs" />
     <Compile Include="Assets\Scripts\Items\HealthPack.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
     <Compile Include="Assets\Scripts\Items\Scrap.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Assets\Scripts\ReloadSceneAfter.cs" />
     <Compile Include="Assets\Scripts\ShadowsPlease.cs" />
     <Compile Include="Assets\Scripts\Specials\GeneratorBoss.cs" />
+    <Compile Include="Assets\Scripts\Specials\oneofAquiredHealthkit.cs" />
     <Compile Include="Assets\Scripts\Specials\oneofStarDefeat.cs" />
     <Compile Include="Assets\Scripts\Specials\oneofTutorialTracker1.cs" />
     <Compile Include="Assets\Scripts\Specials\oneofTutorialTracker2.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="Assets\Scripts\Unit\CorpseScript.cs" />
     <Compile Include="Assets\Scripts\Unit\DropShadowScript.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\AIStandardUnit.cs" />
+    <Compile Include="Assets\Scripts\Unit\EnemyT1\JumpingSpider.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\customTechie1.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\mobCowardUnit.cs" />
     <Compile Include="Assets\Scripts\Unit\EnemyT1\mobDroneT1.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="Assets\Scripts\Unit\Static\TrainingTurret1.cs" />
     <Compile Include="Assets\Scripts\Unit\Static\TurretScript.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitStruct.cs" />
+    <Compile Include="Assets\Scripts\Weapons\Bullets\Bouncer.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\BulletBase.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\Grenade.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\Pellet.cs" />

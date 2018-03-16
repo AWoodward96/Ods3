@@ -87,7 +87,7 @@ public class UsableIndicator : MonoBehaviour
 
 
         ActiveInd = (UsableIndicator.Grab.ind == this);
-        if (Input.GetKeyDown(KeyCode.E) && ActiveInd)
+        if (Input.GetKeyDown(KeyCode.E) && ActiveInd && !Disabled && Output != null)
         {
             Output();
         }
