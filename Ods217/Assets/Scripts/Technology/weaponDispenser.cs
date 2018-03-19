@@ -28,12 +28,17 @@ public class weaponDispenser : MonoBehaviour {
             {
                 visualizerRenderer = sprites[i];
             }
-        } 
+        }
 
         visualizerRenderer.sprite = WeaponPrefab.RotateObject.GetComponent<SpriteRenderer>().sprite;
-        ind_Indicator = GetComponentInChildren<UsableIndicator>();
-        ind_Indicator.Preset = UsableIndicator.usableIndcPreset.PickUp;
-        ind_Indicator.Output = InteractDelegate;
+
+        if (Application.isPlaying)
+        {
+            ind_Indicator = GetComponentInChildren<UsableIndicator>();
+            ind_Indicator.Preset = UsableIndicator.usableIndcPreset.PickUp;
+            ind_Indicator.Output = InteractDelegate;
+        }
+
 
         Player = GameObject.FindGameObjectWithTag("Player");
 

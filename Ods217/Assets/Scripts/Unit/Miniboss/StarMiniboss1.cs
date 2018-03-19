@@ -169,7 +169,7 @@ public class StarMiniboss1 : AIStandardUnit{
 
                 // Start a timer
                 waitTimer += Time.deltaTime;
-                if (waitTimer > 3) // After 3 seconds shoot
+                if (waitTimer > 1.5f) // After 3 seconds shoot
                 {
                     aiCounter++;
 

@@ -558,7 +558,8 @@ MonoBehaviour:
   myAudioSource: {fileID: 0}
   ArcWidth: 3
   ArcDistance: 10
-  BulsPerShot: 3
+  BulsPerShot: 5
+  BulsGenerated: 20
 --- !u!114 &114789742331720782
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -9,13 +9,15 @@ public class Shotgun : WeaponBase {
     [Range(1, 10)]
     public float ArcDistance; // How far away from the player the arc will be effected
     public int BulsPerShot;
+    public int BulsGenerated = 5;
+
 
     ParticleSystem ptl;
 
     public override void Awake()
     {
         base.Awake();
-        maxBullets = BulsPerShot * 2;
+        maxBullets = BulsGenerated;
         MakeBullets();
     }
 
@@ -41,13 +43,27 @@ public class Shotgun : WeaponBase {
 
         _dir = _dir.normalized * ArcDistance;
 
-        for (int i = 0; i < BulsPerShot; i++)
-        { 
-            myBullets[i].gameObject.SetActive(true);
-            myBullets[i].myOwner = (myOwner);
-            myBullets[i].myInfo = (weaponData);
-            myBullets[i].transform.position = transform.position + (_dir.normalized / 2);
-            myBullets[i].Shoot(_dir + GlobalConstants.ZeroYComponent(Random.insideUnitSphere * ArcWidth)); 
+        List<BulletBase> canFire = new List<BulletBase>();
+        int bulsfound = 0;
+        for(int i = 0; i < myBullets.Count; i++)
+        {
+            if (bulsfound == BulsPerShot)
+                break;
+
+            if(myBullets[i].CanShoot && !canFire.Contains(myBullets[i]))
+            {
+                canFire.Add(myBullets[i]);
+                bulsfound++;
+            }
+        }
+
+        for (int i = 0; i < canFire.Count; i++)
+        {
+            canFire[i].gameObject.SetActive(true);
+            canFire[i].myOwner = (myOwner);
+            canFire[i].myInfo = (weaponData);
+            canFire[i].transform.position = transform.position + (_dir.normalized / 2);
+            canFire[i].Shoot(_dir + GlobalConstants.ZeroYComponent(Random.insideUnitSphere * ArcWidth)); 
         } 
 
         currentshootCD = 0;
