@@ -22,9 +22,6 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 	IPermanent[] triggerHandles;
 	public bool powered;
 
-	public GameObject[] poweredEnemies;
-	JumpingSpider[] poweredHandles;
-
 	PlayerScript myPlayer;
 
 	ZoneScript zone;
@@ -43,12 +40,6 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 		ind_Interactable.Output = InteractDelegate;
 		ind_Interactable.gameObject.SetActive(powered);
 		myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
-
-		poweredHandles = new JumpingSpider[poweredEnemies.Length];
-		for(int i = 0; i < poweredEnemies.Length; i++)
-		{
-			poweredHandles[i] = poweredEnemies[i].GetComponent<JumpingSpider>();
-		}
 	}
 
 	// Update is called once per frame
@@ -67,23 +58,10 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 		}
 		if(done)
 		{
-			if(!Triggered)
-			{
-				for(int i = 0; i < poweredEnemies.Length; i++)
-				{
-					poweredHandles[i].Triggered = true;
-				}
-			}
-
 			Triggered = true;
 		}
-		else if(Triggered)
+		else
 		{
-			for(int i = 0; i < poweredEnemies.Length; i++)
-			{
-				poweredHandles[i].Triggered = false;
-			}
-
 			Triggered = false;
 		}
 

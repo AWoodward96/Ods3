@@ -16,6 +16,9 @@ public class lgcSwitchConsole : lgcSwitch {
     float clickRate;
     public float maxTime;
 
+	public GameObject[] poweredUnits;
+	IPermanent[] unitHandles;
+
     [Header("Sound")]
     public AudioClip toggleSound;
     public AudioClip clickingSound;
@@ -29,6 +32,12 @@ public class lgcSwitchConsole : lgcSwitch {
 
         soundTime = 0.0f;
 		currentTime = 0.0f;
+
+		unitHandles = new IPermanent[poweredUnits.Length];
+		for(int i = 0; i < poweredUnits.Length; i++)
+		{
+			unitHandles[i] = poweredUnits[i].GetComponent<IPermanent>();
+		}
     } 
 
     // Update is called once per frame
@@ -75,5 +84,10 @@ public class lgcSwitchConsole : lgcSwitch {
             src.Play();
 
         }
+
+		for(int i = 0; i < unitHandles.Length; i++)
+		{
+			unitHandles[i].Activate();
+		}
     }
 }

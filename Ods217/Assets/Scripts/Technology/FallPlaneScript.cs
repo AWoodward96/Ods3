@@ -85,5 +85,11 @@ public class FallPlaneScript : MonoBehaviour
 				numWeaponTosses = 0;
 			}
 		}
+
+		// Or an enemy unit
+		else if(other.GetComponent<IDamageable>() != null)
+		{
+			other.gameObject.SetActive(false);
+		}
 	}
 }

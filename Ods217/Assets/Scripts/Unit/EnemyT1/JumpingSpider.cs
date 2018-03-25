@@ -13,6 +13,10 @@ public class JumpingSpider : MonoBehaviour, IArmed
 {
     public JumpingSpiderAI AiStats;
 
+	Vector3 swarmCenter;
+	int numInSwarm;
+	public static float attackTime = 1.0f;	// When in swarm mode, how often is damage dealt to a contacting unit?
+
 	public UnitStruct myUnit;
     ZoneScript zone;
     Animator myAnimator;
@@ -64,7 +68,27 @@ public class JumpingSpider : MonoBehaviour, IArmed
         AIState = AISTATE.Idle;
 		myLight.gameObject.SetActive(false);
          
+		swarmCenter = Vector3.zero;
+		numInSwarm = 1;
     }
+
+	void OnEnable()
+	{
+		if(myCtrl)
+		{
+			myCtrl.enabled = true;
+		}
+
+		if(myPrimarySource)
+		{
+			myPrimarySource.Stop();
+		}
+
+		myUnit.CurrentHealth = myUnit.MaxHealth;
+
+		AIState = AISTATE.Idle;
+		stateTimer = 0.0f;
+	}
 
     // Update is called once per frame
     void FixedUpdate()
@@ -72,6 +96,44 @@ public class JumpingSpider : MonoBehaviour, IArmed
 		if(myZone != ZoneScript.ActiveZone || !powered)
 		{
 			return;
+		}
+
+		// Update swarm center
+		swarmCenter = Vector3.zero;
+		int numSpiders = 0;
+		for(int i = 0; i < zone.Perms.Count; i++)
+		{
+			JumpingSpider myUnit = zone.Perms[i].gameObject.GetComponent<JumpingSpider>();
+			if(myUnit != null && myUnit.AiStats.Target == AiStats.Target)
+			{
+				swarmCenter += myUnit.transform.position;
+				numSpiders++;
+			}
+		}
+		swarmCenter /= numSpiders;
+
+		// Find out which spiders are currently in the swarm!
+		// TODO: This is bad! Fix this so we don't have to loop twice!
+		numInSwarm = 0;
+		for(int i = 0; i < zone.Perms.Count; i++)
+		{
+			JumpingSpider myUnit = zone.Perms[i].gameObject.GetComponent<JumpingSpider>();
+			if(myUnit != null)
+			{
+				if((myUnit.transform.position - swarmCenter).sqrMagnitude <= Mathf.Pow(AiStats.swarmRange, 2))
+				{
+					numInSwarm++;
+				}
+			}
+		}
+		if(numInSwarm >= AiStats.numToSwarm && myUnit.CurrentHealth > 0)
+		{
+			AIState = AISTATE.Shimmy;
+			myCtrl.Sprinting = true;
+		}
+		else
+		{
+			myCtrl.Sprinting = false;
 		}
 
 		stateTimer += Time.deltaTime;
@@ -100,7 +162,7 @@ public class JumpingSpider : MonoBehaviour, IArmed
 
             case AISTATE.Shimmy: // Ideally, move towards the player, and shimmy back and forth its a grand ol time
 			{
-				if(stateTimer > 1)
+				if(stateTimer > 1 && (numInSwarm < AiStats.numToSwarm && myUnit.CurrentHealth > 0))
 				{
 					float rnd = UnityEngine.Random.Range(0f, 1f);
 					if(rnd >= AiStats.PrepThreshold)
@@ -223,11 +285,19 @@ public class JumpingSpider : MonoBehaviour, IArmed
     {
         // move towards the player  (slowly)
         // Also move left and right based on the shimmy shimmy
-        Vector3 TargetPos = AiStats.Target.transform.position;
+		Vector3 TargetPos = (AiStats.Target.transform.position * 0.6f) + (swarmCenter * 0.4f);
         Vector3 distToPlayer = TargetPos - transform.position;
         Vector3 y0_unitDistToPlayer = GlobalConstants.ZeroYComponent(distToPlayer).normalized;
 
-        myCtrl.ApplyForce(y0_unitDistToPlayer.normalized * myCtrl.Speed / 3);
+		if(!myCtrl.Sprinting)
+		{
+        	myCtrl.ApplyForce(y0_unitDistToPlayer.normalized * myCtrl.Speed / 3);
+		}
+		else
+		{
+			myCtrl.ApplyForce(y0_unitDistToPlayer.normalized * myCtrl.SprintSpeed / 3);
+			return;
+		}
 
         // apply the shimmy vector force to move the spider back and forth
         Vector3 ShimmyVector = new Vector3(-y0_unitDistToPlayer.z, 0, y0_unitDistToPlayer.x);
@@ -387,7 +457,7 @@ public class JumpingSpider : MonoBehaviour, IArmed
 
 	public void Activate()
 	{
-		
+		powered = !powered;
 	}
 
 	// END INTERFACE IMPLEMENTATION //
@@ -407,6 +477,18 @@ public class JumpingSpider : MonoBehaviour, IArmed
                 }
             }
         }
+		else if(AIState == AISTATE.Shimmy && myUnit.CurrentHealth > 0 && numInSwarm >= AiStats.numToSwarm)
+		{
+			if(stateTimer >= attackTime && hit.gameObject.GetComponent<IArmed>() != null)
+			{
+				if (!hit.gameObject.name.Contains("Spider"))
+				{
+					IArmed u = hit.gameObject.GetComponent<IArmed>();
+					u.OnHit(AiStats.damageValue);
+					stateTimer = 0.0f;
+				}
+			}
+		}
     } 
     
     // Handles sound on a frame to frame basis
@@ -452,4 +534,10 @@ public struct JumpingSpiderAI
     //[HideInInspector] 
     public float shimmyValue;
 	public int damageValue;
+
+	public int numToSwarm;
+
+	// At what point is a spider considered part of the swarm?
+	[Range(.1f, 10f)]
+	public float swarmRange;
 }

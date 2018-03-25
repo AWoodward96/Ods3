@@ -206,7 +206,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1366667135674860}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.639923, y: 1, z: 1.5999985}
+  m_LocalPosition: {x: 13.678284, y: 1, z: -3.081356}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children:
   - {fileID: 4692306447568872}
@@ -249,11 +249,11 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1366667135674860}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 2.5, z: 2}
-  m_Center: {x: 0, y: 0, z: -2}
+  m_Size: {x: 2.5, y: 3.5, z: 2}
+  m_Center: {x: 0, y: 0.5, z: -2}
 --- !u!82 &82259600709664064
 AudioSource:
   m_ObjectHideFlags: 1
@@ -449,15 +449,17 @@ MonoBehaviour:
     Target: {fileID: 0}
     shimmyValue: 0
     damageValue: 20
+    numToSwarm: 5
+    swarmRange: 5
   myUnit:
     Name: 
-    MaxHealth: 100
-    CurrentHealth: 100
+    MaxHealth: 10
+    CurrentHealth: 10
     MaxEnergy: 20
     CurrentEnergy: 20
-  aggressive: 0
-  hiveMinded: 0
-  powered: 0
+  aggressive: 1
+  hiveMinded: 1
+  powered: 1
   AIState: 0
   PrimaryClips:
   - {fileID: 8300000, guid: 665746bfccd7e34478234cfefc3c58a8, type: 3}
@@ -608,7 +610,7 @@ MonoBehaviour:
   MaxSpeed: 100
   canMove: 1
   Airborne: 0
-  SprintSpeed: 0
+  SprintSpeed: 2
   Sprinting: 0
   SprintingPrev: 0
   Immovable: 0
@@ -652,7 +654,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2.5
-  m_Radius: 0.01
+  m_Radius: 1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08

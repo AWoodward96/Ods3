@@ -66,7 +66,10 @@ public class MovingPlatforms : MonoBehaviour, IPermanent {
 		{
 			if(isCyclic)
 			{
-				player.transform.position -= (positions[currentWP] - transform.localPosition).normalized * Speed;
+				if(isActive)
+				{
+					player.transform.position += transform.parent.TransformDirection((positions[currentWP] - transform.localPosition).normalized * Speed);
+				}
 			}
 			else
 			{
