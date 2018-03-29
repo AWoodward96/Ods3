@@ -84,7 +84,7 @@ public class targetPractice : MonoBehaviour, IPermanent {
 
     void falseState()
     {
-        lgcMoveToOnTrigger t = GlobalConstants.FindGameObject("obj_WeaponHolder").GetComponent<lgcMoveToOnTrigger>();
+        lgcMoveToOnTrigger t = GlobalConstants.FindGameObject("WeaponHolder").GetComponent<lgcMoveToOnTrigger>();
         if (!t.triggered)
         {
             t.triggered = true;

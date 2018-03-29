@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class lgcShootSwitch : MonoBehaviour, IDamageable {
 
-	bool isActive = false;
+	public bool State = false;
 	UnitStruct myUnit;
 	ZoneScript zone;
 
@@ -15,10 +15,8 @@ public class lgcShootSwitch : MonoBehaviour, IDamageable {
 	public AudioClip SoundToPlayWhenTriggered; 
 	AudioSource mySource;
 
-	public SpriteRenderer ConsoleRenderer;
-	public Sprite Active;
-	public Sprite Inactive;
-	public Sprite Disabled;
+    public SpriteRenderer OrbRenderer;
+    Light OrbLight;
 
 	// Use this for initialization
 	void Start ()
@@ -39,6 +37,17 @@ public class lgcShootSwitch : MonoBehaviour, IDamageable {
 		mySource.spatialBlend = 1;
 
 		mySource.clip = SoundToPlayWhenTriggered;
+
+        if(OrbRenderer != null)
+        {
+            OrbLight = OrbRenderer.GetComponentInChildren<Light>();
+
+            Color c = (State) ? Color.red : Color.blue;
+            c.a = .5f;
+            OrbRenderer.color = c;
+            if (OrbLight != null)
+                OrbLight.color = c;
+        }
 	}
 	
 	// Update is called once per frame
@@ -48,26 +57,12 @@ public class lgcShootSwitch : MonoBehaviour, IDamageable {
 		{
 			return;
 		}
-
-		// Update the sprite renderer
-		if(ConsoleRenderer != null)
-		{
-			ConsoleRenderer.sprite = (objectHandles[0].Triggered) ? Active : Inactive;
-		}
+ 
 	}
 
 	public void OnHit(int _damage)
 	{
-		for(int i = 0; i < objectHandles.Length; i++)
-		{
-			objectHandles[i].Triggered = !objectHandles[i].Triggered;
-		}
-
-		if (SoundToPlayWhenTriggered != null)
-		{
-			mySource.clip = SoundToPlayWhenTriggered;
-			mySource.Play();
-		}
+        Triggered = !Triggered;
 	}
 
 
@@ -85,8 +80,31 @@ public class lgcShootSwitch : MonoBehaviour, IDamageable {
 	// A logic based boolean flag
 	public bool Triggered
 	{
-		get{return false;}
-		set{}
+		get{return State; }
+		set
+        { 
+            State = value;
+            for (int i = 0; i < objectHandles.Length; i++)
+            {
+                objectHandles[i].Triggered = State;
+            }
+
+            if (SoundToPlayWhenTriggered != null)
+            {
+                mySource.clip = SoundToPlayWhenTriggered;
+                mySource.Play();
+            }
+
+            if(OrbRenderer != null)
+            {
+                Color c = (State) ? Color.red : Color.blue;
+                c.a = .5f;
+                OrbRenderer.color = c;
+                if (OrbLight != null)
+                    OrbLight.color = c;
+            }
+
+        }
 	}
 
 	public UnitStruct MyUnit

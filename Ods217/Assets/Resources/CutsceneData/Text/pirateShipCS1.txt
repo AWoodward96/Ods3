@@ -5,8 +5,7 @@ HaltPlayer()
 
  
 
-Say(Con1,You there!,Idle)
-Wait(1.5)
+Say(Con1,You there!,Idle) 
 Flip()
 Say(Slas,Me?,IdleT)
 Flip()

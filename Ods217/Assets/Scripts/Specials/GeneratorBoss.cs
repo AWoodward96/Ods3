@@ -228,9 +228,21 @@ public class GeneratorBoss : GeneratorBehavior
 
         }
 
-        GlassExplosion.Play();
-        GlasObject.SetActive(false);
-        BrokenGlassObject.SetActive(true);
+        // One last big one for good messure
+        for (int i = 0; i < Explosions.Length; i++)
+        {
+            Explosions[i].Play();
+            Explosions[i].GetComponent<AudioSource>().Play();
+
+            if(i == 1)
+            { 
+                GlassExplosion.Play();
+                GlasObject.SetActive(false);
+                BrokenGlassObject.SetActive(true);
+            }
+            yield return new WaitForSeconds(.05f);
+        }
+
 
     }
 }

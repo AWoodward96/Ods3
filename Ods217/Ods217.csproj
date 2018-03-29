@@ -137,6 +137,7 @@
     <Compile Include="Assets\Scripts\Systems\ZoneScript.cs" />
     <Compile Include="Assets\Scripts\Technology\BoxLockPrevention.cs" />
     <Compile Include="Assets\Scripts\Technology\ConveyorBelt.cs" />
+    <Compile Include="Assets\Scripts\Technology\DerelictGeneratorFX.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\DestroyAfterXSeconds.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\SimpleMove.cs" />
     <Compile Include="Assets\Scripts\Technology\Effects\delayedExplosion.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Assets\Scripts\Technology\SpireElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\StandardElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\StandardUnitAnim.cs" />
+    <Compile Include="Assets\Scripts\Technology\UnitSpawner.cs" />
     <Compile Include="Assets\Scripts\Technology\WaypointsMovement.cs" />
     <Compile Include="Assets\Scripts\Technology\weaponDispenser.cs" />
     <Compile Include="Assets\Scripts\Unit\Bosses\FredrickBoss.cs" />
