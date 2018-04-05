@@ -160,8 +160,8 @@
     <Compile Include="Assets\Scripts\Technology\Logic\lgcOnCollisionTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcShootSwitch.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcSwitch.cs" />
-    <Compile Include="Assets\Scripts\Technology\Logic\lgcSwitchConsole.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcSyncTriggerWithAnimCTRL.cs" />
+    <Compile Include="Assets\Scripts\Technology\Logic\lgcTimedSwitch.cs" />
     <Compile Include="Assets\Scripts\Technology\MovingPlatforms.cs" />
     <Compile Include="Assets\Scripts\Technology\PawnCTRL.cs" />
     <Compile Include="Assets\Scripts\Technology\PoweredElevator.cs" />

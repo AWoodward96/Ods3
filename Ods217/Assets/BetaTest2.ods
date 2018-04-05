@@ -2,11 +2,11 @@ Author
 --------------Plz don't edit this. You might break the game and then your saved file is lost.--------------
 PirateShip1
 200
-(321.3, 4.1, -98.8)
+(321.5, 4.1, -99.6)
 100
 NewWeapon
-ShotGun(Clone)
-ShotGun(Clone)
+null
+NewWeapon
 $PHASE
 True
 True
@@ -82,7 +82,9 @@ True
 True
 True
 True
+True
 $PHASE
+False
 True
 False
 True
@@ -158,6 +160,7 @@ False
 False
 False
 $PHASE
+False
 False
 False
 False
@@ -181,7 +184,7 @@ True
 $PHASE
 0
 0
-1
+0
 1
 $PHASE
-3/26/2018 5:02:01 PM
+4/5/2018 12:42:47 PM

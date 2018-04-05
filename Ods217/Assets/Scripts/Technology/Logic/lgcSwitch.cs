@@ -54,7 +54,7 @@ public class lgcSwitch : MonoBehaviour, IPermanent {
 
     public virtual void Delegate()
     {
-        State = !State;
+        Triggered = !Triggered;
     }
   
 }

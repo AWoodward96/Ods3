@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class lgcSwitchConsole : lgcSwitch {
+public class lgcTimedSwitch : lgcSwitch {
 
 
     [Header("Console Data")]
-    public SpriteRenderer ConsoleRenderer;
-    public Sprite Open;
-    public Sprite Closed;
-
-	public bool isTimed;
+    public Animator ScreenAnimator;
+     
 	float currentTime;
     float soundTime;
     float clickRate;
@@ -23,6 +20,9 @@ public class lgcSwitchConsole : lgcSwitch {
     public AudioClip toggleSound;
     public AudioClip clickingSound;
     AudioSource src;
+
+    [HideInInspector]
+    public bool IsCompleted;
 
     public override void Start()
     {
@@ -42,15 +42,32 @@ public class lgcSwitchConsole : lgcSwitch {
 
     // Update is called once per frame
     void Update()
-    {  
-        // Update the sprite renderer
-        if (ConsoleRenderer != null)
+    {
+        if(ScreenAnimator)
         {
-            ConsoleRenderer.sprite = (Triggered) ? Open : Closed; 
-        } 
+            // Anim states:
+            // 0 - Not triggered
+            // 1 - Triggered, slow
+            // 2 - Triggered, fast
+            // 3 - Complete
+            if (Triggered && !IsCompleted)
+            {
+                // if we're triggered but not completed we need to flash the visuals depending on how close we are to ending the timer
+                ScreenAnimator.SetFloat("State", ((currentTime >= (maxTime * .75f)) ? 2 : 1));
+            }
+            else if (IsCompleted)
+                ScreenAnimator.SetFloat("State", 3);
+            else
+                ScreenAnimator.SetFloat("State", 0);
+        }  
+        //// Update the sprite renderer
+        //if (ConsoleRenderer != null)
+        //{
+        //    ConsoleRenderer.sprite = (Triggered) ? Open : Closed; 
+        //} 
 
 		// If it's a timed switch, update the timer
-		if(isTimed && Triggered)
+		if(!IsCompleted && Triggered)
 		{
 			currentTime += Time.deltaTime;
             soundTime += Time.deltaTime;
@@ -81,8 +98,7 @@ public class lgcSwitchConsole : lgcSwitch {
         if (src != null)
         {
             src.clip = toggleSound;
-            src.Play();
-
+            src.Play(); 
         }
 
 		for(int i = 0; i < unitHandles.Length; i++)

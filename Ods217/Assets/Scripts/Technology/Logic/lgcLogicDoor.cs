@@ -89,12 +89,12 @@ public class lgcLogicDoor: SlidingDoor {
 		{
 			for(int i = 0; i < TriggerObjects.Count; i++)
 			{
-				lgcSwitchConsole mySwitch = TriggerObjects[i].GetComponent<lgcSwitchConsole>();
-				if(mySwitch != null)
-				{
-					mySwitch.isTimed = false;
-				}
-			}
+				lgcTimedSwitch mySwitch = TriggerObjects[i].GetComponent<lgcTimedSwitch>();
+                if (mySwitch != null)
+                {
+                    mySwitch.IsCompleted = true;
+                }
+            }
 		}
 
         State = done;
