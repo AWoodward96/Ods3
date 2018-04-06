@@ -102,8 +102,7 @@ public class lgcTimedSwitch : lgcSwitch {
         }
 
 		for(int i = 0; i < unitHandles.Length; i++)
-		{
-            Debug.Log(unitHandles[i]);
+		{ 
 			unitHandles[i].Activate();
 		}
     }

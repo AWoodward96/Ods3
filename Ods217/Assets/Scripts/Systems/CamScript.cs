@@ -24,12 +24,18 @@ public class CamScript : MonoBehaviour
     bool Loaded;
     float loadedPoint = 0;
 
+    public enum CamEffect { None, Shake }
+    public CamEffect curEffect = CamEffect.None;
+
+    List<GameObject> Watching;
+
     // Use this for initialization
     void Awake()
     {
         instance = this;
         FollowBack = GlobalConstants.DEFAULTFOLLOWBACK;
         SceneManager.sceneLoaded += LevelLoad;
+        Watching = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -72,6 +78,15 @@ public class CamScript : MonoBehaviour
                 Additive += (Vector3.forward * 6);
             }
 
+
+
+            // Handle the list of important objects we need to watch
+            for(int i = 0; i < Watching.Count; i ++)
+            {
+                Additive += (Watching[i].transform.position - Target.transform.position) / (Watching.Count + 2);
+            }
+
+            Additive += HandleEffects(Additive);
 
             Additive.y = Target.position.y + FollowBack.y;
 
@@ -145,6 +160,16 @@ public class CamScript : MonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y, (ExtentsBR.z - bottomBounds));
     }
 
+    Vector3 HandleEffects(Vector3 Addative)
+    {
+        switch(curEffect)
+        { 
+            case CamEffect.Shake:
+                return UnityEngine.Random.onUnitSphere * Random.Range(1,2);
+            default:
+                return Vector3.zero;
+        }
+    }
 
     public virtual PlayerScript playerRef
     {
@@ -156,6 +181,32 @@ public class CamScript : MonoBehaviour
             return player;
         }
     }
+
+    public void AddWatch(GameObject _obj)
+    {
+        if (!Watching.Contains(_obj))
+            Watching.Add(_obj);
+    }
+
+    public void RemoveWatch(GameObject _obj)
+    {
+        if (Watching.Contains(_obj))
+            Watching.Remove(_obj); 
+    }
+
+    public void AddEffect(CamEffect fx, float Time)
+    {
+        curEffect = fx;
+        StopCoroutine("fxTimer");
+        StartCoroutine(fxTimer(Time));
+    }
+
+    IEnumerator fxTimer(float Time)
+    {
+        yield return new WaitForSeconds(Time);
+        curEffect = CamEffect.None;
+    }
+   
 
     void CursorToWorld()
     {

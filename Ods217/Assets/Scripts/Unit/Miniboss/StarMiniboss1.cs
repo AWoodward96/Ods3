@@ -117,6 +117,7 @@ public class StarMiniboss1 : AIStandardUnit{
         myAnimator.SetInteger("Special", 0);
         EntranceCanvas.gameObject.SetActive(false);
         triggered = true;
+        Camera.main.GetComponent<CamScript>().AddWatch(gameObject);
 
     }
     public override void AggroState()
@@ -492,6 +493,7 @@ public class StarMiniboss1 : AIStandardUnit{
 
         if (UnitData.CurrentHealth <= 0)
         {
+            Camera.main.GetComponent<CamScript>().RemoveWatch(gameObject);
             myWeapon.ReleaseWeapon();
             this.gameObject.SetActive(false);
         }
@@ -528,8 +530,5 @@ public class StarMiniboss1 : AIStandardUnit{
         animationHandler.gunObject2 = WeaponSlot2;
         animationHandler.activeGunObject = currentWeapon;
         animationHandler.Update();
-    }
-
-    
-    
+    } 
 }

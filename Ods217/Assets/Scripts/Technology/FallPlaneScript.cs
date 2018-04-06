@@ -34,8 +34,8 @@ public class FallPlaneScript : MonoBehaviour
 		{
 			PlayerScript ps = player.GetComponent<PlayerScript>();
 
-			ps.myUnit.CurrentHealth -= penalty;
-			player.GetComponentInChildren<HealthBar>().ShowMenu();
+            player.GetComponentInChildren<ForceFieldScript>().RegisterHit(ps.myUnit.MaxEnergy); 
+			ps.myVisualizer.ShowMenu();
 
 			if(ps.myUnit.CurrentHealth > 0)
 			{
@@ -79,7 +79,8 @@ public class FallPlaneScript : MonoBehaviour
 				(
 					"HaltPlayer()\n" +
 					"LoadChar(Con1,Console)\n" +
-					"Say(Console,Stop doing that!)"
+                    "Say(Console,Hey!)"+ 
+                    "Continue(Console,Stop throwing your weapons off cliffs!)"
 				);
 
 				numWeaponTosses = 0;

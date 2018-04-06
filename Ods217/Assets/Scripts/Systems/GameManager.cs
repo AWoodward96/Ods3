@@ -205,8 +205,7 @@ public class GameManager : MonoBehaviour {
             {
                 src.clip = SaveSound;
                 src.Play();
-            }
-			Debug.Log("Game Saved.");
+            } 
 			return true;
         }
     }

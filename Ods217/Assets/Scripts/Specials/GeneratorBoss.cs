@@ -128,6 +128,9 @@ public class GeneratorBoss : GeneratorBehavior
 			{ 
 				myUnit.CurrentHealth -= _damage;
 
+                // Shake the screen a bit
+                Camera.main.GetComponent<CamScript>().AddEffect(CamScript.CamEffect.Shake, .5f);
+
                 // Play a hit explosion
                 Explosions[explosionInd].Play();
                 Explosions[explosionInd].GetComponent<AudioSource>().Play();
@@ -211,11 +214,16 @@ public class GeneratorBoss : GeneratorBehavior
 
     IEnumerator deathCRT()
     {
+
+        CamScript c = Camera.main.GetComponent<CamScript>();
+
         // Go through the explosions and explode them (twice)
-        for(int i = 0; i < Explosions.Length; i++)
+        for (int i = 0; i < Explosions.Length; i++)
         {
             Explosions[i].Play();
             Explosions[i].GetComponent<AudioSource>().Play();
+
+            c.AddEffect(CamScript.CamEffect.Shake, .5f);
             yield return new WaitForSeconds(.5f);
 
         }
@@ -224,6 +232,8 @@ public class GeneratorBoss : GeneratorBehavior
         {
             Explosions[i].Play();
             Explosions[i].GetComponent<AudioSource>().Play();
+
+            c.AddEffect(CamScript.CamEffect.Shake, .5f);
             yield return new WaitForSeconds(.5f);
 
         }
@@ -234,7 +244,9 @@ public class GeneratorBoss : GeneratorBehavior
             Explosions[i].Play();
             Explosions[i].GetComponent<AudioSource>().Play();
 
-            if(i == 1)
+
+            c.AddEffect(CamScript.CamEffect.Shake, 1f);
+            if (i == 1)
             { 
                 GlassExplosion.Play();
                 GlasObject.SetActive(false);

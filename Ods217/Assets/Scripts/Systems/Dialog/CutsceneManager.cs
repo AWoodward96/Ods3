@@ -57,6 +57,7 @@ public class CutsceneManager : MonoBehaviour {
     public GameObject SideTextBox;
     public bool ShowMain = false;
     public bool ShowSide = false;
+    public bool Skipping = false;
 
     private void Start()
     {
@@ -138,18 +139,35 @@ public class CutsceneManager : MonoBehaviour {
                     SideTextBox.SetActive(false);
 
                     if (playerHalted)
-                    {
+                    { 
                         playerHalted = false;
                         playerS.AcceptInput = true;
-                    }
-
+                    } 
                     return;
                 }else
-                {
+                { 
                     // Otherwise parse the next string
                     actionComplete = false;
                     ParseString();
                 }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Skipping = true;
+                StopAllCoroutines();
+
+                if(!makingADecision)
+                {
+                    ShowMain = false;
+                    ShowSide = false;
+
+                    actionComplete = true;
+
+                    MainTextBox.SetActive(false);
+                    SideTextBox.SetActive(false);
+                }
+
             }
         }
 
@@ -182,6 +200,7 @@ public class CutsceneManager : MonoBehaviour {
         string[] splitString = fullCutscene.Split('\n');
         string fullLine = splitString[currentLine];
 
+ 
         currentLine++;
 
         // EE1: There is no command, or it's a comment
@@ -204,6 +223,7 @@ public class CutsceneManager : MonoBehaviour {
         switch (commandID.ToUpper())
         {
             case "SAY":
+
                 // The say method is for displaying things to the textbox
                 // Valid Syntax:
                 // Say(CharacterID,Text) [The bear minimum. Will use the last 
@@ -234,15 +254,20 @@ public class CutsceneManager : MonoBehaviour {
                     }
                      
                     currentCutsceneCharacter = character;
+                    lastString = Text;
+
+                    if (Skipping) // If we're skipping, dialog is not important. Go onwards my child
+                    {
+                        actionComplete = true; 
+                        return;
+                    }
+
                     ShowMain = true;
                     StartCoroutine(Speak(Text,0));
                 }else
                 {
                     Debug.Log("Couldn't find character: " + CharacterID + ", at line: " + currentLine);
-                }
-
-
-                //currentCutsceneCharacter = lo
+                } 
                 break;
             case "CONTINUE":
                 // Rather then reset the line, this method continues where we left off after we hit space
@@ -264,10 +289,18 @@ public class CutsceneManager : MonoBehaviour {
                     }
                 }
 
+                Text = lastString + " " + Text;
+                int l = lastString.Length;
+                lastString = Text;
 
+                if (Skipping) // If we're skipping, dialog is not important. Go onwards my child
+                {
+                    actionComplete = true;
+                    return;
+                }
 
                 ShowMain = true;
-                StartCoroutine(Speak(lastString + " " + Text, lastString.Length));
+                StartCoroutine(Speak(Text, l));
 
                 break;
             case "LOADCHAR":
@@ -286,6 +319,7 @@ public class CutsceneManager : MonoBehaviour {
                     Debug.Log("Couldn't load character: " + resourceName + ", at line " + currentLine);
                 }
 
+                // Loading character doesn't take any real ingame time. Don't bother with skipping
                 break;
             case "LOADPERM":
                 // Loads and saves a IPermanent into a dictionary
@@ -305,6 +339,7 @@ public class CutsceneManager : MonoBehaviour {
                 {
                     Debug.Log("Couldn't load permanent: '" + ObjectInSceneName + "', at line " + currentLine);
                 }
+                // Loading perms doesn't take any real ingame time. Don't bother with skipping
                 break;
             case "TRIGGER":
                 // Toggles the trigger on a saved permanent
@@ -354,6 +389,12 @@ public class CutsceneManager : MonoBehaviour {
                     }
                 }
 
+                if (Skipping) // If we're skipping, dialog is not important. Go onwards my child
+                {
+                    actionComplete = true;
+                    return;
+                }
+
                 ShowMain = true;
                 StartCoroutine(Speak(lastString + " " + Text, lastString.Length));
                 actionComplete = true;
@@ -366,6 +407,13 @@ public class CutsceneManager : MonoBehaviour {
                 // A simple stopage of the dialog for a set amount of time
                 // Usually to show something or to delay something
                 // Wait(Time)
+
+                if (Skipping) // If we're skipping, waiting is not important. Go onwards my child
+                {
+                    actionComplete = true;
+                    return;
+                }
+
                 string s = parameters[0].Trim().Replace(")", "");
                 float waitFloat;
                 float.TryParse(s, out waitFloat); 
@@ -403,6 +451,13 @@ public class CutsceneManager : MonoBehaviour {
                     }
                      
                     currentCutsceneCharacter = character;
+
+                    if (Skipping) // If we're skipping, side dialog is not important. Go onwards my child
+                    {
+                        actionComplete = true;
+                        return;
+                    }
+
                     StartCoroutine(Aside(Text, 0));
                 }
                 else
@@ -423,6 +478,13 @@ public class CutsceneManager : MonoBehaviour {
                 actionComplete = true;
                 break;
             case "CAMERATARGET":
+
+                //if (Skipping) // If we're skipping, moving the camera is not important. Go onwards my child
+                //{
+                //    actionComplete = true;
+                //    return;
+                //}
+
                 // Sets the main cameras target to whatever we want it to
                 savedName = parameters[0].Trim().Replace(")", "");
                 if(savedName.ToUpper() == "PLAYER")
@@ -530,8 +592,14 @@ public class CutsceneManager : MonoBehaviour {
 
                 break;
 			case "DECISION":
-				// There's a decision to be made
-				// Decision(Type,TextLeft,TextRight)
+                // There's a decision to be made
+                // Decision(Type,TextLeft,TextRight)
+
+                // There is no skipping decisions. Don't try it. 
+
+               // Debug.Log("Making a decision atm");
+                ShowMain = true;
+                TextArea.text = lastString;
 
 				string Type = parameters[0].Trim().ToUpper();
 
@@ -570,7 +638,7 @@ public class CutsceneManager : MonoBehaviour {
                 }
                 break;
             case "MOVETO":
-
+                // There is no skipping movetos. They're kinda important.
                 savedName = parameters[0].Trim().Replace(")", "");
                 SceneManager.LoadScene(savedName);
                 break;
@@ -709,6 +777,7 @@ public class CutsceneManager : MonoBehaviour {
         InCutscene = true;
         ShowSide = false;
         ShowMain = false;
+        Skipping = false;
 
         StopAllCoroutines();
 

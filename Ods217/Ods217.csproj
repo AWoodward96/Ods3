@@ -152,6 +152,7 @@
     <Compile Include="Assets\Scripts\Technology\ForceFieldScript.cs" />
     <Compile Include="Assets\Scripts\Technology\GeneratorBehavior.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcDoorSwitch.cs" />
+    <Compile Include="Assets\Scripts\Technology\Logic\lgcGeneratorSwitch.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToSave.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToStartDialog.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToTrigger.cs" />

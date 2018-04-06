@@ -9,20 +9,6 @@ using UnityEngine;
 ///  Set an objects trigger state to true only if all IDamageable's are dead and/or all IPermenants are triggered
 /// </summary>
 public class lgcLogicDoor: SlidingDoor {
-
-   /* public GameObject Door1;
-    public GameObject Door2;
-    public Vector3 DoorPos1True;
-    public Vector3 DoorPos2True;
-
-    public Vector3 DoorPos1False;
-    public Vector3 DoorPos2False;
-
-    public float Speed = 5;
-    public bool State;
-    public bool Locked;  
-
-    ZoneScript Zone;*/
      
 	public List<GameObject> TriggerObjects;
 
@@ -95,9 +81,23 @@ public class lgcLogicDoor: SlidingDoor {
                     mySwitch.IsCompleted = true;
                 }
             }
-		}
 
-        State = done;
-		wasTriggered = State;
+            CutsceneManager.instance.StartCutscene(
+            "LoadPerm(" + gameObject.name + ",me)\n" + "HaltPlayer()\n" +
+            "CameraTarget(Me)\n" +
+            "Wait(3)\n" +  
+            "CameraTarget(Player)"
+            );
+
+            wasTriggered = done;
+            StartCoroutine(crtDone(done));
+        }
+         
+    }
+
+    IEnumerator crtDone(bool done)
+    {
+        yield return new WaitForSeconds(1.5f); 
+        State = done; 
     }
 }
