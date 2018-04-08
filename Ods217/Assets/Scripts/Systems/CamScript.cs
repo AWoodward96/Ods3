@@ -48,7 +48,7 @@ public class CamScript : MonoBehaviour
         CursorToWorld();
 
         // If we have something to look at
-        if (Target.GetComponent<CController>() != null)
+        if (Target != null)
         {
             // Take its position and add a standard distance from it
             Vector3 Additive = Target.position + FollowBack;
@@ -164,7 +164,7 @@ public class CamScript : MonoBehaviour
     {
         switch(curEffect)
         { 
-            case CamEffect.Shake:
+            case CamEffect.Shake: 
                 return UnityEngine.Random.onUnitSphere * Random.Range(1,2);
             default:
                 return Vector3.zero;
@@ -201,10 +201,17 @@ public class CamScript : MonoBehaviour
         StartCoroutine(fxTimer(Time));
     }
 
+    public void AddEffect(CamEffect fx)
+    {
+        curEffect = fx;
+        StopAllCoroutines();
+    }
+
     IEnumerator fxTimer(float Time)
     {
         yield return new WaitForSeconds(Time);
         curEffect = CamEffect.None;
+ 
     }
    
 

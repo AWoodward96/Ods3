@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c7fa8ed2d581d854885b1e88bf33307f
-timeCreated: 1518464038
+timeCreated: 1523213157
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -19,6 +19,8 @@ TextureImporter:
     21300024: SeriouslyT
     21300026: LookHere
     21300028: LookHereT
+    21300030: LookUpLeft
+    21300032: LookUpRight
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -276,6 +278,32 @@ TextureImporter:
         height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LookUpLeft
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 1
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LookUpRight
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 1
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

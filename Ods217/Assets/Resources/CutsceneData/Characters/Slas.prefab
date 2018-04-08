@@ -90,4 +90,8 @@ MonoBehaviour:
     PortImg: {fileID: 21300004, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: SmirkT
     PortImg: {fileID: 21300006, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: LookUpLeft
+    PortImg: {fileID: 21300030, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: LookUpRight
+    PortImg: {fileID: 21300032, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   talkingClip: {fileID: 8300000, guid: 5d619a0aab7cc11429e7b13f3520e1b9, type: 3}

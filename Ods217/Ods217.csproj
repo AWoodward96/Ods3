@@ -102,6 +102,7 @@
     <Compile Include="Assets\Scripts\Items\ScrapCapsule.cs" />
     <Compile Include="Assets\Scripts\ReloadSceneAfter.cs" />
     <Compile Include="Assets\Scripts\ShadowsPlease.cs" />
+    <Compile Include="Assets\Scripts\Specials\DetonationScript.cs" />
     <Compile Include="Assets\Scripts\Specials\GeneratorBoss.cs" />
     <Compile Include="Assets\Scripts\Specials\oneofAquiredHealthkit.cs" />
     <Compile Include="Assets\Scripts\Specials\oneofStarDefeat.cs" />
