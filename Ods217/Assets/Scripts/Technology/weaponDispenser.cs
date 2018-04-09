@@ -46,6 +46,8 @@ public class weaponDispenser : MonoBehaviour {
         if(WeaponReference == null && Application.isPlaying)
         { 
             GameObject obj = Instantiate(WeaponPrefab.gameObject) as GameObject;
+			obj.name = WeaponPrefab.name;
+
             WeaponBase b = obj.GetComponent<WeaponBase>();
 
             WeaponReference = b;

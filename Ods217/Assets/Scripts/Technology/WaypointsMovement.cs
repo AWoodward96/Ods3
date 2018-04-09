@@ -5,6 +5,7 @@ using UnityEngine;
 public class WaypointsMovement : MonoBehaviour {
 
     public Vector3[] Waypoints; // Y axis is neglidgable
+	public int[] resetWP;
     public bool ZeroY;
     public int waypointIndex;
     public float Speed;
@@ -12,6 +13,8 @@ public class WaypointsMovement : MonoBehaviour {
     public float BufferDistance;
 
     CController myCC;
+	BoxLockPrevention myBLP;
+
 	// Use this for initialization
 	void Start () {
 
@@ -28,7 +31,7 @@ public class WaypointsMovement : MonoBehaviour {
         }
 
         myCC = GetComponent<CController>();
-         
+		myBLP = GetComponent<BoxLockPrevention>();
 	}
 	
 	// Update is called once per frame
@@ -38,19 +41,21 @@ public class WaypointsMovement : MonoBehaviour {
          
         if (dst.magnitude < BufferDistance)
         {
-            myCC.Velocity = dst;
+            //myCC.Velocity = dst;
+			transform.position += dst;
             IncrementWaypoints(); 
         }
         else
         {
-            myCC.Velocity = dst.normalized * Speed;
+            //myCC.Velocity = dst.normalized * Speed;
+			transform.position += dst.normalized * Speed * Time.deltaTime;
         }
 
-        Collider[] d = Physics.OverlapBox(transform.position, new Vector3(1.1f, 1.1f, 1.1f), Quaternion.identity, LayerMask.GetMask("Units"));
+        /*Collider[] d = Physics.OverlapBox(transform.position, new Vector3(1.1f, 1.1f, 1.1f), Quaternion.identity, LayerMask.GetMask("Units"));
         if (d.Length > 0)
         { 
             d[0].GetComponent<CController>().ApplyForce(myCC.Velocity);
-        }
+        }*/
 
 
     }
@@ -59,7 +64,20 @@ public class WaypointsMovement : MonoBehaviour {
     {
         waypointIndex++;
         if (waypointIndex >= Waypoints.Length)
+		{
             waypointIndex = 0;
+		}
+		if(myBLP)
+		{
+			for(int i = 0; i < resetWP.Length; i++)
+			{
+				if(resetWP[i] == waypointIndex)
+				{
+					myBLP.Triggered = false;
+					break;
+				}
+			}
+		}
     }
 
     private void OnDrawGizmosSelected()
