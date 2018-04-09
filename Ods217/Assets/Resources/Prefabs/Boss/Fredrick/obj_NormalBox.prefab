@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 65855425118574936}
   - component: {fileID: 114286499925016844}
   - component: {fileID: 114942247033727690}
+  - component: {fileID: 114643319899030264}
   m_Layer: 12
   m_Name: obj_NormalBox
   m_TagString: ExplosiveBox
@@ -319,6 +320,22 @@ MonoBehaviour:
   State: 0
   Unbroken: {fileID: 1014374984421124}
   Broken: {fileID: 1782407172686874}
+  DealDamage: 0
+  Damage: 0
+--- !u!114 &114643319899030264
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417653645533184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b53740749c2596f4e9baef96085019ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBroken: 0
+  broken: {fileID: 1782407172686874}
+  unbroken: {fileID: 1014374984421124}
 --- !u!114 &114942247033727690
 MonoBehaviour:
   m_ObjectHideFlags: 1

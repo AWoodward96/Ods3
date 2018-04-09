@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 65203818658156780}
   - component: {fileID: 114597487396443824}
   - component: {fileID: 114916451188481098}
+  - component: {fileID: 114505479129538330}
   m_Layer: 12
   m_Name: obj_ExplosiveBox
   m_TagString: ExplosiveBox
@@ -336,6 +337,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114505479129538330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1422413464790042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b53740749c2596f4e9baef96085019ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBroken: 0
+  broken: {fileID: 1471824889822216}
+  unbroken: {fileID: 1049470076558426}
 --- !u!114 &114597487396443824
 MonoBehaviour:
   m_ObjectHideFlags: 1
