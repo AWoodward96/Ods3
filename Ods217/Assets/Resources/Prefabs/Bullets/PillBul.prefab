@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114865618424949936}
   - component: {fileID: 65936906592945170}
   - component: {fileID: 54104358862167294}
+  - component: {fileID: 95321456038912110}
   m_Layer: 11
   m_Name: PillBul
   m_TagString: Untagged
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1489644613865720}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 8.385889, z: 0}
+  m_LocalPosition: {x: 296.63995, y: 19.41, z: -376.90714}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -70,6 +71,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.64, z: 0.20000005}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &95321456038912110
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1489644613865720}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 39f67bbaaef52c5468ea9e18f023682b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114865618424949936
 MonoBehaviour:
   m_ObjectHideFlags: 1

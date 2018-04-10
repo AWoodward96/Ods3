@@ -11,7 +11,7 @@ public class GeneratorBoss : GeneratorBehavior
 
 	EnergyManager myEnergy;
 
-	List<mobDroneT1> minions;
+	List<mobDroneT0> minions;
 	List<bool> isAlive;
 
 	GameObject myBlueprint;
@@ -19,19 +19,25 @@ public class GeneratorBoss : GeneratorBehavior
 	UsableIndicator myInteract;
 
     public Transform[] SpawnPoint;
+    public GameObject[] MovePoints;
     public ParticleSystem[] Explosions;
     public ParticleSystem GlassExplosion;
     public GameObject GlasObject;
     public GameObject BrokenGlassObject;
+    public GameObject FiCore;
+
 
     int explosionInd = 0;
 
 	bool engaged;				// Once the player first shoots the generator, the fight will begin.
     bool deathCrt = false;
+    bool blinkingFiCore = false;
+
+    const int NUMOFENEMIES = 6;
 
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
 	{
 		engaged = false;
 
@@ -40,12 +46,12 @@ public class GeneratorBoss : GeneratorBehavior
 
 		myEnergy = GetComponent<EnergyManager>();
 
-		minions = new List<mobDroneT1>();
+		minions = new List<mobDroneT0>();
 		isAlive = new List<bool>();
 
 		myZone = transform.parent.GetComponentInChildren<ZoneScript>();
 
-		myBlueprint = Resources.Load("Prefabs/Enemies/MiniDroneT1") as GameObject;
+		myBlueprint = Resources.Load("Prefabs/Enemies/MiniDroneT0") as GameObject;
 
 		myInteract = GetComponentInChildren<UsableIndicator>();
 		myInteract.Preset = UsableIndicator.usableIndcPreset.Interact;
@@ -72,7 +78,7 @@ public class GeneratorBoss : GeneratorBehavior
 			{
 				if(isAlive[i])
 				{
-					myForceField.RegisterHit(myUnit.MaxEnergy / 4); 
+					myForceField.RegisterHit(myUnit.MaxEnergy / NUMOFENEMIES); 
 					isAlive[i] = false;
 				}
 				continue;
@@ -95,7 +101,7 @@ public class GeneratorBoss : GeneratorBehavior
                 Material myMat = myForceField.GetComponent<Renderer>().material; 
                 myMat.SetFloat("_Edges", 0);
                 myMat.SetFloat("_Level", 0);
-                spawnNewWave(4);
+                spawnNewWave(NUMOFENEMIES);
 			}
 		}
 	}
@@ -117,6 +123,7 @@ public class GeneratorBoss : GeneratorBehavior
 				return;
 			}
 
+            Camera.main.GetComponent<CamScript>().AddWatch(gameObject);
 			engaged = true;
 			myInteract.gameObject.SetActive(false);
 		}
@@ -127,6 +134,12 @@ public class GeneratorBoss : GeneratorBehavior
 			if(myUnit.CurrentEnergy <= 0)
 			{ 
 				myUnit.CurrentHealth -= _damage;
+
+                if(!blinkingFiCore)
+                {
+                    blinkingFiCore = true;
+                    StartCoroutine(blinkCore());
+                } 
 
                 // Shake the screen a bit
                 Camera.main.GetComponent<CamScript>().AddEffect(CamScript.CamEffect.Shake, 1f);
@@ -147,6 +160,7 @@ public class GeneratorBoss : GeneratorBehavior
                     // death coroutine
                     if(!deathCrt)
                     {
+                        Camera.main.GetComponent<CamScript>().RemoveWatch(gameObject);
                         deathCrt = true;
                         StartCoroutine(deathCRT());
                     }
@@ -167,57 +181,88 @@ public class GeneratorBoss : GeneratorBehavior
 	{
 		myEnergy.canRecharge = false;
 
-		for(int i = 0; i < numEnemies; i++)
-		{
-			if(minions.Count <= i)
-			{
-				minions.Add((Instantiate(myBlueprint) as GameObject).GetComponent<mobDroneT1>());
-				isAlive.Add(true);
+        for (int i = 0; i < numEnemies; i++)
+        {
+            if (minions.Count <= i)
+            {
+                minions.Add((Instantiate(myBlueprint) as GameObject).GetComponent<mobDroneT0>());
+                isAlive.Add(true);
 
-				minions[i].transform.parent = transform;
-			}
-			else
-			{
-				minions[i].gameObject.SetActive(true);
-				isAlive[i] = true;
+                minions[i].transform.parent = transform;
+            }
+            else
+            {
+                minions[i].gameObject.SetActive(true);
+                isAlive[i] = true;
 
-				minions[i].myWeapon.transform.SetParent(minions[i].transform);
-				minions[i].myWeapon.RotateObject.SetActive(true);
-			}
-				
-			minions[i].gameObject.transform.position = new Vector3(transform.position.x, 4.0f, transform.position.z);
+                minions[i].myWeapon.transform.SetParent(minions[i].transform);
+                minions[i].myWeapon.RotateObject.SetActive(true);
+            }
 
-			switch(i % 4)
-			{
-			case 0:
+            minions[i].gameObject.transform.position = new Vector3(transform.position.x, 4.0f, transform.position.z);
+
+            switch (i % NUMOFENEMIES)
+            {
+                case 0:
                     minions[i].gameObject.transform.position = SpawnPoint[0].position + Vector3.down;
-				break;
-
-			case 1:
-				minions[i].gameObject.transform.position = SpawnPoint[1].position + Vector3.down;
                     break;
 
-			case 2:
-				minions[i].gameObject.transform.position = SpawnPoint[2].position + Vector3.down;
+                case 1:
+                    minions[i].gameObject.transform.position = SpawnPoint[1].position + Vector3.down;
                     break;
 
-			case 3:
-				minions[i].gameObject.transform.position = SpawnPoint[3].position + Vector3.down;
+                case 2:
+                    minions[i].gameObject.transform.position = SpawnPoint[2].position + Vector3.down;
                     break;
-			}
 
+                case 3:
+                    minions[i].gameObject.transform.position = SpawnPoint[3].position + Vector3.down;
+                    break;
+                case 4:
+                    minions[i].gameObject.transform.position = SpawnPoint[4].position + Vector3.down;
+                    break;
+                case 5:
+                    minions[i].gameObject.transform.position = SpawnPoint[5].position + Vector3.down;
+                    break;
+            }
+
+
+            GameObject properPoint = MovePoints[0];
+            float smallestDistance = 100000;
+            float curDistance;
+            for (int j = 0; j < MovePoints.Length; j++)
+            {
+                curDistance = GlobalConstants.ZeroYComponent(minions[i].transform.position - MovePoints[j].transform.position).magnitude; 
+                if (curDistance < smallestDistance)
+                {
+                    properPoint = MovePoints[j];
+                    smallestDistance = curDistance;
+                }
+            }
+
+            Debug.Log(properPoint.name);
+            minions[i].MoveTarget = properPoint;
 			minions[i].MyUnit.CurrentHealth = (int)(10);
 			minions[i].MyUnit.MaxHealth = minions[i].MyUnit.CurrentHealth;
 			minions[i].myZone = myZone;
 		}
 	}
 
-    IEnumerator deathCRT()
+    IEnumerator blinkCore()
     {
+        for(int i = 0; i < 12; i ++)
+        {
+            FiCore.SetActive(!FiCore.activeInHierarchy);
+            yield return new WaitForSeconds(.1f);
+        }
 
-        CamScript c = Camera.main.GetComponent<CamScript>();
+        FiCore.SetActive(true);
+        blinkingFiCore = false;
+    }
 
-
+    IEnumerator deathCRT()
+    {  
+        CamScript c = Camera.main.GetComponent<CamScript>(); 
 
         c.AddEffect(CamScript.CamEffect.Shake);
         // Go through the explosions and explode them (twice)
@@ -251,6 +296,7 @@ public class GeneratorBoss : GeneratorBehavior
                 GlassExplosion.Play();
                 GlasObject.SetActive(false);
                 BrokenGlassObject.SetActive(true);
+                FiCore.SetActive(false);
             }
             yield return new WaitForSeconds(.05f);
         }

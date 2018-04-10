@@ -66,6 +66,7 @@ public class FredrickBoss : AIStandardUnit {
             yield return null;
         }
 
+        Camera.main.GetComponent<CamScript>().AddWatch(gameObject);
         myAnimator.SetInteger("Special", 0);
         EntranceCanvas.gameObject.SetActive(false);
         Aggro = true; 
@@ -195,6 +196,8 @@ public class FredrickBoss : AIStandardUnit {
             GameObject obj = Resources.Load("Prefabs/Particles/deathPartParent") as GameObject;
             Instantiate(obj, transform.position, obj.transform.rotation);
 
+
+            Camera.main.GetComponent<CamScript>().RemoveWatch(gameObject);
             myWeapon.ReleaseWeapon();
             this.gameObject.SetActive(false);
         }
