@@ -35,6 +35,7 @@ public class sittingPirates : MonoBehaviour {
         {
             mobCowardUnit c = Units[i].GetComponent<mobCowardUnit>();
             c.AIState = AIStandardUnit.EnemyAIState.Vulnerable;
+            c.Triggered = true;
         }
     }
 }

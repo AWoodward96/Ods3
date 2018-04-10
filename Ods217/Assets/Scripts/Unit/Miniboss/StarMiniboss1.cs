@@ -96,8 +96,8 @@ public class StarMiniboss1 : AIStandardUnit{
         }
 
         set
-        {
-            if(!triggered)
+        { 
+            if(!triggered && value == true)
                 StartCoroutine(OnTriggered());
         }
     }

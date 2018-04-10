@@ -83,12 +83,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Fired: 0
   Direction: {x: 0, y: 0, z: 0}
-  Speed: 30
+  Speed: 33
   myInfo:
     name: 
-    currentAmmo: 0
-    maxAmmo: 0
-    reloadSpeed: 0
+    shotCost: 0
     fireCD: 0
     BulletObject: {fileID: 0}
     bulletDamage: 0

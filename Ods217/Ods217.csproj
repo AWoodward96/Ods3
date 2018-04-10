@@ -157,6 +157,7 @@
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToSave.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToStartDialog.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcInteractToTrigger.cs" />
+    <Compile Include="Assets\Scripts\Technology\Logic\lgcJukebox.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcLogicDoor.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcMoveToOnTrigger.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcOnCollisionTrigger.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Assets\Scripts\Unit\UnitStruct.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\Bouncer.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\BulletBase.cs" />
+    <Compile Include="Assets\Scripts\Weapons\Bullets\Fade.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\Grenade.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\Pellet.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullets\TossedProjectile.cs" />

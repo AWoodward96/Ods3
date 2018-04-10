@@ -27,7 +27,7 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
 
         set
         {
-            throw new NotImplementedException();
+           
         }
     }
 

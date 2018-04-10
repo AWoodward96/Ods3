@@ -165,9 +165,9 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
             float val = UnityEngine.Random.value;
             bool rnd = (val < chances);
             if (rnd)
-                moveAI.Wander(1, myCC.Speed);
+                moveAI.Wander(UnityEngine.Random.Range(.5f,1), myCC.Speed);
             else
-                moveAI.Wait(2);
+                moveAI.Wait(UnityEngine.Random.Range(.5f, 1));
 
         }
 

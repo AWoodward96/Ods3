@@ -813,16 +813,19 @@ MonoBehaviour:
     PickedUp: 0
   weaponData:
     name: MiniDroneT1gun
-    shotCost: 50
-    fireCD: 2
+    shotCost: 10
+    fireCD: 0.75
     BulletObject: {fileID: 1489644613865720, guid: cdae854af0bdf8444be4d934932f2374,
       type: 2}
     bulletDamage: 10
     reloadClip: {fileID: 8300000, guid: d465b82735d996247bfed17d426c1c03, type: 3}
   ShootClip: {fileID: 8300000, guid: 3aa2e87d4f1e6594db45bac5ed7929e7, type: 3}
+  maxBullets: 0
   myBullets: []
   myShield: {fileID: 0}
   myEnergy: {fileID: 0}
+  currentshootCD: 0
+  myAudioSource: {fileID: 0}
 --- !u!114 &114278475539986248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1150,8 +1153,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: -0.25, z: 0}
+  m_Radius: 0.85
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &212066125042820008
 SpriteRenderer:
   m_ObjectHideFlags: 1

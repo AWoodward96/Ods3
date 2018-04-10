@@ -86,9 +86,7 @@ MonoBehaviour:
   Speed: 15
   myInfo:
     name: 
-    currentAmmo: 0
-    maxAmmo: 0
-    reloadSpeed: 0
+    shotCost: 0
     fireCD: 0
     BulletObject: {fileID: 0}
     bulletDamage: 0
@@ -125,7 +123,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6306c3c248caa63478602895e32f6b76, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 37dadcbf7e8a50049aaa73194d7e55c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

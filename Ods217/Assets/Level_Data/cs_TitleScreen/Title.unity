@@ -7662,6 +7662,7 @@ MonoBehaviour:
   ExtentsTL: {x: 0, y: 0, z: 0}
   ExtentsBR: {x: 0, y: 0, z: 0}
   Vizualiser: {fileID: 0}
+  curEffect: 0
 --- !u!124 &1152201301
 Behaviour:
   m_ObjectHideFlags: 0
@@ -19461,7 +19462,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: tempTutorial
+          m_StringArgument: PirateShip1
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,

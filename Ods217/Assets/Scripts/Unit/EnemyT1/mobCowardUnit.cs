@@ -11,8 +11,7 @@ public class mobCowardUnit : AIStandardUnit {
     float curTime;
     LineRenderer line; 
 
-    UsableIndicator ind_Usable;
-    PlayerScript playerref;
+    UsableIndicator ind_Usable; 
 
     [Space(20)]
     [Header("mobCowardUnit")]

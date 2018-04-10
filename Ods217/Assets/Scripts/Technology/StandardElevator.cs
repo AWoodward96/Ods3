@@ -160,7 +160,7 @@ public class StandardElevator : MonoBehaviour, IPermanent {
 		}
 		set
 		{
-			throw new NotImplementedException();
+ 
 		}
 	}
 }

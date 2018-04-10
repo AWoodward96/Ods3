@@ -57,8 +57,8 @@ public class mobDroneT1 : MonoBehaviour, IArmed {
         Vector3 moveVector = (radiusVector * RADVECWEIGHT) + (rotationVector * ROTVECWEIGHT) + (noiseVector * NOISEWEIGHT);
         myRGB.AddForce(moveVector);
 
-        if (Mathf.Abs(transform.position.y - targetPos.y) > 1)
-            myRGB.AddForce(0, targetPos.y - transform.position.y, 0);
+        if (Mathf.Abs(transform.position.y - targetPos.y) > .3f)
+            myRGB.AddForce(0, (targetPos.y - transform.position.y), 0);
 
         myRGB.velocity *= .975f;
 

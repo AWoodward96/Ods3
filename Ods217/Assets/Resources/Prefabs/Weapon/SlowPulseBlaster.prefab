@@ -285,8 +285,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1086896215326218}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -2.3000019, y: 1.455, z: 7.600007}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4051119126789968}
@@ -665,11 +665,11 @@ MonoBehaviour:
     PickedUp: 0
   weaponData:
     name: UselessBlaster
-    shotCost: 10
-    fireCD: 0.3
-    BulletObject: {fileID: 1489644613865720, guid: 373bf6682013d974f85c51bf8328f8de,
+    shotCost: 4
+    fireCD: 0.15
+    BulletObject: {fileID: 1489644613865720, guid: 17efbb78afbf84440b9c168e5905a8f7,
       type: 2}
-    bulletDamage: 15
+    bulletDamage: 8
     reloadClip: {fileID: 8300000, guid: 2923a5877b56b334b8c5886c017b3eab, type: 3}
   ShootClip: {fileID: 8300000, guid: 56750ae9c6d85234d8bfe3361b3f479f, type: 3}
   maxBullets: 0
