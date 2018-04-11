@@ -16,7 +16,7 @@ public class HeldWeapon {
     GameObject playerObj;
     bool initialized = false;
 
-    [Range(1,10)]
+    [Range(.1f,10)]
     public float Range;
     public bool Interactable;
     public bool PickedUp;

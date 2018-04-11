@@ -194,6 +194,11 @@ public class WeaponBase : MonoBehaviour {
         if (myOwner != null)
             myOwner.myVisualizer.ShowMenu();
 
+        if(weaponData.fireCD < 0)
+        {
+            // if our fire CD is less then 0 then it's a single use weapon
+            ReleaseWeapon();
+        }
 
         return; 
 
