@@ -103,10 +103,10 @@ public class JumpingSpider : MonoBehaviour, IArmed
 		int numSpiders = 0;
 		for(int i = 0; i < zone.Perms.Count; i++)
 		{
-			JumpingSpider myUnit = zone.Perms[i].gameObject.GetComponent<JumpingSpider>();
-			if(myUnit != null && myUnit.AiStats.Target == AiStats.Target)
+			JumpingSpider mySpider = zone.Perms[i].gameObject.GetComponent<JumpingSpider>();
+			if(mySpider != null && mySpider.AiStats.Target == AiStats.Target)
 			{
-				swarmCenter += myUnit.transform.position;
+				swarmCenter += mySpider.transform.position;
 				numSpiders++;
 			}
 		}
@@ -117,10 +117,10 @@ public class JumpingSpider : MonoBehaviour, IArmed
 		numInSwarm = 0;
 		for(int i = 0; i < zone.Perms.Count; i++)
 		{
-			JumpingSpider myUnit = zone.Perms[i].gameObject.GetComponent<JumpingSpider>();
-			if(myUnit != null)
+			JumpingSpider mySpider = zone.Perms[i].gameObject.GetComponent<JumpingSpider>();
+			if(mySpider != null)
 			{
-				if((myUnit.transform.position - swarmCenter).sqrMagnitude <= Mathf.Pow(AiStats.swarmRange, 2))
+				if((mySpider.transform.position - swarmCenter).sqrMagnitude <= Mathf.Pow(AiStats.swarmRange, 2))
 				{
 					numInSwarm++;
 				}

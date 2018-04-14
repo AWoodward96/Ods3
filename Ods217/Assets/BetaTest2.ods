@@ -1,11 +1,11 @@
 Author
 --------------Plz don't edit this. You might break the game and then your saved file is lost.--------------
 PirateShip1
-200
-(10.7, 4.6, 26.2)
+400
+(150.0, 4.6, 5.4)
 1
 NewWeapon
-null
+ThrowableChair
 NewWeapon
 $PHASE
 True
@@ -32,6 +32,7 @@ True
 True
 True
 True
+False
 True
 True
 True
@@ -43,7 +44,19 @@ True
 True
 True
 True
+False
 True
+False
+True
+True
+True
+True
+True
+True
+True
+True
+True
+False
 False
 True
 True
@@ -62,20 +75,7 @@ True
 True
 True
 True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
+False
 True
 True
 True
@@ -122,20 +122,8 @@ False
 False
 True
 False
-False
 True
 True
-False
-False
-False
-False
-False
-False
-False
-False
-False
-False
-False
 True
 False
 False
@@ -148,6 +136,10 @@ False
 False
 False
 False
+True
+False
+False
+False
 False
 False
 False
@@ -155,6 +147,14 @@ True
 True
 False
 False
+False
+False
+False
+True
+True
+True
+False
+True
 False
 False
 False
@@ -205,4 +205,4 @@ $PHASE
 0
 1
 $PHASE
-4/11/2018 4:59:23 PM
+4/14/2018 6:56:53 PM

@@ -125,7 +125,14 @@ public class GameManager : MonoBehaviour {
 			// Weapons (Player.GetComponent<PlayerScript>().PrimaryWeapon, SecondaryWeapon, ActiveWeapon
 			if(Player.PrimaryWeapon != null)
 			{
-				writer.WriteLine(Player.PrimaryWeapon.name);
+				if(Player.PrimaryWeapon.name.IndexOf(' ') != -1)
+				{
+					writer.WriteLine(Player.PrimaryWeapon.name.Substring(0, Player.PrimaryWeapon.name.IndexOf(' ')));
+				}
+				else
+				{
+					writer.WriteLine(Player.PrimaryWeapon.name);
+				}
 			}
 			else
 			{
@@ -133,7 +140,14 @@ public class GameManager : MonoBehaviour {
 			}
 			if(Player.SecondaryWeapon != null)
 			{
-				writer.WriteLine(Player.SecondaryWeapon.name);
+				if(Player.SecondaryWeapon.name.IndexOf(' ') != -1)
+				{
+					writer.WriteLine(Player.SecondaryWeapon.name.Substring(0, Player.SecondaryWeapon.name.IndexOf(' ')));
+				}
+				else
+				{
+					writer.WriteLine(Player.SecondaryWeapon.name);
+				}
 			}
 			else
 			{
@@ -141,7 +155,14 @@ public class GameManager : MonoBehaviour {
 			}
 			if(Player.ActiveWeapon != null)
 			{
-				writer.WriteLine(Player.ActiveWeapon.name);
+				if(Player.ActiveWeapon.name.IndexOf(' ') != -1)
+				{
+					writer.WriteLine(Player.ActiveWeapon.name.Substring(0, Player.ActiveWeapon.name.IndexOf(' ')));
+				}
+				else
+				{
+					writer.WriteLine(Player.ActiveWeapon.name);
+				}
 			}
 			else
 			{
@@ -421,42 +442,24 @@ public class GameManager : MonoBehaviour {
 
 		// The following 3 loads are ugly as sin. There HAS to be a neater way to do this, right?
 
-		// If the player starts out with a weapon on opening the scene, delete it...
+		// If the player starts with either weapon, delete them and replace with ours
 		if(ps.PrimaryWeapon != null)
 		{
 			Destroy(ps.PrimaryWeapon.gameObject);
+			ps.PrimaryWeapon = null;
 		}
-		if(GameData.PlayerWeapon1 != "null")
-		{
-			// ... Then replace it with the weapon we saved (if any).
-			ps.PrimaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon1), Player.transform) as GameObject).GetComponent<WeaponBase>();
-
-			// Hacky failsafing because sometimes the weapon gets named with a (clone) suffix, which throws a monkey wrench in my plans
-			ps.PrimaryWeapon.gameObject.name = GameData.PlayerWeapon1;
-		}
-
-		// Do the same for secondary and active weapons
 		if(ps.SecondaryWeapon != null)
 		{
-			Destroy(ps.PrimaryWeapon.gameObject);
-		}
-		if(GameData.PlayerWeapon2 != "null")
-		{
-			ps.SecondaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon2), Player.transform) as GameObject).GetComponent<WeaponBase>();
-
-			ps.SecondaryWeapon.gameObject.name = GameData.PlayerWeapon2;
+			Destroy(ps.SecondaryWeapon.gameObject);
+			ps.SecondaryWeapon = null;
 		}
 
-		if(ps.ActiveWeapon != null)
-		{
-			Destroy(ps.PrimaryWeapon.gameObject);
-		}
-		if(GameData.PlayerWeaponActive != "null")
-		{
-			ps.ActiveWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeaponActive), Player.transform) as GameObject).GetComponent<WeaponBase>();
+		ps.PrimaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon1), Player.transform) as GameObject).GetComponent<WeaponBase>();
+		ps.SecondaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon2), Player.transform) as GameObject).GetComponent<WeaponBase>();
 
-			ps.ActiveWeapon.gameObject.name = GameData.PlayerWeaponActive;
-		}
+		// Make sure the names are correct
+		ps.PrimaryWeapon.gameObject.name = GameData.PlayerWeapon1;
+		ps.SecondaryWeapon.gameObject.name = GameData.PlayerWeapon2;
 
         currentSceneData = FindObjectOfType<SceneData>();
 

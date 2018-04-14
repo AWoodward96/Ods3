@@ -417,6 +417,12 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         if (ActiveWeapon == null)
             return;
 
+		// Only toss if player has both weapons
+		if(PrimaryWeapon == null || SecondaryWeapon == null)
+		{
+			return;
+		}
+
         ActiveWeapon.heldData.Toss(_dir, transform.position);
         if (SecondaryWeapon == ActiveWeapon)
         {
