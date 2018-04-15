@@ -20,6 +20,16 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 		player = GameObject.Find("Player").GetComponent<CharacterController>();
 		myBB = GetComponentInChildren<BoxCollider>();
 		myExplosiveBox = GetComponent<ExplosiveBox>();
+
+		if(broken == null)
+		{
+			broken = transform.Find("Broken").gameObject;
+		}
+
+		if(unbroken == null)
+		{
+			unbroken = transform.Find("Unbroken").gameObject;
+		}
 	}
 
 	// Update is called once per frame

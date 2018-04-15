@@ -43,7 +43,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 1008
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -105,10 +105,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 958
-  m_MinSize: {x: 679, y: 492}
-  m_MaxSize: {x: 14002, y: 14042}
+  m_MinSize: {x: 683, y: 492}
+  m_MaxSize: {x: 14004, y: 14042}
   vertical: 1
-  controlID: 54
+  controlID: 13
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -129,10 +129,10 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 958
-  m_MinSize: {x: 679, y: 492}
-  m_MaxSize: {x: 14002, y: 14042}
+  m_MinSize: {x: 683, y: 492}
+  m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 55
+  controlID: 14
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -153,10 +153,10 @@ MonoBehaviour:
     y: 0
     width: 1643
     height: 958
-  m_MinSize: {x: 404, y: 492}
+  m_MinSize: {x: 406, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 56
+  controlID: 15
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -177,10 +177,10 @@ MonoBehaviour:
     y: 0
     width: 1643
     height: 687
-  m_MinSize: {x: 404, y: 221}
-  m_MaxSize: {x: 8004, y: 4021}
+  m_MinSize: {x: 406, y: 221}
+  m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 57
+  controlID: 16
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -279,8 +279,8 @@ MonoBehaviour:
     y: 0
     width: 277
     height: 958
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 21}
@@ -390,24 +390,24 @@ MonoBehaviour:
     width: 200
     height: 666
   m_TreeViewState:
-    scrollPos: {x: 0, y: 259}
-    m_SelectedIDs: 22961600
-    m_LastClickedID: 1480226
-    m_ExpandedIDs: d40af7ff2edcf7ff86bcf8fffa7ff9ffda0cfbff0214fbffa804fcff9c0ffcff764ffcff8a2efdffea5afdff3293fdffd0c2fdffeed2ffff3addffff00000000e86f00005677000030cf0e00b61f1000a43b1300e63b1300307e1300789a160016a01600d2a01600
+    scrollPos: {x: 0, y: 2823}
+    m_SelectedIDs: 60510000
+    m_LastClickedID: 20832
+    m_ExpandedIDs: e6fbffff00000000a8510000765400009c540000505600007e560000bc56000078570000f0590000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: PirateChairPt1
-      m_OriginalName: PirateChairPt1
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: -536270
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 9}
     m_SearchString: 
@@ -593,9 +593,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 293.13553, y: -401.10364, z: 105.267624}
+    m_Target: {x: 205.11583, y: 149.86208, z: -583.57385}
     speed: 2
-    m_Value: {x: 293.13553, y: -401.10364, z: 105.267624}
+    m_Value: {x: 205.11583, y: 149.86208, z: -583.57385}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -618,13 +618,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.5168592, y: 0.008233183, z: -0.0049605537, w: -0.8560165}
+    m_Target: {x: -0.3552466, y: 0.013195533, z: -0.0050059054, w: -0.93466616}
     speed: 2
-    m_Value: {x: -0.5168592, y: 0.008233183, z: -0.0049605537, w: -0.8560165}
+    m_Value: {x: -0.35524657, y: 0.013195531, z: -0.005005905, w: -0.93466604}
   m_Size:
-    m_Target: 489.69244
+    m_Target: 61.67015
     speed: 2
-    m_Value: 489.69244
+    m_Value: 61.67015
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -726,19 +726,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Resources/Prefabs
+    - Assets/Resources/Prefabs/Boss/Fredrick
   m_ViewMode: 1
   m_StartGridSize: 78
   m_LastFolders:
-  - Assets/Resources/Prefabs
+  - Assets/Resources/Prefabs/Boss/Fredrick
   m_LastFoldersGridSize: 78
   m_LastProjectPath: C:\Users\Edward-Game\Documents\GitHub\Odyssey\Ods217
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 1047}
-    m_SelectedIDs: a85b0000
-    m_LastClickedID: 23464
-    m_ExpandedIDs: 00000000a6420000e6420000f4420000fe43000066440000e846000074480000ae4a0000f24b0000b24c0000ec4c0000d44e0000f64e0000644f0000b8510000ea520000fc5300002854000026550000c25500005e560000a8560000a6570000dc570000fe5800007a5900004a5b0000a65b0000a85b0000ae5b0000fa5c00003a5d0000a45e0000ca5e0000365f0000d8600000f2600000fe600000746200005a630000e66300006a64000082640000026c0000046c0000066c0000086c00000a6c00000c6c00000e6c0000106c0000126c0000146c0000166c0000186c00001a6c00001c6c00001e6c0000206c0000226c0000246c0000266c0000286c00002a6c00002c6c00002e6c0000306c000000ca9a3bffffff7f
+    m_SelectedIDs: b6400000
+    m_LastClickedID: 16566
+    m_ExpandedIDs: 00000000fc2600003e2700004e2700006c280000d82800006a2b0000022d00004a2f0000ac300000b6310000f2310000183400003c340000b234000018370000523800007c390000b4390000c03a0000623b0000003c00004c3c0000643d00009e3d0000d23e0000583f00004a410000e2410000e4410000ea4100004043000084430000f44400001a4500008e450000364700005a47000068470000f6480000e6490000744a0000fe4a0000164b0000eeae0000f0ae0000f2ae0000f4ae0000f6ae0000f8ae0000faae0000fcae0000feae000000af000002af000004af000006af000008af00000aaf00000caf00000eaf000010af000012af000014af000016af000018af00001aaf00001caf000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -766,7 +766,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000a6420000e6420000f4420000fe43000066440000e846000074480000ae4a0000f24b0000b24c0000ec4c0000d44e0000f64e0000644f0000b8510000ea520000fc5300002854000026550000c25500005e560000a8560000a6570000dc570000fe5800007a5900004a5b0000a65b0000a85b0000ae5b0000fa5c00003a5d0000a45e0000ca5e0000365f0000d8600000f2600000fe600000746200005a630000e66300006a64000082640000026c0000046c0000066c0000086c00000a6c00000c6c00000e6c0000106c0000126c0000146c0000166c0000186c00001a6c00001c6c00001e6c0000206c0000226c0000246c0000266c0000286c00002a6c00002c6c00002e6c0000306c0000
+    m_ExpandedIDs: 00000000fc2600003e2700004e2700006c280000d82800006a2b0000022d00004a2f0000ac300000b6310000f2310000183400003c340000b234000018370000523800007c390000b4390000c03a0000623b0000003c00004c3c0000643d00009e3d0000d23e0000583f00004a410000e2410000e4410000ea4100004043000084430000f44400001a4500008e450000364700005a47000068470000f6480000e6490000744a0000fe4a0000164b0000eeae0000f0ae0000f2ae0000f4ae0000f6ae0000f8ae0000faae0000fcae0000feae000000af000002af000004af000006af000008af00000aaf00000caf00000eaf000010af000012af000014af000016af000018af00001aaf00001caf0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
