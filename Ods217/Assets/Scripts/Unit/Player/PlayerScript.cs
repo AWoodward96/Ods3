@@ -373,16 +373,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 			myAudioSource.clip = (myCtrl.Sprinting) ? AudioClips[0] : AudioClips[1];
 			myAudioSource.Play();
 		}
-
-		// Handle reload
-		/*if (Input.GetKeyDown(KeyCode.R) && Armed)
-		{
-			// Is reload code even necessary if we're using an energy system?
-
-			WeaponBase weaponToReload = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
-            weaponToReload.ForceReload();
-		}*/
-
+ 
 		if (Input.GetMouseButtonDown(1)) // When we left click throw our weapon
 		{
 			TossWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
@@ -391,7 +382,12 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 		// Secondary weapon != null because we don't want the player to be able to switch if they only have one weapon /  none at all
 		if(Input.GetKeyDown(KeyCode.Q) && SecondaryWeapon != null)
 		{
-			SwitchWeapons();
+            if (ActiveWeapon.heldData.DropOnInactive)
+            {
+                TossWeapon(Vector3.zero); 
+            }
+            else
+			    SwitchWeapons();
 		}
 
 		// Use a healthpack (currently functions as a full heal)

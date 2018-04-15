@@ -20,6 +20,7 @@ public class HeldWeapon {
     public float Range;
     public bool Interactable;
     public bool PickedUp;
+    public bool DropOnInactive;
      
     Rigidbody myRigidBody;
 
@@ -119,7 +120,7 @@ public class HeldWeapon {
 
         // Reset the thrownObj
         thrownObj.transform.localRotation = Quaternion.identity;
-        thrownObj.transform.parent = weaponBase.transform;
+        thrownObj.transform.parent = weaponBase.transform; 
         thrownObj.SetActive(false);
 
         weaponBase.transform.SetParent(_armedUnit.gameObject.transform);
@@ -162,7 +163,7 @@ public class HeldWeapon {
         weaponBase.transform.SetParent(null);
         weaponBase.transform.localPosition = Vector3.zero;
         weaponBase.transform.rotation = Quaternion.identity;
-        weaponBase.transform.localScale = Vector3.one;
+        //weaponBase.transform.localScale = Vector3.one;
 
         ind_MyIndicator.Disabled = false;
 

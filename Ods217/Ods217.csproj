@@ -121,6 +121,7 @@
     <Compile Include="Assets\Scripts\Systems\Dialog\csStartOnUnitDefeated.cs" />
     <Compile Include="Assets\Scripts\Systems\EffectSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Systems\JumpZone.cs" />
     <Compile Include="Assets\Scripts\Systems\SceneData.cs" />
     <Compile Include="Assets\Scripts\Systems\Sound\FootStepScript.cs" />
     <Compile Include="Assets\Scripts\Systems\Sound\NewMusicManager.cs" />

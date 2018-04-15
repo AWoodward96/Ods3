@@ -19,7 +19,7 @@ public class lgcInteractToSave : MonoBehaviour
 	void Start ()
 	{
 		ind_Interactable = GetComponentInChildren<UsableIndicator>();
-        ind_Interactable.Preset = UsableIndicator.usableIndcPreset.Interact;
+        ind_Interactable.Preset = UsableIndicator.usableIndcPreset.Save;
         ind_Interactable.Output = InteractDelegate;
 
         src = GetComponent<AudioSource>();

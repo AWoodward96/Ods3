@@ -663,6 +663,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: UselessBlaster
     shotCost: 4

@@ -1361,6 +1361,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: UselessBlaster
     shotCost: 10
@@ -2347,6 +2348,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b81ee4df432f64480bfda31bd05d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BulletBarCovers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!120 &120513262794088302
 LineRenderer:
   m_ObjectHideFlags: 1

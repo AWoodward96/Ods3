@@ -12,7 +12,7 @@ public class UsableIndicator : MonoBehaviour
     public static IndicatorInfo Grab;
     public static IndicatorInfo Hover;  
 
-    public enum usableIndcPreset { None, Interact, PickUp, Loot, Open, Close, Locked, Talk, Disarm };
+    public enum usableIndcPreset { None, Interact, PickUp, Loot, Open, Close, Locked, Talk, Disarm, Save };
     public enum usableIndcStyle { Toggle, Hold };
     [Header("Object Data")]
     public usableIndcPreset Preset;
@@ -254,6 +254,10 @@ public class UsableIndicator : MonoBehaviour
                     break;
                 case usableIndcPreset.Talk:
                     myText.text = "Talk";
+                    eBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(-20, 2.3f, 0);
+                    break;
+                case usableIndcPreset.Save:
+                    myText.text = "Save";
                     eBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(-20, 2.3f, 0);
                     break;
                 case usableIndcPreset.Disarm:
