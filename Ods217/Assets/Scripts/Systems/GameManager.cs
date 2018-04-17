@@ -454,12 +454,17 @@ public class GameManager : MonoBehaviour {
 			ps.SecondaryWeapon = null;
 		}
 
-		ps.PrimaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon1), Player.transform) as GameObject).GetComponent<WeaponBase>();
-		ps.SecondaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon2), Player.transform) as GameObject).GetComponent<WeaponBase>();
+		if(GameData.PlayerWeapon1 != "null")
+		{
+			ps.PrimaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon1), Player.transform) as GameObject).GetComponent<WeaponBase>();
+			ps.PrimaryWeapon.gameObject.name = GameData.PlayerWeapon1;
+		}
 
-		// Make sure the names are correct
-		ps.PrimaryWeapon.gameObject.name = GameData.PlayerWeapon1;
-		ps.SecondaryWeapon.gameObject.name = GameData.PlayerWeapon2;
+		if(GameData.PlayerWeapon2 != "null")
+		{
+			ps.SecondaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon2), Player.transform) as GameObject).GetComponent<WeaponBase>();
+			ps.SecondaryWeapon.gameObject.name = GameData.PlayerWeapon2;
+		}
 
         currentSceneData = FindObjectOfType<SceneData>();
 

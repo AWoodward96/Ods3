@@ -30,6 +30,8 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 		{
 			unbroken = transform.Find("Unbroken").gameObject;
 		}
+
+		Triggered = false;
 	}
 
 	// Update is called once per frame
@@ -53,6 +55,34 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 				}
 			}
 		}
+
+		// Check enemies, too!
+		if(zone == null)
+		{
+			return;
+		}
+
+		for(int i = 0; i < zone.Perms.Count; i++)
+		{
+			if(zone.Perms[i].gameObject.layer == LayerMask.NameToLayer("Units"))
+			{
+				CharacterController currentUnit = zone.Perms[i].gameObject.GetComponent<CharacterController>();
+				if((zone.Perms[i].gameObject.transform.position - transform.position).sqrMagnitude <= Mathf.Pow((myBB.size.x + currentUnit.radius) * 2, 2))
+				{
+					// If player is colliding with another hitbox at the same time as this box
+					RaycastHit[] hit = Physics.RaycastAll(transform.position, zone.Perms[i].gameObject.transform.position - transform.position, (myBB.size.x + (currentUnit.radius * 2)) + 0.0625f);
+					for(int j = 0; j < hit.Length; j++)
+					{
+						//if(hit[i].gameObject.layer == LayerMask.NameToLayer("Box") || myList[i].gameObject.tag == "ExplosiveBox")
+						if(hit[j].transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
+						{
+							Triggered = true;
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void Activate()
@@ -68,7 +98,7 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 		}
 		set
 		{
-
+			zone = value;
 		}
 	}
 
@@ -84,7 +114,7 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 			{
 				myExplosiveBox.Triggered = value;
 			}
-			else if(value != isBroken)
+			else if(value != isBroken && unbroken != null && broken != null)
 			{
 				unbroken.SetActive(!value);
 				broken.SetActive(value);

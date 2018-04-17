@@ -64,7 +64,7 @@ public class FallPlaneScript : MonoBehaviour
 		}
 
 		// ... Unless it's a weapon
-		else if(other.gameObject.name == "ThrowMe")
+		else if(other.gameObject.name == "ThrowMe" || other.gameObject.name == "ThrowGun")
 		{
 			other.gameObject.transform.position = player.transform.position;
 			other.gameObject.transform.position += new Vector3(0.0f, 50.0f, 0.0f);
