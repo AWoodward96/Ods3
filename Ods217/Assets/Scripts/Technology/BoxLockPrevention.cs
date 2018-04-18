@@ -14,12 +14,15 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 	public GameObject broken;
 	public GameObject unbroken;
 
+    ParticleSystem Part;
+
 	// Use this for initialization
 	void Start ()
 	{
 		player = GameObject.Find("Player").GetComponent<CharacterController>();
 		myBB = GetComponentInChildren<BoxCollider>();
 		myExplosiveBox = GetComponent<ExplosiveBox>();
+        Part = GetComponentInChildren<ParticleSystem>();
 
 		if(broken == null)
 		{
@@ -76,7 +79,7 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 						//if(hit[i].gameObject.layer == LayerMask.NameToLayer("Box") || myList[i].gameObject.tag == "ExplosiveBox")
 						if(hit[j].transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
 						{
-							Triggered = true;
+							Triggered = true; 
 							break;
 						}
 					}
@@ -113,12 +116,14 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 			if(myExplosiveBox)
 			{
 				myExplosiveBox.Triggered = value;
-			}
-			else if(value != isBroken && unbroken != null && broken != null)
-			{
-				unbroken.SetActive(!value);
-				broken.SetActive(value);
-			}
+			} 
+
+            else if (value != isBroken && unbroken != null && broken != null)
+            {
+                Part.Play();
+                unbroken.SetActive(!value);
+                broken.SetActive(value);
+            }
 
 			isBroken = value;
 		}

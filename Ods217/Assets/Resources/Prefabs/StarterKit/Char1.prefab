@@ -689,7 +689,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1342282789828828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 122, y: 9.1, z: -27.9}
+  m_LocalPosition: {x: 312.64, y: 10.74, z: -379.32}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 224203615451560600}
@@ -769,7 +769,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 21.216887
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -1510,8 +1510,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myUnit:
     Name: Basic
-    MaxHealth: 100
-    CurrentHealth: 100
+    MaxHealth: 1
+    CurrentHealth: 1
     MaxEnergy: 20
     CurrentEnergy: 20
   InCombat: 0
@@ -1710,6 +1710,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: Slas' Weapon
     shotCost: 5
@@ -1807,8 +1808,8 @@ MonoBehaviour:
   ActiveInd: 0
   Disabled: 0
   curGrab:
-    distanceToCursor: 0
-    distanceToPlayer: 0
+    distanceToCursor: 100000
+    distanceToPlayer: 100000
     ind: {fileID: 0}
   OverrideTransform: {fileID: 4974403107667014}
   OverrideAdditionalVec: {x: 0, y: 0, z: 0}
@@ -1852,7 +1853,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 3
+  m_Height: 3.5
   m_Radius: 0.56
   m_SlopeLimit: 60
   m_StepOffset: 0.3

@@ -143,6 +143,9 @@ public class WeaponBase : MonoBehaviour {
 		if (myOwner.MyUnit.CurrentEnergy < weaponData.shotCost)
             return;
 
+        if (!myEnergy)
+            myEnergy = myOwner.gameObject.GetComponent<EnergyManager>();
+
         if (myEnergy.BrokenEnergy)
             return;
 

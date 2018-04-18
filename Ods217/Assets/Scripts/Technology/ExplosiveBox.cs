@@ -18,17 +18,11 @@ public class ExplosiveBox : MonoBehaviour, IDamageable {
     public bool DealDamage;
     public int Damage;
 
-    Vector3 defaultSize = new Vector3(4, 4, 4);
-    Vector3 defaultPosition = new Vector3(0, 2, -2);
+    Vector3 defaultSize = new Vector3(4, 6, 4);
+    Vector3 defaultPosition = new Vector3(0, 3, -2);
     Vector3 brokenSize = new Vector3(4, .2f, 4);
     Vector3 brokenPosition = new Vector3(2, .1f, -2);
 
-    // Use this for initialization
-    /*void Start () {
-        mySystem = GetComponentInChildren<ParticleSystem>();
-        src = GetComponent<AudioSource>();
-        myCol = GetComponent<BoxCollider>();
-	}*/
 
 	void Awake()
 	{

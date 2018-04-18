@@ -148,7 +148,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     {  
         // First get some references
         Vector3 playerPos = playerRef.transform.position;
-        Vector3 distVec = playerRef.transform.position - transform.position;
+        Vector3 distVec = GlobalConstants.ZeroYComponent(playerRef.transform.position - transform.position);
  
 
         // If we haven't started pathing somewhere

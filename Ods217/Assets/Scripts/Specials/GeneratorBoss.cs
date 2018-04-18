@@ -240,7 +240,7 @@ public class GeneratorBoss : GeneratorBehavior
                 }
             }
 
-            Debug.Log(properPoint.name);
+ 
             minions[i].MoveTarget = properPoint;
 			minions[i].MyUnit.CurrentHealth = (int)(10);
 			minions[i].MyUnit.MaxHealth = minions[i].MyUnit.CurrentHealth;
