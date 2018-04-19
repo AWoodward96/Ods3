@@ -120,7 +120,10 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 
             else if (value != isBroken && unbroken != null && broken != null)
             {
-                Part.Play();
+				if(Part != null)
+				{
+                	Part.Play();
+				}
                 unbroken.SetActive(!value);
                 broken.SetActive(value);
             }

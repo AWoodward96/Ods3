@@ -11,20 +11,32 @@ public class FallPlaneScript : MonoBehaviour
 	static int numWeaponTosses = 0;
 	static int maxWeaponTosses = 5;
 
-	List<Vector3> safeSpawns;	// Safe places for the player to spawn after a fall
+	int currentBox = 0;	// Which spawn point is the player located at?
+
+	List<Collider> spawnBoxes;
 
 	// Use this for initialization
 	void Start ()
 	{
 		player = GameObject.FindGameObjectWithTag("Player");
 
-		safeSpawns = new List<Vector3>();
+		spawnBoxes = new List<Collider>();
 
-		for(int i = 0; i < transform.childCount; i++)
-		{
-			safeSpawns.Add(transform.GetChild(i).position);
-		}
+		GetComponentsInChildren<Collider>(spawnBoxes);
 	} 
+
+	void Update()
+	{
+		// i = 1 to ignore the fall plane's hitbox
+		for(int i = 1; i < spawnBoxes.Count; i++)
+		{
+			if(spawnBoxes[i].bounds.Contains(player.transform.position))
+			{
+				currentBox = i;
+				break;
+			}
+		}
+	}
 	 
 
 	void OnTriggerExit(Collider other)
@@ -42,24 +54,13 @@ public class FallPlaneScript : MonoBehaviour
 				//player.transform.position = safeSpawns[currentSpawn].transform.position;
 
 				// If there's nowhere safe to spawn, RIP player
-				if(safeSpawns.Count == 0)
+				if(spawnBoxes.Count == 0)
 				{
 					ps.myUnit.CurrentHealth = 0;
 					return;
 				}
 
-				float distance = (player.transform.position - safeSpawns[0]).sqrMagnitude;
-				int winner = 0;
-				for(int i = 1; i < safeSpawns.Count; i++)
-				{
-					if((player.transform.position - safeSpawns[i]).sqrMagnitude < distance)
-					{
-						distance = (player.transform.position - safeSpawns[i]).sqrMagnitude;
-						winner = i;
-					}
-				}
-
-				player.transform.position = safeSpawns[winner];
+				player.transform.position = spawnBoxes[currentBox].bounds.center;
 			}
 		}
 
@@ -79,7 +80,7 @@ public class FallPlaneScript : MonoBehaviour
 				(
 					"HaltPlayer()\n" +
 					"LoadChar(Con1,Console)\n" +
-                    "Say(Console,Hey!)"+ 
+                    "Say(Console,Hey!)\n"+ 
                     "Continue(Console,Stop throwing your weapons off cliffs!)"
 				);
 

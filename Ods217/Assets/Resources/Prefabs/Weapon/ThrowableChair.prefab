@@ -330,7 +330,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1243273099830340}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 50.10535, y: 37.80284, z: -37.419044}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -849,13 +849,14 @@ MonoBehaviour:
     Range: 3
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 1
   weaponData:
     name: 
-    shotCost: 0
-    fireCD: 1
+    shotCost: 1
+    fireCD: -1
     BulletObject: {fileID: 1920899613650954, guid: f45bb5dc5e549694ca2d9d158093d33f,
       type: 2}
-    bulletDamage: 30
+    bulletDamage: 50
     reloadClip: {fileID: 0}
   ShootClip: {fileID: 8300000, guid: 2e45f9a2decc5f04388ff8676827bedf, type: 3}
   maxBullets: 0
