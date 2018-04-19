@@ -309,6 +309,11 @@ public class UsableIndicator : MonoBehaviour
         i.distanceToCursor = 100000;
         Grab = i;
     }
+
+    public static bool IsAvailable
+    {
+        get { return (Grab.ind != null); }
+    }
 }
 
 [System.Serializable]

@@ -90,6 +90,7 @@
     <Compile Include="Assets\Parallax.cs" />
     <Compile Include="Assets\Scripts\Classes\GlobalConstants.cs" />
     <Compile Include="Assets\Scripts\Classes\MovementAI.cs" />
+    <Compile Include="Assets\Scripts\ExtDebug.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IArmed.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDamageable.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IMultiArmed.cs" />

@@ -26,14 +26,8 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     Vector3 HolsteredRotation = new Vector3(0, 0, -88);
     Vector3 HolseredRotation2 = new Vector3(0, 0, -119);
 
-
     public bool InCombat;
-    public bool Rolling;
-    public int RollSpeed;
-
-    Vector3 rollingDirection;
-    int rollSoftCD; // the cooldown so you can't spam the roll
-    bool movementType = false; // False:Sprint; True:Roll
+    bool Punching;
     float combatCD;
 
     AudioSource myAudioSource;
@@ -45,6 +39,8 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     public WeaponBase PrimaryWeapon;
     public WeaponBase SecondaryWeapon;
     public WeaponBase ActiveWeapon;
+
+    public GameObject vis;
 
     // Use this for initialization
     void Awake()
@@ -83,7 +79,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 	// There's a chance that FixedUpdate will duplicate the input, causing unintended effects
 	void Update()
 	{
-		if (AcceptInput && !UsingItem)
+		if (AcceptInput && !UsingItem && !Punching)
 			myInput();
 	}
 
@@ -148,7 +144,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
 
         // Handle Gun 'animations' 
-        if (!myCtrl.Sprinting && InCombat && !UsingItem) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
+        if (!myCtrl.Sprinting && InCombat && !UsingItem && !Punching) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
         {
 
             Vector3 pos = Vector3.zero;
@@ -180,26 +176,26 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
             if ((GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f)) // If we're moving then always put it behind the player
             {
-                pos.z = .01f;
+                pos.z = .011f;
                 // If we're running primarily up then put it in front of the player sprite (behind the player, but towards the camera because we're running up)
                 float zval = myCtrl.Velocity.z;
                 float xval = myCtrl.Velocity.x;
                 if (zval > 0 && Math.Abs(xval) < zval)
-                    pos.z = -.01f;
+                    pos.z = -.011f;
 
             }
             else
             { 
                 if (CursorLoc.z < transform.position.z) // Otherwise put it behind wherever the player is facing
-                    pos.z = .01f;
+                    pos.z = .011f;
                 else
-                    pos.z = -.01f;
+                    pos.z = -.011f;
 
             }
 
             // Handle the using item 
             if (UsingItem)
-                pos.z = .01f;
+                pos.z = .011f;
 
             ActiveWeapon.transform.localPosition = pos;
 
@@ -259,7 +255,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
 
         // Handle walking and running bools
-        Vector3 toCursor = GlobalConstants.ZeroYComponent( CamScript.CursorLocation - transform.position);
+        Vector3 toCursor = GlobalConstants.ZeroYComponent(CamScript.CursorLocation - transform.position);
         myAnimator.SetFloat("SpeedX", myCtrl.Velocity.x);
         myAnimator.SetFloat("SpeedY", myCtrl.Velocity.z);
         myAnimator.SetFloat("LookX", toCursor.x);
@@ -293,7 +289,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     {
         // Basic Movement
         // This could look a lot nicer, but ultimately it gets the job done
-        if (!myCtrl.Airborne && !Rolling)
+        if (!myCtrl.Airborne && !Punching)
         {
             if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) // Left                                        Why does this section look so terrible?
             {
@@ -328,17 +324,14 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
                 myCtrl.ApplyForce(new Vector3(.707f, 0, .707f) * (myCtrl.Speed + (myCtrl.Sprinting ? myCtrl.SprintSpeed : 0)));
             }
         }
+         
 
-		handleRolling();
+    } 
 
-    }
 
 	// For input that is frame-based; goes in Update
 	void myInput()
 	{
-		// Set the springing bool equal to if we have the left shift key held down or not
-		if(!movementType)
-			myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UpgradesManager.MenuOpen);
 
 		// No shooting if the menu is open
 		if (!MenuManager.MenuOpen && !UpgradesManager.MenuOpen)
@@ -348,21 +341,18 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 			{
 				// Also no shooting if we're sprinting
 				if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)) && Armed)
-				{
-					if (!Rolling)
-					{ 
-						WeaponBase weaponToFire = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
-						weaponToFire.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
-						combatCD = 0;
+				{ 
+					WeaponBase weaponToFire = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
+					weaponToFire.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
+					combatCD = 0;
 
-						if (!InCombat)
-						{
-							myAudioSource.clip = AudioClips[0];
-							myAudioSource.Play();
-							combatCD = 0;
-							InCombat = true;
-						}
-					}
+					if (!InCombat)
+					{
+						myAudioSource.clip = AudioClips[0];
+						myAudioSource.Play();
+						combatCD = 0;
+						InCombat = true;
+					} 
 				}
 			}
 		}
@@ -406,7 +396,53 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
                 myAudioSource.Play();
             }
 		}
-	}
+
+
+        // PUNCH
+        // cast a box to see if we deal damage
+        Vector3 toCursor =  CamScript.CursorLocation - transform.position;
+        Vector3 center = transform.position - ((toCursor.normalized) / 2);
+        Vector3 halfExtents = new Vector3(1, 2, 3);
+        Quaternion orientation = Quaternion.Euler(0, -GlobalConstants.angleBetweenVec(toCursor), 0);
+
+        if (Input.GetKeyDown(KeyCode.E) && !Punching)
+        {
+            // Do all the animations
+            myAnimator.SetFloat("Special", (UnityEngine.Random.Range(0,1f) < .5) ? 2 : 3);
+            InCombat = true;
+            combatCD = 0;
+            Punching = true;
+            myCtrl.ApplyForce(toCursor.normalized * 7.5f);
+            StartCoroutine(PunchingCRT());
+
+            Collider[] c = Physics.OverlapSphere(transform.position, 2);
+            for(int i = 0; i < c.Length; i++)
+            { 
+                GameObject obj = c[i].gameObject;
+                if (obj == this.gameObject)
+                    continue;
+
+                IDamageable dmg = obj.GetComponent<IDamageable>();
+                if (dmg == null)
+                    continue;
+
+                // Check to see if object is behind you
+                Vector3 toTarget = (obj.transform.position - transform.position).normalized;
+                if(Vector3.Dot(toTarget,toCursor) > 0)
+                    dmg.OnHit(1); // deal damage
+            }
+        }
+
+        // Set the springing bool equal to if we have the left shift key held down or not 
+        myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UpgradesManager.MenuOpen && !Punching); // has to happen last
+    }
+
+    IEnumerator PunchingCRT()
+    {
+        yield return new WaitForSeconds(.33f);
+        Punching = false;
+        myAnimator.SetFloat("Special", 0);
+    }
 
     public void TossWeapon(Vector3 _dir)
     {
@@ -451,35 +487,6 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         {
             InCombat = false;
         }
-    }
-
-    void handleRolling()
-    {
-        rollSoftCD++;
- 
-        if (!Rolling && Input.GetKeyDown(KeyCode.Space) && movementType && rollSoftCD > 40 && myCtrl.canMove)
-        {
-            Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            dir = dir.normalized;
-            rollSoftCD = 0;
-            rollingDirection = dir;
-            Rolling = true;
-            myCtrl.Velocity = rollingDirection * RollSpeed;
-            myAnimator.SetTrigger("Rolling");
-            StopAllCoroutines();
-            StartCoroutine(RollCD());
-        }
-
-        if (Rolling)
-        {
-            myCtrl.ApplyForce(rollingDirection * RollSpeed);
-        }
-    }
-
-    IEnumerator RollCD()
-    {
-        yield return new WaitForFixedUpdate();
-        Rolling = false;
     }
 
     public void OnHit(int _damage)

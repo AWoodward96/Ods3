@@ -8,8 +8,8 @@ public interface IDamageable : IPermanent {
     {
         get;
         set;
-    }
+    } 
 
-
+    // void OnMelee(int _damage);
     void OnHit(int _damage); 
 }
