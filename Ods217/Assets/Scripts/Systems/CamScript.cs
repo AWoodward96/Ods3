@@ -24,8 +24,12 @@ public class CamScript : MonoBehaviour
     bool Loaded;
     float loadedPoint = 0;
 
-    public enum CamEffect { None, Shake }
+    public enum CamEffect { None, Shake, FadeIn, FadeOut }
     public CamEffect curEffect = CamEffect.None;
+
+	SpriteRenderer fade;
+	float timer = 0.0f;
+	float effectLength = 0.0f;
 
     List<GameObject> Watching;
 
@@ -36,6 +40,8 @@ public class CamScript : MonoBehaviour
         FollowBack = GlobalConstants.DEFAULTFOLLOWBACK;
         SceneManager.sceneLoaded += LevelLoad;
         Watching = new List<GameObject>();
+
+		fade = GetComponentInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -164,11 +170,55 @@ public class CamScript : MonoBehaviour
     {
         switch(curEffect)
         { 
-            case CamEffect.Shake: 
+            case CamEffect.Shake:
+			{
                 return UnityEngine.Random.onUnitSphere * Random.Range(1,2);
+				break;
+			}
+
+			case CamEffect.FadeIn:
+			{
+				if(fade != null)
+				{
+					Color myColor = fade.color;
+
+					timer += Time.deltaTime;
+					myColor.a = 1.0f - (timer / effectLength);
+
+					if(timer >= effectLength)
+					{
+						myColor.a = 0.0f;
+					}
+
+					fade.color = myColor;
+				}
+				break;
+			}
+
+			case CamEffect.FadeOut:
+			{
+				if(fade != null)
+				{
+					Color myColor = fade.color;
+
+					timer += Time.deltaTime;
+					myColor.a = (timer / effectLength);
+
+					if(timer >= effectLength)
+					{
+						myColor.a = 1.0f;
+					}
+
+					fade.color = myColor;
+				}
+				break;
+			}
+
             default:
                 return Vector3.zero;
         }
+
+		return Vector3.zero;
     }
 
     public virtual PlayerScript playerRef
@@ -209,6 +259,9 @@ public class CamScript : MonoBehaviour
 
     IEnumerator fxTimer(float Time)
     {
+		timer = 0.0f;
+		effectLength = Time;
+
         yield return new WaitForSeconds(Time);
         curEffect = CamEffect.None;
  

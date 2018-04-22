@@ -435,6 +435,8 @@ public class GameManager : MonoBehaviour {
 
     void LevelLoaded(Scene _scene, LoadSceneMode _loadMode)
     {
+		Camera.main.GetComponent<CamScript>().AddEffect(CamScript.CamEffect.FadeIn, 1.0f);
+
         GameObject Player = GameObject.FindGameObjectWithTag("Player");
 		PlayerScript ps = Player.GetComponent<PlayerScript>();
         Player.transform.position = GameData.SavedPlayerPosition;

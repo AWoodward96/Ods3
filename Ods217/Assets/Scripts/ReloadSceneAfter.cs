@@ -14,7 +14,11 @@ public class ReloadSceneAfter : MonoBehaviour
 
     IEnumerator reload()
     {
-        yield return new WaitForSeconds(4);
+		yield return new WaitForSeconds(2);
+
+		Camera.main.GetComponent<CamScript>().AddEffect(CamScript.CamEffect.FadeOut, 1.0f);
+
+        yield return new WaitForSeconds(2);
         GameManager.instance.LoadLastSaveFile();
         Debug.Log("loading scene");
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
