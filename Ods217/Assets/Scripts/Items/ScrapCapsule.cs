@@ -43,8 +43,12 @@ public class ScrapCapsule : MonoBehaviour, IDamageable
         for (int i = 0; i < ScrapList.Count; i++)
             ScrapList[i].gameObject.SetActive(false);
     }
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
 
- 
+
     public void OnHit(int _Damage)
     {
         // break!

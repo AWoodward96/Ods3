@@ -358,9 +358,14 @@ public class JumpingSpider : MonoBehaviour, IArmed
 		}
     }
 
-	// INTERFACE IMPLEMENTATION //
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
 
-	public void OnHit(int _damage)
+
+    // INTERFACE IMPLEMENTATION // 
+    public void OnHit(int _damage)
     {
 		if(!powered)
 			return;

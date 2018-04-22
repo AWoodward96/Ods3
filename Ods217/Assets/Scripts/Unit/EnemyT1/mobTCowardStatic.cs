@@ -122,4 +122,10 @@ public class mobTCowardStatic : mobCowardUnit
         yield return new WaitForSeconds(1);
         canPickUp = true;
     }
+
+    public override void OnMelee(int _damage)
+    {
+        if(Triggered)
+            base.OnMelee(_damage);
+    }
 }

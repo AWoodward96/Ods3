@@ -62,7 +62,7 @@ public class StandardUnitAnim {
 
         Anim.SetFloat("Speed", spd);
         Anim.SetBool("FaceFront", faceFront); 
-        Anim.SetBool("Moving", GlobalConstants.ZeroYComponent(velocity).magnitude > .1f);
+        Anim.SetBool("Moving", GlobalConstants.ZeroYComponent(velocity).magnitude > .1f); 
         GunAnims(); 
     }
 

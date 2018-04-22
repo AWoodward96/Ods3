@@ -89,6 +89,12 @@ public class FloatingTargetScript : MonoBehaviour, IArmed {
         Triggered = false;
     }
 
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
+
     public void SetWeaponsOwner(WeaponBase w)
     {
         throw new NotImplementedException();

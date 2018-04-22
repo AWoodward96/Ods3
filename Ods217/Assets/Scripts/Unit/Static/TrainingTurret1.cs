@@ -72,6 +72,12 @@ public class TrainingTurret1 : MonoBehaviour, IArmed {
         }
     }
 
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
+
     WeaponBase IArmed.myWeapon
     {
         get

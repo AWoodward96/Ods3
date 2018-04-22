@@ -67,13 +67,20 @@ public class mobCowardUnit : AIStandardUnit {
 
     public override void OnHit(int _damage)
     {
-        if(audioSrc != null && Clips.Length > 0)
+        if(audioSrc != null && Clips.Length > 0 && MyUnit.CurrentHealth > 0)
         { 
             audioSrc.clip = Clips[1];
             audioSrc.Play();
         }
         base.OnHit(_damage);
     }
+
+    public override void OnMelee(int _damage)
+    {
+        if(!vuln)
+            base.OnMelee(_damage);
+    }
+
     void CreatePoints()
     {
         float x = 0f;

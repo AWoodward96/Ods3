@@ -412,8 +412,12 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             InCombat = true;
             combatCD = 0;
             Punching = true;
-            myCtrl.ApplyForce(toCursor.normalized * 7.5f);
             StartCoroutine(PunchingCRT());
+
+            // Don't move the player if there's an EINDC
+            if (!UsableIndicator.IsAvailable)
+                myCtrl.ApplyForce(toCursor.normalized * 4);
+
 
             Collider[] c = Physics.OverlapSphere(transform.position, 2);
             for(int i = 0; i < c.Length; i++)
@@ -429,7 +433,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
                 // Check to see if object is behind you
                 Vector3 toTarget = (obj.transform.position - transform.position).normalized;
                 if(Vector3.Dot(toTarget,toCursor) > 0)
-                    dmg.OnHit(1); // deal damage
+                    dmg.OnMelee(5); // deal damage
             }
         }
 
@@ -699,6 +703,12 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         }
         
     }
+
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
 
     public void SetWeaponsOwner(WeaponBase w)
     {

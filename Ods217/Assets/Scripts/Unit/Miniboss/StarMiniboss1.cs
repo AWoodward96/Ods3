@@ -361,6 +361,11 @@ public class StarMiniboss1 : AIStandardUnit{
         explosiveMine.transform.position = transform.position;
     }
 
+    public override void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
     // Jump down to the ground, whip out a machine gun and go to town
     void FloorShoot()
     {

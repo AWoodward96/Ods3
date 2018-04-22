@@ -44,6 +44,12 @@ public class TrainingDummy : MonoBehaviour, IArmed {
         }
     }
 
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
+
     public WeaponBase myWeapon
     {
         get

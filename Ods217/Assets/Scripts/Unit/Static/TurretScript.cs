@@ -123,6 +123,11 @@ public class TurretScript : MonoBehaviour, IArmed {
         }
     }
 
+    public void OnMelee(int _damage)
+    { 
+    }
+
+
     public void OnHit(int _damage)
     {
         // Don't do anything because this object can't be hurt

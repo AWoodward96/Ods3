@@ -21,7 +21,12 @@ public class GeneratorBehavior : MonoBehaviour, IArmed
 
 	}
 
-	virtual public void OnHit(int _damage)
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
+    public virtual void OnHit(int _damage)
 	{
 		if(myUnit.CurrentHealth > 0)
 		{

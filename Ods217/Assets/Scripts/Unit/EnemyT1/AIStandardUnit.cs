@@ -10,8 +10,9 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     public UnitStruct UnitData;
     public StandardUnitAnim animationHandler;
 
-    public enum EnemyAIState { Idle, Aggro, Vulnerable, Defeated };
+    public enum EnemyAIState { Idle, Aggro, Vulnerable, Defeated, Stunned };
     public EnemyAIState AIState;
+    EnemyAIState lastState;
 
     public float ArmingTime;
     public float AggroRange;
@@ -38,6 +39,8 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     public WeaponBase WeaponSlot2; 
 
     public ZoneScript Zone;
+
+    bool meleeStunned;
 
 	// Use this for initialization
 	public virtual void Start () {
@@ -69,7 +72,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
                 break;
             case EnemyAIState.Defeated:
                 DefeatedState();
-                break;
+                break; 
         } 
         moveAI.Update();
 
@@ -257,6 +260,14 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
         StartCoroutine(toss(_dir));
     }
 
+    IEnumerator crtMeleeStunned()
+    {
+        yield return new WaitForSeconds(1.5f);
+        meleeStunned = false;
+        myAnimator.SetBool("Stunned", false);
+        AIState = lastState;
+    }
+
     IEnumerator toss(Vector3 _dir)
     {
         yield return new WaitForEndOfFrame();
@@ -300,7 +311,19 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     {
         // Nothing for now
     }
- 
+
+    public virtual void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+        lastState = AIState;
+        AIState = EnemyAIState.Stunned;
+        if(MyUnit.CurrentHealth > 0)
+        {
+            StartCoroutine(crtMeleeStunned()); 
+            myAnimator.SetBool("Stunned", true);
+        }
+
+    }
 
     public virtual void OnHit(int _damage)
     {

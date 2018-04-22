@@ -29,6 +29,11 @@ public class FredrickBoss : AIStandardUnit {
         base.Start();
     }
 
+    public override void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
     public override void Update()
     { 
         if (CutsceneManager.InCutscene)

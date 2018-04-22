@@ -172,6 +172,12 @@ public class mobDroneT2 : MonoBehaviour, IArmed {
         Activated = true;
     }
 
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
+
     public void OnHit(int _damage)
     {
         if (myZone != ZoneScript.ActiveZone) // Don't let them take damage if you're not in their scene

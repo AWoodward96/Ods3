@@ -10,6 +10,6 @@ public interface IDamageable : IPermanent {
         set;
     } 
 
-    // void OnMelee(int _damage);
+    void OnMelee(int _damage);
     void OnHit(int _damage); 
 }

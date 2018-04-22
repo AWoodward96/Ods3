@@ -123,4 +123,10 @@ public class ExplosiveBox : MonoBehaviour, IDamageable {
         }
     }
 
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
+
 }

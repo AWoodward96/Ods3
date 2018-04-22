@@ -174,6 +174,11 @@ public class mobDroneT1 : MonoBehaviour, IArmed {
         Activated = true;
     }
 
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    } 
+
     public void OnHit(int _damage)
     {
 

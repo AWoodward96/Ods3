@@ -60,7 +60,12 @@ public class lgcShootSwitch : MonoBehaviour, IDamageable {
  
 	}
 
-	public void OnHit(int _damage)
+    public void OnMelee(int _damage)
+    {
+        OnHit(_damage);
+    }
+
+    public void OnHit(int _damage)
 	{
         Triggered = !Triggered;
 	}

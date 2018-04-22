@@ -3,6 +3,8 @@ LoadChar(Pirate3,Con1)
 
 HaltPlayer()
 
+LoadPerm(SittingPirateManager,manager)
+Trigger(manager)
  
 
 Say(Con1,You there!,Idle) 
