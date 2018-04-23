@@ -695,68 +695,77 @@ public class CutsceneManager : MonoBehaviour {
                 actionComplete = true;
                 break;
 
-		case "TOGGLEDOORLOCK":
-			// Sets the door lock to the given value
-			// ToggleDoorLock(ObjectInSceneName, myLockValue)
-			ObjectInSceneName = parameters[0].Trim();
-			string myLockValue = parameters[1].Trim().Replace(")", "").ToUpper();
+			case "TOGGLEDOORLOCK":
+				// Sets the door lock to the given value
+				// ToggleDoorLock(ObjectInSceneName, myLockValue)
+				ObjectInSceneName = parameters[0].Trim();
+				string myLockValue = parameters[1].Trim().Replace(")", "").ToUpper();
 
-			myObj = GameObject.Find(ObjectInSceneName);
-			if(myObj != null)
-			{
-				SlidingDoor myDoor = myObj.GetComponent<SlidingDoor>();
-				if(myDoor != null)
+				myObj = GameObject.Find(ObjectInSceneName);
+				if(myObj != null)
 				{
-					if(myLockValue == "TRUE")
-					{
-						myDoor.Locked = true;
-					}
-					else if(myLockValue == "FALSE")
-					{
-						myDoor.Locked = false;
-					}
-					else
-					{
-						Debug.Log("Could not parse door locked bool");
-					}
-				}
-
-				// The fact that I have to do this is bad.
-				// Do please remind me at some point to fix my own bad programming by making Logic Doors inherit from SlidingDoor, mmkay?
-				//		-Ed
-				else
-				{
-					lgcLogicDoor myLogicDoor = myObj.GetComponent<lgcLogicDoor>();
-					if(myLogicDoor != null)
+					SlidingDoor myDoor = myObj.GetComponent<SlidingDoor>();
+					if(myDoor != null)
 					{
 						if(myLockValue == "TRUE")
 						{
-							myLogicDoor.Locked = true;
+							myDoor.Locked = true;
 						}
 						else if(myLockValue == "FALSE")
 						{
-							myLogicDoor.Locked = false;
+							myDoor.Locked = false;
 						}
 						else
 						{
 							Debug.Log("Could not parse door locked bool");
 						}
 					}
+
+					// The fact that I have to do this is bad.
+					// Do please remind me at some point to fix my own bad programming by making Logic Doors inherit from SlidingDoor, mmkay?
+					//		-Ed
 					else
 					{
-						Debug.Log("GameObject given is neither a logic door or a sliding door. Aborting lock toggle.");
+						lgcLogicDoor myLogicDoor = myObj.GetComponent<lgcLogicDoor>();
+						if(myLogicDoor != null)
+						{
+							if(myLockValue == "TRUE")
+							{
+								myLogicDoor.Locked = true;
+							}
+							else if(myLockValue == "FALSE")
+							{
+								myLogicDoor.Locked = false;
+							}
+							else
+							{
+								Debug.Log("Could not parse door locked bool");
+							}
+						}
+						else
+						{
+							Debug.Log("GameObject given is neither a logic door or a sliding door. Aborting lock toggle.");
+						}
 					}
 				}
-			}
-			else
-			{
-				Debug.Log("Could not find GameObject " + ObjectInSceneName + "!");
-			}
-			actionComplete = true;
-			break;
-           
-				
+				else
+				{
+					Debug.Log("Could not find GameObject " + ObjectInSceneName + "!");
+				}
+				actionComplete = true;
+				break;
+	        
+			case "FADEOUT":
+				// Fade to black
+				// SYNTAX: FadeOut(time)
+				string myString = parameters[0].Trim().Replace(")", "");
+				float myTime;
+				float.TryParse(myString, out myTime);
 
+				Camera.main.GetComponent<CamScript>().FadeOut(myTime);
+				actionComplete = true;
+				break;
+					
             default:
                 Debug.Log("Couldn't process: " + commandID);
                 actionComplete = true;

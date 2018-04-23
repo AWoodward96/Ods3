@@ -24,12 +24,13 @@ public class CamScript : MonoBehaviour
     bool Loaded;
     float loadedPoint = 0;
 
-    public enum CamEffect { None, Shake, FadeIn, FadeOut }
+    public enum CamEffect { None, Shake }
     public CamEffect curEffect = CamEffect.None;
 
 	SpriteRenderer fade;
-	float timer = 0.0f;
-	float effectLength = 0.0f;
+	bool fadingIn = true;
+	float timer = 1.0f;
+	float fadeLength = 0.0f;
 
     List<GameObject> Watching;
 
@@ -42,7 +43,27 @@ public class CamScript : MonoBehaviour
         Watching = new List<GameObject>();
 
 		fade = GetComponentInChildren<SpriteRenderer>();
+		FadeIn(1.0f);
     }
+
+	void Update()
+	{
+		timer += Time.deltaTime;
+
+		if(fade != null)
+		{
+			Color myColor = fade.color;
+			if(fadingIn)
+			{
+				myColor.a = 1.0f - (timer / fadeLength);
+			}
+			else
+			{
+				myColor.a = (timer / fadeLength);
+			}
+			fade.color = myColor;
+		}
+	}
 
     // Update is called once per frame
     void FixedUpdate()
@@ -176,44 +197,6 @@ public class CamScript : MonoBehaviour
 				break;
 			}
 
-			case CamEffect.FadeIn:
-			{
-				if(fade != null)
-				{
-					Color myColor = fade.color;
-
-					timer += Time.deltaTime;
-					myColor.a = 1.0f - (timer / effectLength);
-
-					if(timer >= effectLength)
-					{
-						myColor.a = 0.0f;
-					}
-
-					fade.color = myColor;
-				}
-				break;
-			}
-
-			case CamEffect.FadeOut:
-			{
-				if(fade != null)
-				{
-					Color myColor = fade.color;
-
-					timer += Time.deltaTime;
-					myColor.a = (timer / effectLength);
-
-					if(timer >= effectLength)
-					{
-						myColor.a = 1.0f;
-					}
-
-					fade.color = myColor;
-				}
-				break;
-			}
-
             default:
                 return Vector3.zero;
         }
@@ -259,10 +242,7 @@ public class CamScript : MonoBehaviour
 
     IEnumerator fxTimer(float Time)
     {
-		timer = 0.0f;
-		effectLength = Time;
-
-        yield return new WaitForSeconds(Time);
+		yield return new WaitForSeconds(Time);
         curEffect = CamEffect.None;
  
     }
@@ -306,4 +286,38 @@ public class CamScript : MonoBehaviour
 
         Camera.main.orthographicSize = _newSize;
     }
+
+	public void FadeIn(float length)
+	{
+		if(fade == null)
+		{
+			return;
+		}
+
+		timer = 0.0f;
+		fadeLength = length;
+
+		Color myColor = fade.color;
+		myColor.a = 1.0f;
+		fade.color = myColor;
+
+		fadingIn = true;
+	}
+
+	public void FadeOut(float length)
+	{
+		if(fade == null)
+		{
+			return;
+		}
+
+		timer = 0.0f;
+		fadeLength = length;
+
+		Color myColor = fade.color;
+		myColor.a = 0.0f;
+		fade.color = myColor;
+
+		fadingIn = false;
+	}
 }

@@ -16,7 +16,7 @@ public class ReloadSceneAfter : MonoBehaviour
     {
 		yield return new WaitForSeconds(2);
 
-		Camera.main.GetComponent<CamScript>().AddEffect(CamScript.CamEffect.FadeOut, 1.0f);
+		Camera.main.GetComponent<CamScript>().FadeOut(1.0f);
 
         yield return new WaitForSeconds(2);
         GameManager.instance.LoadLastSaveFile();
