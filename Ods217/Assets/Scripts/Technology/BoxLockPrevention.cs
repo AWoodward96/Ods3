@@ -67,13 +67,16 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 
 		for(int i = 0; i < zone.Perms.Count; i++)
 		{
-			if(zone.Perms[i].gameObject.layer == LayerMask.NameToLayer("Units"))
+			if(zone.Perms[i].gameObject.activeInHierarchy && zone.Perms[i].gameObject.layer == LayerMask.NameToLayer("Units"))
 			{
-				CharacterController currentUnit = zone.Perms[i].gameObject.GetComponent<CharacterController>();
-				if((zone.Perms[i].gameObject.transform.position - transform.position).sqrMagnitude <= Mathf.Pow((myBB.size.x + currentUnit.radius) * 2, 2))
+				Collider currentUnit = zone.Perms[i].gameObject.GetComponent<Collider>();
+				Vector3 unitPos = currentUnit.transform.position;
+				unitPos.y = transform.position.y;
+
+				if((unitPos - transform.position).sqrMagnitude <= Mathf.Pow((myBB.size.x + currentUnit.bounds.size.z) * 2, 2))
 				{
 					// If player is colliding with another hitbox at the same time as this box
-					RaycastHit[] hit = Physics.RaycastAll(transform.position, zone.Perms[i].gameObject.transform.position - transform.position, (myBB.size.x + (currentUnit.radius * 2)) + 0.0625f);
+					RaycastHit[] hit = Physics.RaycastAll(transform.position, unitPos - transform.position, (myBB.size.x + (currentUnit.bounds.size.z * 2)) + 0.0625f);
 					for(int j = 0; j < hit.Length; j++)
 					{
 						//if(hit[i].gameObject.layer == LayerMask.NameToLayer("Box") || myList[i].gameObject.tag == "ExplosiveBox")
