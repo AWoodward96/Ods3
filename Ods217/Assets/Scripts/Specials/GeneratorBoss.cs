@@ -106,6 +106,14 @@ public class GeneratorBoss : GeneratorBehavior
 		}
 	}
 
+	public override void OnMelee(int _damage)
+	{
+		if(engaged)
+		{
+			OnHit(_damage);
+		}
+	}
+
 	public override void OnHit(int _damage)
 	{
 		if(myUnit.CurrentHealth == 0)

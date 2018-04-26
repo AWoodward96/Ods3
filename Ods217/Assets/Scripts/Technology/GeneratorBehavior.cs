@@ -21,7 +21,7 @@ public class GeneratorBehavior : MonoBehaviour, IArmed
 
 	}
 
-    public void OnMelee(int _damage)
+    public virtual void OnMelee(int _damage)
     {
         OnHit(_damage);
     }
