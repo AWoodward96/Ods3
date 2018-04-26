@@ -171,6 +171,7 @@
     <Compile Include="Assets\Scripts\Technology\Logic\lgcSyncTriggerWithAnimCTRL.cs" />
     <Compile Include="Assets\Scripts\Technology\Logic\lgcTimedSwitch.cs" />
     <Compile Include="Assets\Scripts\Technology\MovingPlatforms.cs" />
+    <Compile Include="Assets\Scripts\Technology\OutpostElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\PawnCTRL.cs" />
     <Compile Include="Assets\Scripts\Technology\PoweredElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\SlidingDoor.cs" />

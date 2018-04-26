@@ -88,6 +88,10 @@ public class GameManager : MonoBehaviour {
 			SceneManager.LoadScene("Level_Data/lvl_Spire/Spire");
 			SceneManager.sceneLoaded += RestorePlayer;
 		}*/
+        if(Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Q))
+        {
+            SceneManager.LoadScene("Title");
+        }
     }
 
     public void LoadScene(string _Name)
