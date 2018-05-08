@@ -30,8 +30,11 @@ public class lgcInteractToSave : MonoBehaviour
     {
         //GameObject.Find("GameManager").GetComponent<GameManager>().WriteToCurrentSave();
 
-		// TODO: Replace this with its analogue in the cutscene manager!
-		//DialogManager.instance.ShowDialog("Would you like to save?");
+        // TODO: Replace this with its analogue in the cutscene manager!
+        //DialogManager.instance.ShowDialog("Would you like to save?");
+        if (CutsceneManager.InCutscene)
+            return;
+
 
 		CutsceneManager.instance.StartCutscene
 		(

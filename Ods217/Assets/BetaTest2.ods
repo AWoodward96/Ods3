@@ -1,8 +1,8 @@
 Author
 --------------Plz don't edit this. You might break the game and then your saved file is lost.--------------
 PirateShip1
-400
-(9.9, 4.6, 25.7)
+200
+(11.0, 4.6, 30.0)
 1
 NewWeapon
 null
@@ -123,6 +123,14 @@ True
 True
 True
 True
+True
+True
+True
+True
+True
+True
+True
+True
 $PHASE
 True
 True
@@ -169,35 +177,9 @@ False
 False
 True
 True
-True
-True
-False
-True
-True
-True
-False
-False
-False
 False
 True
 False
-False
-False
-True
-False
-True
-False
-False
-True
-False
-True
-False
-True
-False
-True
-False
-True
-True
 True
 True
 True
@@ -206,6 +188,32 @@ False
 False
 False
 True
+False
+False
+False
+True
+False
+True
+False
+False
+True
+False
+True
+False
+True
+False
+True
+False
+True
+True
+True
+True
+True
+False
+False
+False
+False
+True
 True
 False
 False
@@ -231,7 +239,15 @@ False
 False
 False
 False
+False
+False
+False
+False
+False
+False
+False
 True
+False
 False
 False
 False
@@ -268,4 +284,4 @@ $PHASE
 0
 1
 $PHASE
-4/22/2018 8:55:09 PM
+4/28/2018 9:39:19 AM

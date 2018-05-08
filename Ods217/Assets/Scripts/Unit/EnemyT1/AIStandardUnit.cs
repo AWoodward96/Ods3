@@ -54,7 +54,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     }
 
     // Update is called once per frame
-    public virtual void Update () {
+    public virtual void FixedUpdate () {
         // Don't do anything if you're not in his zone
         if (myZone != ZoneScript.ActiveZone)
             return;

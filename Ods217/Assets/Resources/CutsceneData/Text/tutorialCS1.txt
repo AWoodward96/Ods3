@@ -9,6 +9,7 @@ LoadPerm(TriggerMe6,TriggerMe6)
 LoadPerm(Ring,StartRing)
 HaltPlayer()
 
+Save()
  
 
 Say(Con1,. . . . . .,Idle)

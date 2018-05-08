@@ -92,6 +92,13 @@ public class GameManager : MonoBehaviour {
         {
             SceneManager.LoadScene("Title");
         }
+
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Alpha1))
+            SceneManager.LoadScene("TempTutorial");
+
+
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Alpha2))
+            SceneManager.LoadScene("PirateShip1");
     }
 
     public void LoadScene(string _Name)

@@ -34,7 +34,7 @@ public class FredrickBoss : AIStandardUnit {
         OnHit(_damage);
     }
 
-    public override void Update()
+    public override void FixedUpdate()
     { 
         if (CutsceneManager.InCutscene)
         {
@@ -46,7 +46,7 @@ public class FredrickBoss : AIStandardUnit {
         myAnimator.SetBool("Disarmed", AIState == EnemyAIState.Vulnerable);
 
         if (Aggro)
-         base.Update();
+         base.FixedUpdate();
     } 
 
     public override bool Triggered

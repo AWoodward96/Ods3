@@ -36,7 +36,7 @@ public class mobCowardUnit : AIStandardUnit {
         base.Start();
     }
 
-    public override void Update()
+    public override void FixedUpdate()
     { 
         // draw a circle on the ground
         if(vuln)
@@ -60,7 +60,7 @@ public class mobCowardUnit : AIStandardUnit {
         }
 
         prevState = base.AIState;
-        base.Update();
+        base.FixedUpdate();
     }
 
 

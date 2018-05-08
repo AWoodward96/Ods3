@@ -80,18 +80,21 @@ public class WeaponBase : MonoBehaviour {
         {
             ThrownObject.SetActive(!heldData.PickedUp);
             RotateObject.SetActive(heldData.PickedUp);
+
+            if (!heldData.PickedUp)
+            {
+                heldData.HandlePlayerPickupRange(); 
+            }
         }
-
-        if(!heldData.PickedUp)
-        {
-            heldData.HandlePlayerPickupRange();
-        }
-
-        UpdateBullets();
-
+         
 
         currentshootCD += Time.deltaTime;
 	}
+
+    private void FixedUpdate()
+    {
+        UpdateBullets();
+    }
 
     public virtual void UpdateBullets()
     { 

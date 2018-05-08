@@ -68,7 +68,7 @@ public class StarMiniboss1 : AIStandardUnit{
 
 	
 	// Update is called once per frame
-	public override void Update () {
+	public override void FixedUpdate () {
  
         if(CutsceneManager.InCutscene)
         {
@@ -79,7 +79,7 @@ public class StarMiniboss1 : AIStandardUnit{
         {
             // since our AI state is automatically set to Aggro, base.update should call the overriden aggro method every time
             // or the vulnerable method, if we've disarmed him
-            base.Update();
+            base.FixedUpdate();
         }
         else
             UpdateAnimationController();

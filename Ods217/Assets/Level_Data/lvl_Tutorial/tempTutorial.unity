@@ -6660,6 +6660,7 @@ MonoBehaviour:
   ExtentsTL: {x: -100, y: 0, z: 100}
   ExtentsBR: {x: 100, y: 0, z: -100}
   Vizualiser: {fileID: 0}
+  curEffect: 0
 --- !u!114 &711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7811,7 +7812,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &19318753
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10200,6 +10201,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -13319,7 +13321,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &374712862
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14519,6 +14521,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -17165,7 +17168,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &598760428
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17516,7 +17519,9 @@ MonoBehaviour:
     to cut some corners with your battery., LookUp)\r\n\r\nSay(Con, The battery that
     powers your shield is also the battery that powers your bullets., Sad)\r\nSay(Con,
     So essentially, Sad)\r\nContinue(the more you shoot the less protected you'll
-    be.,Idle2)\nSay(Con,Let's practice how that feels for a bit, LookLeft)"
+    be.,Idle2)\n\nSay(Con,Now I will stress this. Should you get hit when your shield
+    is down,LookLeft)\nContinue(you WILL die.,Idle)\n \nSay(Con,Let's practice how
+    that feels for a bit, LookLeft)"
   Dialog2: "LoadPerm(tut_arena2,arena2)\nLoadPerm(tut_arena,arena1) \nLoadPerm(TargetPractice,P)\n\nLoadChar(Con1,Con)\nHaltPlayer()\nSay(Con,Wow
     good job you destroyed a bunch of priceless holograms.)\nContinue(Wonderful.)\n\n\nTrigger(arena2)\nTrigger(arena1)
     \n\nWait(2)\n\nSay(Con,Now it's time for something a little more difficult)\n\n"
@@ -19720,7 +19725,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &766699582
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20318,6 +20323,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -20468,6 +20474,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -21665,7 +21672,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &927585766
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -22438,6 +22445,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -22504,6 +22512,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -22939,7 +22948,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1007595145
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -24473,6 +24482,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -26161,6 +26171,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 223411030584698518, guid: 41b6bdf1f9999774eaa3f9d93cd9e2f0,
+        type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 274}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 41b6bdf1f9999774eaa3f9d93cd9e2f0, type: 2}
   m_IsPrefabParent: 0
@@ -26408,7 +26423,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1236549558
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27274,7 +27289,7 @@ Prefab:
     - target: {fileID: 65456936705207712, guid: 4fa3156c5840d4b43bfc2a185f4b72e2,
         type: 2}
       propertyPath: m_Center.z
-      value: -0.25
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4fa3156c5840d4b43bfc2a185f4b72e2, type: 2}
@@ -29215,6 +29230,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -29445,6 +29461,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -30407,7 +30424,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1527051087
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -31439,7 +31456,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1569167085
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -34282,7 +34299,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1731041073
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -34399,7 +34416,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1732875956
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -34757,6 +34774,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -34939,13 +34957,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myUnit:
     Name: Basic
-    MaxHealth: 100
-    CurrentHealth: 100
+    MaxHealth: 1
+    CurrentHealth: 1
     MaxEnergy: 40
     CurrentEnergy: 40
   InCombat: 0
-  Rolling: 0
-  RollSpeed: 20
   AudioClips:
   - {fileID: 8300000, guid: b5004d63bf4974f40bbfbdadc935dea2, type: 3}
   - {fileID: 8300000, guid: e83c2bf6d0834d542ac99daf14f950e6, type: 3}
@@ -34954,6 +34970,7 @@ MonoBehaviour:
   PrimaryWeapon: {fileID: 0}
   SecondaryWeapon: {fileID: 0}
   ActiveWeapon: {fileID: 0}
+  vis: {fileID: 0}
   Zone: {fileID: 0}
 --- !u!114 &1747064847
 MonoBehaviour:
@@ -35218,6 +35235,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -36581,7 +36599,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1848087147
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -36701,7 +36719,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1848299552
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -37068,6 +37086,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -38739,7 +38758,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1958930070
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -39200,6 +39219,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -39441,7 +39461,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.62431526, z: 0.5}
-  m_Center: {x: 0.5999999, y: -0.020889282, z: -0.25}
+  m_Center: {x: 0.5999999, y: -0.020889282, z: 0}
 --- !u!54 &1973924412
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -39767,6 +39787,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20
@@ -40335,8 +40356,8 @@ MonoBehaviour:
     Runners Shield right?,Idle2)\nSay(Con,That shield will keep you protected as long
     as you have charge in your battery.,Happy)\n\n\nSay(Con,That yellow bar above
     your head? Thats your charge.,Idle2)\nContinue(No charge?,LookLeft)\nContinue(No
-    protections.,Sad)\nContinue(Simple enough right?,Idle2)\n \n\nSay(Con,Lets try
-    it out with some dodging practice!,LookUp)\n\n \n\n\n"
+    protections.,Sad)\nContinue(Simple enough right?,Idle2)\n\nSay(Con,Lets try it
+    out with some dodging practice!,LookUp)\n\n \n\n\n"
   Dialog2: 'LoadChar(Con1,Con)
 
     LoadPerm(WeaponHolder,WH)
@@ -40634,6 +40655,7 @@ MonoBehaviour:
     Range: 4
     Interactable: 0
     PickedUp: 0
+    DropOnInactive: 0
   weaponData:
     name: 
     shotCost: 20

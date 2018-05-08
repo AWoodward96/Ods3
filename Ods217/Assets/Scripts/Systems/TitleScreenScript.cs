@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 
 public class TitleScreenScript : MonoBehaviour {
@@ -12,6 +13,19 @@ public class TitleScreenScript : MonoBehaviour {
     float desiredAlpha;
     float curAlpha;
     bool Selected = false;
+    float recentInput = 0;
+
+    public Canvas MenuDemo;
+    public Canvas DemoCanvas;
+
+    public GameObject JukeBox;
+
+    public bool state;
+    public VideoPlayer myPlayer;
+    Coroutine inBetweenCRT;
+
+    Vector3 cameraPos;
+ 
 
     public void LoadScene(string _Name)
     {
@@ -52,7 +66,63 @@ public class TitleScreenScript : MonoBehaviour {
         Color c = Color.black;
         curAlpha = Mathf.Lerp(curAlpha, desiredAlpha, Time.deltaTime);
         c.a = curAlpha;
-        blackOut.color = c; 
+        blackOut.color = c;
+
+
+        recentInput += Time.deltaTime;
+        if (Input.anyKey)
+        {
+            recentInput = 0;
+            desiredAlpha = 0;
+            State = true;
+        }
+
+        if(recentInput > 15)
+        {
+            State = false;
+        }
+
+
+    }
+
+
+    bool State
+    {
+        get { return state; }
+        set {
+            if(state != value)
+            { 
+                state = value;
+                if (inBetweenCRT != null)
+                    StopCoroutine(inBetweenCRT);
+                inBetweenCRT = StartCoroutine(TransitionBetweenStates(value));
+            }
+        }
+
+    }
+
+    IEnumerator TransitionBetweenStates(bool val)
+    {
+        desiredAlpha = 1;
+        if (val)
+            myPlayer.Play();
+        else
+            myPlayer.Stop();
+        yield return new WaitForSeconds(3);
+
+        AudioSource[] a = JukeBox.GetComponents<AudioSource>();
+        for (int i = 0; i < a.Length; i++)
+        {
+            if (val)
+                a[i].Play();
+            else
+                a[i].Stop();
+        }
+
+
+        desiredAlpha = 0;
+        DemoCanvas.gameObject.SetActive(!val);
+        MenuDemo.gameObject.SetActive(val);
     }
 
     IEnumerator LoadCRT(string _Name)

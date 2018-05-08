@@ -34,8 +34,8 @@ public class mobTechieT1 : AIStandardUnit {
         base.Start();
     }
 
-    public override void Update()
-    { 
+    public override void FixedUpdate()
+    {
         if (myZone != ZoneScript.ActiveZone && AIState == EnemyAIState.Defeated)
             this.gameObject.SetActive(false);
 
@@ -50,8 +50,8 @@ public class mobTechieT1 : AIStandardUnit {
             CreatePoints();
         }
 
-        vuln = (base.AIState == EnemyAIState.Vulnerable); 
-        line.enabled = vuln; 
+        vuln = (base.AIState == EnemyAIState.Vulnerable);
+        line.enabled = vuln;
 
         if (base.AIState == EnemyAIState.Vulnerable && prevState != base.AIState && audioSrc != null && Clips.Length > 0)
         {
@@ -61,24 +61,20 @@ public class mobTechieT1 : AIStandardUnit {
 
 
         // On going into aggro mode release the drone n have fun
-        if(base.AIState != prevState && base.AIState == EnemyAIState.Aggro)
+        if (base.AIState != prevState && base.AIState == EnemyAIState.Aggro)
         {
-            DroneReference = Instantiate(DronePrefab, transform.position,Quaternion.identity).GetComponent<mobDroneT1>();
+            DroneReference = Instantiate(DronePrefab, transform.position, Quaternion.identity).GetComponent<mobDroneT1>();
             DroneReference.Activated = true;
             DroneReference.myZone = ZoneScript.ActiveZone;
-            DroneReference.GetComponent<Rigidbody>().velocity = GlobalConstants.ZeroYComponent( playerRef.transform.position - transform.position);
+            DroneReference.GetComponent<Rigidbody>().velocity = GlobalConstants.ZeroYComponent(playerRef.transform.position - transform.position);
 
             Physics.IgnoreCollision(DroneReference.GetComponent<Collider>(), GetComponent<Collider>());
         }
 
 
-         
-        prevState = base.AIState;
-        base.Update();
-    }
 
-    private void FixedUpdate()
-    {
+        prevState = base.AIState;
+
         if (DroneReference != null)
         {
             if (DroneReference.Activated && DroneReference.UnitData.CurrentHealth > 0)
@@ -86,14 +82,15 @@ public class mobTechieT1 : AIStandardUnit {
                 DroneReference.UpdateDrone();
             }
 
-            if(DroneReference.UnitData.CurrentHealth <= 0)
+            if (DroneReference.UnitData.CurrentHealth <= 0)
             {
                 myAnimator.SetBool("Disarmed", true);
                 base.AIState = EnemyAIState.Defeated;
             }
         }
-    }
 
+        base.FixedUpdate();
+    }
 
 
     public override void OnHit(int _damage)
