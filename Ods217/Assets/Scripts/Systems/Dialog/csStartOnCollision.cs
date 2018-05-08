@@ -16,6 +16,7 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
     [Space(40)]
     [Header("OR File")]
     public TextAsset Text;
+     
  
 
     public bool Triggered
@@ -32,23 +33,38 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    { 
         myBoxCollider = GetComponent<BoxCollider>();
         myBoxCollider.isTrigger = true;
 	}
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
-        { 
-            if (Dialog == "")
-                CutsceneManager.instance.StartCutscene(Text.text);
-            else
-                CutsceneManager.instance.StartCutscene(Dialog);
+        if(other.tag == "Player") 
+            runCS(); 
+    }
+ 
 
-            //myBoxCollider.enabled = false;
-			gameObject.SetActive(false);
+    void runCS()
+    { 
+        if (Dialog == "")
+            CutsceneManager.instance.StartCutscene(Text.text);
+        else
+            CutsceneManager.instance.StartCutscene(Dialog);
+
+        StartCoroutine(Deactivate());
+    }
+
+    IEnumerator Deactivate()
+    {
+        // Ensure that the cutscene actually started before deactivating this object because the CS Manager.instance is slow
+        while (CutsceneManager.InCutscene)
+        { 
+            yield return null;
         }
+
+        gameObject.SetActive(false);
     }
 
     public void Activate()

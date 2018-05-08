@@ -22,6 +22,10 @@ public class StandardElevator : MonoBehaviour, IPermanent {
     public GameObject[] ArrivalPoints;
 
     PlayerScript myPlayer;
+    AudioSource mySource;
+
+    public AudioClip audioMove;
+    public AudioClip audioStop;
 
 	ZoneScript zone;
 
@@ -49,6 +53,8 @@ public class StandardElevator : MonoBehaviour, IPermanent {
 
         FloorIndex = closestIndex;
 
+        mySource = GetComponent<AudioSource>();
+
         // Set up other references
         ind_Interactable = GetComponentInChildren<UsableIndicator>();
         ind_Interactable.Output = InteractDelegate;
@@ -75,13 +81,30 @@ public class StandardElevator : MonoBehaviour, IPermanent {
                     myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
                 myPlayer.AcceptInput = true;
                 Camera.main.gameObject.GetComponent<CamScript>().Target = myPlayer.transform;
-            }
+
+
+                // Play the stop sound when the elevator stops moving
+                if(mySource != null && audioStop != null)
+                { 
+                    mySource.loop = false;
+                    mySource.clip = audioStop;
+                    mySource.Play();
+                }
+            } 
         }
 
     }
 
     void InteractDelegate()
     {
+        // Start playing the moving sound
+        if (mySource != null && audioMove != null)
+        { 
+            mySource.clip = audioMove;
+            mySource.loop = true;
+            mySource.Play();
+        }
+
         GoToFloor(FloorIndex + 1); 
     }
 

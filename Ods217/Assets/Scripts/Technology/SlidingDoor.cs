@@ -18,6 +18,7 @@ public class SlidingDoor : MonoBehaviour, IPermanent {
     public bool Locked;
 
     ZoneScript Zone;
+     
       
     public ZoneScript myZone
     {
@@ -42,6 +43,8 @@ public class SlidingDoor : MonoBehaviour, IPermanent {
         set
         {
             State = value;
+            if (GetComponent<AudioSource>() != null)
+                GetComponent<AudioSource>().Play();
         }
     }
  

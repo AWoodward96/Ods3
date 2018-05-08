@@ -476,12 +476,11 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
     public void OnDeath()
     {
-        // This needs some work
-        // 
+        // This needs some work 
+        CutsceneManager.instance.ResetCutscene(); // So we don't softlock when we die in a cutscene
         GameObject obj = Resources.Load("Prefabs/Particles/playerDeath") as GameObject;
         Instantiate(obj, transform.position, obj.transform.rotation); 
         this.gameObject.SetActive(false);
-
     }
 
  

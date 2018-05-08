@@ -14,6 +14,7 @@ public class lgcLogicDoor: SlidingDoor {
 
     List<IDamageable> harmTriggers;
     List<IPermanent> triggers;
+    AudioSource mySource;
 
 	bool wasTriggered;
 
@@ -39,11 +40,17 @@ public class lgcLogicDoor: SlidingDoor {
 		}
 
 		wasTriggered = false;
+        mySource = GetComponent<AudioSource>();
 	}
 
     // Update is called once per frame
     void Update()
     {
+        //bool Moving = Vector3.Magnitude((Door1.transform.localPosition - ((State && !Locked) ? DoorPos1True : DoorPos1False))) > .1f;
+        //if (Moving && mySource != null)
+        //    mySource.Play();
+
+
         Door1.transform.localPosition = Vector3.Lerp(Door1.transform.localPosition, (State && !Locked) ? DoorPos1True : DoorPos1False, Speed * Time.deltaTime);
         Door2.transform.localPosition = Vector3.Lerp(Door2.transform.localPosition, (State && !Locked) ? DoorPos2True : DoorPos2False, Speed * Time.deltaTime);
  
@@ -97,7 +104,9 @@ public class lgcLogicDoor: SlidingDoor {
 
     IEnumerator crtDone(bool done)
     {
-        yield return new WaitForSeconds(1.5f); 
+        yield return new WaitForSeconds(1.5f);
+        if (mySource != null) ;
+        mySource.Play();
         State = done; 
     }
 }

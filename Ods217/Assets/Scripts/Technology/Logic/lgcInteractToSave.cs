@@ -35,6 +35,8 @@ public class lgcInteractToSave : MonoBehaviour
         if (CutsceneManager.InCutscene)
             return;
 
+        if (src != null)
+            src.Play();
 
 		CutsceneManager.instance.StartCutscene
 		(

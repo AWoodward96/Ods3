@@ -59,7 +59,7 @@ public class CutsceneManager : MonoBehaviour {
     public bool ShowSide = false;
     public bool Skipping = false;
 
-    private void Start()
+    private void Awake()
     {
         if(instance == null)
         {
@@ -782,18 +782,23 @@ public class CutsceneManager : MonoBehaviour {
         currentLine = 0;
         fullCutscene = text;
 
-        actionComplete = true;
         InCutscene = true;
+
+        ResetCutscene();
+    }
+
+    public void ResetCutscene()
+    {
+        actionComplete = true;
         ShowSide = false;
         ShowMain = false;
         Skipping = false;
 
-        StopAllCoroutines();
+        MainTextBox.SetActive(false);
+        SideTextBox.SetActive(false);
 
         portraitArea.transform.localScale = new Vector3(-1, 1, 1);
         sidePortraitArea.transform.localScale = new Vector3(-1, 1, 1);
-
-  
 
         // Reset important variables
         loadedCharacters = new Dictionary<string, CutsceneCharacters>();
@@ -802,6 +807,8 @@ public class CutsceneManager : MonoBehaviour {
         currentCutsceneCharacter = null;
         sideTextArea.text = "";
         TextArea.text = "";
+
+        StopAllCoroutines();
     }
 
     void SetPlayerHalted(bool _isHalted)
