@@ -15087,8 +15087,8 @@ MonoBehaviour:
   ActiveInd: 0
   Disabled: 0
   curGrab:
-    distanceToCursor: 0
-    distanceToPlayer: 0
+    distanceToCursor: 100000
+    distanceToPlayer: 100000
     ind: {fileID: 0}
   OverrideTransform: {fileID: 1908627689}
   OverrideAdditionalVec: {x: 0, y: 0, z: 0}
@@ -19781,7 +19781,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: tempTutorial
+          m_StringArgument: mainTutorial
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,

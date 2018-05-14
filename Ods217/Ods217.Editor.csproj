@@ -225,6 +225,7 @@
     <None Include="Assets\Resources\CutsceneData\Text\starCutscene.txt" />
     <None Include="Assets\Resources\CutsceneData\Text\tutorialCS1.txt" />
     <None Include="Assets\Scripts\SampleSaveFile.txt" />
+    <None Include="Assets\Scripts\Technology\NewSurfaceShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

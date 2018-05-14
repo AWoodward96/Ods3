@@ -8305,7 +8305,7 @@ MonoBehaviour:
 
     Trigger(tut)
 
-    SideSay(Con,Toss unwanted weapons using the right mouse button)
+    SideSay(Con,Toss unwanted weapons using the right mouse button!)
 
     Wait(5)
 
@@ -14220,7 +14220,7 @@ Transform:
   - {fileID: 1423320855}
   - {fileID: 945686845}
   m_Father: {fileID: 879535243}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &444913903
 GameObject:
@@ -16187,7 +16187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Dialog: "Wait(2)\nHaltPlayer()\nLoadChar(Con1,Con)\n\n\r\nSay(Con,Alright good job!,Happy)\r\nContinue(You
-    did better the previous times but...,Sad)\r\nSay(Con, I'll look past it,Idle2)\r\n\nSay(Con,This
+    did better the previous times but...,Sad)\r\nSay(Con, I'll look past it.,Idle2)\r\n\nSay(Con,This
     concludes the tutorial.,Happy)\nContinue(We're going to skip ahead here to get
     you into an actual level.,LookUp)\nSay(Con,Good luck!,Happy)\nLoadScene(PirateShip1)"
   Text: {fileID: 0}
@@ -17524,7 +17524,7 @@ MonoBehaviour:
     that feels for a bit, LookLeft)"
   Dialog2: "LoadPerm(tut_arena2,arena2)\nLoadPerm(tut_arena,arena1) \nLoadPerm(TargetPractice,P)\n\nLoadChar(Con1,Con)\nHaltPlayer()\nSay(Con,Wow
     good job you destroyed a bunch of priceless holograms.)\nContinue(Wonderful.)\n\n\nTrigger(arena2)\nTrigger(arena1)
-    \n\nWait(2)\n\nSay(Con,Now it's time for something a little more difficult)\n\n"
+    \n\nWait(2)\n\nSay(Con,Now it's time for something a little more difficult.)\n\n"
   ReloadDialog: 'LoadChar(Con1,Con)
 
     SideSay(Con,You''ll passively regenerate energy over time.)
@@ -21477,8 +21477,8 @@ Transform:
   - {fileID: 850831244}
   - {fileID: 2052755883}
   - {fileID: 264832190}
-  - {fileID: 1562638813}
   - {fileID: 441229749}
+  - {fileID: 1562638813}
   - {fileID: 856199994}
   - {fileID: 40039499}
   - {fileID: 251939434}
@@ -31267,7 +31267,7 @@ Transform:
   - {fileID: 1782734964}
   - {fileID: 572361446}
   m_Father: {fileID: 879535243}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: -2.53, z: 0}
 --- !u!1001 &1565080559
 Prefab:
@@ -34122,7 +34122,7 @@ MonoBehaviour:
     startled.)\nContinue(Some will toss down their weapons)\nContinue(some will flee.)\nSay(Con,As
     always)\nContinue(you'll have to think on your feet.)\n\nLoadPerm(tut_arena3,arena3)\nLoadPerm(tut_arena4-1,arena4)\nLoadPerm(Arena2InvisWall,invisWall)\n\nLoadPerm(TriggerMe1,TriggerMe1)\r\nLoadPerm(TriggerMe2,TriggerMe2)\r\nLoadPerm(TriggerMe3,TriggerMe3)\r\nLoadPerm(MainPlat,MainPlat)\r\nLoadPerm(TriggerMe5,TriggerMe5)\r\nLoadPerm(TriggerMe6,TriggerMe6)\r\nLoadPerm(Ring,StartRing)\nLoadPerm(tut_objectiveobj,platform)\nTrigger(platform)\nTrigger(TriggerMe1)\r\nTrigger(TriggerMe2)\r\nTrigger(TriggerMe3)\r\nTrigger(TriggerMe5)\r\nTrigger(TriggerMe6)\r\nTrigger(StartRing)\nTrigger(MainPlat)\n\nSay(Con,If
     you do manage to nab an enemy's weapon)\nContinue(you can swap between active
-    weapons with Q)\n\n\nCameraTarget(LookAtMe)\nTrigger(arena3)\nTrigger(arena4)\nTrigger(invisWall)\n\nWait(3)\nSay(Con,Now
+    weapons with Q.)\n\n\nCameraTarget(LookAtMe)\nTrigger(arena3)\nTrigger(arena4)\nTrigger(invisWall)\n\nWait(3)\nSay(Con,Now
     go and finish the course!,Happy)\nCameraTarget(player)"
   DialogArmed: "LoadChar(Con1,Con)\nHaltPlayer()\nSay(Con,Well you didn't follow the
     plan but I guess you beat him,Idle2)\n\n\nSay(Con,When you see a gold circle around
@@ -34130,7 +34130,7 @@ MonoBehaviour:
     startled.)\nContinue(Some will toss down their weapons)\nContinue(some will flee)\nSay(Con,As
     always)\nContinue(you'll have to think on your feet)\n\n\nLoadPerm(tut_arena3,arena3)\nLoadPerm(tut_arena4-1,arena4)\nLoadPerm(Arena2InvisWall,invisWall)\n\nLoadPerm(TriggerMe1,TriggerMe1)\r\nLoadPerm(TriggerMe2,TriggerMe2)\r\nLoadPerm(TriggerMe3,TriggerMe3)\r\nLoadPerm(MainPlat,MainPlat)\r\nLoadPerm(TriggerMe5,TriggerMe5)\r\nLoadPerm(TriggerMe6,TriggerMe6)\r\nLoadPerm(Ring,StartRing)\nLoadPerm(tut_objectiveobj,platform)\nTrigger(platform)\nTrigger(TriggerMe1)\r\nTrigger(TriggerMe2)\r\nTrigger(TriggerMe3)\r\nTrigger(TriggerMe5)\r\nTrigger(TriggerMe6)\r\nTrigger(StartRing)\nTrigger(MainPlat)\n\nSay(Con,If
     you do manage to nab an enemy's weapon)\nContinue(you can swap between active
-    weapons with Q)\n\nCameraTarget(LookAtMe)\nTrigger(arena3)\nTrigger(arena4)\nTrigger(invisWall)
+    weapons with Q.)\n\nCameraTarget(LookAtMe)\nTrigger(arena3)\nTrigger(arena4)\nTrigger(invisWall)
     \nWait(3)\nSay(Con,Now go and finish the course!,Happy)\nCameraTarget(player)\n"
   TriggeredWhenDisarmed: 'LoadChar(Con1,Con)
 
@@ -37165,8 +37165,8 @@ MonoBehaviour:
   ActiveInd: 0
   Disabled: 1
   curGrab:
-    distanceToCursor: 0
-    distanceToPlayer: 0
+    distanceToCursor: 100000
+    distanceToPlayer: 100000
     ind: {fileID: 0}
   OverrideTransform: {fileID: 0}
   OverrideAdditionalVec: {x: 0, y: 0, z: 0}
@@ -37822,7 +37822,7 @@ MonoBehaviour:
 
     CameraTarget(Wall)
 
-    Say(Con, Ok now pay attention, Idle2)
+    Say(Con, Ok now pay attention., Idle2)
 
     CameraTarget(En)
 
@@ -40379,7 +40379,7 @@ MonoBehaviour:
     EndSide()
 
 
-    SideSay(Con,Pick up the weapon from the dispenser by pressing E)
+    SideSay(Con,Pick up the weapon from the dispenser by pressing E.)
 
     Wait(5)
 
@@ -40394,7 +40394,7 @@ MonoBehaviour:
 
 '
   Dialog3: "LoadChar(Con1,Con) \nHaltPlayer()\nSay(Con,Alright time for some target
-    practice,Happy)\n\n \nLoadPerm(TargetPractice,TP)  \nTrigger(TP) "
+    practice!,Happy)\n\n \nLoadPerm(TargetPractice,TP)  \nTrigger(TP) "
   turretObjects:
   - {fileID: 548309550}
   - {fileID: 1203512092}

@@ -178,6 +178,7 @@
     <Compile Include="Assets\Scripts\Technology\SpireElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\StandardElevator.cs" />
     <Compile Include="Assets\Scripts\Technology\StandardUnitAnim.cs" />
+    <Compile Include="Assets\Scripts\Technology\TransportShipScript.cs" />
     <Compile Include="Assets\Scripts\Technology\UnitSpawner.cs" />
     <Compile Include="Assets\Scripts\Technology\WaypointsMovement.cs" />
     <Compile Include="Assets\Scripts\Technology\weaponDispenser.cs" />
@@ -310,6 +311,7 @@
     <None Include="Assets\Resources\CutsceneData\Text\starCutscene.txt" />
     <None Include="Assets\Resources\CutsceneData\Text\tutorialCS1.txt" />
     <None Include="Assets\Scripts\SampleSaveFile.txt" />
+    <None Include="Assets\Scripts\Technology\NewSurfaceShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

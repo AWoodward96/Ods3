@@ -33,10 +33,10 @@ EditorBuildSettings:
     path: Assets/Level_Data/lvl_Testing/BrokenScenes/915Scene.unity
     guid: 445695c5c43602d47945223b078080b0
   - enabled: 0
-    path: Assets/Level_Data/lvl_Tutorial/tutorialTry2.unity
+    path: Assets/Level_Data/lvl_Tutorial/shortTutorial.unity
     guid: e782e31a005935440a8b1b039ec57912
   - enabled: 1
-    path: Assets/Level_Data/lvl_Tutorial/tempTutorial.unity
+    path: Assets/Level_Data/lvl_Tutorial/mainTutorial.unity
     guid: 63db3f42ea8e58a46aa2861aeef7ac1b
   - enabled: 1
     path: Assets/Level_Data/lvl_PirateShip/PirateShip1.unity
