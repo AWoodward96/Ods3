@@ -1,0 +1,206 @@
+Start()
+LoadChar(Dot,Dot)
+LoadChar(Knizard,Guy1)
+LoadChar(Flamer,Guy2)
+LoadChar(FishHead,FishHead)
+LoadPerm(CutsceneParent,CS)
+LoadPawn(Player,Slas)
+
+MovePawn(Slas,43,4,-69)
+LookPawn(Slas,0,1)
+AggroPawn(Slas,0) 
+SprintPawn(Slas,0) 
+
+Say(Dot,What's the matter Fish-Head?,Calm)
+Continue(Can't hold your breath forever?,Smile)
+
+Say(Guy1,Har Har!,Smirk)
+Say(Guy2,Heh Heh!,Laugh)
+
+Say(FishHead,Gaagggh---,Choke)
+
+Say(Dot,Your comments about my metal frame hurt my feelings Fish-Head.,YouPoorThing)
+
+EndSay()
+//Wait(1)
+Trigger(CS)
+
+Wait(2)
+
+Trigger(CS)
+Say(Dot,It's a shame yours is made of fragile bone and not reinforced adamantite.,OhTheHumanity)
+Say(Dot,Let's see how they compare shall we?,JustKidding)
+
+Say(FishHead,I didn't mean--,Wait) 
+Continue(Wait!,Ow)
+
+Trigger(CS)
+EndSay()
+Wait(1)
+
+// Dot beats him
+
+Say(FishHead,You there!,Wait)
+Continue(Hat-Head please!,Ow)
+
+Say(Slas,What?!,Concerned)
+Continue(Me?)
+
+// Dot kicks him again
+Say(Dot,You're calling for help?!,Angry)
+Say(Guy1,What's the matter kid?,Idle)
+Continue(Are we gonna have a problem?)
+
+Say(Guy2,Heh heh you should mind your own business kid. That is if you know what's good for ya.)
+Say(Guy1,Har har yeah!,Smirk)
+Continue(If you know what's good for ya.)
+
+EndSay()
+Trigger(CS)
+Wait(1.5)
+
+Say(Slas,N-No.,Stressed)
+
+MovePawn(Slas,43.5,4,-68.5)
+Continue(Stop it!,Concerned)
+EndSay()
+
+Trigger(CS)
+Wait(1)
+
+Say(Dot,That's not what I wanted to hear from you Hat-Head.,LookLeft)
+Trigger(CS)
+Say(Guy1,Now you've done it Hat-Head!,Smirk)
+
+Say(Dot,This kid called me a Metal Mutt!,Angry)
+Continue(Said he didn't want my kind lingering around his shop!,Smirk)
+
+Say(FishHead,You were scaring off the customers!,Ow)
+
+Say(Dot,Scaring off the customers?!,Err)
+Continue(We weren't even doing anything!,Angry)
+
+Say(Dot,Now come on Hat-Head. You seem like a reasonable fellow.,LookLeft)
+Say(Dot,If he feels that way about me what do you think he's gonna think of your kind?,JustKidding)
+
+Say(Guy2,Yeah Hat-Head!,Idle)
+Continue(What do you think he's gonna think of you?)
+
+
+Say(Slas,I-,SadLeft)
+Continue(I don't know but...,SadRight)
+
+Say(Slas,You're gonna hurt him!,Concerned)
+
+EndSay()
+Wait(2)
+
+Say(Dot,You're a weird kid Hat-Head.,Calm)
+
+Trigger(CS)
+
+Continue(Now run along now and forget all about this.,LookLeft)
+
+Say(Slas,I-,SadLeft)
+AggroPawn(Slas,1)
+LookPawn(Slas,1,1) 
+
+MovePawn(Slas,44.5,4,-68)
+Continue(I said stop!,Concerned)
+
+EndSay()
+Wait(2)
+
+Say(Dot,Now why did you have to go and threaten us Hat-Head?,YouPoorThing)
+Trigger(CS)
+Say(Guy1,There's three of us and only one of you.,Idle)
+Say(Guy2,You must have some balls to take on the likes of us at those odds.,Seriously)
+
+Say(Dot,So what's it going to be Hat-Head?,Angry)
+Continue(You really don't want this.)
+
+EndSay()
+Wait(1)
+
+Say(Slas,I...,SadRight)
+Continue(I--,Concerned)
+
+EndSay()
+Wait(1)
+
+LoadChar(Fredrick,Fred)
+
+Say(Fred,Oh hey Dot!,Idle)
+Continue(I didn't quite see you there!)
+Say(Dot,Huh?,Idle)
+Trigger(CS)
+EndSay()
+Wait(1)
+
+Say(Guy1,Hey guys look who it is!,Smirk) 
+Say(Guy2,Oh my god Fredrick is that you?!,Seriously)
+Continue(You look ridiculous! Har Har Har!,Laugh)
+
+
+Say(Fred,Oh?)
+Continue(What seems to be going on here?,Side)
+
+Trigger(CS)
+
+Say(Fred,Dot you wouldn't be harassing this poor child would you?,Shocked) 
+Say(Slas,T-They--)
+Continue(They were hurting him. Punching and kicking him.,SadLeft)
+
+Say(Fred,Interesting.,Side)
+Continue(I don't think Skireth would approve of this do you?,Shocked)  
+
+TextSize(1)
+Say(Dot, [The kid was asking for it Fredrick.],Squint)
+Say(Fred,[And do you really want to be re-inforcing this stereotype?],Idle)
+
+EndSay(1)
+Wait(1)
+
+TextSize(8)
+Say(Dot,...,Squint)
+EndSay()
+Wait(1.5)
+Say(Dot,...tchh,LookLeft)
+
+Say(Guy2,Dot?,What)
+Trigger(CS)
+Say(Dot,Come on boys.,Indignant)
+Say(Guy1,What do you mean Dot?,Idle)
+EndSay()
+Wait(2)
+Trigger(CS)
+Say(Guy1,Dot?,What)
+
+
+AggroPawn(Slas,0)
+MovePawn(Slas,46,4.5,-63)
+Wait(2)
+
+Say(Fred,Are you alright?)
+Say(FishHead,Yeah I...,Oof)
+Continue(I think I'll be fine.,ImOk)
+
+LoadChar(Con1,Connie)
+Say(Slas,Phew....,EyesClosed)
+Say(Connie,Slas.,Idle2))
+Continue(Not to ruin the moment here but---,LookLeft) 
+Say(Slas,Oh!,Concerned)
+Continue(Sorry!,IdleT)
+Continue(Lysers gonna kill me if I'm late again!,LookHereT)
+Say(Slas,See you around!,IdleT)
+
+SprintPawn(Slas,1)
+MovePawn(Slas,46,4.5,-65)
+Wait(.3)
+FadeOut(.5)
+MovePawn(Slas,60,4.5,-65)
+Wait(1)
+FadeIn(1)
+
+DisableObject(DotCutscene)
+EnableObject(DotPostCutscene)

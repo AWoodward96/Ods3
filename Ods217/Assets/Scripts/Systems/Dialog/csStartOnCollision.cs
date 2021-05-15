@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class csStartOnCollision : MonoBehaviour, IPermanent {
+public class csStartOnCollision : MonoBehaviour, IPermanent, ISavable {
 
     BoxCollider myBoxCollider;
     
@@ -16,8 +16,6 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
     [Space(40)]
     [Header("OR File")]
     public TextAsset Text;
-     
- 
 
     public bool Triggered
     {
@@ -32,6 +30,36 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
         }
     }
 
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
+
     // Use this for initialization
     void Start ()
     { 
@@ -41,7 +69,7 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player") 
+        if(other.tag == "Player" && !CutsceneManager.InCutscene) 
             runCS(); 
     }
  
@@ -67,15 +95,24 @@ public class csStartOnCollision : MonoBehaviour, IPermanent {
         gameObject.SetActive(false);
     }
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
-
     public ZoneScript Zone;
     public ZoneScript myZone
     {
         get { return Zone; }
         set { Zone = value; }
     }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(gameObject.activeInHierarchy);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		gameObject.SetActive(bool.Parse(data[0].Trim()));
+	}
 }

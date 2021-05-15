@@ -96,9 +96,4 @@ public class UnitSpawner : MonoBehaviour, IPermanent
 			powered = value;
 		}
 	}
-
-	public void Activate()
-	{
-		powered = !powered;
-	}
 }

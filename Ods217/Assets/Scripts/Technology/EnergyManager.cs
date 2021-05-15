@@ -32,6 +32,10 @@ public class EnergyManager : MonoBehaviour
 		{
 			ChargeEnergy();
 		}
+		else if(myOwner.CurrentEnergy == myOwner.MaxEnergy)
+		{
+			BrokenEnergy = false;
+		}
 	}
 
 	public void ExpendEnergy(float _amount)

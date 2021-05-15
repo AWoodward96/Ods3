@@ -29,25 +29,6 @@ public class MovingPlatforms : MonoBehaviour, IPermanent {
 	// Update is called once per frame
 	void Update ()
 	{
-		if(isCyclic)
-		{
-			if(isActive)
-			{
-				Vector3 dst = positions[currentWP] - transform.localPosition;
-				if(dst.sqrMagnitude < Mathf.Pow(Speed, 2))
-				{
-					transform.localPosition = positions[currentWP];
-					currentWP = (currentWP + 1) % positions.Length;
-				}
-
-				transform.localPosition += (positions[currentWP] - transform.localPosition).normalized * Speed;
-			}
-		}
-		else
-		{
-			transform.localPosition = Vector3.Lerp(transform.localPosition, (isActive) ? positions[1] : positions[0], Speed * Time.deltaTime);
-		}
-
 		RaycastHit[] myColliders = Physics.RaycastAll(player.transform.position, Vector3.down, 10.0f, LayerMask.GetMask("Ground"));
 		RaycastHit closest = new RaycastHit();
 		if(myColliders.Length > 0)
@@ -62,25 +43,50 @@ public class MovingPlatforms : MonoBehaviour, IPermanent {
 			}
 		}
 
+		Vector3 posDelta = transform.position;
+
+		if(isCyclic)
+		{
+			if(isActive)
+			{
+				Vector3 dst = positions[currentWP] - transform.localPosition;
+				if(dst.sqrMagnitude < Mathf.Pow(Speed * Time.deltaTime, 2))
+				{
+					transform.localPosition = positions[currentWP];
+					currentWP = (currentWP + 1) % positions.Length;
+				}
+
+				transform.localPosition += (positions[currentWP] - transform.localPosition).normalized * Speed * Time.deltaTime;
+			}
+		}
+		else
+		{
+			transform.localPosition = Vector3.Lerp(transform.localPosition, (isActive) ? positions[1] : positions[0], Speed * Time.deltaTime);
+		}
+
+		posDelta = transform.position - posDelta;
+			
 		if(closest.collider == BBox)
 		{
-			if(isCyclic)
+			myColliders = Physics.RaycastAll(player.transform.position, posDelta, posDelta.magnitude, LayerMask.GetMask("Ground"));
+			if(myColliders.Length == 0)
 			{
-				if(isActive)
-				{
-					player.transform.position += transform.parent.TransformDirection((positions[currentWP] - transform.localPosition).normalized * Speed);
-				}
+				player.transform.position += posDelta;
 			}
 			else
 			{
-				player.transform.position += Vector3.Lerp(transform.localPosition, (isActive) ? positions[1] : positions[0], Speed * Time.deltaTime) - transform.localPosition;
+				closest = myColliders[0];
+				for(int i = 0; i < myColliders.Length; i++)
+				{
+					if(myColliders[i].distance < closest.distance)
+					{
+						closest = myColliders[i];
+					}
+				}
+
+				player.transform.position = closest.point;
 			}
 		}
-	}
-
-	public void Activate()
-	{
-		
 	}
 
 	public ZoneScript myZone

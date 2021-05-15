@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class MovementAI : IPawn {
+public class MovementAI {
 
     public bool ActionComplete;
     public GameObject myObject;
@@ -106,7 +106,7 @@ public class MovementAI : IPawn {
             lastType = curType;
         }
         else
-            myCC.ApplyForce(distVec.normalized);
+            myCC.ApplyForce(distVec.normalized * (myCC.Speed + (myCC.Sprinting ? myCC.SprintSpeed : 0)));
     }
 
     public void MoveTo(Vector3 _position)

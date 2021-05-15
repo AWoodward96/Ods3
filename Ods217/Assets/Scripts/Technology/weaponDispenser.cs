@@ -1,20 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 [RequireComponent(typeof(UsableIndicator))]
 [ExecuteInEditMode]
-public class weaponDispenser : MonoBehaviour {
+public class weaponDispenser : MonoBehaviour, ISavable {
 
     [Header("Weapon Data")]
     public WeaponBase WeaponPrefab;
     public WeaponBase WeaponReference;
 
-    [Header("Object Data")]
-    [Range(1,50)]
-    public float Range = 5;
+    [Header("Object Data")] 
     SpriteRenderer visualizerRenderer;
     UsableIndicator ind_Indicator;
+
+    [HideInInspector]
+    public bool hasWeapon = true;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
+
+    AudioSource src;
 
     GameObject Player;
 
@@ -54,7 +88,8 @@ public class weaponDispenser : MonoBehaviour {
             WeaponReference = b;
             WeaponReference.gameObject.SetActive(false);
         }
-  
+
+        src = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -64,6 +99,7 @@ public class weaponDispenser : MonoBehaviour {
             bool pickedup = isPickedUp;
  
             visualizerRenderer.enabled = !pickedup;
+			ind_Indicator.Disabled = pickedup;
         }
 	}
 
@@ -71,21 +107,24 @@ public class weaponDispenser : MonoBehaviour {
     { 
         WeaponReference.gameObject.SetActive(true);
         WeaponReference.heldData.PickUp(Player.GetComponent<IMultiArmed>());
-    }
 
-    private void OnDrawGizmos()
-    {
-        Color c = Color.blue;
-        c.a = .1f;
-        Gizmos.color = c;
-        Gizmos.DrawSphere(transform.position, Range);
+        if (src != null)
+            src.Play();
+
+		hasWeapon = false;
     }
+ 
 
     bool isPickedUp
     {
         get
         {
-            if (WeaponReference != null)
+			if(hasWeapon == false)
+			{
+				return true;
+			}
+
+			if (WeaponReference != null)
                 if (WeaponReference.gameObject.activeInHierarchy)
                     return true;
                 else
@@ -95,4 +134,18 @@ public class weaponDispenser : MonoBehaviour {
         }
 
     }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(hasWeapon);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		hasWeapon = bool.Parse(data[0].Trim());
+	}
 }

@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class oneofTutorialTracker4 : MonoBehaviour, IPermanent { 
+public class oneofTutorialTracker4 : MonoBehaviour, IPermanent {
     [TextArea(3, 50)]
     public string DialogDisarmed;
 
     [TextArea(3, 50)]
     public string DialogArmed;
+
+    [TextArea(3, 50)]
+    public string DialogAfterEnemy;
 
     [TextArea(3, 50)]
     public string TriggeredWhenDisarmed;
@@ -45,7 +48,7 @@ public class oneofTutorialTracker4 : MonoBehaviour, IPermanent {
         {
             IArmed a = TutorialEnemy.GetComponent<IMultiArmed>();
 
-            if(a.myWeapon == null && !disarmTrigger)
+            if(a.myWeapon == null && !disarmTrigger && a.MyUnit.CurrentHealth > 0)
             {
                 CutsceneManager.instance.StartCutscene(TriggeredWhenDisarmed);
                 disarmTrigger = true;
@@ -53,26 +56,21 @@ public class oneofTutorialTracker4 : MonoBehaviour, IPermanent {
 
             if(a.MyUnit.CurrentHealth <= 0)
             {
-                if (a.myWeapon == null)
+                if (disarmTrigger)
                 {
-                    CutsceneManager.instance.StartCutscene(DialogDisarmed);
+                    CutsceneManager.instance.StartCutscene(DialogDisarmed + DialogAfterEnemy);
                     triggered = false;
                     return;
                 }
                 else
                 {
-                    CutsceneManager.instance.StartCutscene(DialogArmed);
+                    CutsceneManager.instance.StartCutscene(DialogArmed + DialogAfterEnemy);
                     triggered = false;
                     return;
                 }
             }
         } 
 	}
- 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
 
 
     ZoneScript Zone;

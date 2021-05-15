@@ -7,8 +7,6 @@ using UnityEngine;
 /// </summary>
 public interface IPermanent {
 
-    void Activate();
-
     ZoneScript myZone
     {
         get;

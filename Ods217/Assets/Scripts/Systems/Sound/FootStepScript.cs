@@ -17,8 +17,11 @@ public class FootStepScript : MonoBehaviour {
     public int AudioSourceCount; // However many audio sources there are. Usually 2 is good
     [Range(0, 1)]
     public float Volume;
+    [Range(0, 1)]
+    public float WorldSpace = 1; // If false, the footstep sound will play at the same volume reguardless of where it is
     public float Speed;
-    public bool WorldSpace; // If false, the footstep sound will play at the same volume reguardless of where it is
+    public float MinDist = 20;
+    public float MaxDist = 75;
 
 
     [HideInInspector]
@@ -45,8 +48,11 @@ public class FootStepScript : MonoBehaviour {
                     src.loop = false;
                     src.clip = Clips[0];
                     src.volume = Volume;
-                    src.spatialBlend = (WorldSpace) ? 1 : 0;
+                    src.spatialBlend = (WorldSpace);
                     Sources[i] = src;
+                    src.minDistance = MinDist;
+                    src.maxDistance = MaxDist;
+                    src.rolloffMode = AudioRolloffMode.Linear;
                 }
 
 

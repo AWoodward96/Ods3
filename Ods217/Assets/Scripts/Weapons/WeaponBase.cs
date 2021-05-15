@@ -11,14 +11,14 @@ public class WeaponBase : MonoBehaviour {
     [Space(10)]
     public HeldWeapon heldData;
     public WeaponInfo weaponData;
+    public List<BulletBase> myBullets;
 
     [Space(10)] 
     public AudioClip ShootClip;
 
     [HideInInspector]
 	public int maxBullets;
-	int currentBullet;
-    public List<BulletBase> myBullets;
+	protected int currentBullet;
     public IArmed myOwner;
 	public ForceFieldScript myShield;
 	public EnergyManager myEnergy;
@@ -30,7 +30,8 @@ public class WeaponBase : MonoBehaviour {
     [HideInInspector]
     public AudioSource myAudioSource;
 
-    bool WeaponReleased;
+    protected bool WeaponReleased;
+	public bool isFiring = false;
      
  
     // Use this for initialization
@@ -45,7 +46,7 @@ public class WeaponBase : MonoBehaviour {
 		if(myOwner != null)
 		{
 			// Set to ceiling to prevent running out of bullet objects if someone shoots constantly from full energy
-			maxBullets = (int)Math.Ceiling(myOwner.MyUnit.MaxEnergy / (float)weaponData.shotCost);
+			maxBullets = 10;
 			myShield = myOwner.gameObject.GetComponentInChildren<ForceFieldScript>();
 			myEnergy = myOwner.gameObject.GetComponent<EnergyManager>();
 		}
@@ -154,7 +155,7 @@ public class WeaponBase : MonoBehaviour {
 
 		if(myBullets.Count == 0)
 		{
-			maxBullets = (int)Math.Ceiling(myOwner.MyUnit.MaxEnergy / (float)weaponData.shotCost);
+			maxBullets = 10;
 			MakeBullets();
 			currentBullet = 0;
 			if(myBullets.Count == 0)
@@ -162,7 +163,16 @@ public class WeaponBase : MonoBehaviour {
 		}
  
         // Do something based on the type
-        // For now we'll just shoot one bullet    
+        // For now we'll just shoot one bullet
+
+		// If we've exceeded the max number of bullets, make some more
+		if(myBullets[currentBullet].gameObject.activeInHierarchy)
+		{
+			maxBullets += 10;
+			MakeBullets();
+			currentBullet = maxBullets - 1;
+		}
+
 		myBullets[currentBullet].gameObject.SetActive(true); 
 		myBullets[currentBullet].myOwner = (myOwner);
 		myBullets[currentBullet].myInfo = (weaponData);
@@ -170,18 +180,7 @@ public class WeaponBase : MonoBehaviour {
 		myBullets[currentBullet].Shoot(_dir);
 
         currentshootCD = 0;
-		//myOwner.MyUnit.CurrentEnergy -= weaponData.shotCost;
-		currentBullet = ((currentBullet - 1) + maxBullets) % maxBullets;
-
-		/*if(myShield != null)
-		{
-			myShield.RegisterHit(weaponData.shotCost);
-		}
-		/*else
-		{
-			myOwner.MyUnit.CurrentEnergy -= weaponData.shotCost;
-		}*/
-
+        currentBullet = ((currentBullet - 1) + maxBullets) % maxBullets;
 		myEnergy.ExpendEnergy(weaponData.shotCost);
 
 
@@ -207,20 +206,17 @@ public class WeaponBase : MonoBehaviour {
         }
 
         return; 
-
     }
-
  
     private void OnDisable()
     {
         if(ThrownObject != null)
             ThrownObject.SetActive(false);
- 
     }
 
     private void OnDestroy()
     {
-        // destroy all bullets
+		// destroy all bullets
         for(int i = 0; i < myBullets.Count;i ++)
         {
             Destroy(myBullets[i]);
@@ -257,9 +253,5 @@ public class WeaponBase : MonoBehaviour {
         {
             armed.RemoveWeapon(this);
         }
-        
     }
 }
-
-
- 

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-public class lgcTimedSwitch : lgcSwitch {
+public class lgcTimedSwitch : lgcSwitch, ISavable {
 
 
     [Header("Console Data")]
@@ -91,6 +92,11 @@ public class lgcTimedSwitch : lgcSwitch {
 					src.Play();
 			}
 		}
+
+		else if(!Triggered)
+		{
+			currentTime = 0.0f;
+		}
     }
     public override void Delegate()
     {
@@ -103,7 +109,21 @@ public class lgcTimedSwitch : lgcSwitch {
 
 		for(int i = 0; i < unitHandles.Length; i++)
 		{ 
-			unitHandles[i].Activate();
+			unitHandles[i].Triggered = !unitHandles[i].Triggered;
 		}
     }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(IsCompleted);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		IsCompleted = bool.Parse(data[0].Trim());
+	}
 }

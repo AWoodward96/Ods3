@@ -8,6 +8,8 @@ public class ForceFieldScript : MonoBehaviour {
 
 
     public bool fadeCRT = false;
+
+	public bool canHeal = true;	// Can the shield currently regenerate?
   
     SpriteRenderer Barrier; // The sprite that is surrounding the forcefield  
 	EnergyManager myEnergy; 
@@ -51,7 +53,7 @@ public class ForceFieldScript : MonoBehaviour {
             myMat.SetFloat("_Level", disolveValue);
         }
 			
-		if (myEnergy.timeSinceHit > myEnergy.ChargeDelay && myOwner.CurrentEnergy != myOwner.MaxEnergy)
+		if (myEnergy.timeSinceHit > myEnergy.ChargeDelay && myOwner.CurrentEnergy != myOwner.MaxEnergy && canHeal)
         {
             HealShield();
         }

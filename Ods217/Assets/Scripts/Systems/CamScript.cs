@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +8,7 @@ using UnityEngine.SceneManagement;
 /// The primary camera script
 /// Uses orthographic view and follows a target at a constant distance
 /// </summary>
-public class CamScript : MonoBehaviour
+public class CamScript : MonoBehaviour, ISavable
 {
 
     CamScript instance;
@@ -26,6 +27,12 @@ public class CamScript : MonoBehaviour
 
     public enum CamEffect { None, Shake }
     public CamEffect curEffect = CamEffect.None;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
 
 	SpriteRenderer fade;
 	bool fadingIn = true;
@@ -83,26 +90,30 @@ public class CamScript : MonoBehaviour
             if(playerRef != null)
             {
                 // If we're not in cutscene and the menu is not open, do not account for the cursors position
-                if (playerRef.AcceptInput && !UpgradesManager.MenuOpen)
+                if (playerRef.AcceptInput && !MenuManager.OtherMenuOpen && !MenuManager.MenuOpen && playerRef.gameObject.activeSelf)
                 {
                     // Otherwise, shift the cameras position towards where the cursor is
-                    Vector3 toCursor = CursorLocation - transform.position;
+                    Vector3 toCursor = CursorLocation - Target.transform.position;
                     toCursor = GlobalConstants.ZeroYComponent(toCursor);
-                    if (toCursor.magnitude > 6)
-                        toCursor = toCursor.normalized * 6;
 
+                    float curMag = toCursor.magnitude;
+                    toCursor = toCursor.normalized * (Mathf.Max(curMag - 4,0));
+
+                    if (toCursor.magnitude > 4.5f)                          // maximum allowed bump look is 4.5 units
+                        toCursor = toCursor.normalized * 4.5f;              // This means that if you have a camera size of 8, it is theoretically possible to run off screen but we're watching it
+                     
                     Additive += toCursor;
                 }
                 else
                 {
                     // W/o the cursor, the focus gets a bit weird, add a z vector to fix
-                    Additive += (Vector3.forward * 6);
+                    Additive += (Vector3.forward);
                 }
             }
             else
             {
                 // W/o the cursor, the focus gets a bit weird, add a z vector to fix
-                Additive += (Vector3.forward * 6);
+                Additive += (Vector3.forward);
             }
 
 
@@ -123,7 +134,10 @@ public class CamScript : MonoBehaviour
             else
                 transform.position = Additive;
 
+
             HandleExtents();
+
+            transform.position += HandleEffects(Additive);
         }else
         { 
             transform.position = Vector3.Lerp(transform.position, Target.position + FollowBack, 6f * Time.deltaTime);
@@ -150,6 +164,12 @@ public class CamScript : MonoBehaviour
         Loaded = false;
         loadedPoint = 0;
     }
+
+    public void SnapCam()
+    {
+        transform.position =  Target.position + FollowBack;
+    }
+     
 
     // Extents are the points where the camera is restricted from moving further
     void HandleExtents()
@@ -191,17 +211,11 @@ public class CamScript : MonoBehaviour
     {
         switch(curEffect)
         { 
-            case CamEffect.Shake:
-			{
-                return UnityEngine.Random.onUnitSphere * Random.Range(1,2);
-				break;
-			}
-
+            case CamEffect.Shake: 
+                return UnityEngine.Random.onUnitSphere * Random.Range(1,2);  
             default:
                 return Vector3.zero;
-        }
-
-		return Vector3.zero;
+        } 
     }
 
     public virtual PlayerScript playerRef
@@ -243,8 +257,7 @@ public class CamScript : MonoBehaviour
     IEnumerator fxTimer(float Time)
     {
 		yield return new WaitForSeconds(Time);
-        curEffect = CamEffect.None;
- 
+        curEffect = CamEffect.None; 
     }
    
 
@@ -319,5 +332,45 @@ public class CamScript : MonoBehaviour
 		fade.color = myColor;
 
 		fadingIn = false;
+	}
+
+	// This method should return a string containing all variables in a format parsable by Load.
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(Target.name);
+
+		return data.ToString();
+	}
+
+	// Given a parsed array of strings containing data, this method should assign the data to the object accordingly.
+	public void Load(string[] data)
+	{
+		Target = GameObject.Find(data[0]).transform;
+	}
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
 	}
 }

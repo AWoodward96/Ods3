@@ -12,7 +12,7 @@ public class GlobalConstants {
 
     // How far back the camera should follow a target
     // Since the camera mode is orthographic the magnitude of this vector doesn't matter, only the ratios of the vector matter
-    public static Vector3 DEFAULTFOLLOWBACK = new Vector3(0,25f,-20);
+    public static Vector3 DEFAULTFOLLOWBACK = new Vector3(0,50f,-30);
 
 
     // Since we are in this weird 2.5d world, we often find ourself using vectors that need to not take the y axis into account
@@ -158,5 +158,67 @@ public class GlobalConstants {
         float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPostion) * (p.x > myPos.x ? 1 : -1);
         // Rotate our velocity to match the direction between the two objects 
         return Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
+    }
+
+    public static bool AnimatorHasParameter(Animator _Anim, string _val)
+    {
+        for(int i = 0; i < _Anim.parameters.Length; i++)
+        {
+            if (_Anim.parameters[i].name.ToUpper() == _val.ToUpper())
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Author: peterho0218
+    /// Found here: https://answers.unity.com/questions/1125768/how-do-i-predict-the-position-of-my-player-for-the.html 
+    /// </summary>
+    /// <param name="targetPosition"></param>
+    /// <param name="shooterPosition"></param>
+    /// <param name="targetVelocity"></param>
+    /// <param name="projectileSpeed"></param>
+    /// <returns></returns>
+    public static Vector3 predictedPosition(Vector3 targetPosition, Vector3 shooterPosition, Vector3 targetVelocity, float projectileSpeed)
+    {
+        Vector3 localVel = targetVelocity;
+        localVel.y = 0;
+        Vector3 localtargetPos = targetPosition;
+        localtargetPos.y = 0;
+        Vector3 localShooterPos = shooterPosition;
+        localShooterPos.y = 0;
+
+
+
+        Vector3 displacement = localtargetPos - localShooterPos;
+        float targetMoveAngle = Vector3.Angle(-displacement, localVel) * Mathf.Deg2Rad;
+        //if the target is stopping or if it is impossible for the projectile to catch up with the target (Sine Formula)
+        if (localVel.magnitude == 0 || localVel.magnitude > projectileSpeed && Mathf.Sin(targetMoveAngle) / projectileSpeed > Mathf.Cos(targetMoveAngle) / localVel.magnitude)
+        {
+            return localtargetPos;
+        } 
+
+        //also Sine Formula
+        float shootAngle = Mathf.Asin(Mathf.Sin(targetMoveAngle) * localVel.magnitude / projectileSpeed);
+        return localtargetPos + localVel * displacement.magnitude / Mathf.Sin(Mathf.PI - targetMoveAngle - shootAngle) * Mathf.Sin(shootAngle) / localVel.magnitude;
+    }
+
+    /// <summary>
+    /// Returns a built string of a specific gameobjects path
+    /// from: https://answers.unity.com/questions/8500/how-can-i-get-the-full-path-to-a-gameobject.html
+    /// autor: Dmitriy-Yukhanov -- https://answers.unity.com/users/35903/dmitriy-yukhanov.html
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <returns></returns>
+    public static string GetGameObjectPath(Transform transform)
+    {
+        string path = transform.name;
+        while (transform.parent != null)
+        {
+            transform = transform.parent;
+            path = transform.name + "/" + path;
+        }
+        return path;
     }
 }

@@ -16,7 +16,8 @@ public class mobIdleStatic : MonoBehaviour, IMultiArmed {
     public WeaponBase WeaponSlot1;
     public WeaponBase WeaponSlot2;
 
-    ForceFieldScript myForceField;
+    [HideInInspector]
+    public ForceFieldScript myForceField;
 
     // Use this for initialization
     void Start()
@@ -88,8 +89,7 @@ public class mobIdleStatic : MonoBehaviour, IMultiArmed {
             currentWeapon = WeaponSlot2;
             WeaponSlot1 = null;
         }
-
-        myVisualizer.BuildAmmoBar();
+         
 
 
     }
@@ -107,17 +107,12 @@ public class mobIdleStatic : MonoBehaviour, IMultiArmed {
         }
     }
 
-    public virtual void Activate()
-    {
-
-    }
-
     public void OnMelee(int _damage)
     {
         OnHit(_damage);
     }
 
-    public void OnHit(int _damage)
+    public virtual void OnHit(int _damage)
     {
         if (myZone != ZoneScript.ActiveZone) // Don't let them take damage if you're not in their scene
             return;
@@ -150,16 +145,14 @@ public class mobIdleStatic : MonoBehaviour, IMultiArmed {
         _newWeapon.myOwner = this; // Set it's owner
         if (WeaponSlot1 == null)
         {
-            WeaponSlot1 = _newWeapon;
-            myVisualizer.BuildAmmoBar(); // Let the visualizer know
+            WeaponSlot1 = _newWeapon; 
             currentWeapon = WeaponSlot1;
             return;
         }
 
         if (WeaponSlot1 != null && WeaponSlot2 == null)
         {
-            WeaponSlot2 = _newWeapon;
-            myVisualizer.BuildAmmoBar(); // Let the visualizer know
+            WeaponSlot2 = _newWeapon; 
             currentWeapon = WeaponSlot2;
             return;
         }
@@ -173,15 +166,13 @@ public class mobIdleStatic : MonoBehaviour, IMultiArmed {
             if (currentWeapon == WeaponSlot2)
             {
                 WeaponSlot2 = _newWeapon;
-                currentWeapon = WeaponSlot2;
-                myVisualizer.BuildAmmoBar();
+                currentWeapon = WeaponSlot2; 
             }
 
             if (currentWeapon == WeaponSlot1)
             {
                 WeaponSlot1 = _newWeapon;
-                currentWeapon = WeaponSlot1;
-                myVisualizer.BuildAmmoBar();
+                currentWeapon = WeaponSlot1; 
             }
 
         } 
@@ -199,8 +190,7 @@ public class mobIdleStatic : MonoBehaviour, IMultiArmed {
 
         if (myWeapon != null)
             myWeapon.ResetShootCD();
-
-        myVisualizer.BuildAmmoBar();
+         
     }
  
 

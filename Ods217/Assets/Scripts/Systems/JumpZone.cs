@@ -8,6 +8,7 @@ public class JumpZone : MonoBehaviour {
     public Vector3 Entry;
     public Vector3 Destination;
     public Color Color = Color.white;
+    public bool CameraSnap = true; // Snap the camera to the new location
 
     BoxCollider col;
 
@@ -26,8 +27,10 @@ public class JumpZone : MonoBehaviour {
         if(cc != null)
         {
             // Move whatever object this is to its destination
-            Vector3 displacement = Entry - cc.transform.position; 
+            Vector3 displacement = cc.transform.position - Entry; 
             cc.transform.position = Destination + displacement;
+            if (CameraSnap)
+                Camera.main.GetComponent<CamScript>().SnapCam();
         }
     }
 

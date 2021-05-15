@@ -1,0 +1,73 @@
+FadeIn(3)
+Start()
+
+LoadPerm(EnteranceCSManager,Manager)
+
+
+DisableObject(Player) 
+CameraTarget(LookAtMe1)
+
+Wait(7)
+
+CameraTarget(LookAtMeSlas)
+DisableObject(LookAtMe1)
+
+Wait(1)
+Trigger(Manager)
+Wait(1)
+Say(Slas,mmm...,EyesClosed)
+EndSay()
+Trigger(Manager)
+Wait(1)
+Say(Slas,Ugh...)
+EndSay()
+Trigger(Manager)
+Wait(2)
+Say(Slas,?,HoldUp)
+EndSay()
+Trigger(Manager)
+Wait(2.5)
+Say(Slas,What happened?,IdleTLeft)
+EndSay()
+Trigger(Manager)
+Wait(2)
+Say(Slas,Where am I?,IdleTRight)
+EndSay()
+Wait(2) 
+Say(Slas,Lyser?,SadLeftT)
+EndSay()
+
+// Play a sound
+EnableObject(BigChirp)
+Wait(2)
+
+
+Trigger(Manager)
+Wait(2)
+Say(Slas,What was that!,Concerned)
+EndSay()
+Wait(1)
+CameraTarget(LookAtSpider)
+Wait(1)
+Trigger(Manager)
+Wait(2)
+
+Say(Slas,That spider has my Communicator!,Concerned)
+EndSay()
+
+SmartPlace(SlasOnTheGround)
+DisableObject(SlasOnTheGround)
+Trigger(Manager)
+Wait(2)
+Say(Slas,Wait! No!,Concerned)
+Continue(I need that!!)
+EndSay()
+Wait(2)
+
+
+DisableObject(EnteranceCSManager)
+
+CameraTarget(Player)
+
+
+

@@ -70,10 +70,15 @@ public class sittingPirates : MonoBehaviour, IPermanent {
             c.AIState = AIStandardUnit.EnemyAIState.Vulnerable;
             c.Triggered = true;
         }
-    }
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
+		CutsceneManager.instance.StartCutscene(
+			"LoadObjective(PirateShip/1,failed1)\n" +
+			"LoadObjective(PirateShip/2,failed2)\n" +
+			"LoadObjective(PirateShip/4,goal1)\n" +
+			"LoadObjective(PirateShip/5,goal2)\n" +
+			"RemoveObjective(failed1)\n" +
+			"RemoveObjective(failed2)\n" +
+			"AddObjective(goal1)\n" +
+			"AddObjective(goal2)");
     }
 }

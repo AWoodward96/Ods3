@@ -5,11 +5,12 @@ using UnityEngine;
 public class mobTCowardStatic : mobCowardUnit
 {
 
-    public bool mytriggered;
-    [Range(1, 10)]
-    public float myRange;
+    public bool mytriggered; 
+
     [TextArea(1, 50)]
-    public string myDialog;
+    public string[] myDialog;
+    public int dialogCount;
+
     UsableIndicator myusableIndicator;
 
     bool canPickUp = true;
@@ -17,8 +18,17 @@ public class mobTCowardStatic : mobCowardUnit
     public override void Start()
     {
         myusableIndicator = GetComponentInChildren<UsableIndicator>();
-        
+        myusableIndicator.Preset = UsableIndicator.usableIndcPreset.Talk;
+
+        if (myusableIndicator.talkText != null)
+        {
+            myusableIndicator.talkText.gameObject.SetActive(true);
+            myusableIndicator.talkText.text = (dialogCount) + "/" + (myDialog.Length); 
+        }
+
+
         base.Start();
+
     }
 
     public override void CheckDistance()
@@ -39,8 +49,21 @@ public class mobTCowardStatic : mobCowardUnit
 
     void TalkDelegate()
     {
-        if(!CutsceneManager.InCutscene)
-            CutsceneManager.instance.StartCutscene(myDialog);
+        if (!CutsceneManager.InCutscene)
+        { 
+            CutsceneManager.instance.StartCutscene(myDialog[dialogCount]);
+             
+            if (myusableIndicator.talkText != null)
+            {
+                myusableIndicator.talkText.gameObject.SetActive(true);
+                myusableIndicator.talkText.text = (dialogCount + 1) + "/" + (myDialog.Length);
+            }
+
+            dialogCount++;
+            if (dialogCount >= myDialog.Length)
+                dialogCount = 0;
+
+        }
     }
 
     public override bool CheckAggro()
@@ -99,7 +122,7 @@ public class mobTCowardStatic : mobCowardUnit
                 myCC.ApplyForce(d);
 
                 // If we're close enough pick it up
-                if (d.magnitude < desiredWeapon.heldData.Range || d.magnitude < 1)
+                if (d.magnitude < desiredWeapon.heldData.ind_MyIndicator.Range || d.magnitude < 1)
                 {
                     desiredWeapon.heldData.PickUp(this);
                     canPickUp = false;

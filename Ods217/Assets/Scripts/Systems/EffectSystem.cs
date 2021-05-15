@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class EffectSystem : MonoBehaviour {
 
-    public enum EffectType { Alert, Panic }
+    public enum EffectType { Alert, Panic, Stunned }
     public EffectType myType;
     public bool Fired;
 
@@ -45,6 +45,12 @@ public class EffectSystem : MonoBehaviour {
                     if (timeSince > 3)
                         Fired = false;
                     break;
+				case EffectType.Stunned:
+					//transform.position = Vector3.Lerp(transform.position, originPoint + (Vector3.up * 2), Time.deltaTime);
+					//transform.position = originPoint;
+					if (timeSince > 3)
+						Fired = false;
+					break;
             }
         }
 

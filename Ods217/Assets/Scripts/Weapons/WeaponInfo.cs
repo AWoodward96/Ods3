@@ -7,12 +7,11 @@ using UnityEngine;
 public class WeaponInfo
 {
     public string name;
-	public int shotCost;
+	public float shotCost;
     public float fireCD;
 
     public GameObject BulletObject;
-    public int bulletDamage;
-    public AudioClip reloadClip;
+    public int bulletDamage; 
 
 
 }

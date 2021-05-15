@@ -132,11 +132,6 @@ public class oneofTutorialTracker3 : MonoBehaviour, IPermanent {
         }
     }
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
-
     void checkTurretsIfAlive()
     {
          

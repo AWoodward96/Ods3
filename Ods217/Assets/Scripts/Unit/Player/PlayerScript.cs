@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -8,8 +9,11 @@ using UnityEngine;
 /// This is the player script! It's what's used to control the player pretty much all the time
 /// </summary>
 [RequireComponent(typeof(CController))]
-public class PlayerScript : MonoBehaviour, IMultiArmed
+public class PlayerScript : MonoBehaviour, IMultiArmed, ISavable, IPawn
 {
+    const float ZFRONT = -0.01f;
+    const float ZBACK = 0.01f;
+
     // References
     CController myCtrl;
     Animator myAnimator;
@@ -24,15 +28,23 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     //public Vector3 RootPosition = new Vector3(0, -.138f, 0); // The center of the player (where it would look like he's holding the weapon) is at this position, so we rotate everything around it
     Vector3 HolsteredPosition = new Vector3(0, .5f, 0);
     Vector3 HolsteredRotation = new Vector3(0, 0, -88);
-    Vector3 HolseredRotation2 = new Vector3(0, 0, -119);
+    Vector3 HolsteredRotation2 = new Vector3(0, 0, -119);
 
-    public bool InCombat;
-    bool Punching;
-    float combatCD;
+    public Vector3 LookingVector;
+
+
+
+    public bool InCombat; 
+    public bool Punching;
+	public int punchDamage = 5;
+	public float punchCD = 0.33f;
+    [HideInInspector]
+    public float combatCD;
 
     AudioSource myAudioSource;
     public AudioClip[] AudioClips;
 
+	public bool Stunned;
     public bool AcceptInput;
     bool UsingItem;
 
@@ -41,6 +53,42 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     public WeaponBase ActiveWeapon;
 
     public GameObject vis;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
+
+    MovementAI moveAI;
+
+	EffectSystem myEmojis;
+    PlayerWeaponAnim GunAnimations;
+
 
     // Use this for initialization
     void Awake()
@@ -52,18 +100,29 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         myAudioSource = GetComponent<AudioSource>();
         myFootStep = GetComponent<FootStepScript>();
         myForceField = GetComponentInChildren<ForceFieldScript>();
+		myEmojis = GetComponentInChildren<EffectSystem>();
+
+        moveAI = new MovementAI(this.gameObject, myCtrl);
 
         updatedForcefield = false;
+		Stunned = false;
     }
 
     // Have to run everything through fixed update
     void FixedUpdate()
     {
-		if(AcceptInput && !UsingItem)
-			myFixedInput();
+        if (AcceptInput && !UsingItem)
+        {
+            myFixedInput();
+            moveAI.ActionComplete = true; // no moving me anymore
+        }
+        else
+            moveAI.Update();
 
        	GunObject();
         Animations();
+
+
 
         if (myUnit.CurrentHealth < 0)
             OnDeath();
@@ -90,14 +149,13 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         // At a rotation of 0 the gun points right 
         if (!Armed)
             return;
-
-        // Where the cursor is in world space
-        Vector3 CursorLoc = CamScript.CursorLocation;
+         
 
         if (SecondaryWeapon == null)
         {
             ActiveWeapon = PrimaryWeapon;
         }
+         
 
         GameObject rotateMe = ActiveWeapon.RotateObject;
         WeaponBase holsterMe = null;
@@ -111,117 +169,151 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         // Handle holster weapon animations
         if (holsterMe != null)
         {
-            //// Flip the gun if you're moving left
-            holsterObj.GetComponent<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
-
-            holsterObj.transform.rotation = Quaternion.Euler(HolsteredRotation);
-            holsterMe.transform.localPosition = HolsteredPosition;
-
-            Vector3 pos = holsterMe.transform.localPosition;
-
-            if ((GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f)) // If we're moving then always put it behind the player
-            {
-                pos.z = .01f;
-                // If we're running primarily up then put it in front of the player sprite (behind the player, but towards the camera because we're running up)
-                float zval = myCtrl.Velocity.z;
-                float xval = myCtrl.Velocity.x;
-                if (zval > 0 && Math.Abs(xval) < zval)
-                    pos.z = -.01f;
-
-            }
-            else
-            {
-
-                if (CursorLoc.z < transform.position.z) // Otherwise put it behind wherever the player is facing
-                    pos.z = .01f;
-                else
-                    pos.z = -.01f;
-
-            }
-
-            holsterMe.transform.localPosition = pos;
+            HandleHolsteredWeapon(holsterMe.gameObject, holsterObj, false); 
         }
 
-
-        // Handle Gun 'animations' 
-        if (!myCtrl.Sprinting && InCombat && !UsingItem && !Punching) // If we're not sprinting then the gun should rotate around the player relative to where the mouse is
-        {
-
-            Vector3 pos = Vector3.zero;
-            if (CursorLoc.z < transform.position.z)
-                pos.z = -.01f;
-            else
-                pos.z = .01f;
-            ActiveWeapon.transform.localPosition = pos;
-             
-            if(ActiveWeapon.heldData.holdType == HeldWeapon.HoldType.Hold)
-            {
-                rotateMe.transform.rotation = Quaternion.identity;
-                rotateMe.GetComponentInChildren<SpriteRenderer>().flipY = false;
-                return;
-            }
-
-
-            // Now set up the rotating gun
-            Vector3 toCursor = GlobalConstants.ZeroYComponent(CursorLoc - transform.position); // This value will already have a 0'd y value :)
-            toCursor = toCursor.normalized;
-            // Alright now we need the angle between those two vectors and then rotate the object 
-            rotateMe.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(toCursor));
-            // Flip the gun if it's on the left side of the player
-            rotateMe.GetComponentInChildren<SpriteRenderer>().flipY = (CursorLoc.x < transform.position.x);
-        }
-        else // If you're sprinting then loc the guns rotation at 20 degrees depending on which direction you're facing
-        {
-            Vector3 pos = HolsteredPosition;
-
-            if ((GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f)) // If we're moving then always put it behind the player
-            {
-                pos.z = .011f;
-                // If we're running primarily up then put it in front of the player sprite (behind the player, but towards the camera because we're running up)
-                float zval = myCtrl.Velocity.z;
-                float xval = myCtrl.Velocity.x;
-                if (zval > 0 && Math.Abs(xval) < zval)
-                    pos.z = -.011f;
-
-            }
-            else
-            { 
-                if (CursorLoc.z < transform.position.z) // Otherwise put it behind wherever the player is facing
-                    pos.z = .011f;
-                else
-                    pos.z = -.011f;
-
-            }
-
-            // Handle the using item 
-            if (UsingItem)
-                pos.z = .011f;
-
-            ActiveWeapon.transform.localPosition = pos;
-
-            if (ActiveWeapon.heldData.holdType == HeldWeapon.HoldType.Hold)
-            {
-                rotateMe.transform.rotation = Quaternion.identity;
-                rotateMe.GetComponentInChildren<SpriteRenderer>().flipY = false;
-                return;
-            }
-
-
-            //// Flip the gun if you're moving left
-            rotateMe.GetComponentInChildren<SpriteRenderer>().flipY = (myCtrl.Velocity.x < 0);
-            rotateMe.transform.localRotation = Quaternion.Euler((PrimaryWeapon == ActiveWeapon) ? HolsteredRotation : HolseredRotation2);
-
-        }
-
+        HandleActiveWeapon(rotateMe);
 
     }
 
+    /// <summary>
+    /// Handles the animations for the weapon object that is not actively in your hands
+    /// </summary>
+    /// <param name="_parentObject">The object that the weapons script is on. This object is in charge of if the weapon is behind or in front of the player.</param>
+    /// <param name="_weaponObject">The ojbect that is 'in the players hands'. This object is the one that rotates based on where you're looking. In this case it should be in charge of its holstered rotation.</param>
+    /// <param name="_activeOverride">If true, then we need to mess with some of the constants so we dont have planar overlap</param>
+    void HandleHolsteredWeapon(GameObject _parentObject, GameObject _weaponObject, bool _activeOverride)
+    {
+        float localZBACK = ZBACK + ((_activeOverride) ? .001f : 0f);
+        float localZFRONT = ZFRONT + ((_activeOverride) ? -.001f : 0f); ;
 
-    // Handle Animations 
+        WeaponBase Base = _parentObject.GetComponent<WeaponBase>();
+        OverrideHolsteredPos overrideHolster = _weaponObject.GetComponent<OverrideHolsteredPos>(); 
+
+        // Effect the sprite only if you are not holdType hold.
+        // Otherwise this info would be controlled on a case by case basis
+        if (Base.heldData.holdType != HeldWeapon.HoldType.Hold)
+        {
+            //// Flip the gun if you're moving left
+            bool willFlip = (myCtrl.Velocity.x < 0);
+            if (overrideHolster != null)
+                willFlip = (overrideHolster.LockYFlip) ? false : willFlip;
+
+            _weaponObject.GetComponent<SpriteRenderer>().flipY = willFlip;
+
+
+            Vector3 selectedrotation = (_activeOverride) ? HolsteredRotation2 : HolsteredRotation;
+            _weaponObject.transform.rotation = Quaternion.Euler((overrideHolster == null) ? selectedrotation : overrideHolster.newRotation); // If override exists then use the override, otherwise use the selected preset rotations
+        }
+
+        _parentObject.transform.localPosition = (overrideHolster == null) ? HolsteredPosition : overrideHolster.newPosition;
+
+        Vector3 pos = _parentObject.transform.localPosition;
+
+        // First check if we're punching. Because if we're punching then that's that.
+        if(Punching)
+        { 
+            pos.z = localZBACK; 
+            _parentObject.transform.localPosition = pos;
+            return;
+        }
+
+
+        // First check if we're aggressive or not
+        if (InCombat && !myCtrl.Sprinting)
+        {
+            // If we're in combat then the transform position is based on where you are looking
+            pos.z = (isFront(LookingVector.z)) ? localZBACK : localZFRONT;
+            _parentObject.transform.localPosition = pos;
+            return;
+        }
+
+
+        // Ok finally if we're moving or sprinting then control it based on how we're moving
+        bool isMoving = (GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f);  
+        if (isMoving)
+        { 
+            // If we're moving primarily up then put it in front of the player sprite (behind the player, but towards the camera because we're running up)
+            float zval = myCtrl.Velocity.z;
+            float xval = myCtrl.Velocity.x;
+            pos.z = (zval > 0 && Math.Abs(xval) < zval) ? localZFRONT : localZBACK;
+            _parentObject.transform.localPosition = pos;
+        }
+        else
+        {
+            // if we're not moving then we need to put the weapon behind the player based on where they're looking
+            pos.z = (isFront(LookingVector.z)) ? localZBACK : localZFRONT;
+            _parentObject.transform.localPosition = pos;
+        }
+ 
+    }
+
+    /// <summary>
+    /// Handles the animation for the weapon object in your hand
+    /// </summary>
+    /// <param name="_weaponObject">The ojbect that is 'in the players hands'. This object is the one that rotates based on where you're looking.</param>
+    void HandleActiveWeapon(GameObject _weaponObject)
+    {
+        // if we're in combat stance
+        bool inCombatStance = (!myCtrl.Sprinting && InCombat && !UsingItem && !Punching);
+        bool lookFront = (isFront(LookingVector.z));
+
+
+        Vector3 pos = Vector3.zero;
+        Vector3 toCursor = GlobalConstants.ZeroYComponent(LookingVector).normalized;
+
+        MeleeWeapon MeleeRef = ActiveWeapon.GetComponent<MeleeWeapon>();
+     
+
+        if (inCombatStance)
+        {
+            // If we're in the combat stance then we need to rotate the weapon based on where we're looking
+            // Unlike the holstered weapon, this weapon should be in front when we're looking front, and be in back when we're looking behind us
+            pos.z = (lookFront) ? ZFRONT : ZBACK;
+            ActiveWeapon.transform.localPosition = pos;
+
+
+            // Some weapons won't rotate when we're holding them 
+            if (ActiveWeapon.heldData.holdType == HeldWeapon.HoldType.Hold)
+            {
+                // Set the position and break out early  
+                return; 
+            }
+
+            // If it's a melee weapon then don't bother rotating or flipping it
+            if (MeleeRef != null)
+            { 
+                return;
+            }
+
+
+            // Flip the gun if it's on the left side of the player
+            _weaponObject.GetComponentInChildren<SpriteRenderer>().flipY = (LookingVector.x < 0);
+
+       
+
+            // Otherwise we have a weapon that needs to rotate based on where you're looking
+            _weaponObject.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(toCursor));
+
+
+            return;
+        }
+
+
+        // Ok so we're not in a combat stance now what
+        HandleHolsteredWeapon(ActiveWeapon.gameObject, _weaponObject,true);
+
+        return;
+ 
+
+    }
+
+    /// Handle Animations 
     void Animations()
     {
         // First get a reference to the cursor location
-        Vector3 CursorLoc = CamScript.CursorLocation;
+        if(!CutsceneManager.InCutscene)
+            LookingVector = GlobalConstants.ZeroYComponent(CamScript.CursorLocation - transform.position);
 
         // Based on the cursor location, make the player look in that direction
         // Handle looking left vs right via where the cursor is
@@ -229,11 +321,11 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         if (myCtrl.Sprinting || !InCombat)
             flip = false;
         else
-            flip = (CursorLoc.x < transform.position.x);
+            flip = (LookingVector.x < 0);
         myRenderer.flipX = flip;
 
         // Handle looking up and down based on velocity
-        bool facefront = (CursorLoc.z < transform.position.z);
+        bool facefront = (LookingVector.z < 0);
         if (UsingItem)
             facefront = true;
         myAnimator.SetBool("FaceFront", facefront); // Flips a bool switch based on if the cursor is above or below the character
@@ -247,19 +339,17 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             if (((myCtrl.Velocity.x > 0 && myRenderer.flipX) || (myCtrl.Velocity.x < 0 && !myRenderer.flipX)) && Mathf.Abs(myCtrl.Velocity.x) > Mathf.Abs(myCtrl.Velocity.z))
                 spd *= -1;
 
-            if (((myCtrl.Velocity.z > 0 && (CursorLoc.z < transform.position.z)) || (myCtrl.Velocity.z < 0 && (CursorLoc.z > transform.position.z))) && Mathf.Abs(myCtrl.Velocity.x) < Mathf.Abs(myCtrl.Velocity.z))
+            if (((myCtrl.Velocity.z > 0 && (LookingVector.z <0)) || (myCtrl.Velocity.z < 0 && (LookingVector.z > 0))) && Mathf.Abs(myCtrl.Velocity.x) < Mathf.Abs(myCtrl.Velocity.z))
                 spd *= -1;
-        }
-
-
+        } 
 
 
         // Handle walking and running bools
         Vector3 toCursor = GlobalConstants.ZeroYComponent(CamScript.CursorLocation - transform.position);
         myAnimator.SetFloat("SpeedX", myCtrl.Velocity.x);
         myAnimator.SetFloat("SpeedY", myCtrl.Velocity.z);
-        myAnimator.SetFloat("LookX", toCursor.x);
-        myAnimator.SetFloat("LookY", toCursor.z);
+        myAnimator.SetFloat("LookX", LookingVector.x);
+        myAnimator.SetFloat("LookY", LookingVector.z);
         myAnimator.SetFloat("Speed", spd);
         myAnimator.SetBool("Moving", (GlobalConstants.ZeroYComponent(myCtrl.Velocity).magnitude > 1f));
         myAnimator.SetBool("Running", myCtrl.Sprinting);
@@ -271,7 +361,9 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
         myFootStep.Speed = (myCtrl.Sprinting) ? .2f : ((InCombat) ? .45f : .35f);
  
-        combatCD += Time.deltaTime;
+        if(!CutsceneManager.InCutscene) 
+            combatCD += Time.deltaTime;
+
         if (combatCD > 5 && InCombat)
         {
             if (ZoneScript.ActiveZone.ZoneAggression != ZoneScript.AggressionType.OnlyCombat)
@@ -284,12 +376,12 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
     }
 
-	// For input that is physics-based; goes in FixedUpdate
+	/// For input that is physics-based; goes in FixedUpdate
     void myFixedInput()
     {
         // Basic Movement
         // This could look a lot nicer, but ultimately it gets the job done
-        if (!myCtrl.Airborne && !Punching)
+		if (!myCtrl.Airborne && !Punching)
         {
             if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) // Left                                        Why does this section look so terrible?
             {
@@ -329,22 +421,30 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     } 
 
 
-	// For input that is frame-based; goes in Update
+	/// For input that is frame-based; goes in Update
 	void myInput()
 	{
+		WeaponBase weaponToFire = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
+		MeleeWeapon myMelee = null;
+
+		if(weaponToFire != null)
+		{
+			myMelee = weaponToFire.GetComponent<MeleeWeapon>();
+		}
 
 		// No shooting if the menu is open
-		if (!MenuManager.MenuOpen && !UpgradesManager.MenuOpen)
-		{
+		//bool shot = false;
+		if (!MenuManager.MenuOpen && !MenuManager.OtherMenuOpen)
+		{ 
 			// No shooting when we're in a no combat zone
 			if (ZoneScript.ActiveZone.ZoneAggression != ZoneScript.AggressionType.NoCombat)
-			{
-				// Also no shooting if we're sprinting
-				if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)) && Armed)
+            { 
+                // Also no shooting if we're sprinting
+                if (Input.GetMouseButton(0) && (!Input.GetKey(KeyCode.LeftShift) || (Input.GetKey(KeyCode.LeftShift) && myCtrl.Velocity.magnitude < .2)) && Armed)
 				{ 
-					WeaponBase weaponToFire = (ActiveWeapon == PrimaryWeapon) ? PrimaryWeapon : SecondaryWeapon;
 					weaponToFire.FireWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
 					combatCD = 0;
+					//shot = true;
 
 					if (!InCombat)
 					{
@@ -364,13 +464,13 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 			myAudioSource.Play();
 		}
  
-		if (Input.GetMouseButtonDown(1)) // When we left click throw our weapon
+		if (Input.GetMouseButtonDown(1) && (myMelee == null || !myMelee.isFiring)) // When we left click throw our weapon
 		{
 			TossWeapon(GlobalConstants.ZeroYComponent(CamScript.CursorLocation) - GlobalConstants.ZeroYComponent(transform.position));
 		}
 
-		// Secondary weapon != null because we don't want the player to be able to switch if they only have one weapon /  none at all
-		if(Input.GetKeyDown(KeyCode.Q) && SecondaryWeapon != null)
+		// We don't want the player to be able to switch if they only have one weapon /  none at all
+		if(Input.GetKeyDown(KeyCode.Q) && PrimaryWeapon != null && SecondaryWeapon != null && (myMelee == null || !myMelee.isFiring))
 		{
             if (ActiveWeapon.heldData.DropOnInactive)
             {
@@ -400,25 +500,26 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
         // PUNCH
         // cast a box to see if we deal damage
-        Vector3 toCursor =  CamScript.CursorLocation - transform.position;
-        Vector3 center = transform.position - ((toCursor.normalized) / 2);
-        Vector3 halfExtents = new Vector3(1, 2, 3);
-        Quaternion orientation = Quaternion.Euler(0, -GlobalConstants.angleBetweenVec(toCursor), 0);
+        Vector3 toCursor =  CamScript.CursorLocation - transform.position;   
 
-        if (Input.GetKeyDown(KeyCode.E) && !Punching)
+		if (Input.GetKeyDown(KeyCode.E) && !Punching && (myMelee == null || !myMelee.isFiring))
         {
-            // Do all the animations
-            myAnimator.SetFloat("Special", (UnityEngine.Random.Range(0,1f) < .5) ? 2 : 3);
+            // Don't move the player if there's an EINDC
+            if (!UsableIndicator.IsAvailable)
+                myCtrl.ApplyForce(toCursor.normalized * 4);
+
+            // don't punch if we want to talk
+            if (UsableIndicator.IsAvailable && (UsableIndicator.Grab.ind.Preset != UsableIndicator.usableIndcPreset.Disarm)) 
+                return;
+
+            // Do all the animations 
+            myAnimator.SetFloat("Special", (UnityEngine.Random.Range(0, 1f) < .5) ? 2 : 3);
             InCombat = true;
             combatCD = 0;
             Punching = true;
             StartCoroutine(PunchingCRT());
 
-            // Don't move the player if there's an EINDC
-            if (!UsableIndicator.IsAvailable)
-                myCtrl.ApplyForce(toCursor.normalized * 4);
-
-
+            // run the check to see if we hit anything
             Collider[] c = Physics.OverlapSphere(transform.position, 2);
             for(int i = 0; i < c.Length; i++)
             { 
@@ -433,17 +534,20 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
                 // Check to see if object is behind you
                 Vector3 toTarget = (obj.transform.position - transform.position).normalized;
                 if(Vector3.Dot(toTarget,toCursor) > 0)
-                    dmg.OnMelee(5); // deal damage
+					dmg.OnMelee(punchDamage); // deal damage
             }
         }
 
+        // update looking vector
+        LookingVector = GlobalConstants.ZeroYComponent(CamScript.CursorLocation - transform.position);
+
         // Set the springing bool equal to if we have the left shift key held down or not 
-        myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !UpgradesManager.MenuOpen && !Punching); // has to happen last
+		myCtrl.Sprinting = (Input.GetKey(KeyCode.LeftShift) && !Punching && (myMelee == null || !myMelee.isFiring)); // has to happen last
     }
 
     IEnumerator PunchingCRT()
     {
-        yield return new WaitForSeconds(.33f);
+		yield return new WaitForSeconds(punchCD);
         Punching = false;
         myAnimator.SetFloat("Special", 0);
     }
@@ -458,7 +562,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 		{
 			return;
 		}
-
+			
         ActiveWeapon.heldData.Toss(_dir, transform.position);
         if (SecondaryWeapon == ActiveWeapon)
         {
@@ -470,8 +574,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             ActiveWeapon = SecondaryWeapon;
             PrimaryWeapon = null;
         }
-
-        myVisualizer.BuildAmmoBar();
+         
     }
 
     public void OnDeath()
@@ -598,22 +701,11 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
 
         }
-
-		//myUnit.CurrentEnergy = (int)ForcefieldHealth;
-		//myUnit.MaxEnergy = (int)ForcefieldHealth;
-        //myForceField.RegenTime = RegenSpeed;
-
+         
         myVisualizer.ShowMenu();
 
     }
-
-    public void Activate()
-    {
-        // Nothing in the player needs to be activated
-        // Except maybe saving location data? Hmm
-    }
-
-    
+		
     IEnumerator UseItemCRT()
     {
         // Show the health visualizer
@@ -654,26 +746,31 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         if (_newWeapon == null)
             return;
 
+		// If we already have the weapon, we don't need to pick it up again (fixes the weapon dispenser bug)
+		if(_newWeapon == PrimaryWeapon || _newWeapon == SecondaryWeapon)
+		{
+			return;
+		}
+
         combatCD = 0;
-        //InCombat = true;
+
         _newWeapon.myOwner = this;
 		_newWeapon.myShield = GetComponentInChildren<ForceFieldScript>();
 		_newWeapon.myEnergy = GetComponent<EnergyManager>();
 
+        // If primary weapon slot is open put the new weapon there
         if (PrimaryWeapon == null)
         {
             PrimaryWeapon = _newWeapon; 
-            ActiveWeapon = PrimaryWeapon;
-            myVisualizer.BuildAmmoBar(); // Let the visualizer 
+            ActiveWeapon = PrimaryWeapon; 
             return;
         }
 
-
+        // If the secondary weapon slot is open and the primary slot isn't, put the new weapon in the secondary slot
         if (PrimaryWeapon != null && SecondaryWeapon == null)
         {
             SecondaryWeapon = _newWeapon; 
-            ActiveWeapon = SecondaryWeapon;
-            myVisualizer.BuildAmmoBar(); // Let the visualizer 
+            ActiveWeapon = SecondaryWeapon; 
             return;
         }
 
@@ -686,16 +783,14 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
             if (ActiveWeapon == PrimaryWeapon)
             {
                 PrimaryWeapon = _newWeapon;
-                ActiveWeapon = PrimaryWeapon;
-                myVisualizer.BuildAmmoBar();
+                ActiveWeapon = PrimaryWeapon; 
                 return;
             }
 
             if (ActiveWeapon == SecondaryWeapon)
             { 
                 SecondaryWeapon = _newWeapon;
-                ActiveWeapon = SecondaryWeapon;
-                myVisualizer.BuildAmmoBar();
+                ActiveWeapon = SecondaryWeapon; 
                 return;
             }
 
@@ -709,10 +804,6 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
     }
 
 
-    public void SetWeaponsOwner(WeaponBase w)
-    {
-        throw new NotImplementedException();
-    }
 
     /// <summary>
     /// A forced removal of a weapon that's either lost its use or isn't avaible anymore
@@ -727,8 +818,7 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
 
         if(ActiveWeapon != null)
             ActiveWeapon.ResetShootCD();
-
-        myVisualizer.BuildAmmoBar();
+         
     }
 
 	public void SwitchWeapons()
@@ -751,4 +841,166 @@ public class PlayerScript : MonoBehaviour, IMultiArmed
         get { return Zone; }
         set { Zone = value; }
     }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+		
+		data.WriteLine(transform.position);
+		
+		data.WriteLine(myUnit.CurrentHealth);
+
+		// Weapons (Player.GetComponent<PlayerScript>().PrimaryWeapon, SecondaryWeapon, ActiveWeapon
+		if(PrimaryWeapon != null)
+		{
+			if(PrimaryWeapon.name.IndexOf(' ') != -1)
+			{
+				data.WriteLine(PrimaryWeapon.name.Substring(0, PrimaryWeapon.name.IndexOf(' ')));
+			}
+			else
+			{
+				data.WriteLine(PrimaryWeapon.name);
+			}
+		}
+		else
+		{
+			data.WriteLine("null");
+		}
+
+		if(SecondaryWeapon != null)
+		{
+			if(SecondaryWeapon.name.IndexOf(' ') != -1)
+			{
+				data.WriteLine(SecondaryWeapon.name.Substring(0, SecondaryWeapon.name.IndexOf(' ')));
+			}
+			else
+			{
+				data.WriteLine(SecondaryWeapon.name);
+			}
+		}
+		else
+		{
+			data.WriteLine("null");
+		}
+
+		if(ActiveWeapon != null)
+		{
+			if(ActiveWeapon.name.IndexOf(' ') != -1)
+			{
+				data.WriteLine(ActiveWeapon.name.Substring(0, ActiveWeapon.name.IndexOf(' ')));
+			}
+			else
+			{
+				data.WriteLine(ActiveWeapon.name);
+			}
+		}
+		else
+		{
+			data.WriteLine("null");
+		}
+		
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		// Parse transform.position!
+		transform.position = GlobalConstants.StringToVector3(data[0]);
+
+		myUnit.CurrentHealth = int.Parse(data[1].Trim());
+
+		if(PrimaryWeapon != null)
+		{
+			Destroy(PrimaryWeapon.gameObject);
+			PrimaryWeapon = null;
+		}
+		if(data[2] != "null")
+		{
+			PrimaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + data[2]), transform) as GameObject).GetComponent<WeaponBase>();
+			PrimaryWeapon.gameObject.name = data[2];
+		}
+
+		if(SecondaryWeapon != null)
+		{
+			Destroy(SecondaryWeapon.gameObject);
+			SecondaryWeapon = null;
+		}
+		if(data[3] != "null")
+		{
+			SecondaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + data[3]), transform) as GameObject).GetComponent<WeaponBase>();
+			SecondaryWeapon.gameObject.name = data[3];
+		}
+		
+		if(data[4] != "null")
+		{
+			if(data[4] == PrimaryWeapon.name)
+			{
+				ActiveWeapon = PrimaryWeapon;
+			}
+			else
+			{
+				ActiveWeapon = SecondaryWeapon;
+			}
+		}
+	}
+
+    public void MoveTo(Vector3 _destination)
+    {
+        moveAI.MoveTo(_destination);
+    }
+
+    public void Look(Vector3 _look)
+    {
+        LookingVector = _look;
+        myAnimator.SetFloat("LookX", _look.x);
+        myAnimator.SetFloat("LookY", _look.z); 
+    }
+
+	public void Stun(float time, bool unstun)
+	{
+		Stunned = true;
+		AcceptInput = false;
+		myForceField.canHeal = false;
+
+		if (myEmojis != null)
+		{
+			myEmojis.Fire(EffectSystem.EffectType.Stunned, transform.position + (Vector3.up * 6) + (Vector3.back * 0.5f));
+		}
+
+		if(unstun)
+		{
+			StartCoroutine(Unstun(time));
+		}
+	}
+
+	public IEnumerator Unstun(float time)
+	{
+		yield return new WaitForSeconds(time);
+
+		Stunned = false;
+		AcceptInput = true;
+		myForceField.canHeal = true;
+		myEmojis.Fired = false;
+	}
+
+    public void SetAggro(bool _b)
+    {
+        InCombat = _b;
+        combatCD = 0;
+        myAnimator.SetBool("InCombat", InCombat);
+        myAudioSource.clip = (_b) ? AudioClips[0] : AudioClips[1];
+        myAudioSource.Play();
+
+    }
+
+    public CController cc
+    {
+        get { return myCtrl; }
+    }
+
+    bool isFront(float v)
+    {
+        return (v < 0);
+    }
+
 }

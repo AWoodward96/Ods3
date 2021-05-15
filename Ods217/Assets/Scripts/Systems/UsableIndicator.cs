@@ -22,6 +22,7 @@ public class UsableIndicator : MonoBehaviour
     public float Range;
     public bool ActiveInd;
     public bool Disabled;
+	public bool Laserable = false;
 
     public IndicatorInfo curGrab;
 
@@ -38,8 +39,11 @@ public class UsableIndicator : MonoBehaviour
     Image[] ImageCircles;
     Image eBar;
     Text myText;
-    Animator eAnim;
-
+    [HideInInspector]
+    public Text talkText;
+    public Animator eAnim;
+	public bool held;
+	public bool lasered;
 
     GameObject player;
 
@@ -49,7 +53,7 @@ public class UsableIndicator : MonoBehaviour
     public outputType Output;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         Images = GetComponentsInChildren<Image>();
         List<Image> img = new List<Image>();
@@ -68,9 +72,20 @@ public class UsableIndicator : MonoBehaviour
 
         ImageCircles = img.ToArray();
 
+        Text[] texts = GetComponentsInChildren<Text>();
+        for(int i = 0; i < texts.Length; i ++)
+        {
+            if (texts[i].name == "Text")
+                myText = texts[i];
 
-        myText = GetComponentInChildren<Text>();
+            if (texts[i].name == "TalkCount")
+                talkText = texts[i];
+        }
 
+        if (Preset != usableIndcPreset.Talk && talkText != null)
+            talkText.gameObject.SetActive(false);
+
+		eAnim = GetComponentInChildren<Animator>();
 
         resetInd.ind = null;
         resetInd.distanceToPlayer = 100000;
@@ -80,18 +95,46 @@ public class UsableIndicator : MonoBehaviour
         Hover = resetInd;
     } 
     // Update is called once per frame
-    void Update()
+	void Update()
+	{
+		curGrab = Grab;
+		RunUsable();
+
+		ActiveInd = (UsableIndicator.Grab.ind == this);
+
+		if(ActiveInd && !Disabled && Output != null)
+		{
+			if(Style == usableIndcStyle.Toggle && Input.GetKeyDown(KeyCode.E))
+			{
+				Output();
+			}
+		}
+	}
+
+	// Some input is handled in FixedUpdate to avoid the eaten inputs bug
+    void FixedUpdate()
     {
-        curGrab = Grab;
-        RunUsable();
+        if(ActiveInd && !Disabled && Output != null)
+		{
+			if(Style == usableIndcStyle.Hold)
+			{
+				if(Input.GetKey(KeyCode.E))
+				{
+					Output();
+				}
 
+				held = Input.GetKey(KeyCode.E);
+			}
+		}
+		else
+		{
+			held = false;
+		}
 
-        ActiveInd = (UsableIndicator.Grab.ind == this);
-        if (Input.GetKeyDown(KeyCode.E) && ActiveInd && !Disabled && Output != null)
-        {
-            Output();
-        }
-
+		if(eAnim != null && Application.isPlaying)
+		{
+			eAnim.SetBool("Held", held || lasered);
+		}
     }
 
     void RunUsable()
@@ -150,7 +193,8 @@ public class UsableIndicator : MonoBehaviour
     void handleSelection()
     {
         // Get the distance to the player and the distance to the cursor
-        Vector3 distanceToPlayer = GlobalConstants.ZeroYComponent(Player.transform.position - (((OverrideTransform != null) ? OverrideTransform.position : transform.position)) + OverrideAdditionalVec );
+        Vector3 realdistanceToPlayer = Player.transform.position - (((OverrideTransform != null) ? OverrideTransform.position : transform.position)) + OverrideAdditionalVec;
+        Vector3 distanceToPlayer = GlobalConstants.ZeroYComponent(realdistanceToPlayer);
         Vector3 distanceToCursor = GlobalConstants.ZeroYComponent(CamScript.CursorLocation - (((OverrideTransform != null) ? OverrideTransform.position : transform.position)) + OverrideAdditionalVec);
         float distToPlayerMag = distanceToPlayer.magnitude;
         float distToCursorMag = distanceToCursor.magnitude; // Because calculating magnitude takes a not-0 amount of time
@@ -161,7 +205,7 @@ public class UsableIndicator : MonoBehaviour
         // If we're not the current grab target
         if (Grab.ind != this)
         {
-            if (distToPlayerMag < (Range)) // If we're close enough to interact with it
+            if (distToPlayerMag < (Range) && realdistanceToPlayer.y < 6) // If we're close enough to interact with it
             {
                 // Check if we're actually closer then the current grab
                 if (distToPlayerMag <= Grab.distanceToPlayer)
@@ -178,7 +222,7 @@ public class UsableIndicator : MonoBehaviour
             // Then update the distance
             Grab.distanceToPlayer = distToPlayerMag;
             Grab.distanceToCursor = distToCursorMag; 
-            if (distToPlayerMag >= Range) // If we're farter away from the player then the range
+            if (distToPlayerMag >= Range || realdistanceToPlayer.y > 6) // If we're farter away from the player then the range
                 Grab = resetInd; // Then we can't be the Grab target
         }
 
@@ -224,7 +268,7 @@ public class UsableIndicator : MonoBehaviour
 
     void handlePresets()
     {
-        if(Preset != presetPrev)
+		if(Preset != presetPrev)
         {
             switch(Preset)
             {
@@ -254,7 +298,7 @@ public class UsableIndicator : MonoBehaviour
                     break;
                 case usableIndcPreset.Talk:
                     myText.text = "Talk";
-                    eBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(-20, 2.3f, 0);
+                    eBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(-15, 2.3f, 0);
                     break;
                 case usableIndcPreset.Save:
                     myText.text = "Save";
@@ -298,6 +342,9 @@ public class UsableIndicator : MonoBehaviour
         Color c2 = myText.color;
         c2.a = alphaValue;
         myText.color = c2;
+
+        if (talkText != null)
+            talkText.color = c2;
     }
 
     public static void ResetInd()
@@ -313,6 +360,24 @@ public class UsableIndicator : MonoBehaviour
     public static bool IsAvailable
     {
         get { return (Grab.ind != null); }
+    }
+
+	void OnDisable()
+	{
+		if(Grab.ind == this)
+		{
+			Grab = resetInd;
+		}
+
+		if(Hover.ind == this)
+		{
+			Hover = resetInd;
+		}
+	}
+
+    private void OnDestroy()
+    {
+        OnDisable();
     }
 }
 

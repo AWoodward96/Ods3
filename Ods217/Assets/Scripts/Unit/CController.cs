@@ -28,8 +28,8 @@ public class CController : MonoBehaviour
     public bool SprintingPrev; // So we can tell when we've switched from sprinting to not sprinting
     public bool Immovable; // If true, explosions wont move this character
 
-
-    Vector3 Acceleration;
+    [HideInInspector]
+    public Vector3 Acceleration;
     public Vector3 Velocity;
     public Vector3 ProjectedPosition; // Where this object should be next frame
 

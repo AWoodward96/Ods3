@@ -44,11 +44,6 @@ public class lgcJukebox : MonoBehaviour, IPermanent {
         }
     }
 
-    public void Activate()
-    {
-        
-    }
-
     private void Start()
     {
         mySources = GetComponents<AudioSource>();

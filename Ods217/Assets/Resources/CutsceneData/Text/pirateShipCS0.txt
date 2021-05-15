@@ -1,0 +1,116 @@
+FadeIn(3)
+ EnableObject(Listener)
+ DisableObject(Player)
+CameraTarget(LookAtMe)
+
+
+
+Start()
+ 
+LoadPawn(PiratePawn1,Pawn1)
+LoadPawn(PiratePawn2,Pawn2)
+Wait(1)
+LookPawn(Pawn1,0,1)
+Wait(1.5)
+LookPawn(Pawn2,-1,0)
+Wait(1)
+MovePawn(Pawn2,16,4,107)
+Wait(1.5)
+LookPawn(Pawn2,0,1)
+FadeOut(2)
+Wait(2)
+
+EnableObject(Sound)
+
+EnableObject(BoxesParent)
+CameraTarget(BoxesParent)
+
+DisableObject(PiratePawn1)
+DisableObject(PiratePawn2)
+DisableObject(BoxesInThePodParent)
+
+Wait(4)
+
+FadeIn(1)
+
+Wait(1.5)
+
+LoadChar(LyserCon,Lyser)
+Say(Lyser,You've arrived.)
+Say(Slas,Oh good.,EyesClosed)
+Say(Slas,Let me just...,Idle)
+EndSay()
+
+EnableObject(Sound2)
+DisableObject(Sound)
+Wait(1)
+
+Say(Slas,Alright.,Idle)
+FadeOut(1)
+Wait(1.5)
+
+SmartPlace(PlaceMeHere)
+DisableObject(Listener)
+HaltPlayer()
+LoadPawn(Player,Slas)
+LookPawn(Slas,0,-1)
+
+
+FadeIn(1)
+CameraTarget(Player)
+
+Say(Slas,Oof...,EyesClosed)
+Say(Slas,I'd be ok with never doing that again.,SadLeft)
+
+DecisionEvent(ARMED FOR LEVEL 1,Weapon,NoWeapon)
+
+
+
+
+
+
+
+*NoWeapon
+EndSay()
+Wait(2)
+Say(Slas,. . .,Concerned)
+EndSay(1)
+Wait(1)
+Say(Lyser,What's the matter Slas?)
+Say(Slas,. . .,Concerned)
+Continue(I...,IdleTLeft)
+Continue(Forgot to bring a weapon with me.,SadRight)
+EndSay(1)
+
+Wait(1)
+Say(Lyser,You've got to be kidding me.,Ugh)
+Say(Lyser,Well I guess you'll have to nab one off of an enemy at some point.,Angry)
+Say(Slas,Yeah I guess.,EyesClosed)
+Say(Slas,Just disarm an enemy before they arm themselves right?,IdleTRight)
+Breakpoint(Weapon)
+ 
+
+*Weapon
+Say(Lyser,Now you need to make your way up to the third floor of the factory.)
+Say(Lyser,There you'll find a generator that powers the entire facility.)
+Say(Lyser,Your objective is to destroy it and then make your escape.)
+Say(Slas,Gotcha.)
+
+
+Save()
+
+ClearObjectives()
+
+LoadObjective(PirateShip/1,goal1)
+LoadObjective(PirateShip/2,goal2)
+LoadObjective(PirateShip/3,goal3)
+
+AddObjective(goal1)
+AddObjective(goal2)
+AddObjective(goal3)
+
+
+End()
+
+
+

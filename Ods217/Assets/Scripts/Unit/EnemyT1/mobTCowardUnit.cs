@@ -101,7 +101,7 @@ public class mobTCowardUnit : mobCowardUnit {
                 myCC.ApplyForce(d);
 
                 // If we're close enough pick it up
-                if (d.magnitude < desiredWeapon.heldData.Range || d.magnitude < 1)
+                if (d.magnitude < desiredWeapon.heldData.ind_MyIndicator.Range || d.magnitude < 1)
                 {
                     desiredWeapon.heldData.PickUp(this);
                     canPickUp = false;

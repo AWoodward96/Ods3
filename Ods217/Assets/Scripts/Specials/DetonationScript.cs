@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DetonationScript : MonoBehaviour {
+public class DetonationScript : MonoBehaviour, ISavable {
 
     public Canvas DetonationCanvas;
     public Text TimerText;
     public float DetonationTime = 100;
     bool detonating;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
 
     PlayerScript player;
 
@@ -60,4 +67,47 @@ public class DetonationScript : MonoBehaviour {
         return string.Format("{0}:{1:00}", (int)DetonationTime / 60, (int)DetonationTime % 60);
 
     }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(detonating);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		detonating = bool.Parse(data[0].Trim());
+
+		if(detonating)
+		{
+			StartDetonation();
+		}
+	}
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
 }

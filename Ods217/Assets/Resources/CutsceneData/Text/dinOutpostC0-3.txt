@@ -1,0 +1,188 @@
+Start()
+LoadChar(Lyser,Lyser)
+LoadChar(Din,Din)
+LoadPawn(Player,Slas)
+LoadPawn(csLyserPawn,Lyser)
+LoadPawn(csDinPawn,Din)
+
+LookPawn(Lyser,0,1)
+SprintPawn(Slas,0)
+AggroPawn(Slas,0)
+
+MovePawn(Slas,-101,4,19.5)
+LookPawn(Slas,0,1)
+Wait(1)
+CameraTarget(DinLookAtMe)
+Wait(1)
+LookPawn(Lyser,0,-1)
+
+Wait(2)
+
+Say(Lyser,You're late.,Idle)
+MovePawn(Lyser,-105,4,23.5)
+EndSay()
+Wait(2)
+LookPawn(Lyser,0,-1)
+
+Say(Din,Is this the runner?,IdleT)
+
+Say(Lyser,That he is.,Idle)
+
+Say(Slas,Nice to meet you sir!,SmileT)
+Continue(My name is Slas.) 
+EndSay()
+CameraTarget(DinLookAtMe2)
+MovePawn(Din,-96.5,4,26)
+Wait(1)
+MovePawn(Din,-97.5,4,19)
+Wait(1.5)
+LookPawn(Din,-1,0)
+
+Say(Din,Hmm...,HmmRight)
+
+MovePawn(Din,-101,4,23)
+Wait(1)
+LookPawn(Din,0,-1)
+Wait(1)
+Say(Din,An Amtac?,HmmRightT)
+Continue(Not my first choice.,HmmLeftT)
+
+MovePawn(Din,-104,4,20)
+Say(Din,Lean.,HmmLeftT)
+Continue(Small.,HmmLeftT)
+MovePawn(Din,-105,4,18)
+Continue(You'll stand out in a crowd.,HmmRightT)
+LookPawn(Din,1,0)
+Continue(Especially with that hat of yours.,HmmUpT)
+
+Say(Lyser,Are you doubting me?,Angry)
+
+
+MovePawn(Din,-96.5,4,26)
+Wait(1)
+Say(Din,I am simply assessing your runners abilities to get the job done in the most efficient manner.,Talk)
+EndSay()
+Wait(1)
+LookPawn(Din,0,-1)
+Say(Din,I don't get to take risks anymore.,Talk)
+
+MovePawn(Din,-101,4,27)
+Wait(1)
+Say(Din,Very well.,IdleT)
+Wait(1)
+
+LookPawn(Din,0,-1)
+
+Say(Din,It is nice to meet you Slas.,Talk)
+Continue(My name is Mr. Din.,IdleT)
+Say(Din, I work underneath Chancellor Mahrs as Assistant Treasury for the Holy Empire.,Talk)
+Say(Din,I also am in charge of making sure everything here at the Outpost run as smoothly as possible.,IdleT)
+EndSay()
+
+TextSize(5)
+MovePawn(Din,-101,4,30)
+Say(Din,In the outskirts of Sector 6 there is an independent weapons factory dealing in specifically explosives.,Talk)
+MovePawn(Din,-97,4,30)
+Say(Din,For the last four or five rotations there has not been any reason for concern regarding the existence of this factory.,TalkUp) 
+LookPawn(Din,0,-1)
+Continue(Well besides the obvious.,HmmLeftT)
+
+MovePawn(Din,-105,4,30)
+Say(Din,The Empires view on the subject has since changed.,Talk)
+MovePawn(Din,-97,4,30)
+//Say(Din,With the advent of the Ra'Gash invasion we cannot afford to have this factory be operational any longer.,HmmRightT)
+//EndSay()
+//MovePawn(Din,-101,4,30)
+Wait(1)
+LookPawn(Din,0,-1)
+Say(Din,This is where you come in.,IdleT)
+
+ 
+MovePawn(Din,-105,4,30)
+Say(Din,It is your job to shut the factory down in whatever manner you deem proper.,IdleT)
+Continue(Preferably by destroying it.,Talk)
+
+MovePawn(Din,-97,4,30)
+Say(Din,We of course will handle the fallout of this event with impunity.,Talk) 
+Continue(You need not worry about your name.,TalkUp)
+
+EndSay()
+MovePawn(Din,-101,4,30)
+Wait(1)
+LookPawn(Din,0,-1)
+TextSize(8)
+Say(Din,Are there any questions?,Idle)
+EndSay()
+
+
+Wait(1.5)
+Say(Slas,What caused the Empire to change their mind?,IdleT)
+EndSay()
+Wait(1)
+Say(Din,I have my reasons but until the job is done I unfortunately cannot disclose them.,Anrgy)
+EndSay()
+
+Wait(1.5)
+LookPawn(Din,0,1)
+Say(Din,Now I must be 100% clear that none of this can leave this room.,TalkUp) 
+Say(Din,The last thing I want is for the Sentinels to get this information and leak it to the public.,Angry)
+Say(Din,That's why I insisted on delivering this information to you in person.,Talk)
+LookPawn(Din,0,-1)
+Say(Din,Should you stay quiet you will be rewarded with payment.,IdleT)
+
+
+Say(Lyser,Understood.,Idle)
+Continue(Do you have a recommended method of reaching this factory?,Determined)
+LookPawn(Din,0,1)
+Say(Din,Hmm...,HmmLeft)
+Continue(I can forward you our shipping records.,HmmRightT)
+LookPawn(Din,0,-1)
+Say(Din,Will that suffice?,Idle)
+
+Say(Lyser,That will work.,Idle)
+
+MovePawn(Lyser,-101,4,5.5)
+Say(Lyser,Page the records to my Transciever. We will begin working immediately.,Idle)
+EndSay()
+Wait(1)
+LookPawn(Lyser,0,1)
+Say(Lyser,Slas?)
+EndSay()
+LookPawn(Slas,0,-1)
+Wait(.5)
+Say(Slas,Coming!,Concerned)
+EndSay()
+MovePawn(Slas,-101,4,5.5)
+FadeOut(2)
+
+Wait(3)
+
+DisableObject(TempElevatorToDins)
+EnableObject(ElevatorToDins)
+
+EnableObject(MiniPostDinCutscene)
+CameraTarget(DropMeHereDin)
+SmartPlace(DropMeHereDin)
+
+LoadPawn(postDinLyserCS,L)
+MovePawn(L,84,4,30)
+FadeIn(2)
+Wait(2)
+
+Say(Lyser,We have a little bit of time before we need to leave.,Idle)
+Say(Lyser,Use this time to make sure you're ready for the mission.)
+Say(Lyser,Meet me on Platform 4 when you're ready to go.,Idle)
+EndSay()
+
+MovePawn(L,90,4,5)
+
+Wait(4)
+DisableObject(MiniPostDinCutscene)
+EnableObject(ToPirateShip)
+CameraTarget(Player)
+
+DisableObject(DotPostCutscene)
+
+ClearObjectives()
+LoadObjective(Outpost/1,1)
+AddObjective(1)

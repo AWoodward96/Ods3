@@ -10,10 +10,12 @@ public class StandardUnitAnim {
 
     public bool faceFront;
     public bool flipSprites;
-    public bool holdGun; 
+    public bool holdGun;
 
-    public Vector3 HolsteredRotation;
-    Vector3 HolsteredRotation2 = new Vector3(0, 0, -119);
+    public enum DirectionalType { Two, Four };
+    public DirectionalType LookType = DirectionalType.Two;
+
+    public Vector3 HolsteredRotation; 
     public Vector3 HolsteredPosition;
     public Vector3 HeldPosition;
 
@@ -47,22 +49,36 @@ public class StandardUnitAnim {
     {  
         faceFront = LookingVector.z <= 0;
         flipSprites = LookingVector.x <= 0;
-         
 
         float spd = 1;  // This float controls that speed. To be clear, this is the animation speed, not the speed of the player. A - speed indicates an animation playing in reverse.
+        if (LookType == DirectionalType.Two)
+        {
+            // Handle negative speeds
+            if (((velocity.x > 0 && flipSprites) || (velocity.x < 0 && !flipSprites)) && Mathf.Abs(velocity.x) > Mathf.Abs(velocity.z))
+                spd *= -1;
+
+            if (((velocity.z > 0 && (LookingVector.z < myObject.transform.position.z)) || (velocity.z < 0 && (LookingVector.z > myObject.transform.position.z))) && Mathf.Abs(velocity.x) < Mathf.Abs(velocity.z))
+                spd *= -1;
+
+            myRend.flipX = flipSprites;
+        }
   
-        // Handle negative speeds
-        if (((velocity.x > 0 && flipSprites) || (velocity.x < 0 && !flipSprites)) && Mathf.Abs(velocity.x) > Mathf.Abs(velocity.z))
-            spd *= -1;
 
-        if (((velocity.z > 0 && (LookingVector.z <  myObject.transform.position.z)) || (velocity.z < 0 && (LookingVector.z > myObject.transform.position.z))) && Mathf.Abs(velocity.x) < Mathf.Abs(velocity.z))
-            spd *= -1;
 
-        myRend.flipX = flipSprites;
-
+        bool isMoving = GlobalConstants.ZeroYComponent(velocity).magnitude > .1f;
         Anim.SetFloat("Speed", spd);
         Anim.SetBool("FaceFront", faceFront); 
-        Anim.SetBool("Moving", GlobalConstants.ZeroYComponent(velocity).magnitude > .1f); 
+        Anim.SetBool("Moving",isMoving);
+
+        if (GlobalConstants.AnimatorHasParameter(Anim, "moveX") && isMoving)
+            Anim.SetFloat("moveX", velocity.x);
+        if (GlobalConstants.AnimatorHasParameter(Anim, "moveY") && isMoving)
+            Anim.SetFloat("moveY", velocity.z);
+        if (GlobalConstants.AnimatorHasParameter(Anim, "lookX"))
+            Anim.SetFloat("lookX", LookingVector.x);
+        if (GlobalConstants.AnimatorHasParameter(Anim, "lookY"))
+            Anim.SetFloat("lookY", LookingVector.z);
+
         GunAnims(); 
     }
 
@@ -70,12 +86,14 @@ public class StandardUnitAnim {
     {
         if (activeGunObject == null)
             return;
+
+		MeleeWeapon myMelee = activeGunObject.GetComponent<MeleeWeapon>();
  
 
         GameObject rotateMe = activeGunObject.RotateObject;
 
         Vector3 pos = (holdGun) ? HeldPosition : HolsteredPosition;
-        if (holdGun)
+		if (holdGun || myMelee != null)
             pos.z = (faceFront) ? -.1f : .1f;
         else
             pos.z = (faceFront) ? .1f : -.1f;
@@ -84,23 +102,30 @@ public class StandardUnitAnim {
         activeGunObject.transform.localPosition = pos;
 
         if (activeGunObject.heldData.holdType == HeldWeapon.HoldType.Hold)
-        {
-            rotateMe.transform.localRotation = Quaternion.identity;
+        { 
             return;
         }
+         
 
-        // A fix for the flipxrotation issue
-        //Vector3 scale = activeGunObject.RotateObject.transform.localScale;
-        //float sY = Mathf.Abs(activeGunObject.RotateObject.transform.localScale.y);
-        //sY *= (flipSprites) ? -1 : 1;
-        //activeGunObject.RotateObject.transform.localScale = new Vector3(scale.x, sY, scale.z); 
-
-        SpriteRenderer gunRend = activeGunObject.RotateObject.GetComponentInChildren<SpriteRenderer>();
-        gunRend.flipY = flipSprites;
+		// Don't flip melee weapons
+		if(myMelee == null)
+		{
+        	SpriteRenderer gunRend = activeGunObject.RotateObject.GetComponentInChildren<SpriteRenderer>();
+        	gunRend.flipY = flipSprites;
+		}
 
 
         if (holdGun)
-            rotateMe.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(LookingVector.normalized)); // NOT local because if it's local then it'll be relative to the rest of this objects rotation. Set it globally
+		{
+			if(myMelee == null)
+			{
+				rotateMe.transform.rotation = Quaternion.Euler(0, 0, GlobalConstants.angleBetweenVec(LookingVector.normalized)); // NOT local because if it's local then it'll be relative to the rest of this objects rotation. Set it globally
+			}
+			else
+			{
+				rotateMe.transform.rotation = Quaternion.Euler(90, 0, GlobalConstants.angleBetweenVec(LookingVector.normalized));
+			}
+		}
         else
             rotateMe.transform.localRotation = Quaternion.Euler(HolsteredRotation);
 

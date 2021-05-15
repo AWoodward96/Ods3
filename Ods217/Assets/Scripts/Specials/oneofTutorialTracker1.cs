@@ -75,11 +75,6 @@ public class oneofTutorialTracker1 : MonoBehaviour, IPermanent {
         }
     }
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
-
     private void OnTriggerStay(Collider other)
     {
         if(other.tag == "Player" && triggered)

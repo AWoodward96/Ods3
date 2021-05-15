@@ -105,7 +105,7 @@ public class lgcLogicDoor: SlidingDoor {
     IEnumerator crtDone(bool done)
     {
         yield return new WaitForSeconds(1.5f);
-        if (mySource != null) ;
+        if (mySource != null)
         mySource.Play();
         State = done; 
     }

@@ -1,0 +1,110 @@
+Start()
+LoadChar(Lyser,Lyser)
+LoadPawn(Player,Slas)
+LoadPawn(csLyserPawn2,Lyser)
+
+SprintPawn(Slas,0)
+AggroPawn(Slas,0)
+
+
+
+Say(Lyser,Are you ready to go?)
+DecisionSimple(Yes,No)
+
+
+
+*Yes
+Say(Slas,Yep I'm good to go!)
+Say(Lyser,Then get in.,IndifPad)
+Say(Slas,...,Wat)
+Say(Slas,What?,Concerned)
+Say(Lyser,Get in the box. We're gonna ship you.,Idle)
+LookPawn(Slas,0,-1)
+EndSay()
+CameraTarget(SpecialBox)
+Wait(1)
+
+Say(Slas,You can't be serious.,IdleT)
+Say(Lyser,PODs are the most secure form of delivery.,IndifPad
+Say(Lyser,They won't expect for one of their caches to be booby trapped.,LookRightPad)
+
+Say(Slas,B-But won't we get in trouble?,Concerned)
+Say(Lyser,Do you trust me?,LookAtYouPad)
+
+Say(Slas,Hngg...,EyesClosed)
+Say(Slas,Ok but don't blame me if I get shipped off to a different Sector.,SadLeft)
+EndSay()
+
+MovePawn(Slas,244,-7,-175)
+Wait(1.5)
+MovePawn(Slas,243,-7,-180)
+Wait(2)
+FadeOut(2)
+Wait(1)
+MovePawn(Slas,240,-7,-180)
+Wait(1)
+
+DisableObject(ToPiratePt1)
+DisableObject(Player)
+EnableObject(ToPiratePt2)
+
+LoadPawn(csLyserPawn3,Lyser2)
+LookPawn(Lyser2,-1,0)
+
+Wait(4)
+
+FadeIn(1)
+
+Say(Slas,Ok. Is it convincing enough?,EyesClosed)
+Say(Lyser,You can lock and unlock the box from the inside.,Idle)
+Say(Lyser,Do you see a small yellow switch?,Idle)
+Say(Slas,Hmmmm...,EyesClosed)
+Continue(Yep! I'll just...)
+EndSay()
+Wait(1)
+EnableObject(ClickerSFX)
+Wait(1.5)
+
+Say(Slas,Ok so now what?,EyesClosed)
+Say(Lyser,Stay in the box until the ship departs.,IndifPad)
+Say(Lyser,You can stretch your legs once you're moving but hide when you get to the factory.,LookLeftPad)
+Say(Lyser,I'll be in touch. Good luck.,LookAtYou)
+
+
+
+MovePawn(Lyser2,242,-7,-155)
+Say(Slas,Great!,EyesClosed)
+Wait(1)
+Continue(Great...,SadClosed)
+EndSay()
+Wait(1)
+FadeOut(1)
+
+
+Wait(2)
+
+DisableObject(POD1)
+EnableObject(POD2)
+DisableObject(OutsideBoxes)
+DisableObject(ClosedSpecialBox)
+
+LoadPerm(POD2,POD2)
+Trigger(POD2)
+CameraTarget(ToPirateLookAtMe)
+Wait(.5)
+FadeIn(2)
+Wait(10)
+
+FadeOut(2)
+Wait(3)
+EnableObject(Player)
+Wait(.3)
+
+MoveTo(ts_ToPirateC0-4)
+
+
+End()
+
+
+*No
+Say(Lyser, Let me know when you are.)

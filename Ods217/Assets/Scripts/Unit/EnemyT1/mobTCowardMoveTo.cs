@@ -5,8 +5,7 @@ using UnityEngine;
 public class mobTCowardMoveTo : mobCowardUnit
 {
 
-    public bool isTriggered; 
-    UsableIndicator myusableIndicator;
+    public bool isTriggered;  
     public Vector2[] MoveToAr;
     Vector3 PrevPos;
     public int MoveToIndex;
@@ -15,8 +14,7 @@ public class mobTCowardMoveTo : mobCowardUnit
      
 
     public override void Start()
-    {
-        myusableIndicator = GetComponent<UsableIndicator>();
+    { 
         PrevPos = transform.position;
         base.Start();
     }

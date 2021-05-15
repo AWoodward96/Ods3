@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-public class SpireElevator: MonoBehaviour {
-     
-    public float Range;
-    public bool Interactable;
+[RequireComponent(typeof(AudioSource))]
+public class SpireElevator: MonoBehaviour, ISavable
+{    
     public bool MenuOpen;
     UsableIndicator ind_Interactable;
 
@@ -21,6 +21,40 @@ public class SpireElevator: MonoBehaviour {
 
     public GameObject[] CameraLocks;
     public GameObject[] ArrivalPoints;
+
+    public AudioClip MovingClip;
+    public AudioClip StopClip;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
+    AudioSource myAudioSource;
 
     PlayerScript myPlayer;
 
@@ -50,24 +84,31 @@ public class SpireElevator: MonoBehaviour {
         // Set up other references
         ind_Interactable = GetComponentInChildren<UsableIndicator>();
         ind_Interactable.Preset = UsableIndicator.usableIndcPreset.Interact;
-        ind_Interactable.Output = toggleDelegate; 
+        ind_Interactable.Output = openMenuDelegate; 
         myPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
         MenuOpen = false;
+
+        myAudioSource = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        Velocity = (Direction) ? MoveUpVector : MoveDownVector;
-
+        Velocity = (Direction) ? MoveUpVector : MoveDownVector; 
 
         if(Moving)
         { 
             transform.position += Velocity * Time.deltaTime;
 
+
             // Check to see if we can stop moving
             if (Vector3.Distance(transform.position, ArrivalPoints[(int)CurrentFloor].transform.position) < .5f)
             {
+                myAudioSource.clip = StopClip;
+                myAudioSource.pitch = (Direction) ? .9f : 1f;
+                myAudioSource.loop = false;
+                myAudioSource.Play();
+
                 Moving = false;
                 transform.position = ArrivalPoints[(int)CurrentFloor].transform.position;
                 if (myPlayer == null)
@@ -79,15 +120,33 @@ public class SpireElevator: MonoBehaviour {
 
         ind_Interactable.Disabled = Moving;
 
-      
-        myCanvas.enabled = MenuOpen && ind_Interactable.ActiveInd;
-        if (!ind_Interactable.ActiveInd)
-            MenuOpen = false;
+
+        myCanvas.enabled = MenuOpen;
     }
 
-    void toggleDelegate()
-    {
-        MenuOpen = !MenuOpen;
+    private void Update()
+    { 
+        if (MenuOpen && Input.GetKeyDown(KeyCode.Escape))
+        {
+            myPlayer.AcceptInput = true;
+            MenuOpen = false;
+            MenuManager.OtherMenuOpen = false;
+        }
+    }
+
+
+    void openMenuDelegate()
+    { 
+        if(!MenuOpen)
+        {
+            MenuOpen = true;
+            MenuManager.OtherMenuOpen = MenuOpen;
+            if (myPlayer.AcceptInput)
+            {
+                myPlayer.AcceptInput = false;
+                myPlayer.GetComponent<CController>().HaltMomentum();
+            }
+        } 
     }
 
     public void GoToFloor(int _index)
@@ -96,10 +155,16 @@ public class SpireElevator: MonoBehaviour {
         if (_to == CurrentFloor)
             return;
 
-        if(!Moving) // ensure this can only be called once
-        { 
+        if(!Moving && MenuOpen) // ensure this can only be called once
+        {
+            myAudioSource.clip = MovingClip;
+            myAudioSource.loop = true;
+            myAudioSource.Play();
+
             Direction = ((int)_to > (int)CurrentFloor);
             MenuOpen = false;
+            MenuManager.OtherMenuOpen = MenuOpen;
+
             Moving = true;
             Camera.main.gameObject.GetComponent<CamScript>().Target = CameraLocks[(int)CurrentFloor].transform;
 
@@ -128,12 +193,22 @@ public class SpireElevator: MonoBehaviour {
         main.Target = CameraLocks[(int)CurrentFloor].transform;
         main.gameObject.transform.position = CameraLocks[(int)CurrentFloor].transform.position + GlobalConstants.DEFAULTFOLLOWBACK - (Vector3.down * 5);
     }
+ 
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
 
-    private void OnDrawGizmos()
-    {
-        Color c = Color.blue;
-        c.a = .1f;
-        Gizmos.color = c;
-        Gizmos.DrawSphere(transform.position, Range);
-    }
+		data.WriteLine(gameObject.activeInHierarchy);
+		data.WriteLine((int)CurrentFloor);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		gameObject.SetActive(bool.Parse(data[0].Trim()));
+
+		CurrentFloor = (SpireFloors)int.Parse(data[1].Trim());
+		transform.position = ArrivalPoints[(int)CurrentFloor].transform.position;
+	}
 }

@@ -258,9 +258,7 @@ public class JumpingSpider : MonoBehaviour, IArmed
                     if (c.name.ToUpper().Contains("SPIDER"))
                         continue;
 
-                    // You also have to have vision of the target because if you don't then... well we don't want them to aggro through walls  
-                    Vector3 myZeroPosition = GlobalConstants.ZeroYComponent(transform.position);
-                    Vector3 targetZeroPosition = GlobalConstants.ZeroYComponent(c.transform.position);
+                    // You also have to have vision of the target because if you don't then... well we don't want them to aggro through walls   
                     // Raycast to see if we can jump at the target
                     Vector3 distVector = c.transform.position - transform.position;
                     Ray r = new Ray(transform.position, distVector);
@@ -458,11 +456,6 @@ public class JumpingSpider : MonoBehaviour, IArmed
 			powered = value;
 			myLight.gameObject.SetActive(value);
 		}
-	}
-
-	public void Activate()
-	{
-		powered = !powered;
 	}
 
 	// END INTERFACE IMPLEMENTATION //

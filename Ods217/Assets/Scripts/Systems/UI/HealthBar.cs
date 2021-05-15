@@ -12,7 +12,7 @@ public class HealthBar : MonoBehaviour {
     float maxEnergyVal;
     float currentHPVal;
 
-    float timeSinceModified;
+    float timeSinceModified = 3;
 
     IArmed myArmed;
     UnitStruct myUnit;
@@ -34,11 +34,6 @@ public class HealthBar : MonoBehaviour {
         
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     private void Init()
     {
         GetImportantReferences();
@@ -170,9 +165,5 @@ public class HealthBar : MonoBehaviour {
         else
             return true;
     }
-
-    public void BuildAmmoBar()
-    {
-        // don't do anything this is a dead method
-    }
+ 
 }

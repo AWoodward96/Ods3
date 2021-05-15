@@ -25,22 +25,13 @@ public class targetPractice : MonoBehaviour, IPermanent {
 
     [Header("Text 2")]
     [TextArea(1, 100)]
-    public string Dialog2;
-
-
-    [Space(20)]
-    [TextArea(1,100)]
-    public string ReloadDialog;
-    bool triggedReload = false;
-    IArmed player;
+    public string Dialog2; 
 
      
 
     // Use this for initialization
     void Start () {
-        targetIndex = 0;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<IArmed>();
-
+        targetIndex = 0;  
 
         turretScripts = new TrainingTurret1[turretObjects.Length];
         for (int i = 0; i < turretObjects.Length; i++)
@@ -59,27 +50,8 @@ public class targetPractice : MonoBehaviour, IPermanent {
             if (!circuitComplete)
                 falseState();
             else
-                trueState();
-            
-            
-    //        if(player == null)
-    //            player = GameObject.FindGameObjectWithTag("Player").GetComponent<IArmed>();
-
-    //        if(player.myWeapon != null)
-    //        {
-				//// I'm replacing this with another probably appropriate line!
-				////			- Ed
-    //            //if (player.myWeapon.weaponData.currentAmmo < 2 && !triggedReload)
-				//if(player.MyUnit.CurrentEnergy <= player.MyUnit.MaxEnergy / 4)
-    //            {
-    //                CutsceneManager.instance.StartCutscene(ReloadDialog);
-    //                triggedReload = true;
-    //            }
-    //        }
-           
-               
-        }
-
+                trueState();  
+        } 
 	}
 
     void falseState()
@@ -146,11 +118,6 @@ public class targetPractice : MonoBehaviour, IPermanent {
                 CutsceneManager.instance.StartCutscene(Dialog2);
             }
         }
-    }
-
-    public void Activate()
-    {
-        
     }
 
     public bool Triggered

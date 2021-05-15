@@ -24,6 +24,10 @@ public class FredrickFightManager : MonoBehaviour, IPermanent {
     BoxCollider myCol;
     ZoneScript z;
 
+	public GameObject myBelt;
+
+	int phase;
+
     public ZoneScript myZone
     {
         get
@@ -46,7 +50,32 @@ public class FredrickFightManager : MonoBehaviour, IPermanent {
 
         set
         {
-            Enabled = value;
+			if(Enabled != value)
+			{
+				phase++;
+			}
+
+			if(phase == 1)
+			{
+            	Enabled = value;
+			}
+
+			else if(phase == 2)
+			{
+				Enabled = value;
+
+				for(int i = 0; i < ExplosiveBoxes.Count; i++)
+				{
+					ExplosiveBoxes[i].GetComponent<SimpleMove>().Move = Vector3.zero;
+				}
+
+				for(int i = 0; i < NormalBoxes.Count; i++)
+				{
+					NormalBoxes[i].GetComponent<SimpleMove>().Move = Vector3.zero;
+				}
+
+				myBelt.GetComponentInChildren<ConveyorBelt>().ToggleEnabled();
+			}
         }
     }
 
@@ -68,6 +97,8 @@ public class FredrickFightManager : MonoBehaviour, IPermanent {
             NormalBoxes[i].SetActive(false);
             NormalBoxes[i].GetComponent<SimpleMove>().Move = setMove;
         }
+
+		phase = 0;
     }
 	
 	// Update is called once per frame
@@ -136,10 +167,5 @@ public class FredrickFightManager : MonoBehaviour, IPermanent {
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawCube(StartPos, new Vector3(1, 1, 1));
-    }
-
-    public void Activate()
-    {
-        throw new NotImplementedException();
     }
 }

@@ -1,0 +1,177 @@
+LoadPerm(LyserSitting,Lyser)
+LoadChar(Lyser,Lyser)
+LoadChar(Slas,Slas)
+LoadPawn(Player,P)
+
+Flip()
+HaltPlayer()
+SprintPawn(P,0)
+AggroPawn(P,0)
+MovePawn(P,-205,4,5)
+LookPawn(P,-205,8)
+
+Wait(1)
+Say(Slas,Good morning Lyser.,IdleT)
+EndSay()
+CameraTarget(Lyser)
+
+// First trigger sets Lyser to look up at you
+Trigger(Lyser)
+
+Wait(3)
+
+// Second trigger sets Lyser to look back at the table
+Trigger(Lyser)
+
+Wait(3)
+
+Say(Slas,Am...,SadLeft)
+Continue(Am I in trouble?,UnsureRight)
+EndSay()
+Trigger(Lyser)
+Wait(1)
+Say(Lyser,Sit.,LookAtYou)
+EndSay()
+Wait(1)
+MovePawn(P,-194,4,5)
+Wait(2) 
+MovePawn(P,-194,4,7)
+
+FadeOut(1)
+EndSay()
+
+Wait(2)
+Trigger(Lyser)
+EnableObject(SittingSlas)
+DisableObject(Player)
+
+
+FadeIn(1)
+
+CameraTarget(LookAtMe)
+
+Wait(2)
+
+Say(Slas,. . . .,Stressed)
+EndSay()
+Wait(1) 
+
+Say(Lyser,What happened yesterday?, IndifPad) 
+Say(Slas,. . .,Stressed)
+EndSay()
+
+Wait(2)
+
+Say(Lyser,What went wrong Slas?,IndifPad)
+EndSay()
+
+Wait(3)
+
+Say(Slas,I...,SadRight)
+Continue(choked.,UnsureRight)
+EndSay()
+Trigger(Lyser)
+Wait(1)
+Say(Lyser,You choked?,LookRightPad)
+EndSay() 
+Wait(2)
+
+Say(Slas,The stress got to me.,SadLeft)
+Continue(Ms. Voss was yelling at me the whole time and--,UnsureRight) 
+Say(Slas,Well by the time I could retrieve the package it was almost ready to blow and--,IdleTLeft)
+
+EndSay()
+Wait(3)
+
+Say(Slas,...,SadLeft)
+Continue(I'm in trouble aren't I?,SadRight)
+EndSay()
+Trigger(Lyser)
+
+Wait(2)
+
+Say(Lyser,No.,LookRightPad)
+Continue(What matters now is that we're out a client.,IndifPad)
+Say(Lyser,Voss was never the smartest smuggler in the system-,LookRightPad)
+Say(Lyser,but she paid enough to keep food on the table.,IndifPad)
+EndSay()
+
+Wait(2)
+
+Say(Slas,How--,IdleTRight)
+Continue(How are we doing?,SadRight)
+
+Say(Lyser,On food?,IndifPad)
+Continue(We can probably live another week.,LookRightPad)
+EndSay()
+
+Wait(2)
+
+Say(Slas,Is that...,SadRight)
+Continue(another week of eating? Or another week of surviving?,IdleTRight)
+
+Say(Lyser,. . .,IndifPad)
+Continue(. . .,LookAtYou)
+
+Say(Slas,Oh.,UnsureRight)
+EndSay()
+Wait(2)
+
+Say(Slas,I'm sorry Lyser.,SadLeft)
+
+Say(Lyser,Don't be too sorry.,IndifPad)
+Continue(Like I said Voss was an idiot. I certainly won't miss her.,LookRightPad)
+Say(Lyser,The good news is that we have another client. A Mr. Din.,IndifPad)
+
+Say(Slas,Is he a good guy?,IdleT)
+Continue(I could do with not working for a smuggler again.,IdleTRight)
+
+Say(Lyser,There are no 'good' clients Slas.,LookAtYou)
+Continue(There's just ones that pay and ones that don't.,IndifPad)
+Say(Lyser,As far as 'goodness' goes however Mr. Din is pretty clean.,LookRightPad)
+
+Say(Slas,What does this Mr. Din want?,IdleT)
+
+Say(Lyser,I don't know you'll have to ask him yourself.,IndifPad)
+Say(Lyser,Have you been to the Outpost before?)
+Say(Slas,Only once before when i was really young.,IdleTRight)
+
+Say(Lyser,Alright well go on ahead of me I'll meet you there.,LookRightPad)
+Say(Lyser,Console 13?,IndifPad)
+
+CameraTarget(LookAtMe2)
+Wait(2)
+Say(Lyser,Can you make sure Slas knows where to go?,IndifPad)
+
+LoadChar(Con1,Con)
+Say(Con,Can do!,Happy)
+CameraTarget(LookAtMe)
+Say(Lyser,Use the Transport Terminus Console in the docks.,IndifPad)
+Say(Lyser,Ask Console 13 for directions if you need any help.)
+EndSay()
+
+FadeOut(1)
+Wait(1)
+
+SmartPlace(SittingSlas)
+DisableObject(SittingSlas)
+
+DisableObject(FakeShipElevator)
+EnableObject(ShipElevator)
+
+DisableObject(LyserSitting)
+EnableObject(PostCutsceneLyser)
+
+DisableObject(ConnieMonitors1)
+EnableObject(ConnieMonitors2)
+
+
+CameraTarget(Player)
+
+FadeIn(1)
+ClearObjectives() 
+LoadObjective(Spire/3,Outpost) 
+AddObjective(Outpost)
+
+
+

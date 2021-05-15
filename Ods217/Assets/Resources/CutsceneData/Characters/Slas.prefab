@@ -52,46 +52,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Slas
-  defaultPortrait: {fileID: 21300000, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  defaultPortrait: {fileID: 21300080, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   characterPortraits:
   - PortId: Idle
-    PortImg: {fileID: 21300000, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300080, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: Concerned
-    PortImg: {fileID: 21300012, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300088, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: HoldUp
-    PortImg: {fileID: 21300020, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300090, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: HoldUpT
-    PortImg: {fileID: 21300022, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300092, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: IdleT
-    PortImg: {fileID: 21300008, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300086, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: LookHere
-    PortImg: {fileID: 21300026, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300096, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: LookHereT
-    PortImg: {fileID: 21300028, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
-  - PortId: OMG
-    PortImg: {fileID: 21300014, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
-  - PortId: OMGc
-    PortImg: {fileID: 21300016, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
-  - PortId: OMGs
-    PortImg: {fileID: 21300018, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300098, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: IdleTRight
+    PortImg: {fileID: 21300070, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: UnsureRight
+    PortImg: {fileID: 21300076, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: SadLeft
+    PortImg: {fileID: 21300074, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: SeriouslyT
-    PortImg: {fileID: 21300024, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
-  - PortId: Seriously
-    PortImg: {fileID: 21300024, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300094, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: SquintT
+    PortImg: {fileID: 21300092, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: Smiling
-    PortImg: {fileID: 21300002, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300082, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: Smile
-    PortImg: {fileID: 21300002, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300082, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: SmileT
-    PortImg: {fileID: 21300010, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300084, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: SmilingT
-    PortImg: {fileID: 21300010, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
-  - PortId: Smirk
-    PortImg: {fileID: 21300004, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300084, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: SadRight
+    PortImg: {fileID: 21300072, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: SmirkT
-    PortImg: {fileID: 21300006, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300072, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: LookUpLeft
-    PortImg: {fileID: 21300030, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300100, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   - PortId: LookUpRight
-    PortImg: {fileID: 21300032, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+    PortImg: {fileID: 21300102, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Spooked
+    PortImg: {fileID: 21300104, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Stressed
+    PortImg: {fileID: 21300104, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Distressed
+    PortImg: {fileID: 21300106, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Wat
+    PortImg: {fileID: 21300110, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: WatT
+    PortImg: {fileID: 21300112, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: IdleTLeft
+    PortImg: {fileID: 21300068, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: EyesClosed
+    PortImg: {fileID: 21300108, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Sad
+    PortImg: {fileID: 21300114, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: Sad2
+    PortImg: {fileID: 21300078, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
+  - PortId: SadClosed
+    PortImg: {fileID: 21300116, guid: c7fa8ed2d581d854885b1e88bf33307f, type: 3}
   talkingClip: {fileID: 8300000, guid: 5d619a0aab7cc11429e7b13f3520e1b9, type: 3}

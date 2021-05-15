@@ -19,5 +19,14 @@ public class UnitStruct
 	// Energy for shields and weapons
 	public float MaxEnergy;
 	public float CurrentEnergy;
+     
+    public UnitStruct(string _name, int _maxHealth, int _currentHealth, float _maxEnergy, float _currentEnergy)
+    {
+        Name = _name;
+        MaxHealth = _maxHealth;
+        CurrentHealth = _currentHealth;
+        MaxEnergy = _maxEnergy;
+        CurrentEnergy = _currentEnergy; 
+    }
 
 }

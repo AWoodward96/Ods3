@@ -47,11 +47,6 @@ public class GeneratorBehavior : MonoBehaviour, IArmed
 		}
 	}
 
-	public void Activate()
-	{
-		
-	}
-
 	public UnitStruct MyUnit
 	{
 		get

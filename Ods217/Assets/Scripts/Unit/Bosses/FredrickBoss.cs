@@ -21,6 +21,8 @@ public class FredrickBoss : AIStandardUnit {
 
     bool jumpTriggered = false;
 
+    public GameObject DeathCutscene;
+
     public override void Start()
     {
         myRGB = GetComponent<Rigidbody>();
@@ -31,6 +33,9 @@ public class FredrickBoss : AIStandardUnit {
 
     public override void OnMelee(int _damage)
     {
+        if (!Aggro)
+            return;
+
         OnHit(_damage);
     }
 
@@ -176,7 +181,9 @@ public class FredrickBoss : AIStandardUnit {
     }
 
     public override void OnHit(int _damage)
-    { 
+    {
+        if (UnitData.CurrentHealth <= 0) // don't bother if you're already dead
+            return;
 
         if (UnitData.CurrentHealth / UnitData.MaxHealth < .66f)
             curJumpAngle = JumpAngle[1];
@@ -204,6 +211,17 @@ public class FredrickBoss : AIStandardUnit {
 
             Camera.main.GetComponent<CamScript>().RemoveWatch(gameObject);
             myWeapon.ReleaseWeapon();
+
+            // Figure out the best place to put the death cutscene
+            Ray r = new Ray(transform.position, Vector3.down);
+            RaycastHit hit;
+            if(Physics.Raycast(r,out hit, 10, LayerMask.GetMask("Ground"))){ 
+                DeathCutscene.transform.position = hit.point + (Vector3.up * 4);
+            }
+            else 
+                DeathCutscene.transform.position = transform.position; 
+
+            DeathCutscene.SetActive(true);
             this.gameObject.SetActive(false);
         }
     }

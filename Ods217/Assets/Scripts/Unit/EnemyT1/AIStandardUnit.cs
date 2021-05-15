@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 [RequireComponent(typeof(CController))]
-public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
+public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn, ISavable {
 
     [Header("AIStandardUnit")]
     public UnitStruct UnitData;
@@ -32,7 +33,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
     public  CController myCC;
     [HideInInspector]
     public Animator myAnimator;
-    EffectSystem myEmojis;
+    protected EffectSystem myEmojis;
 
     public WeaponBase currentWeapon;
     public WeaponBase WeaponSlot1;
@@ -40,7 +41,36 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
 
     public ZoneScript Zone;
 
-    bool meleeStunned;
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
+     
 
 	// Use this for initialization
 	public virtual void Start () {
@@ -262,8 +292,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
 
     IEnumerator crtMeleeStunned()
     {
-        yield return new WaitForSeconds(1.5f);
-        meleeStunned = false;
+        yield return new WaitForSeconds(1.5f); 
         myAnimator.SetBool("Stunned", false);
         AIState = lastState;
     }
@@ -284,8 +313,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
             currentWeapon = WeaponSlot2;
             WeaponSlot1 = null;
         }
-
-        myVisualizer.BuildAmmoBar();
+         
 
  
     }
@@ -302,11 +330,7 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
 
         }
     }
-
-    public virtual void Activate()
-    {
-
-    }
+     
     public virtual void DefeatedState()
     {
         // Nothing for now
@@ -373,16 +397,14 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
         _newWeapon.myOwner = this; // Set it's owner
         if (WeaponSlot1 == null)
         {
-            WeaponSlot1 = _newWeapon; 
-            myVisualizer.BuildAmmoBar(); // Let the visualizer know
+            WeaponSlot1 = _newWeapon;  
             currentWeapon = WeaponSlot1;
             return;
         }
 
         if(WeaponSlot1 != null && WeaponSlot2 == null)
         {
-            WeaponSlot2 = _newWeapon; 
-            myVisualizer.BuildAmmoBar(); // Let the visualizer know
+            WeaponSlot2 = _newWeapon;  
             currentWeapon = WeaponSlot2;
             return;
         }
@@ -396,15 +418,13 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
             if(currentWeapon == WeaponSlot2)
             {
                 WeaponSlot2 = _newWeapon;
-                currentWeapon = WeaponSlot2;
-                myVisualizer.BuildAmmoBar();
+                currentWeapon = WeaponSlot2; 
             }
 
             if (currentWeapon == WeaponSlot1)
             {
                 WeaponSlot1 = _newWeapon;
-                currentWeapon = WeaponSlot1;
-                myVisualizer.BuildAmmoBar();
+                currentWeapon = WeaponSlot1; 
             }
 
         }
@@ -446,12 +466,134 @@ public class AIStandardUnit : MonoBehaviour, IMultiArmed, IPawn {
 
         if(myWeapon != null)
             myWeapon.ResetShootCD();
-
-        myVisualizer.BuildAmmoBar();
+         
     }
 
     public void MoveTo(Vector3 _destination)
     {
         moveAI.MoveTo(_destination);
+    }
+
+    public void Look(Vector3 _look)
+    { 
+        Vector3 lookTo = GlobalConstants.ZeroYComponent(_look - transform.position); 
+        animationHandler.LookingVector = lookTo;
+    }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(gameObject.activeInHierarchy);
+
+		data.WriteLine(transform.position);
+
+		data.WriteLine(MyUnit.CurrentHealth);
+
+		if(WeaponSlot1 != null)
+		{
+			if(WeaponSlot1.name.IndexOf(' ') != -1)
+			{
+				data.WriteLine(WeaponSlot1.name.Substring(0, WeaponSlot1.name.IndexOf(' ')));
+			}
+			else
+			{
+				data.WriteLine(WeaponSlot1.name);
+			}
+		}
+		else
+		{
+			data.WriteLine("null");
+		}
+		
+		if(WeaponSlot2 != null)
+		{
+			if(WeaponSlot2.name.IndexOf(' ') != -1)
+			{
+				data.WriteLine(WeaponSlot2.name.Substring(0, WeaponSlot2.name.IndexOf(' ')));
+			}
+			else
+			{
+				data.WriteLine(WeaponSlot2.name);
+			}
+		}
+		else
+		{
+			data.WriteLine("null");
+		}
+		
+		if(currentWeapon != null)
+		{
+			if(currentWeapon.name.IndexOf(' ') != -1)
+			{
+				data.WriteLine(currentWeapon.name.Substring(0, currentWeapon.name.IndexOf(' ')));
+			}
+			else
+			{
+				data.WriteLine(currentWeapon.name);
+			}
+		}
+		else
+		{
+			data.WriteLine("null");
+		}
+		
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		//Debug.Log(gameObject.name);
+		gameObject.SetActive(bool.Parse(data[0].Trim()));
+
+		// Parse transform.position!
+		transform.position = GlobalConstants.StringToVector3(data[1]);
+		
+		MyUnit.CurrentHealth = int.Parse(data[2].Trim());
+		
+		if(WeaponSlot1 != null)
+		{
+			Destroy(WeaponSlot1.gameObject);
+			WeaponSlot1 = null;
+		}
+		if(data[3] != "null")
+		{
+			WeaponSlot1 = (Instantiate(Resources.Load("Prefabs/Weapon/" + data[3]), transform) as GameObject).GetComponent<WeaponBase>();
+			WeaponSlot1.gameObject.name = data[3];
+		}
+		
+		if(WeaponSlot2 != null)
+		{
+			Destroy(WeaponSlot2.gameObject);
+			WeaponSlot2 = null;
+		}
+		if(data[4] != "null")
+		{
+			WeaponSlot2 = (Instantiate(Resources.Load("Prefabs/Weapon/" + data[4]), transform) as GameObject).GetComponent<WeaponBase>();
+			WeaponSlot2.gameObject.name = data[4];
+		}
+		
+		if(data[5] != "null")
+		{
+			if(WeaponSlot1 != null && data[5] == WeaponSlot1.name)
+			{
+				currentWeapon = WeaponSlot1;
+			}
+			else
+			{
+				currentWeapon = WeaponSlot2;
+			}
+		}
+	}
+
+    public void SetAggro(bool _b)
+    {
+        AIState = (_b) ? EnemyAIState.Aggro : EnemyAIState.Idle;
+
+    }
+
+    public CController cc
+    {
+        get { return myCC; }
     }
 }

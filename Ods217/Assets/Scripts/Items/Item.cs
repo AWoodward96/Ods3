@@ -17,5 +17,5 @@ public class Item : MonoBehaviour
     [TextArea(1, 3)]
     public string Description;
 
-
+	public bool Tossable = false;
 }

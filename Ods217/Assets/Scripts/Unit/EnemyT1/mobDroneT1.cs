@@ -31,8 +31,7 @@ public class mobDroneT1 : MonoBehaviour, IArmed {
     void Start()
     { 
         Weapon.myOwner = this;
-
-        myVisualizer.BuildAmmoBar();
+         
 
         myRGB = GetComponent<Rigidbody>();
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<IArmed>();

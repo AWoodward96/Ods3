@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1530526243918994}
+  m_IsPrefabAsset: 1
+--- !u!1 &1530526243918994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4754522549624016}
+  - component: {fileID: 114572795446181136}
+  m_Layer: 0
+  m_Name: SSCom1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4754522549624016
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1530526243918994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114572795446181136
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1530526243918994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b4fd4889bbc7a42806398de7b5ecce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventoryIcon: {fileID: 21300004, guid: 477d786961f2aff40a67728222169708, type: 3}
+  ID: 7
+  Name: Link Data 1
+  Description: "\"Something has gone terribly wrong. We were on route to the Outpost
+    when the ship suddenly and unexpectidly changed route.\r\nNone of the passengers
+    have noticed yet, I fear I'm the only one aware. The Server bots are going missing
+    one by one. If they've all broken down\r or are being destroyed by someone on
+    board I don't know.\r\nThe Reception Bots won't let me anywhere near the escape
+    pods unless it's an absolute emergency. Some sort of failsafe to stop a panic
+    should someone bail on the cruise.\r\nI'm fearing the worst. I hope I'm wrong
+    but just in case I'll leave behind these logs just in case I don't make it.\n-S\""
+  Tossable: 1

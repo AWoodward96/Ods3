@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 /// A script that is always present in the scene
 /// Used to move players around, handle the inventory, loading and saving player data, the works
 /// </summary>
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour {	// Pseudo-ISavable
 
     public enum SpecialMoveType { Sprint, Roll };
     public static SpecialMoveType MyType;
@@ -16,14 +16,37 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance; // So there's only one
     public static int ScrapCount; // How much money the player has
 
-    public static List<Item> Inventory; // What's in you're inventory
+
+    public static List<Item> Inventory; // What's in your inventory
+	public const int maxInventorySize = 8;	// How big can your inventory be?
+
+	public enum TimeOfDay { Morning, Evening };
+	public static TimeOfDay currentTimeOfDay;	// Used for keeping track of the following two bools
+
+	public bool ateMorning;	// Did Slas eat this morning?
+	public bool ateEvening;	// Did slas eat last evening?
+	public int starveTimer;	// How long has slas gone without eating?
+
+	public Consumable affectingFood;	// What food effect is currently on Slas?
+
+	public static List<Consumable> FoodStorage;	// What food is stored in the fridge?
+	public const int foodStorageSize = 8;	// How much can be stored in there?
+
+	public static List<string> Objectives;	// What do you currently need to be doing?
     public static int HealthKits; // How many health kits you have [Deprecated]
+
+	public static Dictionary<string, bool> Events;	// How far through the game has the player made it?
+
+	public List<Upgrade> ownedUpgrades;		// Which upgrades do you own?
+	public List<Upgrade> equippedUpgrades;		// Which are currently in use?
  
     public int scrapcount;
 
     public   enum GameDifficulty { Easy, Normal, Hard }
     public static GameDifficulty curDifficulty;
 
+    public static Dictionary<string, string> World;
+	public string currentLocation = "null";
 
     public static MetaData GameData;
 
@@ -31,17 +54,22 @@ public class GameManager : MonoBehaviour {
 
     public SceneData currentSceneData;
 
+	bool hardLoad = false;	// Are we loading from the persistent data path? Used almost exclusively for LevelLoaded
+
     [Header("Sounds")]
     public AudioClip SaveSound;
     AudioSource src;
 
     // Use this for initialization
-	void Awake () {
+	void Awake() {
         // There can only be one
         if (instance == null)
             instance = this;
         else if (instance != this)
+		{
             Destroy(this.gameObject);
+			return;
+		}
 
         DontDestroyOnLoad(this.gameObject);
 
@@ -49,201 +77,147 @@ public class GameManager : MonoBehaviour {
         // Make sure that the communicator item is in the inventory
         Inventory.Add((Resources.Load("Prefabs/Items/Communicator") as GameObject).GetComponent<Item>());
 
+		FoodStorage = new List<Consumable>();
+
+		Objectives = new List<string>();  
+		Events = new Dictionary<string, bool>();
+
+		// Put everything in the Events dictionary here!
+		Events.Add("OUTPOST UNLOCKED", true);
+		Events.Add("PIRATE SHIP UNLOCKED", false);
+		Events.Add("THE SKYBORN SPIRIT UNLOCKED", false);
+		Events.Add("LEVEL 3 UNLOCKED", false);
+		Events.Add("LEVEL 4 UNLOCKED", false);
+
+        Events.Add("ARMED FOR LEVEL 1", false);
+
+		Events.Add("USED BED HOLDING FOOD", false);
+
+		ownedUpgrades = new List<Upgrade>();
+		equippedUpgrades = new List<Upgrade>();
 
         if (GameData.FileName == null)
         {
             MetaData newData = new MetaData();
-            newData.FileName = "BetaTest2.ods";
+            newData.FileName = "Save1";
             newData.Username = "Author";
             GameData = newData;
             //WriteSaveFile(newData.FileName);
         }
 
+        // Set up the world links
+        World = new Dictionary<string, string>();
+        World.Add("SPIRE", "SpireC0-1");
+        World.Add("OUTPOST", "OutpostC0-3");
+        World.Add("PIRATE", "PirateC0-5");
+
+		UpdateLocation(SceneManager.GetActiveScene().name);
+
         //SceneManager.sceneLoaded += LevelLoaded;
-        ScrapCount += 200;
+        //ScrapCount += 100;
         HealthKits = 0;
 
         Physics.gravity = new Vector3(0, -GlobalConstants.Gravity * 4,0);
 
         Cursor.SetCursor(Resources.Load("Sprites/UI/CursorTexture") as Texture2D, new Vector2(8, 8), CursorMode.Auto);
 
-        src = GetComponent<AudioSource>(); 
+        src = GetComponent<AudioSource>();
+
+		currentTimeOfDay = TimeOfDay.Morning;
+
+		ateMorning = false;
+		ateEvening = false;
+		starveTimer = 0;
+
+		// Clear the cache if there's anything left in it somehow, and set the cache up to be cleared at quit!
+		ClearCache();
+		Application.quitting += ClearCache;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
         scrapcount = ScrapCount;
 
         // Some keystrokes to work with saving and loading files
         if (Input.GetKeyDown(KeyCode.Alpha8))
-            WriteSaveFile("BetaTest2.ods");
+			WriteSaveFile();
 
         if (Input.GetKeyDown(KeyCode.Alpha9))
-			LoadSaveFile("BetaTest2.ods");
+			LoadSaveFile(true);
        
-		// Temp fix to see if player data transfers to a new room
-		/*if(Input.GetKeyDown(KeyCode.KeypadPlus))
-		{
-			PreservePlayer();
-			SceneManager.LoadScene("Level_Data/lvl_Spire/Spire");
-			SceneManager.sceneLoaded += RestorePlayer;
-		}*/
+	
         if(Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Q))
         {
             SceneManager.LoadScene("Title");
         }
 
         if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Alpha1))
-            SceneManager.LoadScene("TempTutorial");
+            SceneManager.LoadScene("TutorialC0-0");
 
 
         if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Alpha2))
-            SceneManager.LoadScene("PirateShip1");
+            SceneManager.LoadScene("SpireC0-1");
+
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Alpha3))
+            SceneManager.LoadScene("OutpostC0-3");
+
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Alpha4))
+            SceneManager.LoadScene("PirateC0-5");
+
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Alpha5))
+            SceneManager.LoadScene("OutpostC0-6");
+
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Alpha6))
+            SceneManager.LoadScene("SpireC0-8");
     }
 
+	// Overriden LoadScene that will load the scene based on its save data
     public void LoadScene(string _Name)
     {
-        SceneManager.LoadScene(_Name);
+		GameData.LevelName = _Name;
+
+		// Update current location
+		UpdateLocation(_Name);
+
+		// There is no reason that this function should require a hard load
+		hardLoad = false;
+
+		LoadLevelBasedOnMetaData();
     }
 		
 	// For saving the player and the current scene at a save station.
-    bool WriteSaveFile(string _filePath)
+    public bool WriteSaveFile()
     {
-        string actualPath = Application.dataPath + '\\' + _filePath;
-        if (File.Exists(actualPath))
-            File.Delete(actualPath);
+		// Firstly, before we do anything, make sure the current stage is cached!
+		WriteCache();
 
-        // Make sure you've got the scene data
-        if (currentSceneData == null)
+		// TODO: Replace this variable with an actual way to track the player's save slot when it's time!
+		int fileSlot = 1;
+
+		string actualPath = Application.persistentDataPath + "\\Saves\\Save" + fileSlot + '\\';
+		if(!Directory.Exists(actualPath))
+		{
+			Directory.CreateDirectory(actualPath);
+		}
+
+		// Copy the contents of the cache directory over to the persistent directory!
+		string[] files = Directory.GetFiles(Application.temporaryCachePath + "\\Save\\");
+		for(int i = 0; i < files.Length; i++)
+		{
+			FileInfo current = new FileInfo(files[i]);
+			current.CopyTo(actualPath + current.Name, true);
+		}
+
+        if(src != null)
         {
-            currentSceneData = FindObjectOfType<SceneData>();
-        }
-
-        using (StreamWriter writer = new StreamWriter(actualPath))
-        {
-            // First line should be the name of the user
-            writer.WriteLine(GameData.Username);
-            writer.WriteLine("--------------Plz don't edit this. You might break the game and then your saved file is lost.--------------");
-            writer.WriteLine(SceneManager.GetActiveScene().name);
-            writer.WriteLine(scrapcount);
-            writer.WriteLine(GameObject.FindGameObjectWithTag("Player").transform.position);
-
-			// And then Ed jumped in and added:
-			// HP (Player.GetComponent<PlayerScript>().MyUnit.CurrentHealth)
-			PlayerScript Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
-			writer.WriteLine(Player.MyUnit.CurrentHealth);
-
-			// Weapons (Player.GetComponent<PlayerScript>().PrimaryWeapon, SecondaryWeapon, ActiveWeapon
-			if(Player.PrimaryWeapon != null)
-			{
-				if(Player.PrimaryWeapon.name.IndexOf(' ') != -1)
-				{
-					writer.WriteLine(Player.PrimaryWeapon.name.Substring(0, Player.PrimaryWeapon.name.IndexOf(' ')));
-				}
-				else
-				{
-					writer.WriteLine(Player.PrimaryWeapon.name);
-				}
-			}
-			else
-			{
-				writer.WriteLine("null");	
-			}
-			if(Player.SecondaryWeapon != null)
-			{
-				if(Player.SecondaryWeapon.name.IndexOf(' ') != -1)
-				{
-					writer.WriteLine(Player.SecondaryWeapon.name.Substring(0, Player.SecondaryWeapon.name.IndexOf(' ')));
-				}
-				else
-				{
-					writer.WriteLine(Player.SecondaryWeapon.name);
-				}
-			}
-			else
-			{
-				writer.WriteLine("null");
-			}
-			if(Player.ActiveWeapon != null)
-			{
-				if(Player.ActiveWeapon.name.IndexOf(' ') != -1)
-				{
-					writer.WriteLine(Player.ActiveWeapon.name.Substring(0, Player.ActiveWeapon.name.IndexOf(' ')));
-				}
-				else
-				{
-					writer.WriteLine(Player.ActiveWeapon.name);
-				}
-			}
-			else
-			{
-				writer.WriteLine("null");
-			}
-				
-			// First, write down which permanents are active!
-			writer.WriteLine("$PHASE");
-			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
-			{
-				writer.WriteLine(currentSceneData.Permanents[i].Object.activeInHierarchy);
-			}
-
-			// Next, write which ones are triggered!
-			writer.WriteLine("$PHASE");
-			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
-			{
-				writer.WriteLine(currentSceneData.Permanents[i].Object.GetComponent<IPermanent>().Triggered);
-			}
-				
-			// Which doors locked (currentSceneData.Permanents[].GetComponent<SlidingDoor>().State)
-			writer.WriteLine("$PHASE");
-			SlidingDoor currentDoor;
-			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
-			{
-				currentDoor = currentSceneData.Permanents[i].Object.GetComponent<SlidingDoor>();
-				if(currentDoor != null)
-				{
-					writer.WriteLine(currentDoor.Locked);
-				}
-			}
-
-			// Where are the elevators
-			writer.WriteLine("$PHASE");
-			StandardElevator currentElevator;
-			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
-			{
-				currentElevator = currentSceneData.Permanents[i].Object.GetComponent<StandardElevator>();
-				if(currentElevator != null)
-				{
-					writer.WriteLine(currentElevator.FloorIndex);
-				}
-			}
-
-			writer.WriteLine("$PHASE");
-
-			// Remaining enemies (currentSceneData.Permanents[]) :: Commented out because the active permanent check makes this obsolete ::
-			/*writer.WriteLine("$PHASE");
-			for(int i = 0; i < currentSceneData.Permanents.Count; i++)
-			{
-				if(currentSceneData.Permanents[i].Object.GetComponent<AIStandardUnit>() != null)
-				{
-					// I feel like this is hacky; replace this with a check if their HP is 0, or something like that
-					writer.WriteLine(currentSceneData.Permanents[i].Object.activeInHierarchy);
-				}
-			}*/
-
-            writer.WriteLine(System.DateTime.Now);
-
-            if(src != null)
-            {
-                src.clip = SaveSound;
-                src.Play();
-            } 
-			return true;
-        }
+            src.clip = SaveSound;
+            src.Play();
+        } 
+		return true;
     }
 
 	// Preserves the player for transfer between scenes.
-	void PreservePlayer()
+	public void PreservePlayer()
 	{
 		PlayerScript Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
 
@@ -280,7 +254,7 @@ public class GameManager : MonoBehaviour {
 	// Restores the player upon their entry into a new scene.
 	// To use this function, do SceneManager.sceneLoaded += RestorePlayer; after loading a new scene.
 	// It will only work properly if PreservePlayer() is done first.
-	void RestorePlayer(Scene _scene, LoadSceneMode _loadMode)
+	public void RestorePlayer(Scene _scene, LoadSceneMode _loadMode)
 	{
 		GameObject Player = GameObject.FindGameObjectWithTag("Player");
 		PlayerScript ps = Player.GetComponent<PlayerScript>();
@@ -291,6 +265,7 @@ public class GameManager : MonoBehaviour {
 		if(ps.PrimaryWeapon != null)
 		{
 			Destroy(ps.PrimaryWeapon.gameObject);
+			ps.PrimaryWeapon = null;
 		}
 		if(GameData.PlayerWeapon1 != "null")
 		{
@@ -304,7 +279,8 @@ public class GameManager : MonoBehaviour {
 		// Do the same for secondary and active weapons
 		if(ps.SecondaryWeapon != null)
 		{
-			Destroy(ps.PrimaryWeapon.gameObject);
+			Destroy(ps.SecondaryWeapon.gameObject);
+			ps.SecondaryWeapon = null;
 		}
 		if(GameData.PlayerWeapon2 != "null")
 		{
@@ -313,15 +289,16 @@ public class GameManager : MonoBehaviour {
 			ps.SecondaryWeapon.gameObject.name = GameData.PlayerWeapon2;
 		}
 
-		if(ps.ActiveWeapon != null)
-		{
-			Destroy(ps.PrimaryWeapon.gameObject);
-		}
 		if(GameData.PlayerWeaponActive != "null")
 		{
-			ps.ActiveWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeaponActive), Player.transform) as GameObject).GetComponent<WeaponBase>();
-
-			ps.ActiveWeapon.gameObject.name = GameData.PlayerWeaponActive;
+			if(GameData.PlayerWeaponActive == ps.PrimaryWeapon.name)
+			{
+				ps.ActiveWeapon = ps.PrimaryWeapon;
+			}
+			else
+			{
+				ps.ActiveWeapon = ps.SecondaryWeapon;
+			}
 		}
 
 		Debug.Log("Player data restored.");
@@ -330,111 +307,75 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// Loading save data upon starting the game.
-    void LoadSaveFile(string _filePath)
+	public void LoadSaveFile(bool _hardLoad)
     {
-        string actualPath = Application.dataPath + '\\' + _filePath;
-        if (!File.Exists(actualPath))
-            return;
+		hardLoad = _hardLoad;
 
-		// Make sure you've got the scene data
-		if (currentSceneData == null)
+		string actualPath = "";
+
+		// TODO: Replace this variable with an actual way to track the player's save slot when it's time!
+		int fileSlot = 1;
+
+		// Are we loading from the persistent file, or from the cache?
+		if(hardLoad)
 		{
-			currentSceneData = FindObjectOfType<SceneData>();
+			actualPath = Application.persistentDataPath + "\\Saves\\Save" + fileSlot + '\\';
 		}
-			
-		GameData.permsActive = new List<bool>();
-		GameData.permsTriggered = new List<bool>();
+		else
+		{
+			actualPath = Application.temporaryCachePath + "\\Save\\";
+		}
 
-		GameData.doorsLocked = new List<bool>();
-		GameData.elevatorIndices = new List<int>();
- 
-        using (StreamReader reader = new StreamReader(actualPath))
-        {
-            string val;
-            int linenum = 0;
-			int phase = 0;
-            while((val = reader.ReadLine()) != null)
-            {
-				// Player info
-				if(linenum <= 8)
+		if(!Directory.Exists(actualPath))
+		{
+			Directory.CreateDirectory(actualPath);
+		}
+
+		// If master.dat doesn't exist, that makes it *highly* unlikely that anything else in the cache folder does either.
+		// Therefore, we should just hard load.
+        if (!File.Exists(actualPath + "MASTER.dat"))
+		{
+			if(!hardLoad)
+			{
+				Debug.Log("MASTER.dat does not exist in the cache, so it cannot be loaded. Attempting to Hard Load.");
+
+				hardLoad = true;
+				actualPath = Application.persistentDataPath + "\\Saves\\Save" + fileSlot + '\\';
+
+				if(!File.Exists(actualPath + "MASTER.dat"))
 				{
-	                switch (linenum)
-	                {
-	                    case 0:
-	                        GameData.Username = val;
-	                        break;
-	                    case 2:
-	                        GameData.LevelName = val;
-	                        break;
-	                    case 3:
-	                        int.TryParse(val, out GameData.scrapCount);
-	                        ScrapCount = GameData.scrapCount;
-	                        break;
-	                    case 4:
-	                        GameData.SavedPlayerPosition = GlobalConstants.StringToVector3(val);
-	                        break;
-
-						// Add the other things to read here, Ed!
-						// Player HP
-						case 5:
-							int.TryParse(val, out GameData.PlayerHP);
-							break;
-
-						// Player's Primary Weapon
-						case 6:
-							GameData.PlayerWeapon1 = val;
-							break;
-						
-						// Player's Secondary Weapon
-						case 7:
-							GameData.PlayerWeapon2 = val;
-							break;
-
-						// Player's Active Weapon
-						case 8:
-							GameData.PlayerWeaponActive = val;
-							break;
-							
-	                }
+					Debug.Log("Hard Load failed. Defaulting to resetting the scene.");
+					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+					return;
 				}
-				// Level info
-				else
-				{
-					if(val == "$PHASE")
-					{
-						phase++;
-					}
+			}
+			else
+			{
+				Debug.Log("MASTER.dat does not exist in the save data, so it cannot be loaded. Defaulting to resetting the scene.");
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				return;
+			}
+		}
 
-					// Permanents Active
-					else if(phase == 1)
-					{
-						GameData.permsActive.Add(val.Trim().ToUpper() == "TRUE");
-					}
+		StreamReader reader = new StreamReader(actualPath + "MASTER.dat");
+		List<string> data = new List<string>();
+		while(!reader.EndOfStream)
+		{
+			data.Add(reader.ReadLine());
+		}
 
-					// Permanents Triggered
-					else if(phase == 2)
-					{
-						GameData.permsTriggered.Add(val.Trim().ToUpper() == "TRUE");
-					}
+		reader.Close();
 
-					// Doors Locked
-					else if(phase == 3)
-					{
-						GameData.doorsLocked.Add(val.Trim().ToUpper() == "TRUE");
-					}
+		GameData.LevelName = data[2].Trim();
 
-					// Elevator indices
-					else if(phase == 4)
-					{
-						GameData.elevatorIndices.Add(int.Parse(val.Trim()));
-					}
-				}
+		string[] gmData = new string[data.Count - 3];
+		for(int i = 3; i < data.Count; i++)
+		{
+			gmData[i - 3] += data[i];
+		}
 
-                linenum++;
-            }
-
-        }
-
+		LoadGameManager(gmData);
+		
         LoadLevelBasedOnMetaData();
     }
 
@@ -448,106 +389,592 @@ public class GameManager : MonoBehaviour {
     {
 		Camera.main.GetComponent<CamScript>().FadeIn(1.0f);
 
-        GameObject Player = GameObject.FindGameObjectWithTag("Player");
-		PlayerScript ps = Player.GetComponent<PlayerScript>();
-        Player.transform.position = GameData.SavedPlayerPosition;
-		ps.MyUnit.CurrentHealth = GameData.PlayerHP;
+		// TODO: Replace this variable with an actual way to track the player's save slot when it's time!
+		int fileSlot = 1;
 
-		// The following 3 loads are ugly as sin. There HAS to be a neater way to do this, right?
+		string actualPath = "";
 
-		// If the player starts with either weapon, delete them and replace with ours
-		if(ps.PrimaryWeapon != null)
+		// Are we loading from the persistent file, or from the cache?
+		if(hardLoad)
 		{
-			Destroy(ps.PrimaryWeapon.gameObject);
-			ps.PrimaryWeapon = null;
-		}
-		if(ps.SecondaryWeapon != null)
-		{
-			Destroy(ps.SecondaryWeapon.gameObject);
-			ps.SecondaryWeapon = null;
-		}
-
-		if(GameData.PlayerWeapon1 != "null")
-		{
-			ps.PrimaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon1), Player.transform) as GameObject).GetComponent<WeaponBase>();
-			ps.PrimaryWeapon.gameObject.name = GameData.PlayerWeapon1;
-		}
-
-		if(GameData.PlayerWeapon2 != "null")
-		{
-			ps.SecondaryWeapon = (Instantiate(Resources.Load("Prefabs/Weapon/" + GameData.PlayerWeapon2), Player.transform) as GameObject).GetComponent<WeaponBase>();
-			ps.SecondaryWeapon.gameObject.name = GameData.PlayerWeapon2;
-		}
-
-        currentSceneData = FindObjectOfType<SceneData>();
-
-		if(currentSceneData)
-		{
-			Debug.Log("Scene Data loaded.");
+			actualPath = Application.persistentDataPath + "\\Saves\\Save" + fileSlot + '\\';
 		}
 		else
 		{
-			Debug.Log("Could not locate Scene Data Object.");
+			actualPath = Application.temporaryCachePath + "\\Save\\";
+		}
+
+		if(!Directory.Exists(actualPath))
+		{
+			Directory.CreateDirectory(actualPath);
+		}
+
+		if (!File.Exists(actualPath + currentLocation + ".dat"))
+		{
+			if(!hardLoad)
+			{
+				Debug.Log(currentLocation + ".dat does not exist in the cache, so it cannot be loaded. Attempting to Hard Load.");
+
+				hardLoad = true;
+				actualPath = Application.persistentDataPath + "\\Saves\\Save" + fileSlot + '\\';
+
+				if(!File.Exists(actualPath + currentLocation + ".dat"))
+				{
+					Debug.Log("Hard Load failed. Defaulting to default scene.");
+					SceneManager.sceneLoaded -= LevelLoaded;
+					return;
+				}
+			}
+			else
+			{
+				Debug.Log(currentLocation + ".dat does not exist in the save data, so it cannot be loaded.");
+				SceneManager.sceneLoaded -= LevelLoaded;
+				return;
+			}
+		}
+
+		// Make sure you've got the scene data
+		if (currentSceneData == null)
+		{
+			currentSceneData = FindObjectOfType<SceneData>();
+			
+			// If you can't get the current scene data, throw an error!
+			if(currentSceneData == null)
+			{
+				Debug.LogError("No scene data found in the scene! Place an object with the SceneData script attached before running!");
+				SceneManager.sceneLoaded -= LevelLoaded;
+				return;
+			}
 		}
 
 		currentSceneData.LoadList();
 
-		// Set the permanents' values
-		SlidingDoor currentDoor;
-		int doorCount = 0;
+		StreamReader reader = new StreamReader(actualPath + currentLocation + ".dat");
 
-		StandardElevator currentElevator;
-		int elevatorCount = 0;
+		// Get the file header
+		string[] header;
+		header = reader.ReadToEnd().Split(new string[] { "$HEADERFILE\r\n" }, System.StringSplitOptions.None);
+		header[0] = header[0].Trim();
 
-		for(int i = 0; i < currentSceneData.Permanents.Count; i++)
+		// Get the meat of the data itself
+		string[] data = header[1].Split(new string[] { "$END\r\n" }, System.StringSplitOptions.None);
+		reader.Close();
+
+		// Now, load the data into each object!
+		for(int i = 0; i < currentSceneData.Savables.Count && i < data.Length; i++)
 		{
-			if(!GameData.permsActive[i])
+			// Get the id of the current object
+			string[] objHeader = data[i].Split(new string[] { "$HEADEROBJECT\r\n" }, System.StringSplitOptions.None);
+
+			// If for any reason objHeader's length is less than 2, that means that we're not currently analyzing an object because it didn't write its ID. We're done here.
+			if(objHeader.Length < 2)
 			{
-				currentSceneData.Permanents[i].Object.SetActive(false);
+				break;
+			}
+
+			int id = int.Parse(objHeader[0].Trim());
+			data[i] = objHeader[1];
+
+			GameObject mySavable = currentSceneData.Savables[i];
+
+			// If the plot has progressed since last time we were here we need to account for that in loading the data
+			if(_scene.name != header[0])
+			{
+				// If the current data has an ID of -1, ignore it.
+				if(id == -1)
+				{
+					continue;
+				}
+
+				// Otherwise, check to see if by pure chance the objects we're comparing have the same id
+				// If not, we need to find the object with the same id
+				else if(id != mySavable.GetComponent<ISavable>().SaveID)
+				{
+					mySavable = currentSceneData.Savables.Find
+					(
+						delegate(GameObject obj)
+						{
+							return obj.GetComponent<ISavable>().SaveID == id;
+						}
+					);
+				}
+			}
+
+			// If mySavable is null, that means we couldn't find a match. Assume the object doesn't exist in this iteration of the scene and continue
+			if(mySavable == null)
+			{
 				continue;
 			}
 
-			currentSceneData.Permanents[i].Object.SetActive(true);
+			ISavable[] temp = mySavable.GetComponents<ISavable>();
 
-			if(!currentSceneData.Permanents[i].Object.GetComponent<IPermanent>().Triggered == GameData.permsTriggered[i])
+			for(int j = 0; j < temp.Length; j++)
 			{
-				currentSceneData.Permanents[i].Object.GetComponent<IPermanent>().Triggered = GameData.permsTriggered[i];
-			}
+				string[] scrData = data[i].Split(new string[] { "$SCRIPT\r\n" }, System.StringSplitOptions.None);
 
-			// Doors
-			currentDoor = currentSceneData.Permanents[i].Object.GetComponent<SlidingDoor>();
-			if(currentDoor != null)
-			{
-				currentDoor.Locked = GameData.doorsLocked[doorCount];
-				doorCount++;
-				continue;
+				temp[j].Load(scrData[j].Split(new string[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries));
 			}
+		}
 
-			// Elevators
-			currentElevator = currentSceneData.Permanents[i].Object.GetComponent<StandardElevator>();
-			if(currentElevator != null)
-			{
-				currentElevator.FloorIndex = GameData.elevatorIndices[elevatorCount];
-				currentElevator.transform.position = currentElevator.ArrivalPoints[currentElevator.FloorIndex].transform.position;
-				elevatorCount++;
-				continue;
-			}
+		// And now that everything is loaded, load the player's upgrades!
+		for(int i = 0; i < equippedUpgrades.Count; i++)
+		{
+			equippedUpgrades[i].Apply();
+		}
+
+		// TODO: This is dumb.
+		// And do some shenanigans to apply the food's effect, if there is one
+		if(affectingFood != null)
+		{
+			Consumable tempFood = affectingFood;
+			affectingFood = null;
+			tempFood.ApplyEffect();
 		}
 
 		SceneManager.sceneLoaded -= LevelLoaded;
     }
 
-    public void LoadLastSaveFile()
-    {
-        LoadSaveFile(GameData.FileName);
-    }
-
-	// I feel like I shouldn't do this
-	// But I also don't know if porting the save function over to the InteractToSave script would be a good idea, so...
-	public bool WriteToCurrentSave()
+	// Returns a string containing a properly formatted master.dat file
+	string GetMasterData()
 	{
-		// NOTE: Replace "BetaTest2.ods" with whatever the current save file's name is later!
-		return WriteSaveFile("BetaTest2.ods");
+		StringWriter writer = new StringWriter();
+
+		// First line should be the name of the user
+		writer.WriteLine(GameData.Username);
+		writer.WriteLine("--------------Plz don't edit this. You might break the game and then your saved file is lost.--------------");
+		writer.WriteLine(SceneManager.GetActiveScene().name.Trim());
+		writer.Write(SaveGameManager());
+
+		return writer.ToString();
+	}
+
+	public void WriteCache()
+	{
+		string actualPath = Application.temporaryCachePath + "\\Save\\";
+		if(!Directory.Exists(actualPath))
+		{
+			Directory.CreateDirectory(actualPath);
+		}
+
+		// Regardless of everything else, we're saving the master.dat file
+		if (File.Exists(actualPath + "MASTER.dat"))
+		{
+			File.Delete(actualPath + "MASTER.dat");
+		}
+
+		StreamWriter writer = new StreamWriter(actualPath + "MASTER.dat");
+		writer.Write(GetMasterData());
+		writer.Close();
+
+		if(!World.ContainsKey(currentLocation))
+		{
+			Debug.Log("Our current location isn't in the World dictionary. Scene state will not be cached.");
+			return;
+		}
+
+		// Make sure you've got the scene data
+		if (currentSceneData == null)
+		{
+			currentSceneData = FindObjectOfType<SceneData>();
+
+			// If you can't get the current scene data, throw an error!
+			if(currentSceneData == null)
+			{
+				Debug.LogError("No scene data found in the scene! Place an object with the SceneData script attached before running!");
+				return ;
+			}
+		}
+
+		string currentScene = SceneManager.GetActiveScene().name.Trim();
+
+		if (File.Exists(actualPath + currentLocation + ".dat"))
+		{
+			File.Delete(actualPath + currentLocation + ".dat");
+		}
+
+		writer = new StreamWriter(actualPath + currentLocation + ".dat");
+
+		// First thing written should be the name of the scene, so the save system can keep track of whether the plot's progressed
+		writer.WriteLine(currentScene);
+		writer.WriteLine("$HEADERFILE");
+
+		// Now, save the data from each object!
+		for(int i = 0; i < currentSceneData.Savables.Count; i++)
+		{
+			writer.WriteLine(currentSceneData.Savables[i].GetComponent<ISavable>().SaveID);
+			writer.WriteLine("$HEADEROBJECT");
+
+			ISavable[] temp = currentSceneData.Savables[i].GetComponents<ISavable>();
+
+			for(int j = 0; j < temp.Length; j++)
+			{
+				writer.Write(temp[j].Save());
+
+				// Signifies the end of this script's data
+				writer.WriteLine("$SCRIPT");
+			}
+
+			// Signifies the end of this object's data
+			// "$" is to signify that this line is for the parser, and isn't data
+			writer.WriteLine("$END");
+		}
+
+		writer.WriteLine(System.DateTime.Now);
+
+		writer.Close();
+
+		/*if(src != null)
+		{
+			src.clip = SaveSound;
+			src.Play();
+		} */
+
+		return;
+	}
+
+	// Clear the save cache. Called on quit, and startup
+	void ClearCache()
+	{
+		// If the temporary cache directory doesn't exist, there's nothing to clear!
+		if(!Directory.Exists(Application.temporaryCachePath + "\\Save\\"))
+		{
+			return;
+		}
+
+		string[] files = Directory.GetFiles(Application.temporaryCachePath + "\\Save\\");
+		for(int i = 0; i < files.Length; i++)
+		{
+			File.Delete(files[i]);
+		}
+	}
+
+	public void EquipUpgrade(Upgrade myUpgrade)
+	{
+		for(int i = 0; i < ownedUpgrades.Count; i++)
+		{
+			if(ownedUpgrades[i] == myUpgrade)
+			{
+				equippedUpgrades.Add(ownedUpgrades[i]);
+				equippedUpgrades[equippedUpgrades.Count - 1].Apply();
+			}
+		}
+	}
+
+	public void ChangeTimeOfDay(string newTime)
+	{
+		if(newTime.ToUpper() == "MORNING")
+		{
+			// Spoil any food that Slas had on him
+			Item spoiledTemplate = (Resources.Load("Prefabs/Items/SpoiledFood") as GameObject).GetComponent<Item>();
+			for(int i = 0; i < Inventory.Count; i++)
+			{
+				if(Inventory[i].GetComponent<Consumable>() != null)
+				{
+					// If the player hasn't tried going to bed with food on them before, warn them first!
+					if(Events.ContainsKey("USED BED HOLDING FOOD") && !Events["USED BED HOLDING FOOD"])
+					{
+						CutsceneManager.instance.ResetCutscene();
+						CutsceneManager.instance.StartCutscene(
+							"Start()\n" +
+							"Say(Slas,Wait.,Concerned)\n" +
+							"Continue(I should put this food away before I go to bed or it might spoil.,Concerned)\n" +
+							"End()"
+						);
+
+						Events["USED BED HOLDING FOOD"] = true;
+
+						return;
+					}
+					else
+					{
+						Inventory[i] = spoiledTemplate;
+					}
+				}
+			}
+
+			currentTimeOfDay = TimeOfDay.Morning;
+			Debug.Log("It's now morning");
+			ateMorning = false;
+
+			if(!ateEvening)
+			{
+				starveTimer++;
+
+				if(affectingFood != null)
+				{
+					affectingFood.WearOff();
+				}
+			}
+		}
+		else if(newTime.ToUpper() == "EVENING")
+		{
+			currentTimeOfDay = TimeOfDay.Evening;
+			Debug.Log("It's now evening");
+			ateEvening = false;
+
+			if(!ateMorning)
+			{
+				starveTimer++;
+
+				if(affectingFood != null)
+				{
+					affectingFood.WearOff();
+				}
+			}
+		}
+		else
+		{
+			Debug.Log("Invalid time of day");
+		}
+	}
+
+	public void UpdateLocation(string _Name)
+	{
+		// If our new scene exists in the World dictionary, update our current location!
+		if(World.ContainsValue(_Name))
+		{
+			foreach(string s in World.Keys)
+			{
+				if(World[s] == _Name)
+				{
+					currentLocation = s.ToUpper();
+					Debug.Log("Location updated.");
+					break;
+				}
+			}
+		}
+		else
+		{
+			Debug.Log("World dictionary doesn't contain '" + _Name + "'. Location Update Failed.");
+		}
+	}
+
+	public string SaveGameManager()
+	{
+		StringWriter data = new StringWriter();
+
+		// BEGIN CONSTANTS //
+
+		// Scrap
+		data.WriteLine(ScrapCount);
+
+		// Save Time of Day
+		data.WriteLine((int)currentTimeOfDay);
+
+		// Save when we've eaten
+		data.WriteLine(ateMorning);
+		data.WriteLine(ateEvening);
+		data.WriteLine(starveTimer);
+
+		// Save the food item that's currently affecting us
+		if(affectingFood != null)
+		{
+			data.WriteLine(affectingFood.gameObject.name);
+		}
+		else
+		{
+			data.WriteLine("null");
+		}
+
+		data.WriteLine(currentLocation);
+
+		// END CONSTANTS //
+
+		// BEGIN LOOPS //
+
+		// Inventory
+		// We don't have to write a start line because this is the first loop, so we can assume it starts after our last constant
+		for(int i = 0; i < Inventory.Count; i++)
+		{
+			data.WriteLine(Inventory[i].name);
+		}
+
+		// Objectives
+		// TODO: We need a better objectives system, preferably a class with an ID and/or a name attached
+		data.WriteLine("$ObjectivesStart");
+		for(int i = 0; i < Objectives.Count; i++)
+		{
+			data.WriteLine(Objectives[i]);
+		}
+
+		// Owned Upgrades
+		data.WriteLine("$OwnedUpgradesStart");
+		for(int i = 0; i < ownedUpgrades.Count; i++)
+		{
+			data.WriteLine(ownedUpgrades[i].gameObject.name);
+		}
+
+		// Equipped Upgrades
+		data.WriteLine("$EquippedUpgradesStart");
+		for(int i = 0; i < equippedUpgrades.Count; i++)
+		{
+			data.WriteLine(equippedUpgrades[i].gameObject.name);
+		} 
+
+		// Events
+		data.WriteLine("$EventsStart");
+		string[] myKeys = new string[Events.Count];
+		Events.Keys.CopyTo(myKeys, 0);
+
+		bool[] myValues = new bool[Events.Count];
+		Events.Values.CopyTo(myValues, 0);
+
+		for(int i = 0; i < myKeys.Length; i++)
+		{
+			data.WriteLine(myKeys[i] + ", " + myValues[i].ToString());
+		}
+
+
+        // Save world
+        data.WriteLine("$WorldDataStart");
+        myKeys = new string[World.Count];
+        World.Keys.CopyTo(myKeys, 0);
+
+        string[] strMyValues = new string[World.Count];
+        World.Values.CopyTo(strMyValues, 0);
+        for(int i = 0; i < myKeys.Length; i ++)
+        {
+            data.WriteLine(myKeys[i] + ", " + strMyValues[i]);
+        }
+
+		// Save Stored Food
+		data.WriteLine("$FoodStorageStart");
+		for(int i = 0; i < FoodStorage.Count; i++)
+		{
+			data.WriteLine(FoodStorage[i].gameObject.name);
+		}
+
+		// END LOOPS //
+
+        return data.ToString();
+	}
+
+	public void LoadGameManager(string[] data)
+	{
+		// Clear everything
+		int phase = 0;
+
+		Inventory.Clear();
+		Objectives.Clear();
+		ownedUpgrades.Clear();
+		equippedUpgrades.Clear();
+		Events.Clear();
+        World.Clear();
+		FoodStorage.Clear();
+
+		affectingFood = null;
+
+		// BEGIN CONSTANTS //
+
+		ScrapCount = int.Parse(data[0]);
+		currentTimeOfDay = (TimeOfDay)int.Parse(data[1].Trim());
+			
+		ateMorning = bool.Parse(data[2]);
+		ateEvening = bool.Parse(data[3]);
+		starveTimer = int.Parse(data[4]);
+
+		if(data[5].ToUpper() != "NULL")
+		{
+			(Resources.Load("Prefabs/Items/" + data[5]) as GameObject).GetComponent<Consumable>().ApplyEffect();
+		}
+
+		currentLocation = data[6].Trim();
+
+		// END CONSTANTS //
+
+		phase++;
+
+		// BEGIN LOOPS //
+		for(int i = 7; i < data.Length; i++)
+		{
+            // Inventory
+            if (phase == 1)
+            {
+                if (data[i] == "$ObjectivesStart")
+                {
+                    phase++;
+                }
+                else
+                {
+                    Inventory.Add((Resources.Load("Prefabs/Items/" + data[i]) as GameObject).GetComponent<Item>());
+                }
+            }
+
+            // Objectives
+            else if (phase == 2)
+            {
+                if (data[i] == "$OwnedUpgradesStart")
+                {
+                    phase++;
+                }
+                else
+                {
+                    Objectives.Add(data[i]);
+                }
+            }
+
+            // Owned Upgrades
+            else if (phase == 3)
+            {
+                if (data[i] == "$EquippedUpgradesStart")
+                {
+                    phase++;
+                }
+                else
+                {
+                    ownedUpgrades.Add((Resources.Load("Prefabs/Upgrades/" + data[i]) as GameObject).GetComponent<Upgrade>());
+                }
+            }
+
+            // Equipped Upgrades
+            else if (phase == 4)
+            {
+                if (data[i] == "$EventsStart")
+                {
+                    phase++;
+                }
+                else
+                {
+                    equippedUpgrades.Add((Resources.Load("Prefabs/Upgrades/" + data[i]) as GameObject).GetComponent<Upgrade>());
+                }
+            }
+
+            // Events
+            else if (phase == 5)
+            {
+                if (data[i] == "$WorldDataStart")
+                {
+                    phase++;
+                }
+                else
+                { 
+                    string[] myString = data[i].Split(new string[] { ", " }, System.StringSplitOptions.RemoveEmptyEntries);
+                    Events.Add(myString[0], bool.Parse(myString[1]));
+                }
+			}
+
+			// World
+            else if (phase == 6)
+            {
+				if(data[i] == "$FoodStorageStart")
+				{
+					phase++;
+				}
+				else
+				{
+                	string[] myString = data[i].Split(new string[] { ", " }, System.StringSplitOptions.RemoveEmptyEntries);
+                	World.Add(myString[0], myString[1]);
+				}
+            }
+
+			// Food Storage
+			else if(phase == 7)
+			{
+				FoodStorage.Add((Resources.Load("Prefabs/Items/" + data[i]) as GameObject).GetComponent<Consumable>());
+			}
+		}
+
+		// END LOOPS //
 	}
 }
 

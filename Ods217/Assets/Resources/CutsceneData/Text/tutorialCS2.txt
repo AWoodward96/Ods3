@@ -1,0 +1,33 @@
+LoadPerm(LyserSitting,Lyser)
+LoadChar(Lyser,Lyser)
+LoadChar(Slas,Slas)
+LoadPawn(Player,P)
+
+HaltPlayer()
+MovePawn(P,-205,4,5)
+
+Wait(1)
+Say(Slas,Good morning Lyser,IdleT)
+HideMain()
+CameraTarget(Lyser)
+
+// First trigger sets Lyser to look up at you
+Trigger(Lyser)
+
+Wait(3)
+
+// Second trigger sets Lyser to look back at the table
+Trigger(Lyser)
+
+Wait(3)
+
+Say(Slas,Are...,IdleTLeft)
+Continue(Are you mad at me?,IdleT)
+Trigger(Lyser)
+Wait(3)
+Say(Lyser,Sit.,LookAtYou)
+Wait(1)
+MovePawn(P,-195,4,5)
+Wait(3)
+CameraTarget(Player)
+

@@ -60,4 +60,10 @@ MonoBehaviour:
     PortImg: {fileID: 21300008, guid: 95e3f952c39543f40a5644464ac8de72, type: 3}
   - PortId: Side
     PortImg: {fileID: 21300010, guid: 95e3f952c39543f40a5644464ac8de72, type: 3}
+  - PortId: Defeated
+    PortImg: {fileID: 21300012, guid: 95e3f952c39543f40a5644464ac8de72, type: 3}
+  - PortId: Sad
+    PortImg: {fileID: 21300014, guid: 95e3f952c39543f40a5644464ac8de72, type: 3}
+  - PortId: Sad2
+    PortImg: {fileID: 21300016, guid: 95e3f952c39543f40a5644464ac8de72, type: 3}
   talkingClip: {fileID: 8300000, guid: 952e08567f6db874aa41f1229c936242, type: 3}

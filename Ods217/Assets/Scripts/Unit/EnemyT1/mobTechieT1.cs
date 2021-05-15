@@ -19,8 +19,7 @@ public class mobTechieT1 : AIStandardUnit {
     AudioSource audioSrc;
 
     public GameObject DronePrefab;
-    public mobDroneT1 DroneReference;
-    CharacterController myCharacterController;
+    public mobDroneT1 DroneReference; 
 
     public override void Start()
     {
@@ -29,8 +28,7 @@ public class mobTechieT1 : AIStandardUnit {
         line.positionCount = (segments + 1);
         line.useWorldSpace = false;
          
-        audioSrc = GetComponent<AudioSource>();
-        myCharacterController = GetComponent<CharacterController>();
+        audioSrc = GetComponent<AudioSource>(); 
         base.Start();
     }
 
@@ -133,11 +131,10 @@ public class mobTechieT1 : AIStandardUnit {
 
     public override void DefeatedState()
     {
-        //// Run away from the player  
-        //Vector3 moveVec = GlobalConstants.ZeroYComponent(transform.position - playerRef.transform.position);
-         
-        //myCC.ApplyForce(moveVec.normalized); 
+        // Run away from the player   
+        Vector3 moveVec = GlobalConstants.ZeroYComponent( transform.position - player.transform.position);
 
+        myCC.ApplyForce(moveVec.normalized * 1.5f);  
         // Stand still because of bug
 
     }

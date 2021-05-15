@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoxLockPrevention : MonoBehaviour, IPermanent
-{
-	CharacterController player;
+{ 
 	BoxCollider myBB;
 	ExplosiveBox myExplosiveBox;
 
@@ -18,8 +17,7 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 
 	// Use this for initialization
 	void Start ()
-	{
-		player = GameObject.Find("Player").GetComponent<CharacterController>();
+	{ 
 		myBB = GetComponentInChildren<BoxCollider>();
 		myExplosiveBox = GetComponent<ExplosiveBox>();
         Part = GetComponentInChildren<ParticleSystem>();
@@ -36,64 +34,33 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 
 		Triggered = false;
 	}
-
-	// Update is called once per frame
-	void Update ()
+		
+	void FixedUpdate()
 	{
-		// If we're in a reasonable distance
-		Vector3 playerPos = player.transform.position;
-		playerPos.y = transform.position.y;
-
-		if((playerPos - transform.position).sqrMagnitude <= Mathf.Pow((myBB.size.x + player.radius) * 2, 2))
+		// Check if there is any unit that is near the box
+		Collider[] hits;
+		hits = Physics.OverlapBox(transform.position, myBB.size, transform.rotation);
+		for(int i = 0; i < hits.Length; i++)
 		{
-			// If player is colliding with another hitbox at the same time as this box
-			RaycastHit[] hit = Physics.RaycastAll(transform.position, playerPos - transform.position, (myBB.size.x + (player.radius * 2)) + 0.0625f);
-			for(int i = 0; i < hit.Length; i++)
+			if(hits[i].gameObject.layer != LayerMask.NameToLayer("Units"))
 			{
-				//if(hit[i].gameObject.layer == LayerMask.NameToLayer("Box") || myList[i].gameObject.tag == "ExplosiveBox")
-				if(hit[i].transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
+				continue;
+			}
+
+			Vector3 pos = hits[i].transform.position;
+			pos.y = transform.position.y;
+
+			// If so, check to see if there is a wall near said unit; if so, the box needs to be broken to avoid a softlock
+			RaycastHit wall;
+			if(Physics.Raycast(pos, (pos - transform.position).normalized, out wall, hits[i].bounds.size.x))
+			{
+				if(wall.transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
 				{
 					Triggered = true;
 					break;
 				}
 			}
 		}
-
-		// Check enemies, too!
-		if(zone == null)
-		{
-			return;
-		}
-
-		for(int i = 0; i < zone.Perms.Count; i++)
-		{
-			if(zone.Perms[i].gameObject.activeInHierarchy && zone.Perms[i].gameObject.layer == LayerMask.NameToLayer("Units"))
-			{
-				Collider currentUnit = zone.Perms[i].gameObject.GetComponent<Collider>();
-				Vector3 unitPos = currentUnit.transform.position;
-				unitPos.y = transform.position.y;
-
-				if((unitPos - transform.position).sqrMagnitude <= Mathf.Pow((myBB.size.x + currentUnit.bounds.size.z) * 2, 2))
-				{
-					// If player is colliding with another hitbox at the same time as this box
-					RaycastHit[] hit = Physics.RaycastAll(transform.position, unitPos - transform.position, (myBB.size.x + (currentUnit.bounds.size.z * 2)) + 0.0625f);
-					for(int j = 0; j < hit.Length; j++)
-					{
-						//if(hit[i].gameObject.layer == LayerMask.NameToLayer("Box") || myList[i].gameObject.tag == "ExplosiveBox")
-						if(hit[j].transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
-						{
-							Triggered = true; 
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public void Activate()
-	{
-
 	}
 
 	public ZoneScript myZone
@@ -112,13 +79,16 @@ public class BoxLockPrevention : MonoBehaviour, IPermanent
 	{
 		get
 		{
-			return broken;
+			return isBroken;
 		}
 		set
 		{
-			if(myExplosiveBox)
+			if(myExplosiveBox != null)
 			{
-				myExplosiveBox.Triggered = value;
+				if(!myExplosiveBox.Triggered)
+				{
+					myExplosiveBox.Triggered = value;
+				}
 			} 
 
             else if (value != isBroken && unbroken != null && broken != null)

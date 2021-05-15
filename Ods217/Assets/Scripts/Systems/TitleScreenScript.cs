@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -20,10 +21,12 @@ public class TitleScreenScript : MonoBehaviour {
 
     public GameObject JukeBox;
 
+
     public bool state;
     public VideoPlayer myPlayer;
     Coroutine inBetweenCRT;
 
+    Button[] buttons = new Button[5];
     Vector3 cameraPos;
  
 
@@ -34,6 +37,7 @@ public class TitleScreenScript : MonoBehaviour {
         Selected = true;
         StartCoroutine(LoadCRT(_Name));
         desiredAlpha = 1;
+		Directory.Delete(Application.persistentDataPath + "/Saves/Save1", true);
     }
 
 
@@ -59,6 +63,8 @@ public class TitleScreenScript : MonoBehaviour {
     {
         desiredAlpha = 0;
         curAlpha = 1;
+        buttons = GetComponentsInChildren<Button>();
+        
     }
 
     private void Update()
@@ -68,7 +74,7 @@ public class TitleScreenScript : MonoBehaviour {
         c.a = curAlpha;
         blackOut.color = c;
 
-
+        /*
         recentInput += Time.deltaTime;
         if (Input.anyKey)
         {
@@ -80,7 +86,7 @@ public class TitleScreenScript : MonoBehaviour {
         if(recentInput > 15)
         {
             State = false;
-        }
+        }*/
 
 
     }
@@ -134,7 +140,7 @@ public class TitleScreenScript : MonoBehaviour {
     IEnumerator GameCRT()
     {
         yield return new WaitForSeconds(3);
-        GameManager.instance.LoadLastSaveFile();
+		GameManager.instance.LoadSaveFile(true);
     }
 
     IEnumerator QuitCRT()

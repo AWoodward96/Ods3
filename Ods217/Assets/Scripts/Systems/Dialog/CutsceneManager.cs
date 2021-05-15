@@ -14,7 +14,7 @@ public class CutsceneManager : MonoBehaviour {
 	CustomButtonUI buttonLeft;
 	CustomButtonUI buttonRight;
 
-	enum DecisionType { Power, Pickup, Save };
+	enum DecisionType { Power, Pickup, Save, Breakpoint };
 	DecisionType currentDecisionType;
 	List<GameObject> buttonEffector; // A generic variable to determine what the decision is effecting
      
@@ -25,7 +25,9 @@ public class CutsceneManager : MonoBehaviour {
 
 	bool makingADecision;
 	bool breakOutDecision;
-
+    string decisionIDTrue;
+    string decisionIDFalse;
+    
 
     // For texting purposes
     string currentString;
@@ -51,6 +53,9 @@ public class CutsceneManager : MonoBehaviour {
     Dictionary<string, CutsceneCharacters> loadedCharacters = new Dictionary<string, CutsceneCharacters>();
     Dictionary<string, IPermanent> loadedPermanents = new Dictionary<string, IPermanent>();
     Dictionary<string, IPawn> loadedPawns = new Dictionary<string, IPawn>();
+	Dictionary<string, Item> loadedItems = new Dictionary<string, Item>();
+	Dictionary<string, string> loadedObjectives = new Dictionary<string, string>();
+    Dictionary<string, int> loadedBreakpoints = new Dictionary<string, int>();
      
 
     public GameObject MainTextBox;
@@ -58,6 +63,7 @@ public class CutsceneManager : MonoBehaviour {
     public bool ShowMain = false;
     public bool ShowSide = false;
     public bool Skipping = false;
+    bool LongSkip = false;
 
     private void Awake()
     {
@@ -142,7 +148,13 @@ public class CutsceneManager : MonoBehaviour {
                     { 
                         playerHalted = false;
                         playerS.AcceptInput = true;
-                    } 
+                    }
+
+                    Skipping = false;
+
+                    if (LongSkip)
+                        Camera.main.GetComponent<CamScript>().FadeIn(1);
+
                     return;
                 }else
                 { 
@@ -152,9 +164,10 @@ public class CutsceneManager : MonoBehaviour {
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && !Skipping)
             {
                 Skipping = true;
+                LongSkip = (maxLine > 20);
                 StopAllCoroutines();
 
                 if(!makingADecision)
@@ -166,6 +179,10 @@ public class CutsceneManager : MonoBehaviour {
 
                     MainTextBox.SetActive(false);
                     SideTextBox.SetActive(false);
+
+                    if (LongSkip)
+                        Camera.main.GetComponent<CamScript>().FadeOut(.5f);
+                     
                 }
 
             }
@@ -212,14 +229,25 @@ public class CutsceneManager : MonoBehaviour {
             return;
         }
 
+        if(fullLine[0] == '*') // Stars indicate a breakpoint/checkpoint
+        {
+            actionComplete = true;
+            return;
+        }
+
         string[] parameters = lineSpit[1].Split(',');
         string Text = "";
         string CharacterID = "";
         string PortraitID = "";
-        string savedName = "";
+        string sGeneric = "";
+        string sGeneric2 = "";
+        GameObject goGeneric;
+        GameObject playerTemp;
         IPawn pawn;
         float fGeneric;
         int iGeneric;
+        Vector3 v3Generic;
+         
         switch (commandID.ToUpper())
         {
             case "SAY":
@@ -305,14 +333,14 @@ public class CutsceneManager : MonoBehaviour {
                 break;
             case "LOADCHAR":
                 // Loads and saves a character into a dictionary
-                // LoadChar(resourceName, savedName)
+                // LoadChar(resourceName, sGeneric)
                 string resourceName = parameters[0].Trim().Replace(")", "");
-                savedName = parameters[1].Trim().Replace(")", "");
+                sGeneric = parameters[1].Trim().Replace(")", "");
 
                 CutsceneCharacters c = (Resources.Load("CutsceneData/Characters/" + resourceName) as GameObject).GetComponent<CutsceneCharacters>();
                 if(c != null)
                 { 
-                    loadedCharacters.Add(savedName.ToUpper(), c);
+                    loadedCharacters.Add(sGeneric.ToUpper(), c);
                     actionComplete = true;
                 }else
                 {
@@ -323,16 +351,16 @@ public class CutsceneManager : MonoBehaviour {
                 break;
             case "LOADPERM":
                 // Loads and saves a IPermanent into a dictionary
-                // LoadPerm(ObjectInSceneName, savedName)
+                // LoadPerm(ObjectInSceneName, sGeneric)
                 string ObjectInSceneName = parameters[0].Trim().Replace(")", "");
-                savedName = parameters[1].Trim().Replace(")", "");
+                sGeneric = parameters[1].Trim().Replace(")", "");
 
                 GameObject obj = GlobalConstants.FindGameObject(ObjectInSceneName);
  
 
                 if (obj != null)
                 {
-                    loadedPermanents.Add(savedName.ToUpper(), obj.GetComponent<IPermanent>());
+                    loadedPermanents.Add(sGeneric.ToUpper(), obj.GetComponent<IPermanent>());
                     actionComplete = true;
                 }
                 else
@@ -344,16 +372,16 @@ public class CutsceneManager : MonoBehaviour {
             case "TRIGGER":
                 // Toggles the trigger on a saved permanent
                 // Trigger(PermName)
-                savedName = parameters[0].Trim().Replace(")", "").ToUpper();
-                if(loadedPermanents.ContainsKey(savedName))
+                sGeneric = parameters[0].Trim().Replace(")", "").ToUpper();
+                if(loadedPermanents.ContainsKey(sGeneric))
                 {
-                    if (loadedPermanents[savedName] == null)
-                        Debug.Log("Couldn't find perminant on loaded perm: " + savedName);
+                    if (loadedPermanents[sGeneric] == null)
+                        Debug.Log("Couldn't find perminant on loaded perm: " + sGeneric);
                     else
-                        loadedPermanents[savedName].Triggered = !loadedPermanents[savedName].Triggered;
+                        loadedPermanents[sGeneric].Triggered = !loadedPermanents[sGeneric].Triggered;
                 }else
                 {
-                    Debug.Log("Couldn't find permanent: " + savedName + " within the loaded permanents dictionary. Make sure it's loaded first");
+                    Debug.Log("Couldn't find permanent: " + sGeneric + " within the loaded permanents dictionary. Make sure it's loaded first");
                 }
 
                 actionComplete = true;
@@ -467,6 +495,13 @@ public class CutsceneManager : MonoBehaviour {
 
                 actionComplete = true;
                 break;
+            case "END":
+                // End the cutscene early
+                currentLine = fullCutscene.Length;
+
+                actionComplete = true; 
+
+                break;
             case "ENDSIDE":
                 // Ends a side say 
                 actionComplete = true;
@@ -477,17 +512,11 @@ public class CutsceneManager : MonoBehaviour {
                 ShowMain = false;
                 actionComplete = true;
                 break;
-            case "CAMERATARGET":
-
-                //if (Skipping) // If we're skipping, moving the camera is not important. Go onwards my child
-                //{
-                //    actionComplete = true;
-                //    return;
-                //}
+            case "CAMERATARGET": 
 
                 // Sets the main cameras target to whatever we want it to
-                savedName = parameters[0].Trim().Replace(")", "");
-                if(savedName.ToUpper() == "PLAYER")
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                if(sGeneric.ToUpper() == "PLAYER")
                 {
                     // Make it see the player again
                     Camera.main.GetComponent<CamScript>().Target = GameObject.FindGameObjectWithTag("Player").gameObject.transform;
@@ -496,16 +525,16 @@ public class CutsceneManager : MonoBehaviour {
                 }
 
                 // Look for it in our dictionaries
-                if(loadedPermanents.ContainsKey(savedName.ToUpper()))
+                if(loadedPermanents.ContainsKey(sGeneric.ToUpper()))
                 {
-                    Camera.main.GetComponent<CamScript>().Target = loadedPermanents[savedName.ToUpper()].gameObject.transform;
+                    Camera.main.GetComponent<CamScript>().Target = loadedPermanents[sGeneric.ToUpper()].gameObject.transform;
                     actionComplete = true;
                     return;
                 }
 
 
                 // Look for it in scene
-                GameObject target = GlobalConstants.FindGameObject(savedName);
+                GameObject target = GlobalConstants.FindGameObject(sGeneric);
 
                 if(target != null)
                 {
@@ -514,28 +543,35 @@ public class CutsceneManager : MonoBehaviour {
                     return;
                 } 
                 break;
+            case "CAMERASHAKE":
+                // CAMERASHAKE(_float howlong)
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                float.TryParse(sGeneric, out fGeneric);
+                Camera.main.GetComponent<CamScript>().AddEffect(CamScript.CamEffect.Shake, fGeneric);
+                actionComplete = true;
+                break;
             case "CAMERASIZE":
                 // Sets the main cameras orthographic size to whatever we want it to
-                savedName = parameters[0].Trim().Replace(")", "");
-                float.TryParse(savedName, out fGeneric);
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                float.TryParse(sGeneric, out fGeneric);
 
                 Camera.main.orthographicSize = fGeneric;
                 actionComplete = true;
                 break;
             case "LERPCAMERASIZE":
                 // Sets the main cameras orthographic size to whatever we want it to (LERPED VERSION)
-                savedName = parameters[0].Trim().Replace(")", "");
-                float.TryParse(savedName, out fGeneric);
-                savedName = parameters[1].Trim().Replace(")", "");
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                float.TryParse(sGeneric, out fGeneric);
+                sGeneric = parameters[1].Trim().Replace(")", "");
                 float foo;
-                float.TryParse(savedName, out foo);
+                float.TryParse(sGeneric, out foo);
                 Camera.main.GetComponent<CamScript>().LerpSize(fGeneric, foo);
                 actionComplete = true;
                 break;
             case "LOCK":
                 // Toggle the zones lock
-                savedName = parameters[0].Trim().Replace(")", "");
-                int.TryParse(savedName, out iGeneric);
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                int.TryParse(sGeneric, out iGeneric);
 
                 if(iGeneric < ZoneScript.ActiveZone.ZoneLocks.Length)
                 {
@@ -547,8 +583,8 @@ public class CutsceneManager : MonoBehaviour {
             case "LOADPAWN":
                 // Save a pawn in the dictionazry for further use 
                 // LoadPawn(ObjectInSceneName, pawnName)
-                savedName = parameters[0].Trim().Replace(")", "");
-                GameObject nObj = GlobalConstants.FindGameObject(savedName); 
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                GameObject nObj = GlobalConstants.FindGameObject(sGeneric); 
                
                 pawn = nObj.GetComponent<IPawn>();
                 if(pawn != null)
@@ -562,26 +598,91 @@ public class CutsceneManager : MonoBehaviour {
                 // Tell a pawn to move
                 // MovePawn(ID, x,y,z)
                 Vector3 newVec = Vector3.zero;
-                savedName = parameters[0].Trim().Replace(")", ""); 
+                sGeneric = parameters[0].Trim().Replace(")", ""); 
 
-                if(loadedPawns.ContainsKey(savedName))
+                if(loadedPawns.ContainsKey(sGeneric))
                 {
-                    pawn = loadedPawns[savedName];
-                    savedName = parameters[1].Trim().Replace(")", "");
-                    float.TryParse(savedName, out fGeneric);
+                    pawn = loadedPawns[sGeneric];
+                    sGeneric = parameters[1].Trim().Replace(")", "");
+                    float.TryParse(sGeneric, out fGeneric);
                     newVec.x = fGeneric;
-                    savedName = parameters[2].Trim().Replace(")", "");
-                    float.TryParse(savedName, out fGeneric);
+                    sGeneric = parameters[2].Trim().Replace(")", "");
+                    float.TryParse(sGeneric, out fGeneric);
                     newVec.y = fGeneric;
-                    savedName = parameters[3].Trim().Replace(")", "");
-                    float.TryParse(savedName, out fGeneric);
+                    sGeneric = parameters[3].Trim().Replace(")", "");
+                    float.TryParse(sGeneric, out fGeneric);
                     newVec.z = fGeneric;
 
  
                     pawn.MoveTo(newVec);
                 }
+                else
+                    Debug.Log("No pawn by the name: " + sGeneric + " found");
 
                 actionComplete = true;
+                break;
+            case "LOOKPAWN":
+                // Tell a pawn to move
+                // LookPawn(ID, x,z)
+                Vector3 newLook = Vector3.zero;
+                sGeneric = parameters[0].Trim().Replace(")", "");
+
+                if (loadedPawns.ContainsKey(sGeneric))
+                {
+                    // Pull out all the coordinate locations
+                    pawn = loadedPawns[sGeneric];
+                    sGeneric = parameters[1].Trim().Replace(")", "");
+                    float.TryParse(sGeneric, out fGeneric);
+                    newLook.x = fGeneric;
+                    sGeneric = parameters[2].Trim().Replace(")", "");
+                    float.TryParse(sGeneric, out fGeneric);
+                    newLook.z = fGeneric;
+
+                    // Tell the pawn to look
+                    pawn.Look(newLook);
+                }
+                else
+                    Debug.Log("No pawn by the name: " + sGeneric + " found");
+
+                actionComplete = true;
+                break;
+            case "SPRINTPAWN":
+                // Tell a pawn to sprint or not sprint
+                // SprintPawn(ID, 1 or 0)
+                sGeneric = parameters[0].Trim().Replace(")", "");
+
+                if(loadedPawns.ContainsKey(sGeneric))
+                {
+                    pawn = loadedPawns[sGeneric];
+
+
+                    sGeneric = parameters[1].Trim().Replace(")", "");
+                    int.TryParse(sGeneric, out iGeneric);
+
+                    pawn.cc.Sprinting = (iGeneric == 1);
+                }
+
+                actionComplete = true;
+
+                break;
+            case "AGGROPAWN": 
+                // Tell a pawn to aggro up
+                // AggroPawn(ID, 1 or 0)
+                sGeneric = parameters[0].Trim().Replace(")", "");
+
+                if (loadedPawns.ContainsKey(sGeneric))
+                {
+                    pawn = loadedPawns[sGeneric];
+
+
+                    sGeneric = parameters[1].Trim().Replace(")", "");
+                    int.TryParse(sGeneric, out iGeneric);
+
+                    pawn.SetAggro(iGeneric == 1);
+                }
+
+                actionComplete = true;
+
                 break;
             case "FLIP":
                 // Flip the portrait areas x axis so they look the other way now
@@ -591,45 +692,65 @@ public class CutsceneManager : MonoBehaviour {
                 actionComplete = true;
 
                 break;
-			case "DECISION":
+			case "DECISIONSAVE":
                 // There's a decision to be made
-                // Decision(Type,TextLeft,TextRight)
+                // DecisionSave()
 
                 // There is no skipping decisions. Don't try it. 
+                // In fact a decision will stop a skip
+                if(LongSkip)
+                {
+                    Camera.main.GetComponent<CamScript>().FadeIn(1);
+                }
+                Skipping = false;
 
-               // Debug.Log("Making a decision atm");
+                // Debug.Log("Making a decision atm");
                 ShowMain = true;
                 TextArea.text = lastString;
+                 
 
-				string Type = parameters[0].Trim().ToUpper();
-
-				switch (Type)
-				{
-					case "SAVE":
-						currentDecisionType = DecisionType.Save;
-						break;
-					default:
-						Debug.Log("Couldn't determine decision type");
-						actionComplete = true;
-						break;
-				}
-
-				buttonLeft.GetComponentInChildren<Text>().text = parameters[1].Trim();
-				buttonRight.GetComponentInChildren<Text>().text = parameters[2].Trim().Replace(")", "");
+                currentDecisionType = DecisionType.Save; 
+				buttonLeft.GetComponentInChildren<Text>().text = "Yes";
+                buttonRight.GetComponentInChildren<Text>().text = "No";
 
 				CustomButtonUI.Selected = buttonLeft;
 
 				makingADecision = true;
-				breakOutDecision = false;
-
+				breakOutDecision = false; 
 				break;
+            case "DECISIONSIMPLE":
+                // There is a simple yes or no decision to be made
+                // DecisionSimple(BreakpointID1,BreakpointID2)
+                if (LongSkip)
+                {
+                    Camera.main.GetComponent<CamScript>().FadeIn(1);
+                }
+                Skipping = false;
+
+                // Debug.Log("Making a decision atm");
+                ShowMain = true;
+                TextArea.text = lastString;
+
+                decisionIDTrue = parameters[0].Trim().Replace(")", "");
+                decisionIDFalse = parameters[1].Trim().Replace(")", "");
+
+
+                currentDecisionType = DecisionType.Breakpoint;
+                buttonLeft.GetComponentInChildren<Text>().text = "Yes";
+                buttonRight.GetComponentInChildren<Text>().text = "No";
+
+                CustomButtonUI.Selected = buttonLeft;
+
+                makingADecision = true;
+                breakOutDecision = false;
+                break;
             case "SETTRACK":
                 // Set the music managers track to a desired volume
                 // SYNTAX: SetTrack(index, newvolume)
-                savedName = parameters[0].Trim().Replace(")", "");
-                int.TryParse(savedName, out iGeneric);
-                savedName = parameters[1].Trim().Replace(")", "");
-                float.TryParse(savedName, out fGeneric);
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                int.TryParse(sGeneric, out iGeneric);
+                sGeneric = parameters[1].Trim().Replace(")", "");
+                float.TryParse(sGeneric, out fGeneric);
 
                 if (NewMusicManager.instance != null)
                 {
@@ -639,21 +760,44 @@ public class CutsceneManager : MonoBehaviour {
                 break;
             case "MOVETO":
                 // There is no skipping movetos. They're kinda important.
-                savedName = parameters[0].Trim().Replace(")", "");
-                SceneManager.LoadScene(savedName);
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                GameManager.instance.PreservePlayer();
+
+                if (GameManager.World.ContainsKey(sGeneric.ToUpper()))
+				{
+					GameManager.instance.LoadScene(GameManager.World[sGeneric.ToUpper()]);
+				}
+                else
+                    SceneManager.LoadScene(sGeneric);
+
+
+                SceneManager.sceneLoaded += GameManager.instance.RestorePlayer;
+                break;
+            case "UPDATEWORLD":
+                // It's time to update what links in the world go where
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                sGeneric2 = parameters[1].Trim().Replace(")", "");
+
+                if (GameManager.World.ContainsKey(sGeneric.ToUpper()))
+                    GameManager.World[sGeneric.ToUpper()] = sGeneric2;
+                else
+                    Debug.Log("Gamemanger world does not contain key for: " + sGeneric.ToUpper());
+
+                actionComplete = true;
+                
                 break;
             case "TRIGGERIND":
                 // Flip the disabled switch on an EIndicator script
                 // Based on perminants 
                 // TriggerInd(PermName)
-                savedName = parameters[0].Trim().Replace(")", "").ToUpper();
-                if (loadedPermanents.ContainsKey(savedName))
+                sGeneric = parameters[0].Trim().Replace(")", "").ToUpper();
+                if (loadedPermanents.ContainsKey(sGeneric))
                 {
-                    if (loadedPermanents[savedName] == null)
-                        Debug.Log("Couldn't find perminant on loaded perm: " + savedName);
+                    if (loadedPermanents[sGeneric] == null)
+                        Debug.Log("Couldn't find perminant on loaded perm: " + sGeneric);
                     else
                     {
-                        UsableIndicator ind = loadedPermanents[savedName].gameObject.GetComponentInChildren<UsableIndicator>();
+                        UsableIndicator ind = loadedPermanents[sGeneric].gameObject.GetComponentInChildren<UsableIndicator>();
                         if(ind != null)
                         {
                             ind.Disabled = !ind.Disabled;
@@ -662,7 +806,7 @@ public class CutsceneManager : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("Couldn't find permanent: " + savedName + " within the loaded permanents dictionary. Make sure it's loaded first");
+                    Debug.Log("Couldn't find permanent: " + sGeneric + " within the loaded permanents dictionary. Make sure it's loaded first");
                 }
 
                 actionComplete = true;
@@ -672,28 +816,48 @@ public class CutsceneManager : MonoBehaviour {
 			case "DISABLEOBJECT":
 				// Disables the indicated object; does not need to be loaded in-cutscene
 				// DisableObject(ObjectInSceneName) 
-				ObjectInSceneName = parameters[0].Trim().Replace(")", "");
-				GameObject myObj = GameObject.Find(ObjectInSceneName);
-				if(myObj != null)
+				sGeneric = parameters[0].Trim().Replace(")", "");
+				goGeneric = GameObject.Find(sGeneric);
+				if(goGeneric != null)
 				{
-					myObj.SetActive(false);
+                    goGeneric.SetActive(false);
 				}
 				else
 				{
-					Debug.Log("Could not find GameObject " + ObjectInSceneName + "!");
+					Debug.Log("Could not find GameObject " + sGeneric + "!");
 				}
 				actionComplete = true;
 				break;
+            case "ENABLEOBJECT":
+                // Enables the indicated object; does not need to be loaded in-cutscene. Will find prefabs, be specific in your naming conventions
+                // EnableObject(ObjectInSceneName) 
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                goGeneric = GlobalConstants.FindGameObject(sGeneric);
+                if (goGeneric != null)
+                {
+                    goGeneric.SetActive(true);
+                }
+                else
+                {
+                    Debug.Log("Could not find GameObject " + sGeneric + "!");
+                }
+                actionComplete = true;
+                break;
             case "LOADSCENE":
-                savedName = parameters[0].Trim().Replace(")", "").ToUpper();
-                GameManager.instance.LoadScene(savedName);
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                GameManager.instance.LoadScene(sGeneric);
                 actionComplete = true;
                 break;
 
             case "SAVE":
-                GameManager.instance.WriteToCurrentSave();
+			GameManager.instance.WriteSaveFile();
                 actionComplete = true;
                 break;
+
+			case "CACHE":
+				GameManager.instance.WriteCache();
+				actionComplete = true;
+				break;
 
 			case "TOGGLEDOORLOCK":
 				// Sets the door lock to the given value
@@ -701,10 +865,10 @@ public class CutsceneManager : MonoBehaviour {
 				ObjectInSceneName = parameters[0].Trim();
 				string myLockValue = parameters[1].Trim().Replace(")", "").ToUpper();
 
-				myObj = GameObject.Find(ObjectInSceneName);
-				if(myObj != null)
+				goGeneric = GameObject.Find(ObjectInSceneName);
+				if(goGeneric != null)
 				{
-					SlidingDoor myDoor = myObj.GetComponent<SlidingDoor>();
+					SlidingDoor myDoor = goGeneric.GetComponent<SlidingDoor>();
 					if(myDoor != null)
 					{
 						if(myLockValue == "TRUE")
@@ -726,7 +890,7 @@ public class CutsceneManager : MonoBehaviour {
 					//		-Ed
 					else
 					{
-						lgcLogicDoor myLogicDoor = myObj.GetComponent<lgcLogicDoor>();
+						lgcLogicDoor myLogicDoor = goGeneric.GetComponent<lgcLogicDoor>();
 						if(myLogicDoor != null)
 						{
 							if(myLockValue == "TRUE")
@@ -756,16 +920,309 @@ public class CutsceneManager : MonoBehaviour {
 				break;
 	        
 			case "FADEOUT":
-				// Fade to black
-				// SYNTAX: FadeOut(time)
-				string myString = parameters[0].Trim().Replace(")", "");
-				float myTime;
-				float.TryParse(myString, out myTime);
+                // Fade to black
+                // SYNTAX: FadeOut(time)
+                if(LongSkip)
+                {
+                    actionComplete = true;
+                    return;
+                }
 
-				Camera.main.GetComponent<CamScript>().FadeOut(myTime);
+                sGeneric = parameters[0].Trim().Replace(")", "");
+				
+				float.TryParse(sGeneric, out fGeneric);
+
+				Camera.main.GetComponent<CamScript>().FadeOut(fGeneric);
 				actionComplete = true;
 				break;
-					
+            case "FADEIN":
+                // Fade the screen back into view
+                // SYNTAX: FadeIn(time)
+                if(LongSkip) // if it's a long skip don't ever fade in
+                {
+                    actionComplete = true;
+                    return;
+                }
+
+                sGeneric = parameters[0].Trim().Replace(")", ""); 
+                float.TryParse(sGeneric, out fGeneric);
+
+                Camera.main.GetComponent<CamScript>().FadeIn(fGeneric);
+                actionComplete = true;
+                break;
+
+            case "SMARTPLACE": 
+                // Place the player at a location that we already know and turn him on 
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                 
+                playerTemp = GlobalConstants.FindGameObject("Player");
+                if(playerTemp == null)
+                {
+                    actionComplete = true;
+                    Debug.Log("Could not find a player object to place");
+                    return;
+                }
+
+                // Look for it in our dictionaries
+                if (loadedPermanents.ContainsKey(sGeneric.ToUpper()))
+                {
+                    playerTemp.transform.position = loadedPermanents[sGeneric.ToUpper()].gameObject.transform.position;
+                    actionComplete = true;
+                    playerTemp.SetActive(true);
+                    playerTemp.GetComponent<CController>().Velocity = Vector3.zero;
+                    return;
+                }
+
+
+                // Look for it in scene
+                goGeneric= GlobalConstants.FindGameObject(sGeneric);
+
+                if (goGeneric != null)
+                {
+                    playerTemp.transform.position = goGeneric.transform.position; 
+                    actionComplete = true;
+                    playerTemp.SetActive(true);
+                    playerTemp.GetComponent<CController>().Velocity = Vector3.zero;
+                    return;
+                }
+                break; 
+			case "LOADITEM":
+				// Loads and saves an item into a dictionary
+				// LoadItem(resourceName, sGeneric)
+				string ItemName = parameters[0].Trim().Replace(")", "");
+				sGeneric = parameters[1].Trim().Replace(")", "");
+
+				// Load in the item
+				Item myItem = (Resources.Load("Prefabs/Items/" + ItemName) as GameObject).GetComponent<Item>();
+
+
+				if (myItem != null)
+				{
+					loadedItems.Add(sGeneric.ToUpper(), myItem);
+					actionComplete = true;
+				}
+				else
+				{
+					Debug.Log("Couldn't load item: '" + ItemName + "', at line " + currentLine);
+				}
+				break; 
+			case "DROPITEM":
+				// Drops an item from the player's inventory
+				// DropItem(ItemName)
+				sGeneric = parameters[0].Trim().Replace(")", "").ToUpper();
+				if(loadedItems.ContainsKey(sGeneric))
+				{
+					if (loadedItems[sGeneric] == null)
+						Debug.Log("Requested item is null: " + sGeneric);
+					else
+					{
+						// Find the item in the inventory and remove it
+						for(int i = 0; i < GameManager.Inventory.Count; i++)
+						{
+							if(GameManager.Inventory[i].name == loadedItems[sGeneric].name)
+							{
+								GameManager.Inventory.RemoveAt(i);
+								break;
+							}
+						}
+					}
+				}else
+				{
+					Debug.Log("Couldn't find item: " + sGeneric + " within the loaded items dictionary. Make sure it's loaded first");
+				}
+
+				actionComplete = true;
+				break;
+
+			case "GRABITEM":
+				// Adds an item to the player's inventory
+				// GrabItem(ItemName)
+				sGeneric = parameters[0].Trim().Replace(")", "").ToUpper();
+				if(loadedItems.ContainsKey(sGeneric))
+				{
+					if (loadedItems[sGeneric] == null)
+						Debug.Log("Requested item is null: " + sGeneric);
+					else
+					{
+						// Add the item to the game manager's list
+						GameManager.Inventory.Add(loadedItems[sGeneric]);
+					}
+				}else
+				{
+					Debug.Log("Couldn't find item: " + sGeneric + " within the loaded items dictionary. Make sure it's loaded first");
+				}
+
+				actionComplete = true;
+				break;
+
+			case "LOADOBJECTIVE":
+				// Loads and saves an objective into a dictionary
+				// LoadObjective(resourceName, sGeneric)
+				string ObjectiveName = parameters[0].Trim().Replace(")", "");
+				sGeneric = parameters[1].Trim().Replace(")", "");
+
+				// Load in the objective
+				string myObjective = (Resources.Load("Objectives/" + ObjectiveName) as TextAsset).text;
+
+
+				if (myObjective != null)
+				{
+					loadedObjectives.Add(sGeneric.ToUpper(), myObjective);
+					actionComplete = true;
+				}
+				else
+				{
+					Debug.Log("Couldn't load objective: '" + ObjectiveName + "', at line " + currentLine);
+				}
+				break;
+
+			case "REMOVEOBJECTIVE":
+				// Removes an objective from the player's list
+				// RemoveObjective(ObjectiveName)
+				sGeneric = parameters[0].Trim().Replace(")", "").ToUpper();
+				if(loadedObjectives.ContainsKey(sGeneric))
+				{
+					if (loadedObjectives[sGeneric] == null)
+						Debug.Log("Requested objective is null: " + sGeneric);
+					else
+					{
+						// Find the objective in the list and remove it
+						for(int i = 0; i < GameManager.Objectives.Count; i++)
+						{
+							if(GameManager.Objectives[i] == loadedObjectives[sGeneric])
+							{
+								GameManager.Objectives.RemoveAt(i);
+								break;
+							}
+						}
+
+						MenuManager.instance.FlashObjectiveNotification();
+					}
+				}else
+				{
+					Debug.Log("Couldn't find objective: " + sGeneric + " within the loaded objectives dictionary. Make sure it's loaded first");
+				}
+
+				actionComplete = true;
+				break;
+
+			case "CLEAROBJECTIVES":
+				// Clears the player's objectives list
+				// ClearObjective()
+				GameManager.Objectives.Clear();
+				MenuManager.instance.FlashObjectiveNotification();
+
+				actionComplete = true;
+				break;
+
+			case "ADDOBJECTIVE":
+				// Adds an objective to the player's list
+				// AddObjective(ObjectiveName)
+				sGeneric = parameters[0].Trim().Replace(")", "").ToUpper();
+				if(loadedObjectives.ContainsKey(sGeneric))
+				{
+					if (loadedObjectives[sGeneric] == null)
+						Debug.Log("Requested objective is null: " + sGeneric);
+					else
+					{
+						// Add the item to the game manager's list
+						GameManager.Objectives.Add(loadedObjectives[sGeneric]);
+						MenuManager.instance.FlashObjectiveNotification();
+					}
+				}else
+				{
+					Debug.Log("Couldn't find objective: " + sGeneric + " within the loaded objectives dictionary. Make sure it's loaded first");
+				}
+
+				actionComplete = true;
+				break;
+
+			case "SETEVENT":
+				// Sets the chosen event to true
+				// SetEvent(Key)
+				sGeneric = parameters[0].Trim().Replace(")", "").ToUpper();
+				if(GameManager.Events.ContainsKey(sGeneric))
+				{
+					GameManager.Events[sGeneric] = true;
+				}
+				else
+				{
+					Debug.Log("Couldn't find event: " + sGeneric + " within the Game Manager's Events dictionary. Make sure it's been added first, and check for typos.");
+				}
+
+				actionComplete = true;
+				break;
+            case "DECISIONEVENT":
+                // There is a simple yes or no decision to be made
+                // DecisionEvent(ID,BreakpointID1,BreakpointID2) 
+
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                decisionIDTrue = parameters[1].Trim().Replace(")", "");
+                decisionIDFalse = parameters[2].Trim().Replace(")", ""); 
+
+                if(GameManager.Events.ContainsKey(sGeneric))
+                { 
+                    currentLine = loadedBreakpoints[(GameManager.Events[sGeneric]) ? decisionIDTrue.ToUpper() : decisionIDFalse.ToUpper()];
+                }
+                else
+                {
+                    Debug.Log("Event list does not contain a key for: " + sGeneric + ". Defaulting a false result"); 
+                    currentLine = loadedBreakpoints[decisionIDFalse.ToUpper()];
+                }
+
+                actionComplete = true;
+                break;
+            case "BREAKPOINT":
+                // Go to this breakpoint
+                // Breakpoint(ID)
+
+                sGeneric = parameters[0].Trim().Replace(")", "");
+                currentLine = loadedBreakpoints[sGeneric.ToUpper()];
+
+                actionComplete = true;
+                break;
+
+            case "START":
+                // A quick start method.
+                // Loads the Slas character into the character slot
+                // Flips the camera
+                // and halts player movement
+                 
+                // Load Slas
+                loadedCharacters.Add("SLAS", (Resources.Load("CutsceneData/Characters/Slas") as GameObject).GetComponent<CutsceneCharacters>());
+
+                // flip
+                v3Generic = portraitArea.transform.localScale;
+                v3Generic.x *= -1;
+                portraitArea.transform.localScale = v3Generic;
+
+                // Halt the player
+                SetPlayerHalted(true);
+
+                actionComplete = true;  
+                break;
+            case "TEXTSIZE":
+                // sets the text size for the conversation
+                // TextSize(int)
+                sGeneric = parameters[0].Trim().Replace(")", ""); 
+                int.TryParse(sGeneric, out iGeneric);
+
+                // 264 is the standard text size. 
+                // if we call 264 -> 8 then scale everything based on that
+                // 120 <-> 300
+                TextArea.fontSize = 120 + (18 * iGeneric);
+
+                actionComplete = true;
+                break;
+			case "SETTIME":
+				// Sets the time of day in the Game Manager
+				// SetTime(string)
+				sGeneric = parameters[0].Trim().Replace(")", "");
+				GameManager.instance.ChangeTimeOfDay(sGeneric);
+
+				actionComplete = true;
+				break;
+
             default:
                 Debug.Log("Couldn't process: " + commandID);
                 actionComplete = true;
@@ -783,7 +1240,7 @@ public class CutsceneManager : MonoBehaviour {
         fullCutscene = text;
 
         InCutscene = true;
-
+        
         ResetCutscene();
     }
 
@@ -793,6 +1250,7 @@ public class CutsceneManager : MonoBehaviour {
         ShowSide = false;
         ShowMain = false;
         Skipping = false;
+        LongSkip = false;
 
         MainTextBox.SetActive(false);
         SideTextBox.SetActive(false);
@@ -804,10 +1262,15 @@ public class CutsceneManager : MonoBehaviour {
         loadedCharacters = new Dictionary<string, CutsceneCharacters>();
         loadedPermanents = new Dictionary<string, IPermanent>();
         loadedPawns = new Dictionary<string, IPawn>();
+		loadedItems = new Dictionary<string, Item>();
+		loadedObjectives = new Dictionary<string, string>();
+        loadedBreakpoints = new Dictionary<string, int>();
         currentCutsceneCharacter = null;
         sideTextArea.text = "";
         TextArea.text = "";
+        TextArea.fontSize = 264;
 
+        LoadBreakpoints();
         StopAllCoroutines();
     }
 
@@ -904,6 +1367,21 @@ public class CutsceneManager : MonoBehaviour {
         yield break;
     }
 
+    void LoadBreakpoints()
+    {  
+        string[] splitString = fullCutscene.Split('\n');
+        for(int i = 0; i < splitString.Length;i++)
+        {
+            if (splitString[i].Length == 0)
+                continue;
+
+
+            // If the first char is a * then it's a breakpoint
+            if(splitString[i][0] == '*' && splitString[i].Length > 1) 
+                loadedBreakpoints.Add(splitString[i].Substring(1).ToUpper().Trim(), i);  
+        }
+    }
+
     IEnumerator WaitCRT(float time)
     { 
         yield return new WaitForSeconds(time);
@@ -918,7 +1396,7 @@ public class CutsceneManager : MonoBehaviour {
 			if(_decision)
 			{
 				// Save the game!
-				if(GameManager.instance.WriteToCurrentSave())
+				if(GameManager.instance.WriteSaveFile())
 				{
 					fullCutscene += "\nSay(Console,Game Saved!,Happy)";
 				}
@@ -930,11 +1408,19 @@ public class CutsceneManager : MonoBehaviour {
 				maxLine++;
 			}
 			break;
+            case DecisionType.Breakpoint: 
+                currentLine = loadedBreakpoints[(_decision) ? decisionIDTrue.ToUpper() : decisionIDFalse.ToUpper()]; 
+                break;
 		}
 			
 		breakOutDecision = true;
 		makingADecision = false;
 		actionComplete = true;
+
+		if(LongSkip)
+		{
+			Camera.main.GetComponent<CamScript>().FadeOut(.5f);
+		}
 	}
 }
 

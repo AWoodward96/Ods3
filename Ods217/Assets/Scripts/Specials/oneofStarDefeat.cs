@@ -80,9 +80,4 @@ public class oneofStarDefeat : MonoBehaviour, IPermanent {
             triggeredCount++;
         }
     }
-
-    public void Activate()
-    {
-
-    }
 }

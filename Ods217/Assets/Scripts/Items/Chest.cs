@@ -8,15 +8,13 @@ public class Chest : MonoBehaviour {
     public GameObject Lid;
     public GameObject PlusHealthInd;
     bool pickedUp = false;
-    float dTime = 0;
-    GameObject player;
+    float dTime = 0; 
     UsableIndicator myIndicator;
     AudioSource mySource;
 
     // Use this for initialization
     void Start()
-    {
-        player = GameObject.Find("Player");
+    { 
         myIndicator = GetComponentInChildren<UsableIndicator>();
 
         myIndicator.Output = OnInteract;

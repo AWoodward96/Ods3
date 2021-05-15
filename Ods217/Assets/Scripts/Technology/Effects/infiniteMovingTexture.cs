@@ -12,19 +12,31 @@ public class infiniteMovingTexture : MonoBehaviour {
 
     public Vector3 OriginPoint;
     public Vector3 DestinationPoint;
-    public float Speed;
+    public float Speed = 2;
 
 	void FixedUpdate () {
+     
+        if(Speed > 0)
+        {
+            // Check to see if we can go back yet
+            if ((DestinationPoint - transform.position).magnitude < Speed)
+            {
+                transform.position = OriginPoint;
+            }
+        }
+        else
+        {
+            if ((OriginPoint - transform.position).magnitude < -Speed)
+            { 
+                transform.position = DestinationPoint;
+            }
+        }
+
         // Move the object
         Vector3 direction = DestinationPoint - OriginPoint;
         direction = direction.normalized;
         transform.position += (direction * Speed);
 
-        // Check to see if we can go back yet
-        if((DestinationPoint - transform.position).magnitude < Speed)
-        {
-            transform.position = OriginPoint;
-        }
 
-	}
+    }
 }

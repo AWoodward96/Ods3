@@ -70,12 +70,6 @@ public class lgcShootSwitch : MonoBehaviour, IDamageable {
         Triggered = !Triggered;
 	}
 
-
-	public void Activate()
-	{
-		
-	}
-
 	public ZoneScript myZone
 	{
 		get{return zone;}

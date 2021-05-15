@@ -15,8 +15,7 @@ public class TurretScript : MonoBehaviour, IArmed {
 
     public AudioClip PowerUp;
 
-    ParticleSystem mySystem;
-    AudioSource mySource;
+    ParticleSystem mySystem; 
     HealthBar myHealthBar;
     Light onOffLight;
     WeaponBase myWeapon;  
@@ -27,8 +26,7 @@ public class TurretScript : MonoBehaviour, IArmed {
         onOffLight = GetComponentInChildren<Light>();
         mySystem = GetComponentInChildren<ParticleSystem>();
         myWeapon = GetComponentInChildren<WeaponBase>();
-        myHealthBar = GetComponentInChildren<HealthBar>();
-        mySource = GetComponent<AudioSource>();
+        myHealthBar = GetComponentInChildren<HealthBar>(); 
         myWeapon.myOwner = this;
 	}
 	
@@ -40,25 +38,7 @@ public class TurretScript : MonoBehaviour, IArmed {
             // pingpong the onofflight thing
             onOffLight.intensity = .5f + Mathf.PingPong(Time.time, 1);
 
-            myWeapon.FireWeapon(Direction);
-
-			// This code might need to be modified because of the switch to the energy system
-            /*if (myWeapon.Reloading)
-            {
-                if (!reloadinginprocess)
-                {
-                    reloadinginprocess = true;
-                    mySystem.Play();
-                    mySource.clip = PowerUp;
-                    mySource.Play();
-                }
-            }
-            else
-            {
-                mySystem.Stop();
-                mySource.Stop();
-                reloadinginprocess = false;
-            }*/
+            myWeapon.FireWeapon(Direction); 
         }else
         {
             mySystem.Stop(); 
@@ -131,11 +111,6 @@ public class TurretScript : MonoBehaviour, IArmed {
     public void OnHit(int _damage)
     {
         // Don't do anything because this object can't be hurt
-    }
-
-    public void Activate()
-    {
-        throw new NotImplementedException();
     }
 
     public virtual void TossWeapon()

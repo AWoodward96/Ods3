@@ -5,8 +5,7 @@ using UnityEngine;
 /// <summary>
 /// An Effects Script
 /// When it's interacted with by pressing [E] it will trigger another object
-/// </summary>
-[RequireComponent(typeof(UsableIndicator))]
+/// </summary> 
 [RequireComponent(typeof(AudioSource))]
 public class lgcInteractToTrigger : MonoBehaviour {
 

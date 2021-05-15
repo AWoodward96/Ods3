@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-public class GeneratorBoss : GeneratorBehavior
+public class GeneratorBoss : GeneratorBehavior, ISavable
 {
 	GameObject Player;
 
@@ -26,6 +27,11 @@ public class GeneratorBoss : GeneratorBehavior
     public GameObject BrokenGlassObject;
     public GameObject FiCore;
 
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
 
     int explosionInd = 0;
 
@@ -134,9 +140,20 @@ public class GeneratorBoss : GeneratorBehavior
             Camera.main.GetComponent<CamScript>().AddWatch(gameObject);
 			engaged = true;
 			myInteract.gameObject.SetActive(false);
-		}
 
-		myVisualizer.ShowMenu();
+			// Shut the door
+			CutsceneManager.instance.StartCutscene("ToggleDoorLock(DoorToGenerator,True)");
+
+            // start the boss battle music
+
+            NewMusicManager.instance.SetTrack(0, 0);
+            NewMusicManager.instance.SetTrack(1, 0);
+            NewMusicManager.instance.SetTrack(2, 0);
+            NewMusicManager.instance.SetTrack(3, 1);
+
+        }
+
+        myVisualizer.ShowMenu();
 		if (myForceField != null)
 		{
 			if(myUnit.CurrentEnergy <= 0)
@@ -269,7 +286,9 @@ public class GeneratorBoss : GeneratorBehavior
     }
 
     IEnumerator deathCRT()
-    {  
+    {
+        NewMusicManager.instance.DisableZones = true;
+
         CamScript c = Camera.main.GetComponent<CamScript>(); 
 
         c.AddEffect(CamScript.CamEffect.Shake);
@@ -312,4 +331,51 @@ public class GeneratorBoss : GeneratorBehavior
         FindObjectOfType<DetonationScript>().StartDetonation();
 
     }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(myInteract.gameObject.activeInHierarchy);
+		data.WriteLine(myUnit.CurrentHealth);
+		data.WriteLine(myForceField.gameObject.activeInHierarchy);
+
+		return data.ToString();
+	}
+
+	// TODO: I feel like I shouldn't have to get components in a load method; is there a way to ensure this runs after Start()?
+	public void Load(string[] data)
+	{
+		myInteract = GetComponentInChildren<UsableIndicator>();
+		myInteract.gameObject.SetActive(bool.Parse(data[0].Trim()));
+
+		myUnit.CurrentHealth = int.Parse(data[1].Trim());
+
+		myForceField = GetComponentInChildren<ForceFieldScript>();
+		myForceField.gameObject.SetActive(bool.Parse(data[2].Trim()));
+	}
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
 }

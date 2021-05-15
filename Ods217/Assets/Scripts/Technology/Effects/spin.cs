@@ -6,8 +6,8 @@ public class spin : MonoBehaviour {
 
     public float rotationsPerMin;
 
-    private void Update()
+	protected virtual void FixedUpdate()
     {
-        transform.Rotate(0, 0, 6.0f * rotationsPerMin * Time.deltaTime);
+		transform.Rotate(0, 0, 6.0f * rotationsPerMin * Time.fixedDeltaTime);
     }
 }

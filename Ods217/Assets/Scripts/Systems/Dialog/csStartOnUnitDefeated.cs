@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
  
-public class csStartOnUnitDefeated : MonoBehaviour, IPermanent {
+public class csStartOnUnitDefeated : MonoBehaviour, IPermanent, ISavable {
      
     
     [Header("Text")]
@@ -17,6 +17,36 @@ public class csStartOnUnitDefeated : MonoBehaviour, IPermanent {
 
     bool triggered = false;
     public GameObject[] ArmedUnits;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
 
     ZoneScript Zone;
 
@@ -66,15 +96,23 @@ public class csStartOnUnitDefeated : MonoBehaviour, IPermanent {
                 CutsceneManager.instance.StartCutscene(Dialog); 
     }
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
-
-
     public ZoneScript myZone
     {
         get { return Zone; }
         set { Zone = value; }
     }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(triggered);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		triggered = bool.Parse(data[0].Trim());
+	}
 }

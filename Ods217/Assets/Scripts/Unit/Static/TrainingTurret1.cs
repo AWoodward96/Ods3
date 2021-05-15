@@ -86,11 +86,6 @@ public class TrainingTurret1 : MonoBehaviour, IArmed {
         }
     }
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
-
     public void OnHit(int _damage)
     {
         // Don't allow hits from similar weapons

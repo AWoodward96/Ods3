@@ -84,4 +84,8 @@ MonoBehaviour:
     PortImg: {fileID: 21300022, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
   - PortId: DownH
     PortImg: {fileID: 21300026, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
-  talkingClip: {fileID: 8300000, guid: 85bb2a52dc7066946b4fb0a1fa647adc, type: 3}
+  - PortId: AngryLeft
+    PortImg: {fileID: 21300032, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
+  - PortId: Angry
+    PortImg: {fileID: 21300030, guid: 1b7ed60f46c874147ae700aeff03ff25, type: 3}
+  talkingClip: {fileID: 8300000, guid: af3aab77ff52e094e998daaf6109ad47, type: 3}

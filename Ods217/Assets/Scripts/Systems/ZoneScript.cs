@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using SpriteToParticlesAsset;
  
@@ -9,7 +10,7 @@ using SpriteToParticlesAsset;
 /// Runs in edit mode so we can see how each zone is layed out
 /// </summary>
 [RequireComponent(typeof(LineRenderer))]
-public class ZoneScript : MonoBehaviour {
+public class ZoneScript : MonoBehaviour, ISavable {
 
     
     public enum ViewType { Wire, Solid };
@@ -43,7 +44,35 @@ public class ZoneScript : MonoBehaviour {
 
     PlayerScript player;
     
+	[Header("ISavable Variables")]
+	public int saveID = -1;
 
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
 
     public ZoneScript()
     {
@@ -67,6 +96,14 @@ public class ZoneScript : MonoBehaviour {
             // Calculate the top left and bottom right variables
             topLeft = transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2);
             bottomRight = transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2);
+
+
+            LineRenderer lRender = GetComponent<LineRenderer>();
+            if (lRender != null)
+            {
+                lRender.endWidth = .1f;
+                lRender.startWidth = .1f;
+            }
 
             // Get every important object in the zone
             GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
@@ -178,9 +215,9 @@ public class ZoneScript : MonoBehaviour {
         }
 
 
-        Gizmos.DrawIcon(transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2), "TopLeftBracket");
-        Gizmos.DrawIcon(transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2), "BottomRightBracket");
-        Gizmos.DrawIcon(pos, "ZoneIcon");
+        //Gizmos.DrawIcon(transform.position + new Vector3(-ZoneSize.x / 2, 0, ZoneSize.y / 2), "TopLeftBracket");
+        //Gizmos.DrawIcon(transform.position + new Vector3(ZoneSize.x / 2, 0, -ZoneSize.y / 2), "BottomRightBracket");
+        //Gizmos.DrawIcon(pos, "ZoneIcon");
     }
 
     void CheckZone()
@@ -276,7 +313,7 @@ public class ZoneScript : MonoBehaviour {
                 // loop through each unit in the GameObject. If they're dead, or defeated then, turn the lock off
                 for (int e = 0; e < ZoneLocks[i].Enemies.Length; e++)
                 {
-                    IArmed a = ZoneLocks[i].Enemies[e].GetComponent<IArmed>();
+					IDamageable a = ZoneLocks[i].Enemies[e].GetComponent<IDamageable>();
                     if (a.MyUnit.CurrentHealth > 0)
                     {
                         b = false;
@@ -316,6 +353,26 @@ public class ZoneScript : MonoBehaviour {
             return player;
         }
     }
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		for(int i = 0; i < ZoneLocks.Length; i++)
+		{
+			data.WriteLine(ZoneLocks[i].Completed);
+		}
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		for(int i = 0; i < data.Length; i++)
+		{
+			ZoneLocks[i].Completed = bool.Parse(data[i].Trim());
+		}
+	}
 }
 
 

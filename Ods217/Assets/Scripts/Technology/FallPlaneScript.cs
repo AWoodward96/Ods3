@@ -23,12 +23,21 @@ public class FallPlaneScript : MonoBehaviour
 		spawnBoxes = new List<Collider>();
 
 		GetComponentsInChildren<Collider>(spawnBoxes);
+		for(int i = 0; i < spawnBoxes.Count; i++)
+		{
+            spawnBoxes[i].isTrigger = true;
+
+			if(spawnBoxes[i] == GetComponent<Collider>())
+			{
+				spawnBoxes.RemoveAt(i);
+				break;
+			}
+		}
 	} 
 
 	void Update()
 	{
-		// i = 1 to ignore the fall plane's hitbox
-		for(int i = 1; i < spawnBoxes.Count; i++)
+		for(int i = 0; i < spawnBoxes.Count; i++)
 		{
 			if(spawnBoxes[i].bounds.Contains(player.transform.position))
 			{
@@ -38,60 +47,78 @@ public class FallPlaneScript : MonoBehaviour
 		}
 	}
 	 
+    void Run(Collider other)
+    {
+        // Only needs to affect the player
+        if (other.gameObject == player)
+        {
+            PlayerScript ps = player.GetComponent<PlayerScript>();
+
+            player.GetComponentInChildren<ForceFieldScript>().RegisterHit(ps.myUnit.MaxEnergy);
+            ps.myVisualizer.ShowMenu();
+
+            if (ps.myUnit.CurrentHealth > 0)
+            {
+                //player.transform.position = safeSpawns[currentSpawn].transform.position;
+
+                // If there's nowhere safe to spawn, RIP player
+                if (spawnBoxes.Count == 0)
+                {
+                    ps.myUnit.CurrentHealth = 0;
+                    return;
+                }
+
+                player.transform.position = spawnBoxes[currentBox].transform.position;
+                ps.cc.Velocity *= .8f;
+            }
+
+            return;
+        }
+
+        // ... Unless it's a weapon
+        else if (other.gameObject.name == "ThrowMe" || other.gameObject.name == "ThrowGun")
+        {
+            other.gameObject.transform.position = player.transform.position;
+            other.gameObject.transform.position += new Vector3(0.0f, 50.0f, 0.0f);
+
+            other.attachedRigidbody.velocity = new Vector3(0.0f, other.attachedRigidbody.velocity.y, 0.0f);
+            numWeaponTosses++;
+
+            if (numWeaponTosses >= maxWeaponTosses)
+            {
+                // Fun easter egg?
+                CutsceneManager.instance.StartCutscene
+                (
+                    "HaltPlayer()\n" +
+                    "LoadChar(Con1,Console)\n" +
+                    "Say(Console,Hey!)\n" +
+                    "Continue(Stop throwing your weapons off cliffs!)"
+                );
+
+                numWeaponTosses = 0;
+            }
+
+            return;
+        }
+
+        // Or an enemy unit
+        IDamageable d = other.GetComponent<IDamageable>();
+        if (d != null)
+        {
+            d.MyUnit.CurrentHealth = 0;
+            d.gameObject.SetActive(false);
+
+            return;
+        }
+    }
 
 	void OnTriggerExit(Collider other)
 	{
-		// Only needs to affect the player
-		if(other.gameObject == player)
-		{
-			PlayerScript ps = player.GetComponent<PlayerScript>();
-
-            player.GetComponentInChildren<ForceFieldScript>().RegisterHit(ps.myUnit.MaxEnergy); 
-			ps.myVisualizer.ShowMenu();
-
-			if(ps.myUnit.CurrentHealth > 0)
-			{
-				//player.transform.position = safeSpawns[currentSpawn].transform.position;
-
-				// If there's nowhere safe to spawn, RIP player
-				if(spawnBoxes.Count == 0)
-				{
-					ps.myUnit.CurrentHealth = 0;
-					return;
-				}
-
-				player.transform.position = spawnBoxes[currentBox].bounds.center;
-			}
-		}
-
-		// ... Unless it's a weapon
-		else if(other.gameObject.name == "ThrowMe" || other.gameObject.name == "ThrowGun")
-		{
-			other.gameObject.transform.position = player.transform.position;
-			other.gameObject.transform.position += new Vector3(0.0f, 50.0f, 0.0f);
-
-			other.attachedRigidbody.velocity = new Vector3(0.0f, other.attachedRigidbody.velocity.y, 0.0f);
-			numWeaponTosses++;
-
-			if(numWeaponTosses >= maxWeaponTosses)
-			{
-				// Fun easter egg?
-				CutsceneManager.instance.StartCutscene
-				(
-					"HaltPlayer()\n" +
-					"LoadChar(Con1,Console)\n" +
-                    "Say(Console,Hey!)\n"+ 
-                    "Continue(Console,Stop throwing your weapons off cliffs!)"
-				);
-
-				numWeaponTosses = 0;
-			}
-		}
-
-		// Or an enemy unit
-		else if(other.GetComponent<IDamageable>() != null)
-		{
-			other.gameObject.SetActive(false);
-		}
+        Run(other);
 	}
+
+    void OnTriggerEnter(Collider other)
+    {
+        Run(other);
+    }
 }

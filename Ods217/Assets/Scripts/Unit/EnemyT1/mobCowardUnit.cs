@@ -29,7 +29,8 @@ public class mobCowardUnit : AIStandardUnit {
         line.useWorldSpace = false;
 
         ind_Usable = GetComponentInChildren<UsableIndicator>();
-        ind_Usable.Preset = UsableIndicator.usableIndcPreset.Disarm;
+        if (ind_Usable.Preset != UsableIndicator.usableIndcPreset.Talk) // don't override if the preset is already talk
+            ind_Usable.Preset = UsableIndicator.usableIndcPreset.Disarm;
         ind_Usable.Output = DisarmDelegate;
 
         audioSrc = GetComponent<AudioSource>();

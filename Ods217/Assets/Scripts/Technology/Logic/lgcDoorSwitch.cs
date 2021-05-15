@@ -40,7 +40,7 @@ public class lgcDoorSwitch : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     { 
         if(DoorToTrigger == null) 
             return; 

@@ -62,7 +62,7 @@ public class StarMiniboss1 : AIStandardUnit{
        
         base.Start();
 
-        if (currentWeapon.weaponData.name == "Shotgun")
+        if (currentWeapon.weaponData.name.Contains("Boom"))
             base.SwapWeapons();
 	}
 
@@ -133,6 +133,7 @@ public class StarMiniboss1 : AIStandardUnit{
         {
             // If true, then we should be on the ground with a machine gun
             FloorShoot();
+            animationHandler.holdGun = true;
             animationHandler.HeldPosition = new Vector3(0,.33f,0);
         }
  
@@ -277,7 +278,7 @@ public class StarMiniboss1 : AIStandardUnit{
         myCC.enabled = false;
 
         // Get the fuck out
-        transform.position = Vector3.zero + (Vector3.down * 10);
+        transform.position = impactPointMarker.position + (Vector3.down * 10);
         yield return new WaitForSeconds(5.1f);
 
         SmokeBomb.Stop();
@@ -375,8 +376,13 @@ public class StarMiniboss1 : AIStandardUnit{
             myCC.ApplyForce(overrideLookingVector.normalized * .2f);
 
             overrideLookingVector = Vector3.RotateTowards(overrideLookingVector, GlobalConstants.ZeroYComponent(playerRef.transform.position - transform.position), .1f, .1f);
+
+            
             myWeapon.FireWeapon(overrideLookingVector);
-			if (MyUnit.CurrentEnergy < myWeapon.weaponData.shotCost)
+            
+
+
+            if (MyUnit.CurrentEnergy < myWeapon.weaponData.shotCost)
             {
                 waitTimer = 0;
                 base.AIState = EnemyAIState.Vulnerable; 
@@ -405,13 +411,13 @@ public class StarMiniboss1 : AIStandardUnit{
 
             myCC.ApplyForce(overrideLookingVector.normalized * .2f);
 
-            // The circles size is based on how long it'll take to 
+            //// The circles size is based on how long it'll take to 
             CreatePoints();
 
 
             line.enabled = true;
 
-			if (MyUnit.CurrentEnergy >= MyUnit.MaxEnergy - 10)
+            if (MyUnit.CurrentEnergy >= MyUnit.MaxEnergy - 10)
             {
                 aiCounter++;
                 waitTimer = 0;
@@ -527,9 +533,7 @@ public class StarMiniboss1 : AIStandardUnit{
             }
         }
 
-        animationHandler.velocity = myCC.Velocity;
-         
-        //animationHandler.holdGun = (AIState == EnemyAIState.Aggro || (AIState == EnemyAIState.Vulnerable && !disarmed));
+        animationHandler.velocity = myCC.Velocity; 
 
         animationHandler.gunObject1 = WeaponSlot1;
         animationHandler.gunObject2 = WeaponSlot2;

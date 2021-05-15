@@ -1,0 +1,92 @@
+Start()
+LoadPawn(Player,P)
+MovePawn(P,110,6,-67.5)
+SprintPawn(P,1)
+
+FadeOut(.5)
+Wait(1)
+FadeIn(3)
+
+
+
+
+CameraSize(10)
+Wait(3)
+
+Say(Slas,What's going on?,IdleT)
+
+CameraTarget(StarAndFredrickInjured)
+Wait(1)
+
+LoadChar(Star,Star)
+LoadChar(Fredrick,Fred)
+LoadChar(Din,Din)
+
+Say(Star,Din!,Retreat)
+EndSay(1)
+Wait(1)
+
+Say(Star,Can someone please---,Arg)
+Continue(get Mr. Din?!,Retreat)
+EndSay()
+
+
+LoadPawn(csDinPawn,Din)
+MovePawn(Din,90,4.5,-52)
+
+Wait(1)
+CameraTarget(LookAtMe)
+Wait(2)
+
+
+Say(Din,What is all the ruckus!,IdleT)
+
+Say(Star,Din! Someone came and--,Retreat)
+Continue(Gah...,Arg)
+
+Say(Din,Oh heavens! What has happened here?,Talk)
+
+Say(Fred,There's been an accident.,Sad)
+ 
+Say(Din,Please come on back!,Talk)
+Say(Din,You look absolutely dreadful!)
+EndSay()
+
+Wait(1)
+
+LoadPerm(StarAndFredrickInjured,S)
+Trigger(S)
+
+Wait(2)
+MovePawn(Din,90,4.5,-40)
+
+FadeOut(2)
+Wait(3)
+
+DisableObject(StarAndFredrickInjured)
+DisableObject(csDinPawn)
+
+CameraTarget(Player)
+LookPawn(P,0,1)
+
+FadeIn(2)
+
+Say(Slas,I hope those two are alright.,SadLeft)
+
+LoadChar(LyserCon,Lyser)
+Say(Lyser,We just recieved a payment from Din.,LookRightPad)
+Say(Lyser,Though this specticle was unusual it seems that Din is satisfied with the outcome.,IndifPad)
+Say(Lyser,In other words: ,IndifPad)
+Continue(Mission accomplished.,Idle)
+
+// Do a thing?
+
+Say(Lyser,There's a ship waiting for you on Platform 1.,IndifPad)
+Say(Slas,Alright I'll be back soon.,IdleTLeft)
+
+
+ClearObjectives()
+LoadObjective(Outpost/3,3)
+LoadObjective(Outpost/4,4)
+AddObjective(3)
+AddObjective(4)

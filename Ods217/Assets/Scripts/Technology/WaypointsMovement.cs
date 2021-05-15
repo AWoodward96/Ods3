@@ -36,10 +36,20 @@ public class WaypointsMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Vector3 zeroTPos = GlobalConstants.ZeroYComponent(transform.position);
+		Vector3 zeroTPos;
+
+		if(ZeroY)
+		{
+			zeroTPos = GlobalConstants.ZeroYComponent(transform.position);
+		}
+		else
+		{
+			zeroTPos = transform.position;
+		}
+
         Vector3 dst = Waypoints[waypointIndex] - zeroTPos;
          
-        if (dst.magnitude < BufferDistance)
+		if (dst.magnitude <= BufferDistance)
         {
             //myCC.Velocity = dst;
 			transform.position += dst;
@@ -49,6 +59,15 @@ public class WaypointsMovement : MonoBehaviour {
         {
             //myCC.Velocity = dst.normalized * Speed;
 			transform.position += dst.normalized * Speed * Time.deltaTime;
+
+			Vector3 newDst = Waypoints[waypointIndex] - zeroTPos;
+
+			// If we've passed the point in a single step but are still somehow outside of the range, account for that
+			if(Vector3.Dot(dst, newDst) <= -0.9f)
+			{
+				transform.position += newDst;
+				IncrementWaypoints();
+			}
         }
 
         /*Collider[] d = Physics.OverlapBox(transform.position, new Vector3(1.1f, 1.1f, 1.1f), Quaternion.identity, LayerMask.GetMask("Units"));

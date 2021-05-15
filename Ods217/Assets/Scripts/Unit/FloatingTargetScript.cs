@@ -76,11 +76,6 @@ public class FloatingTargetScript : MonoBehaviour, IArmed {
         set { Zone = value; }
     }
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
-
     public void OnHit(int _damage)
     {
 

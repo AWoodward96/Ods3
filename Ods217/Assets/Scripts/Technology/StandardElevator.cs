@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-public class StandardElevator : MonoBehaviour, IPermanent {
-
-
-    public float Range;
-    public bool Interactable; 
+public class StandardElevator : MonoBehaviour, IPermanent, ISavable {
+     
     UsableIndicator ind_Interactable;
  
     private Vector3 Velocity;
-    private bool Moving;
+    public bool Moving;
     private bool Direction; // true up, false down
     public int FloorIndex;
 
@@ -20,12 +18,44 @@ public class StandardElevator : MonoBehaviour, IPermanent {
 
     public GameObject[] CameraLocks;
     public GameObject[] ArrivalPoints;
+    public GameObject[] TriggerWhenInMotion;
+    public bool FadeTransition;
 
     PlayerScript myPlayer;
     AudioSource mySource;
 
     public AudioClip audioMove;
     public AudioClip audioStop;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
 
 	ZoneScript zone;
 
@@ -82,9 +112,13 @@ public class StandardElevator : MonoBehaviour, IPermanent {
                 myPlayer.AcceptInput = true;
                 Camera.main.gameObject.GetComponent<CamScript>().Target = myPlayer.transform;
 
+                handleTriggeringOfObjects(true);
+
+
+                ind_Interactable.Disabled = false;
 
                 // Play the stop sound when the elevator stops moving
-                if(mySource != null && audioStop != null)
+                if (mySource != null && audioStop != null)
                 { 
                     mySource.loop = false;
                     mySource.clip = audioStop;
@@ -93,6 +127,16 @@ public class StandardElevator : MonoBehaviour, IPermanent {
             } 
         }
 
+    }
+
+    void handleTriggeringOfObjects(bool _val)
+    {
+        IPermanent p;
+        for (int i = 0; i < TriggerWhenInMotion.Length; i++)
+        {
+            p = TriggerWhenInMotion[i].GetComponent<IPermanent>();
+            p.Triggered = _val;
+        } 
     }
 
     void InteractDelegate()
@@ -134,6 +178,14 @@ public class StandardElevator : MonoBehaviour, IPermanent {
 
             StopAllCoroutines();
             StartCoroutine(TravelCoroutine());
+
+
+            handleTriggeringOfObjects(false);
+
+            ind_Interactable.Disabled = true;
+
+            if (FadeTransition) 
+                Camera.main.GetComponent<CamScript>().FadeOut(1); 
         }
     }
 
@@ -148,20 +200,13 @@ public class StandardElevator : MonoBehaviour, IPermanent {
         CamScript main = Camera.main.gameObject.GetComponent<CamScript>();
         main.Target = CameraLocks[FloorIndex].transform;
         main.gameObject.transform.position = CameraLocks[FloorIndex].transform.position + GlobalConstants.DEFAULTFOLLOWBACK - (Vector3.down * 5);
+
+
+        if (FadeTransition) 
+            Camera.main.GetComponent<CamScript>().FadeIn(1);
     }
 
-    private void OnDrawGizmos()
-    {
-        Color c = Color.blue;
-        c.a = .1f;
-        Gizmos.color = c;
-        Gizmos.DrawSphere(transform.position + (Vector3.up * 2), Range);
-    }
-
-	public void Activate()
-	{
-		throw new NotImplementedException();
-	}
+ 
 
 	public ZoneScript myZone
 	{
@@ -183,7 +228,22 @@ public class StandardElevator : MonoBehaviour, IPermanent {
 		}
 		set
 		{
- 
+            InteractDelegate();
 		}
+	}
+
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(FloorIndex);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		FloorIndex = int.Parse(data[0].Trim());
+		transform.position = ArrivalPoints[FloorIndex].transform.position;
 	}
 }

@@ -15,6 +15,7 @@ public class NewMusicManager : MonoBehaviour {
         [Space(25)]
         [Header("Zone Information")]
         public List<MusicZone> MusicZones;
+    public bool DisableZones = false;
 
         [Space(25)]
         [Header("Script Information")]
@@ -36,7 +37,7 @@ public class NewMusicManager : MonoBehaviour {
                     src.volume = a.Volume;
                     src.playOnAwake = a.PlayOnAwake;
                     src.loop = a.Loop;
-                    src.clip = a.Audio;
+                    src.clip = a.Audio; 
 
                     a.BaseVolume = a.Volume;
                     if (a.PlayOnAwake)
@@ -90,6 +91,9 @@ public class NewMusicManager : MonoBehaviour {
 
         void checkZones()
         {
+            if (DisableZones)
+                return;
+
             // Check for the player
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player) // Can't do anything if he doesn't exist
@@ -145,6 +149,7 @@ public class NewMusicManager : MonoBehaviour {
         {
             AudioTracks[_index].BaseVolume = _value;
         }
+     
     }
 
     [System.Serializable]

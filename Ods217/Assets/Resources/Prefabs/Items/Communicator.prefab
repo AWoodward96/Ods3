@@ -54,7 +54,7 @@ MonoBehaviour:
   InventoryIcon: {fileID: 21300000, guid: 028d25003eaa3ee4ea97bd78ff86d1f0, type: 3}
   ID: 0
   Name: Com's Link
-  Description: 'An unglorified walkie talkie. Video on the top, voice on the bottom.
+  Description: 'A glorified walkie talkie. Video on the top, voice on the bottom.
 
 
-    I''ll be using this to communicate with my boss.'
+    Lyser uses this to keep in touch with me on missions.'

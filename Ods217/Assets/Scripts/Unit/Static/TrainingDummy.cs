@@ -71,11 +71,6 @@ public class TrainingDummy : MonoBehaviour, IArmed {
         }
     }
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
-
     public void OnHit(int _damage)
     {
         // Badoop badoop you were hit by a bullet :)

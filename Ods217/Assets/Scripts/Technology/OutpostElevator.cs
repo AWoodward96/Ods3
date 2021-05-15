@@ -9,6 +9,7 @@ public class OutpostElevator : MonoBehaviour
 
 	IPermanent myDoors;
 	public Collider myDestination;
+    public GameObject ElevatorObject;
 	UsableIndicator myInd;
 
 	PlayerScript player;
@@ -82,6 +83,20 @@ public class OutpostElevator : MonoBehaviour
 		player.AcceptInput = true;
 		isElevatoring = false;
 	}
+
+    IEnumerator moveElevator(float _time, bool _direction)
+    {
+        Vector3 dir = (_direction) ? Vector3.up : Vector3.down;
+        float dt = 0;
+
+        while(dt < _time)
+        {
+            dt += Time.deltaTime;
+            ElevatorObject.transform.position += dir;
+            yield break;
+        }
+        
+    }
 
 	IEnumerator tpPlayerFrom()
 	{

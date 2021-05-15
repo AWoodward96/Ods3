@@ -11,7 +11,7 @@ public class TransportShipScript : MonoBehaviour {
     public ShipOrientation Orientation;
 
     Vector3 halfExtents = new Vector3(-16f,0, 4); 
-    GameObject player;
+    public GameObject player;
      
 
 	// Use this for initialization
@@ -35,7 +35,10 @@ public class TransportShipScript : MonoBehaviour {
 
         // Get the two corners
         Vector3 topLeft = transform.position + ((Orientation == ShipOrientation.faceX) ? halfExtents : new Vector3(-4, 0, 16));
-        Vector3 bottomRight = transform.position - ((Orientation == ShipOrientation.faceX) ? halfExtents : new Vector3(-4, 0, 16)); 
+        Vector3 bottomRight = transform.position - ((Orientation == ShipOrientation.faceX) ? halfExtents : new Vector3(-4, 0, 16));
+
+        if (!playerRef.activeInHierarchy)
+            return false;
 
         return (playerPos.x < bottomRight.x) && (playerPos.x > topLeft.x) && (playerPos.z > bottomRight.z) && (playerPos.z < topLeft.z);
     }

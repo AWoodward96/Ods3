@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-public class DetonationObstacles : MonoBehaviour,IPermanent {
+public class DetonationObstacles : MonoBehaviour,IPermanent, ISavable {
 
     ZoneScript z;
     public bool State;
@@ -12,6 +13,12 @@ public class DetonationObstacles : MonoBehaviour,IPermanent {
     public int ObstacleCnt = 5;
     int obsIndex = 0;
     GameObject Player;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
 
     float dTime;
     float dVal;
@@ -93,7 +100,41 @@ public class DetonationObstacles : MonoBehaviour,IPermanent {
         }
     }
 
-    public void Activate()
-    { 
-    }
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(State);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		State = bool.Parse(data[0].Trim());
+	}
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
 }

@@ -60,6 +60,6 @@ Trigger(TriggerMe6)
 Wait(1.5)
  
 Say(Con1,I am sure you don't need an explanation right?, LookLeft)
-Continue(Just move with WASD,Happy)
+Continue(Just move with WASD.,Happy)
 LoadPerm(TutorialEasterEgg1,Tut)
 Trigger(Tut)

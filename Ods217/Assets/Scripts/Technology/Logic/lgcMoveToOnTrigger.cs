@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
 /// A Special Effect
 /// Move any object between two positions based on the scripts state boolean
 /// </summary>
-public class lgcMoveToOnTrigger : MonoBehaviour, IPermanent{
+public class lgcMoveToOnTrigger : MonoBehaviour, IPermanent, ISavable{
 
     public bool State;
 
@@ -16,6 +17,36 @@ public class lgcMoveToOnTrigger : MonoBehaviour, IPermanent{
     public float Speed;
     bool statePrev; // To check to see if we should move 
     public bool triggered; // If true, we're moving atm
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
 
     ZoneScript Zone;
     // Use this for initialization
@@ -44,11 +75,6 @@ public class lgcMoveToOnTrigger : MonoBehaviour, IPermanent{
         statePrev = State;
 	}
 
-    public void Activate()
-    {
-        throw new NotImplementedException();
-    }
-
     public bool Triggered
     {
         get
@@ -69,4 +95,17 @@ public class lgcMoveToOnTrigger : MonoBehaviour, IPermanent{
         set { Zone = value; }
     }
 
+	public string Save()
+	{
+		StringWriter data = new StringWriter();
+
+		data.WriteLine(State);
+
+		return data.ToString();
+	}
+
+	public void Load(string[] data)
+	{
+		State = bool.Parse(data[0].Trim());
+	}
 }

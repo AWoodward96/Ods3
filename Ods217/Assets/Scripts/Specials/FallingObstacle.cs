@@ -11,6 +11,13 @@ public class FallingObstacle : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "Bullet")
+            return;
+
+        // Ignore the fall plane
+        if (other.name.Contains("Safe Spawn"))
+            return;
+
         ExplosionPart.SetActive(true);
         ExplosionPart.transform.parent = null;
         ExplosionPart.transform.position = transform.position;

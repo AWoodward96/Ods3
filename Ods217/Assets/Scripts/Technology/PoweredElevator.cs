@@ -155,11 +155,6 @@ public class PoweredElevator : MonoBehaviour, IPermanent {
 		main.gameObject.transform.position = CameraLocks[FloorIndex].transform.position + GlobalConstants.DEFAULTFOLLOWBACK - (Vector3.down * 5);
 	}*/
 
-	public void Activate()
-	{
-		
-	}
-
 	public ZoneScript myZone
 	{
 		get{return zone;}

@@ -1,4 +1,5 @@
 sceneSetups:
-- path: Assets/Level_Data/lvl_PirateShip/PirateShip1.unity
+- path: Assets/Level_Data/lvl_SkybornSpirit/Scenes/SkybornSpiritStartC1-2.unity
   isLoaded: 1
   isActive: 1
+  isSubScene: 0

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 /// A NonUnit Script
 /// A container that explodes with scrap when hit with a bullet
 /// </summary>
-public class ScrapCapsule : MonoBehaviour, IDamageable
+public class ScrapCapsule : MonoBehaviour, IDamageable, ISavable
 { 
 
     public int NumberOfScrap; // How many scrap prefabs will we instantiate
@@ -14,6 +15,12 @@ public class ScrapCapsule : MonoBehaviour, IDamageable
     public AudioClip clip; // Whats the sound we'll play when we're hit
 
     public UnitStruct myUnit;
+
+	[Header("ISavable Variables")]
+	public int saveID = -1;
+
+	[HideInInspector]
+	public bool saveIDSet = false;
 
     List<Scrap> ScrapList;
     void Start()
@@ -65,13 +72,49 @@ public class ScrapCapsule : MonoBehaviour, IDamageable
             ScrapList[i].Force();
         }
         Instantiate(Resources.Load("Prefabs/Particles/ScrapContainerDeath"), transform.position, Quaternion.identity);
-        Destroy(this.gameObject);
+
+		// Might need to still find this object!
+        //Destroy(this.gameObject);
+		gameObject.SetActive(false);
     }
 
-    public void Activate()
+    public string Save()
     {
-        throw new NotImplementedException();
+        StringWriter data = new StringWriter();
+
+        data.WriteLine(gameObject.activeInHierarchy);
+
+        return data.ToString();
     }
+
+    public void Load(string[] _data)
+    {
+        gameObject.SetActive(bool.Parse(_data[0].Trim()));
+    }
+
+	public int SaveID
+	{
+		get
+		{
+			return saveID;
+		}
+		set
+		{
+			saveID = value;
+		}
+	}
+
+	public bool SaveIDSet
+	{
+		get
+		{
+			return saveIDSet;
+		}
+		set
+		{
+			saveIDSet = value;
+		}
+	}
 
     public bool Triggered
     {

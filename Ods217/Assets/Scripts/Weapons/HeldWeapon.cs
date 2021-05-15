@@ -15,16 +15,14 @@ public class HeldWeapon {
     GameObject thrownObj;
     GameObject playerObj;
     bool initialized = false;
-
-    [Range(.1f,10)]
-    public float Range;
-    public bool Interactable;
+      
     public bool PickedUp;
     public bool DropOnInactive;
      
     Rigidbody myRigidBody;
 
-    UsableIndicator ind_MyIndicator;
+    [HideInInspector]
+    public UsableIndicator ind_MyIndicator;
 
     bool DEBUG = false;
     
